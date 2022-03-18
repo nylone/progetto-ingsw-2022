@@ -342,3 +342,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,linux,macos,java,maven,jetbrains+iml,jetbrains+all,jetbrains
+*.lock
