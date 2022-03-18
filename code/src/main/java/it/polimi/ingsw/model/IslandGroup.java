@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class IslandGroup {
     private int id;
@@ -10,6 +8,7 @@ public class IslandGroup {
 
     public IslandGroup(Island i) {
         islands = new ArrayList<>();
+        this.id = i.getId();
         islands.add(i);
     }
 
@@ -18,6 +17,7 @@ public class IslandGroup {
         for (IslandGroup i : islandGroup) {
             islands.addAll(i.getIslands());
         }
+       this.id = Arrays.stream(islandGroup).min((first,second) -> Integer.compare(first.id, second.id)).get().id;
     }
 
     public int getId() {
@@ -28,7 +28,7 @@ public class IslandGroup {
         return islands;
     }
 
-    public Map<PawnColour, Integer> getStudentCount() { //the map will contain
+    public Map<PawnColour, Integer> getStudentCount() { //the map will contain the colours of the placed pawns with relative counter
         Map<PawnColour, Integer> studentCount = new HashMap<>();
         for (Island s : islands) {
             for (PawnColour p : s.getStudents()) {
