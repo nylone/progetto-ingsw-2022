@@ -1,22 +1,28 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.Exceptions.NoPawnInCloudException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Cloud {
-    Student[] students = new Student[4];
-    StudentBag studentBag = new StudentBag();
+    private int id;
+    private ArrayList<PawnColour> contents;
 
-    public void fillCloud(){
-        //todo devo sapere quanti giocatori ci sono
-    }
-    public Student[] getStudents(){ //get cloud's students without removing them
 
-        return students.clone();
-    }
-    public Student[] extractStudents(){ //get cloud's students removing them
-        Student[] extractedStudents = students.clone();
-        Arrays.fill(students,null);
-        return extractedStudents;
+    public int getId() {
+        return id;
     }
 
+    public ArrayList<PawnColour> empty() throws NoPawnInCloudException {
+        if (contents.size() > 0) {
+            return new ArrayList<>(contents);
+        } else {
+            throw new NoPawnInCloudException(); //todo cosa fare se la nuvola è effettivamente vuota?
+        }
+    }
+
+    public void fill(ArrayList<PawnColour> colours) {
+        contents.addAll(colours);
+    }
 }
+
