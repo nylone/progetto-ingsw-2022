@@ -17,7 +17,7 @@ public class IslandGroup {
         for (IslandGroup i : islandGroup) {
             islands.addAll(i.getIslands());
         }
-       this.id = Arrays.stream(islandGroup).min((first,second) -> Integer.compare(first.id, second.id)).get().id;
+        this.id = Arrays.stream(islandGroup).min((first, second) -> Integer.compare(first.id, second.id)).get().id;
     }
 
     public int getId() {
@@ -44,5 +44,14 @@ public class IslandGroup {
             islandGroupStudents.addAll(s.getStudents());
         }
         return islandGroupStudents;
+    }
+    //test-purpose only
+
+    @Override
+    public String toString() {
+        return "ISLANDGROUP{" +
+                "id=" + id +
+                ", islands=" + islands +
+                '}';
     }
 }

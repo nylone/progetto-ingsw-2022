@@ -38,4 +38,16 @@ public class Island {
     public void placeStudent(PawnColour colour){
         students.add(colour);
     }
+
+    //test-purpose only
+
+    @Override
+    public String toString() {
+        return "Island{" +
+                "id=" + id +
+                ", students=" + students +
+                ", tower=" + tower +
+                ", isLocked=" + isLocked +
+                '}';
+    }
 }
