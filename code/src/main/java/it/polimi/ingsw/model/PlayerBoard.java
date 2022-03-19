@@ -1,2 +1,4 @@
-package it.polimi.ingsw.model;public class PlayerBoard {
+package it.polimi.ingsw.model;
+
+public class PlayerBoard {
 }
