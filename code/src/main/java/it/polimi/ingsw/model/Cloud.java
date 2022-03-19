@@ -8,7 +8,10 @@ public class Cloud {
     private int id;
     private ArrayList<PawnColour> contents;
 
-
+    public Cloud(int id){
+        this.id= id;
+        contents = new ArrayList<>();
+    }
     public int getId() {
         return id;
     }
