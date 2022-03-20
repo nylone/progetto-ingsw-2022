@@ -29,7 +29,7 @@ public class IslandGroup {
     }
 
     public Map<PawnColour, Integer> getStudentCount() { //the map will contain the colours of the placed pawns with relative counter
-        Map<PawnColour, Integer> studentCount = new HashMap<>();
+        Map<PawnColour, Integer> studentCount = new EnumMap<>(PawnColour.class);
         for (Island s : islands) {
             for (PawnColour p : s.getStudents()) {
                 studentCount.merge(p, 1, Integer::sum);

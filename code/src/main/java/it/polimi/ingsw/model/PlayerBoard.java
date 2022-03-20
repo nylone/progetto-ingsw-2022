@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import it.polimi.ingsw.Exceptions.FullDiningRoomException;
+import it.polimi.ingsw.Exceptions.FullEntranceException;
 
 public class PlayerBoard {
     private int id;
@@ -19,7 +20,7 @@ public class PlayerBoard {
         this.context = context;
         this.towerColour = towerColour;
         assistantCards = new AssistantCard[10];
-        diningRoom = new HashMap<>();
+        diningRoom = new EnumMap<>(PawnColour.class);
         entrance = new ArrayList<>();
     }
 
@@ -59,7 +60,7 @@ public class PlayerBoard {
         return 0;
     }
     public void addStudentToDiningRoom(PawnColour colour) throws FullDiningRoomException{
-        if(diningRoom.get(colour) == 10){
+        if(diningRoom.get(colour)!=null && diningRoom.get(colour) == 10){
             throw new FullDiningRoomException();
         }else {
             diningRoom.merge(colour, 1, Integer::sum);
@@ -68,8 +69,12 @@ public class PlayerBoard {
             }
         }
     }
-    public void addStudentsToEntrance(ArrayList<PawnColour> students){
-        entrance.addAll(students);
+    public void addStudentsToEntrance(ArrayList<PawnColour> students) throws FullEntranceException {
+        if(entrance.size()+students.size()>7){
+            throw new FullEntranceException();
+        }else {
+            entrance.addAll(students);
+        }
     }
     public void PayCharacterEffect(int id){
         coinBalance--;
