@@ -15,7 +15,10 @@ public class AssistantCard {
     public int getPriority() {
         return cardNumber;
     }
-    public void useAssistantCard(){
-        this.used = false;
+    public boolean getUsed(){
+        return used;
+    }
+    public void use(){
+        this.used = true;
     }
 }

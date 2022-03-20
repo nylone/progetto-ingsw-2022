@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class IslandField {
     private GameBoard context;
@@ -40,11 +38,11 @@ public class IslandField {
         motherNaturePosition = groups.get((groups.indexOf(motherNaturePosition)+moves)%groups.size());
     }
     public void joinGroups(){
-        //check if neighbours islands contain same tower-colour
-        AtomicInteger actualPosition = new AtomicInteger(groups.indexOf(motherNaturePosition));
-        AtomicInteger actualPosition2 = new AtomicInteger(actualPosition.intValue());
-        int previous_index = actualPosition.accumulateAndGet(1, (index,dec) -> (--index < 0 ? groups.size()-1 : index));
-        int next_index = actualPosition2.accumulateAndGet(1, (index,acc) -> (++index >= groups.size() ? 0 : index));
+        int actualPosition = groups.indexOf(motherNaturePosition);
+        int previous_index = --actualPosition <0 ? groups.size()-1 : actualPosition--;
+        actualPosition = groups.indexOf(motherNaturePosition);
+        int next_index = ++actualPosition >= groups.size() ? 0 : actualPosition++;
+        System.out.println(previous_index +" "+ groups.indexOf(motherNaturePosition) +" "+ next_index);
         Optional<TowerColour> actualTowerColour = motherNaturePosition.getIslands().get(0).getTower(); //get the towerColour of actual IslandGroup
         Optional<TowerColour> previousTowerColour = groups.get(previous_index).getIslands().get(0).getTower(); //get the towerColour of previous IslandGroup
         Optional<TowerColour> nextTowerColour = groups.get(next_index).getIslands().get(0).getTower(); //get the towerColour of next islandGroup
