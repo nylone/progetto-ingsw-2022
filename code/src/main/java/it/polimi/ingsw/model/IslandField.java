@@ -21,7 +21,7 @@ public class IslandField {
             islands.add(island);
             groups.add(islandGroup);
         }
-        motherNaturePosition = groups.get(0);
+        motherNaturePosition = groups.get(10);
     }
 
     public ArrayList<IslandGroup> getGroups() {
@@ -43,15 +43,12 @@ public class IslandField {
         //check if neighbours islands contain same tower-colour
         AtomicInteger actualPosition = new AtomicInteger(groups.indexOf(motherNaturePosition));
         AtomicInteger actualPosition2 = new AtomicInteger(actualPosition.intValue());
-        int previous_index = actualPosition.accumulateAndGet(1, (index,dec) -> (--index < 0 ? groups.size() : index));
-        int next_index = actualPosition2.accumulateAndGet(1, (index,acc) -> (++index > groups.size() ? 0 : index));
+        int previous_index = actualPosition.accumulateAndGet(1, (index,dec) -> (--index < 0 ? groups.size()-1 : index));
+        int next_index = actualPosition2.accumulateAndGet(1, (index,acc) -> (++index >= groups.size() ? 0 : index));
         Optional<TowerColour> actualTowerColour = motherNaturePosition.getIslands().get(0).getTower(); //get the towerColour of actual IslandGroup
         Optional<TowerColour> previousTowerColour = groups.get(previous_index).getIslands().get(0).getTower(); //get the towerColour of previous IslandGroup
         Optional<TowerColour> nextTowerColour = groups.get(next_index).getIslands().get(0).getTower(); //get the towerColour of next islandGroup
         if(actualTowerColour.equals(nextTowerColour) && actualTowerColour.equals(previousTowerColour)){ //merge three different islands
-            System.out.println(groups.indexOf(motherNaturePosition));
-            System.out.println(previous_index);
-            System.out.println(next_index);
             ArrayList<IslandGroup> toRemove = new ArrayList<>(); //support list
             toRemove.add(motherNaturePosition);
             toRemove.add(groups.get(previous_index));
@@ -65,7 +62,6 @@ public class IslandField {
             ArrayList<IslandGroup> toRemove = new ArrayList<>(); //support list
             toRemove.add(motherNaturePosition);
             toRemove.add(groups.get(next_index));
-            //System.out.println(toRemove+"\n");
             IslandGroup twoMerge = new IslandGroup(motherNaturePosition, groups.get(next_index));
             groups.add(groups.indexOf(motherNaturePosition), twoMerge);
             groups.removeAll(toRemove);
@@ -73,7 +69,6 @@ public class IslandField {
 
 
         }else if(actualTowerColour.equals(previousTowerColour)){
-            System.out.println("PREVIOUS");
             ArrayList<IslandGroup> toRemove = new ArrayList<>(); //support list
             toRemove.add(motherNaturePosition);
             toRemove.add(groups.get(previous_index));
