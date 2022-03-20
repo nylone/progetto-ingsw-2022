@@ -1,7 +1,12 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.misc.Utils;
+
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
+
+import static it.polimi.ingsw.misc.Utils.*;
 
 public class IslandField {
     private GameBoard context;
@@ -19,7 +24,16 @@ public class IslandField {
             islands.add(island);
             groups.add(islandGroup);
         }
-        motherNaturePosition = groups.get(10);
+
+        motherNaturePosition = Utils.random(groups);
+
+        for(IslandGroup group : groups) {
+            IslandGroup emptyIsland = modularSelection(motherNaturePosition, groups, 6);
+            // if it is the MotherNature group or its opposite skip
+            if(group == motherNaturePosition || group == emptyIsland){ break; }
+            // else place a random student on the group
+            else group.getIslands().get(0).placeStudent(random(GameBoard.getStudentBag()));
+        }
     }
 
     public ArrayList<IslandGroup> getGroups() {
