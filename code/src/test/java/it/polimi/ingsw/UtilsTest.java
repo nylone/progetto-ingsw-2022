@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import com.sun.xml.internal.bind.v2.runtime.output.StAXExStreamWriterOutput;
 import org.junit.Test;
 
 import it.polimi.ingsw.misc.Utils;
