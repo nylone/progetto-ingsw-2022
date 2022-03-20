@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
-enum GamePhase{ SETUP, ACTION}
-enum GameMode {SIMPLE, ADVANCED}
+
 public class GameBoard {
 
     private IslandField islands = new IslandField();
@@ -21,7 +20,8 @@ public class GameBoard {
     private int turnPosition;
     private Map<TowerColour, Integer> freeTowers = new EnumMap<>(TowerColour.class);
 
-    public GameBoard(){
+    public GameBoard(GameMode gameMode){
         //todo
+        this.gameMode = gameMode;
     }
 }
