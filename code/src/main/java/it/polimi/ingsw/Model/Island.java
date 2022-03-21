@@ -1,15 +1,13 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.InvalidInputException;
-
 import java.util.ArrayList;
 import java.util.Optional;
 
 public class Island {
     private final int id;
     private final ArrayList<PawnColour> students;
-    private Optional<TowerColour> tower;
     private final boolean isLocked;
+    private Optional<TowerColour> tower;
 
     public Island(int id) {
         this.id = id;
@@ -35,13 +33,13 @@ public class Island {
     }
 
     public void addStudent(PawnColour colour) {
-            students.add(colour);
+        students.add(colour);
     }
 
     public Optional<TowerColour> swapTower(TowerColour colour) {
-            Optional<TowerColour> oldTowerColour = this.tower;
-            this.tower = Optional.of(colour);
-            return oldTowerColour;
+        Optional<TowerColour> oldTowerColour = this.tower;
+        this.tower = Optional.of(colour);
+        return oldTowerColour;
     }
 
     //test-purpose only

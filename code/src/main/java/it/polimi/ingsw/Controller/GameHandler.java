@@ -7,24 +7,24 @@ import java.util.ArrayList;
 
 public class GameHandler {
 
-	private GameBoard game;
+    private final GameBoard game;
 
-	private ArrayList<PlayerInfo> players;
+    private final ArrayList<PlayerInfo> players;
 
-	private ArrayList<PlayerAction> actionHistory;
+    private final ArrayList<PlayerAction> actionHistory;
 
-	public GameHandler(GameMode gameMode) {
-		this.game = new GameBoard(gameMode);
-		this.players = new ArrayList<>(2);
-		this.actionHistory = new ArrayList<>(6);
-	}
+    public GameHandler(GameMode gameMode) {
+        this.game = new GameBoard(gameMode);
+        this.players = new ArrayList<>(2);
+        this.actionHistory = new ArrayList<>(6);
+    }
 
-	public void addPlayer(String nickname) {
+    public void addPlayer(String nickname) {
 
-	}
+    }
 
-	public void executeAction(PlayerAction action) {
+    public void executeAction(PlayerAction action) {
 
-	}
+    }
 
 }

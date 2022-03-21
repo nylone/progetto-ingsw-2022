@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Exceptions;
 
 public class InvalidInputException extends Exception {
-    public InvalidInputException(){
+    public InvalidInputException() {
         super("Invalid input provided");
     }
 }

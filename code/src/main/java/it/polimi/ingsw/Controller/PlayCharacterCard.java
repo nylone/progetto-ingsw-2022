@@ -2,10 +2,10 @@ package it.polimi.ingsw.Controller;
 
 public class PlayCharacterCard extends PlayerAction {
 
-	private final int selectedCard;
+    private final int selectedCard;
 
-	public PlayCharacterCard(int playerBoardId, int selectedCard) {
-		super(playerBoardId);
-		this.selectedCard = selectedCard;
-	}
+    public PlayCharacterCard(int playerBoardId, int selectedCard) {
+        super(playerBoardId);
+        this.selectedCard = selectedCard;
+    }
 }

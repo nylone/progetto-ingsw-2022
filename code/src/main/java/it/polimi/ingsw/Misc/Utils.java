@@ -7,13 +7,13 @@ public class Utils {
 
     public static <T> T random(List<T> list) {
         Random random = new Random();
-
         int randomNumber = random.nextInt(list.size());
         return list.get(randomNumber);
     }
 
-    public static <T> T modularSelection(T element, List<T> group, int movement){
+    public static <T> T modularSelection(T element, List<T> group, int movement) {
         int index = group.indexOf(element);
-        return group.get((index + movement)%group.size());
+        // todo add exception for element not in list
+        return group.get((index + movement) % group.size());
     }
 }

@@ -8,21 +8,28 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class PlayerBoard {
-    private int id;
-    private final GameBoard context;
     private final AssistantCard[] assistantCards;
-    private int coinBalance = 1;
     private final Map<PawnColour, Integer> diningRoom;
     private final ArrayList<PawnColour> entrance;
-    private AssistantCard selectedAssistant;
     private final TowerColour towerColour;
+    private final int id;
+    private int coinBalance;
+    private AssistantCard selectedAssistant;
 
-    public PlayerBoard(GameBoard context, TowerColour towerColour) {
-        this.context = context;
+    public PlayerBoard(int id, int playerNum, TowerColour towerColour, GameBoard context) {
         this.towerColour = towerColour;
-        assistantCards = new AssistantCard[10];
-        diningRoom = new EnumMap<>(PawnColour.class);
-        entrance = new ArrayList<>();
+        this.assistantCards = new AssistantCard[10];
+        for (int i = 1; i <= 10; i++) {
+            assistantCards[i] = new AssistantCard(i);
+        }
+        this.coinBalance = 1;
+        this.id = id;
+        this.diningRoom = new EnumMap<>(PawnColour.class);
+        this.entrance = new ArrayList<>();
+        for (int i = 0; i < playerNum; i++) {
+            int bagSize = context.getStudentBag().size();
+                entrance.add(context.getStudentBag().remove(bagSize - 1));
+        }
     }
 
     public AssistantCard[] getAssistantCards() {

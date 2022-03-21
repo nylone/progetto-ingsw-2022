@@ -6,26 +6,33 @@ import java.util.ArrayList;
 
 public class Cloud {
     private final int id;
-    private final ArrayList<PawnColour> contents;
+    private ArrayList<PawnColour> contents;
 
     public Cloud(int id) {
         this.id = id;
-        contents = new ArrayList<>();
+        contents = new ArrayList<>(3);
     }
 
     public int getId() {
         return id;
     }
 
-    public ArrayList<PawnColour> empty() throws NoPawnInCloudException {
+    public ArrayList<PawnColour> extractContents() throws NoPawnInCloudException {
         if (contents.size() > 0) {
-            return new ArrayList<>(contents);
+            ArrayList<PawnColour> toReturn = new ArrayList<>(this.contents);
+            this.contents = new ArrayList<>(3);
+            return toReturn;
         } else {
-            throw new NoPawnInCloudException(); //todo cosa fare se la nuvola è effettivamente vuota?
+            throw new NoPawnInCloudException();
         }
     }
 
+    public ArrayList<PawnColour> getContents() throws NoPawnInCloudException {
+        return new ArrayList<>(contents);
+    }
+
     public void fill(ArrayList<PawnColour> colours) {
+        // todo check that the cloud is empty before filling it
         contents.addAll(colours);
     }
 }

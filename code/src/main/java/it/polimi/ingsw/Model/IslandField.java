@@ -1,20 +1,15 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.InvalidInputException;
 import it.polimi.ingsw.Misc.Utils;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
-import static it.polimi.ingsw.Misc.Utils.modularSelection;
-import static it.polimi.ingsw.Misc.Utils.random;
 public class IslandField {
     private static final int FIELD_SIZE = 12;
     private final ArrayList<IslandGroup> groups;
     private final ArrayList<Island> islands;
     private IslandGroup motherNaturePosition;
 
-    //Todo dopo aver ottenuto la scelta dell'isola su cui piazzare madre natura bisogna riempire le isole rimanenti con gli studenti (eccetto l'isola opposta)
     public IslandField(GameBoard context) {
         this.groups = new ArrayList<>(FIELD_SIZE);
         this.islands = new ArrayList<>(FIELD_SIZE);
@@ -28,9 +23,9 @@ public class IslandField {
         this.motherNaturePosition = Utils.random(this.groups);
         int motherNatureIslandId = this.motherNaturePosition.getId();
 
-        for (Island island: this.islands) {
+        for (Island island : this.islands) {
             int bagSize = context.getStudentBag().size();
-            if (island.getId() != motherNatureIslandId && island.getId() != (motherNatureIslandId + 6)%12 ) {
+            if (island.getId() != motherNatureIslandId && island.getId() != (motherNatureIslandId + 6) % FIELD_SIZE) {
                 island.addStudent(context.getStudentBag().remove(bagSize - 1));
             }
         }
