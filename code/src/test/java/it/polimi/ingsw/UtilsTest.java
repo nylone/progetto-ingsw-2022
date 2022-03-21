@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 
 import org.junit.Test;
 
-import it.polimi.ingsw.misc.Utils;
+import it.polimi.ingsw.Misc.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

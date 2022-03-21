@@ -1,17 +1,19 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.Model;
+
+import it.polimi.ingsw.Exceptions.InvalidInputException;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
 public class Island {
-    private int id;
-    private ArrayList<PawnColour> students;
+    private final int id;
+    private final ArrayList<PawnColour> students;
     private Optional<TowerColour> tower;
-    private boolean isLocked;
+    private final boolean isLocked;
 
-    public Island(int id){
+    public Island(int id) {
         this.id = id;
-        students = new ArrayList<>();
+        this.students = new ArrayList<>();
         this.tower = Optional.empty();
         this.isLocked = false;
     }
@@ -20,7 +22,7 @@ public class Island {
         return id;
     }
 
-    public ArrayList<PawnColour> getStudents(){
+    public ArrayList<PawnColour> getStudents() {
         return new ArrayList<>(students);
     }
 
@@ -28,18 +30,18 @@ public class Island {
         return tower;
     }
 
-    public boolean isLocked(){
+    public boolean isLocked() {
         return isLocked;
     }
 
-    public Optional<TowerColour> swapTower(TowerColour colour){
-        Optional<TowerColour> oldTowerColour = this.tower;
-        this.tower = Optional.ofNullable(colour);
-        return oldTowerColour;
+    public void addStudent(PawnColour colour) {
+            students.add(colour);
     }
 
-    public void placeStudent(PawnColour colour){
-        students.add(colour);
+    public Optional<TowerColour> swapTower(TowerColour colour) {
+            Optional<TowerColour> oldTowerColour = this.tower;
+            this.tower = Optional.of(colour);
+            return oldTowerColour;
     }
 
     //test-purpose only

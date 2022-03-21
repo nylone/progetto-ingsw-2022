@@ -1,7 +1,7 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.model.GameBoard;
-import it.polimi.ingsw.model.GameMode;
+import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.GameMode;
 
 import java.util.ArrayList;
 

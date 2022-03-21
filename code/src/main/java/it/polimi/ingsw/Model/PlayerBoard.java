@@ -1,22 +1,23 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.Model;
+
+import it.polimi.ingsw.Exceptions.FullDiningRoomException;
+import it.polimi.ingsw.Exceptions.FullEntranceException;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
-import it.polimi.ingsw.Exceptions.FullDiningRoomException;
-import it.polimi.ingsw.Exceptions.FullEntranceException;
 
 public class PlayerBoard {
     private int id;
-    private GameBoard context;
-    private AssistantCard[] assistantCards;
-    private int coinBalance= 1;
-    private Map<PawnColour, Integer> diningRoom;
-    private ArrayList<PawnColour> entrance;
+    private final GameBoard context;
+    private final AssistantCard[] assistantCards;
+    private int coinBalance = 1;
+    private final Map<PawnColour, Integer> diningRoom;
+    private final ArrayList<PawnColour> entrance;
     private AssistantCard selectedAssistant;
-    private TowerColour towerColour;
+    private final TowerColour towerColour;
 
-    public PlayerBoard(GameBoard context, TowerColour towerColour){
+    public PlayerBoard(GameBoard context, TowerColour towerColour) {
         this.context = context;
         this.towerColour = towerColour;
         assistantCards = new AssistantCard[10];
@@ -36,7 +37,7 @@ public class PlayerBoard {
         return diningRoom;
     }
 
-    public int getDiningRoomCount(PawnColour colour){
+    public int getDiningRoomCount(PawnColour colour) {
         return diningRoom.get(colour);
     }
 
@@ -55,28 +56,32 @@ public class PlayerBoard {
     public TowerColour getTowerColour() {
         return towerColour;
     }
-    public int getUnusedTower(){
+
+    public int getUnusedTower() {
         //todo
         return 0;
     }
-    public void addStudentToDiningRoom(PawnColour colour) throws FullDiningRoomException{
-        if(diningRoom.get(colour)!=null && diningRoom.get(colour) == 10){
+
+    public void addStudentToDiningRoom(PawnColour colour) throws FullDiningRoomException {
+        if (diningRoom.get(colour) != null && diningRoom.get(colour) == 10) {
             throw new FullDiningRoomException();
-        }else {
+        } else {
             diningRoom.merge(colour, 1, Integer::sum);
             if (diningRoom.get(colour) % 3 == 0) {
                 coinBalance++;
             }
         }
     }
+
     public void addStudentsToEntrance(ArrayList<PawnColour> students) throws FullEntranceException {
-        if(entrance.size()+students.size()>7){
+        if (entrance.size() + students.size() > 7) {
             throw new FullEntranceException();
-        }else {
+        } else {
             entrance.addAll(students);
         }
     }
-    public void PayCharacterEffect(int id){
+
+    public void PayCharacterEffect(int id) {
         coinBalance--;
     }
 }

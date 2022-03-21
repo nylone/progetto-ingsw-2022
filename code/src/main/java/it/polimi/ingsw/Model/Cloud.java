@@ -1,17 +1,18 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.Model;
+
 import it.polimi.ingsw.Exceptions.NoPawnInCloudException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Cloud {
-    private int id;
-    private ArrayList<PawnColour> contents;
+    private final int id;
+    private final ArrayList<PawnColour> contents;
 
-    public Cloud(int id){
-        this.id= id;
+    public Cloud(int id) {
+        this.id = id;
         contents = new ArrayList<>();
     }
+
     public int getId() {
         return id;
     }
