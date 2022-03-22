@@ -1,16 +1,17 @@
 package it.polimi.ingsw.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class StudentBag {
+public class StudentBag implements Serializable {
     private final ArrayList<PawnColour> studentBag;
 
     public StudentBag(int numOfStudentsPerColour) {
         this.studentBag = new ArrayList<>(numOfStudentsPerColour * PawnColour.values().length);
-        for (PawnColour colour:
-             PawnColour.values()) {
+        for (PawnColour colour :
+                PawnColour.values()) {
             for (int i = 0; i < numOfStudentsPerColour; i++) {
                 studentBag.add(colour);
             }

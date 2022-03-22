@@ -2,9 +2,10 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.NoPawnInCloudException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cloud {
+public class Cloud implements Serializable {
     private final int id;
     private ArrayList<PawnColour> contents;
 

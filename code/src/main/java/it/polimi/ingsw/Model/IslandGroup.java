@@ -1,8 +1,9 @@
 package it.polimi.ingsw.Model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class IslandGroup {
+public class IslandGroup implements Serializable {
     private final int id;
     private final ArrayList<Island> islands;
 

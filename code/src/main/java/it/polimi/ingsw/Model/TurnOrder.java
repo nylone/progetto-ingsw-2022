@@ -1,9 +1,10 @@
 package it.polimi.ingsw.Model;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TurnOrder {
+public class TurnOrder implements Serializable {
     private final Map<PlayerBoard, AssistantCard> selectedCards;
     private PlayerBoard currentPlayer;
 

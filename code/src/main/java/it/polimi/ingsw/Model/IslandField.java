@@ -2,9 +2,10 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Misc.Utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class IslandField {
+public class IslandField implements Serializable {
     private static final int FIELD_SIZE = 12;
     private final ArrayList<IslandGroup> groups;
     private final ArrayList<Island> islands;

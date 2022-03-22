@@ -3,11 +3,13 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.FullDiningRoomException;
 import it.polimi.ingsw.Exceptions.FullEntranceException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class PlayerBoard {
+public class PlayerBoard implements Serializable {
+    private final String nickname;
     private final AssistantCard[] assistantCards;
     private final Map<PawnColour, Integer> diningRoom;
     private final ArrayList<PawnColour> entrance;
@@ -16,7 +18,8 @@ public class PlayerBoard {
     private int coinBalance;
     private AssistantCard selectedAssistant;
 
-    public PlayerBoard(int id, int playerNum, TowerColour towerColour, GameBoard context) {
+    public PlayerBoard(int id, int playerNum, String nickname, TowerColour towerColour, GameBoard context) {
+        this.nickname = nickname;
         this.towerColour = towerColour;
         this.assistantCards = new AssistantCard[10];
         for (int i = 1; i <= 10; i++) {
@@ -26,9 +29,8 @@ public class PlayerBoard {
         this.id = id;
         this.diningRoom = new EnumMap<>(PawnColour.class);
         this.entrance = new ArrayList<>();
-        for (int i = 0; i < playerNum; i++) {
-            int bagSize = context.getStudentBag().size();
-                entrance.add(context.getStudentBag().remove(bagSize - 1));
+        for (int i = 0; i < playerNum; i++) { // todo check playernum for consistency
+            entrance.add(context.getStudentBag().extract());
         }
     }
 

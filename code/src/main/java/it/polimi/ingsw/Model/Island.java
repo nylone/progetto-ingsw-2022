@@ -1,9 +1,10 @@
 package it.polimi.ingsw.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class Island {
+public class Island implements Serializable {
     private final int id;
     private final ArrayList<PawnColour> students;
     private final boolean isLocked;
