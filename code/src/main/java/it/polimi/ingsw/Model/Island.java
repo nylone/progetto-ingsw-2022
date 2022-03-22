@@ -32,8 +32,8 @@ public class Island {
         return isLocked;
     }
 
-    public void addStudent(PawnColour colour) {
-        students.add(colour);
+    public void addStudent(StudentBag bag) {
+        students.add(bag.extract());
     }
 
     public Optional<TowerColour> swapTower(TowerColour colour) {

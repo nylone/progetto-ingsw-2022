@@ -23,10 +23,11 @@ public class IslandField {
         this.motherNaturePosition = Utils.random(this.groups);
         int motherNatureIslandId = this.motherNaturePosition.getId();
 
+        StudentBag tempBag = new StudentBag(2);
+
         for (Island island : this.islands) {
-            int bagSize = context.getStudentBag().size();
             if (island.getId() != motherNatureIslandId && island.getId() != (motherNatureIslandId + 6) % FIELD_SIZE) {
-                island.addStudent(context.getStudentBag().remove(bagSize - 1));
+                island.addStudent(tempBag);
             }
         }
     }
