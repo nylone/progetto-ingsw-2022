@@ -20,7 +20,7 @@ public class StudentBag implements Serializable {
     }
 
     public PawnColour extract() {
-        return this.studentBag.remove(this.studentBag.size() -1);
+        return this.studentBag.remove(this.studentBag.size() - 1);
     }
 
     public void appendAndShuffle(PawnColour colour) {

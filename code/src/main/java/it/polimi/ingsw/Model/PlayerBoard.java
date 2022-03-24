@@ -13,14 +13,13 @@ public class PlayerBoard implements Serializable {
     private final AssistantCard[] assistantCards;
     private final Map<PawnColour, Integer> diningRoom;
     private final ArrayList<PawnColour> entrance;
-    private final TowerColour towerColour;
+    private final TowerStorage towerStorage;
     private final int id;
     private int coinBalance;
     private AssistantCard selectedAssistant;
 
-    public PlayerBoard(int id, int playerNum, String nickname, TowerColour towerColour, GameBoard context) {
+    public PlayerBoard(int id, int numOfPlayers, String nickname, TowerStorage towerStorage, StudentBag studentBag) {
         this.nickname = nickname;
-        this.towerColour = towerColour;
         this.assistantCards = new AssistantCard[10];
         for (int i = 1; i <= 10; i++) {
             assistantCards[i] = new AssistantCard(i);
@@ -29,9 +28,10 @@ public class PlayerBoard implements Serializable {
         this.id = id;
         this.diningRoom = new EnumMap<>(PawnColour.class);
         this.entrance = new ArrayList<>();
-        for (int i = 0; i < playerNum; i++) { // todo check playernum for consistency
-            entrance.add(context.getStudentBag().extract());
+        for (int i = 0; i < (numOfPlayers == 3 ? 9 : 7); i++) { // todo check playernum for consistency
+            entrance.add(studentBag.extract());
         }
+        this.towerStorage = towerStorage;
     }
 
     public AssistantCard[] getAssistantCards() {
@@ -63,7 +63,7 @@ public class PlayerBoard implements Serializable {
     }
 
     public TowerColour getTowerColour() {
-        return towerColour;
+        return this.towerStorage.getColour();
     }
 
     public int getUnusedTower() {

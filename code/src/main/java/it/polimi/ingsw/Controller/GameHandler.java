@@ -7,9 +7,8 @@ import java.util.ArrayList;
 
 public class GameHandler {
 
-    private GameBoard game;  // todo needs to be init on game start
-
     private final ArrayList<PlayerAction> actionHistory;
+    private GameBoard game;  // todo needs to be init on game start
 
     public GameHandler(GameMode gameMode) {
         this.actionHistory = new ArrayList<>(6);

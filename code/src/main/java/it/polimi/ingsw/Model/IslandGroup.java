@@ -1,7 +1,10 @@
 package it.polimi.ingsw.Model;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.Map;
 
 public class IslandGroup implements Serializable {
     private final int id;
@@ -14,6 +17,7 @@ public class IslandGroup implements Serializable {
     }
 
     public IslandGroup(IslandGroup... islandGroups) {
+        // todo enforce joinable on islandGroups
         this.islands = new ArrayList<>();
         for (IslandGroup i : islandGroups) {
             islands.addAll(i.getIslands());
@@ -22,6 +26,14 @@ public class IslandGroup implements Serializable {
                 .min((first, second) -> Integer.compare(first.id, second.id))
                 .orElseThrow()
                 .getId();
+    }
+
+    public boolean joinable(IslandGroup other) {
+        return !other.equals(this) && this.getTowerColour().equals(other.getTowerColour());
+    }
+
+    public TowerColour getTowerColour() {
+        return this.getIslands().get(0).getTowerColour();
     }
 
     public int getId() {
@@ -48,8 +60,12 @@ public class IslandGroup implements Serializable {
         return islandGroupStudents;
     }
 
-    public Optional<TowerColour> getTower() {
-        return getIslands().get(0).getTower();
+    public void swapTower(TowerStorage ts) {
+        if (ts.getTowerCount() >= this.islands.size()) {
+            for (Island i : this.islands) {
+                i.swapTower(ts.extractTower());
+            }
+        }
     }
 
     //test-purpose only

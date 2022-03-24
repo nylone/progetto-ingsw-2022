@@ -2,18 +2,17 @@ package it.polimi.ingsw.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class Island implements Serializable {
     private final int id;
     private final ArrayList<PawnColour> students;
     private final boolean isLocked;
-    private Optional<TowerColour> tower;
+    private Tower tower;
 
     public Island(int id) {
         this.id = id;
         this.students = new ArrayList<>();
-        this.tower = Optional.empty();
+        this.tower = null;
         this.isLocked = false;
     }
 
@@ -25,10 +24,6 @@ public class Island implements Serializable {
         return new ArrayList<>(students);
     }
 
-    public Optional<TowerColour> getTower() {
-        return tower;
-    }
-
     public boolean isLocked() {
         return isLocked;
     }
@@ -37,10 +32,13 @@ public class Island implements Serializable {
         students.add(bag.extract());
     }
 
-    public Optional<TowerColour> swapTower(TowerColour colour) {
-        Optional<TowerColour> oldTowerColour = this.tower;
-        this.tower = Optional.of(colour);
-        return oldTowerColour;
+    public void swapTower(Tower t) {
+        if (this.tower != null) this.tower.linkBackToStorage();
+        this.tower = t;
+    }
+
+    public TowerColour getTowerColour() {
+        return tower.getColour();
     }
 
     //test-purpose only

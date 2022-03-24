@@ -1,8 +1,7 @@
 package it.polimi.ingsw;
 
-import org.junit.Test;
-
 import it.polimi.ingsw.Misc.Utils;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,10 +9,10 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertTrue;
 
-public class UtilsTest{
+public class UtilsTest {
 
     @Test
-    public void randomStringTest(){
+    public void randomStringTest() {
 
         // initialized arrayList to apply the "random" method on it
         ArrayList<String> list = new ArrayList<String>(3);
@@ -30,7 +29,7 @@ public class UtilsTest{
     }
 
     @Test
-    public void randomIntTest(){
+    public void randomIntTest() {
 
         // initialized ArrayList of Integers, to check if the method works with a different parameter type
         ArrayList<Integer> list = new ArrayList<Integer>(4);
