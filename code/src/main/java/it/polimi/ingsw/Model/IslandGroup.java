@@ -17,19 +17,26 @@ public class IslandGroup implements Serializable {
     }
 
     public IslandGroup(IslandGroup... islandGroups) {
-        // todo enforce joinable on islandGroups
-        this.islands = new ArrayList<>();
-        for (IslandGroup i : islandGroups) {
-            islands.addAll(i.getIslands());
+        if (joinable(islandGroups)) {
+            this.islands = new ArrayList<>();
+            for (IslandGroup i : islandGroups) {
+                islands.addAll(i.getIslands());
+            }
+            this.id = Arrays.stream(islandGroups)
+                    .min((first, second) -> Integer.compare(first.id, second.id))
+                    .orElseThrow()
+                    .getId();
+        } else {
+            throw new RuntimeException(); // todo implement unjoinablegroups exception
         }
-        this.id = Arrays.stream(islandGroups)
-                .min((first, second) -> Integer.compare(first.id, second.id))
-                .orElseThrow()
-                .getId();
     }
 
-    public boolean joinable(IslandGroup other) {
-        return !other.equals(this) && this.getTowerColour().equals(other.getTowerColour());
+    public static boolean joinable(IslandGroup... groups) {
+        return Arrays.stream(groups).allMatch(g -> g.equals(groups[0]));
+    }
+
+    public boolean canJoin(IslandGroup... groups) {
+        return Arrays.stream(groups).allMatch(g -> g.equals(this));
     }
 
     public TowerColour getTowerColour() {
