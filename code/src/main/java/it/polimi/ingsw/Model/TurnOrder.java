@@ -1,4 +1,5 @@
 package it.polimi.ingsw.Model;
+// todo create interface to make the turn order modifiable only by the playerboards and readable from the game handler
 
 import java.io.Serializable;
 import java.util.*;
@@ -17,8 +18,19 @@ public class TurnOrder implements Serializable {
         return Optional.ofNullable(this.selectedCards.get(player));
     }
 
-    public void setSelectedCard(PlayerBoard player, AssistantCard selection) {
-        this.selectedCards.put(player, selection);
+    public void setSelectedCard(PlayerBoard p, AssistantCard ac) {
+        if (currentPlayer.equals(p)) {
+            if (!ac.getUsed()) {
+                ac.use();
+                this.selectedCards.put(p, ac);
+                this.setNext();
+            } else {
+                //todo throw exception for already used card
+            }
+        } else {
+            // todo throw exception for out of turn access
+        }
+
     }
 
     public PlayerBoard getCurrent() {
@@ -38,6 +50,10 @@ public class TurnOrder implements Serializable {
             }
         }
         return Optional.ofNullable(nextPlayer);
+    }
+
+    public void setNext() {
+        this.currentPlayer = getNext().orElse(null);
     }
 
     public List<Map.Entry<PlayerBoard, AssistantCard>> getTurnOrder() {

@@ -11,7 +11,7 @@ public class IslandField implements Serializable {
     private final ArrayList<Island> islands;
     private IslandGroup motherNaturePosition;
 
-    public IslandField(GameBoard context) {
+    public IslandField() {
         this.groups = new ArrayList<>(FIELD_SIZE);
         this.islands = new ArrayList<>(FIELD_SIZE);
         for (int i = 0; i < FIELD_SIZE; i++) {
@@ -45,7 +45,7 @@ public class IslandField implements Serializable {
         return motherNaturePosition;
     }
 
-    public void moveMotherNature(int moves) {
+    protected void moveMotherNature(int moves) {
         motherNaturePosition = groups.get((groups.indexOf(motherNaturePosition) + moves) % groups.size());
     }
 

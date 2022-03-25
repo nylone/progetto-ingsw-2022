@@ -1,29 +1,26 @@
 package it.polimi.ingsw.Model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.*;
 
 public class IslandGroup implements Serializable {
     private final int id;
     private final ArrayList<Island> islands;
 
     public IslandGroup(Island i) {
-        this.islands = new ArrayList<Island>();
+        this.islands = new ArrayList<>();
         this.id = i.getId();
         this.islands.add(i);
     }
 
     public IslandGroup(IslandGroup... islandGroups) {
-        if (joinable(islandGroups)) {
+        if (isJoinable(islandGroups)) {
             this.islands = new ArrayList<>();
             for (IslandGroup i : islandGroups) {
                 islands.addAll(i.getIslands());
             }
             this.id = Arrays.stream(islandGroups)
-                    .min((first, second) -> Integer.compare(first.id, second.id))
+                    .min(Comparator.comparingInt(islandGroup -> islandGroup.id))
                     .orElseThrow()
                     .getId();
         } else {
@@ -31,7 +28,7 @@ public class IslandGroup implements Serializable {
         }
     }
 
-    public static boolean joinable(IslandGroup... groups) {
+    public static boolean isJoinable(IslandGroup... groups) {
         return Arrays.stream(groups).allMatch(g -> g.equals(groups[0]));
     }
 
@@ -39,8 +36,13 @@ public class IslandGroup implements Serializable {
         return Arrays.stream(groups).allMatch(g -> g.equals(this));
     }
 
-    public TowerColour getTowerColour() {
+    public Optional<TowerColour> getTowerColour() {
         return this.getIslands().get(0).getTowerColour();
+    }
+
+    public int getTowerCount() {
+        if (getTowerColour().isPresent()) return getIslands().size();
+        else return 0;
     }
 
     public int getId() {

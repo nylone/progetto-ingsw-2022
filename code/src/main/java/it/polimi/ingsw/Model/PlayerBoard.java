@@ -13,10 +13,8 @@ public class PlayerBoard implements Serializable {
     private final AssistantCard[] assistantCards;
     private final Map<PawnColour, Integer> diningRoom;
     private final ArrayList<PawnColour> entrance;
-    private final TowerStorage towerStorage;
     private final int id;
     private int coinBalance;
-    private AssistantCard selectedAssistant;
 
     public PlayerBoard(int id, int numOfPlayers, String nickname, TowerStorage towerStorage, StudentBag studentBag) {
         this.nickname = nickname;
@@ -31,7 +29,6 @@ public class PlayerBoard implements Serializable {
         for (int i = 0; i < (numOfPlayers == 3 ? 9 : 7); i++) { // todo check playernum for consistency
             entrance.add(studentBag.extract());
         }
-        this.towerStorage = towerStorage;
     }
 
     public AssistantCard[] getAssistantCards() {
@@ -58,19 +55,6 @@ public class PlayerBoard implements Serializable {
         return id;
     }
 
-    public AssistantCard getSelectedAssistant() {
-        return selectedAssistant;
-    }
-
-    public TowerColour getTowerColour() {
-        return this.towerStorage.getColour();
-    }
-
-    public int getUnusedTower() {
-        //todo
-        return 0;
-    }
-
     public void addStudentToDiningRoom(PawnColour colour) throws FullDiningRoomException {
         if (diningRoom.get(colour) != null && diningRoom.get(colour) == 10) {
             throw new FullDiningRoomException();
@@ -83,13 +67,14 @@ public class PlayerBoard implements Serializable {
     }
 
     public void addStudentsToEntrance(ArrayList<PawnColour> students) throws FullEntranceException {
-        if (entrance.size() + students.size() > 7) {
+        if (entrance.size() + students.size() > 7) { // todo entrance max size varies based on game type
             throw new FullEntranceException();
         } else {
             entrance.addAll(students);
         }
     }
 
+    // todo add checks for balance, this is not the way to pay
     public void PayCharacterEffect(int id) {
         coinBalance--;
     }

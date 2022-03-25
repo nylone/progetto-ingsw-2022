@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Island implements Serializable {
     private final int id;
@@ -37,8 +38,9 @@ public class Island implements Serializable {
         this.tower = t;
     }
 
-    public TowerColour getTowerColour() {
-        return tower.getColour();
+    public Optional<TowerColour> getTowerColour() {
+        if (this.tower == null) return Optional.empty();
+        else return Optional.of(this.tower.getColour());
     }
 
     //test-purpose only
