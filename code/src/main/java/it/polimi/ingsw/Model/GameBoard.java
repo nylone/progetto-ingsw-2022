@@ -114,7 +114,7 @@ public class GameBoard implements Serializable {
         if (optInfluencer.isPresent()) {
             int newInfluencer = optInfluencer.get();
             if (
-                    mnp.getTowerColour().isEmpty() ||
+                    !mnp.getTowerColour().isPresent() ||
                             mnp.getTowerColour().get() != TowerColour.fromTeamId(newInfluencer)
             ) {
                 mnp.swapTower(this.towerStorageTeams.get(newInfluencer));
