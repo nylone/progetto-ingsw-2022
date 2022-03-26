@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class StudentBag implements Serializable {
@@ -21,6 +22,12 @@ public class StudentBag implements Serializable {
 
     public PawnColour extract() {
         return this.studentBag.remove(this.studentBag.size() - 1);
+    }
+
+    public List<PawnColour> multiple_extraction(int extractions){
+        List<PawnColour> extracted = new ArrayList<>();
+        for(int i=0; i<extractions; i++) extracted.add(this.extract());
+        return extracted;
     }
 
     public void appendAndShuffle(PawnColour colour) {
