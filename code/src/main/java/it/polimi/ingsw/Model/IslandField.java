@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.InvalidInputException;
 import it.polimi.ingsw.Misc.Utils;
 
 import java.io.Serializable;
@@ -33,6 +34,7 @@ public class IslandField implements Serializable {
         }
     }
 
+    // GETTER METHODS
     public ArrayList<IslandGroup> getGroups() {
         return new ArrayList<>(this.groups);
     }
@@ -44,6 +46,14 @@ public class IslandField implements Serializable {
     public IslandGroup getMotherNaturePosition() {
         return motherNaturePosition;
     }
+
+    public IslandGroup getIslandGroupById(int id){
+        return groups.stream()
+                .filter(g -> g.getId() == id)
+                .findAny()
+                .orElseThrow(() -> new InvalidInputException("IslandGroup.id problem: id out of bound"));
+    }
+
 
     protected void moveMotherNature(int moves) {
         motherNaturePosition = groups.get((groups.indexOf(motherNaturePosition) + moves) % groups.size());
