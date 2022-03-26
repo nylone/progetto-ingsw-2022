@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.InvalidInputException;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -20,8 +22,8 @@ public class IslandGroup implements Serializable {
                 islands.addAll(i.getIslands());
             }
             this.id = Arrays.stream(islandGroups)
-                    .min(Comparator.comparingInt(islandGroup -> islandGroup.id))
-                    .orElseThrow()
+                    .min(Comparator.comparingInt(islandGroup -> islandGroup.getId()))
+                    .orElseThrow(() -> new InvalidInputException())
                     .getId();
         } else {
             throw new RuntimeException(); // todo implement unjoinablegroups exception
