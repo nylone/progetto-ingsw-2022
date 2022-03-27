@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Random;
 
 public class CharacterDeckGenerator {
-    private static ArrayList<CharacterCard> deck;
-
+    private static List<CharacterCard> deck;
+    private CharacterDeckGenerator(){}
     public static List<CharacterCard> generateCardSet() {
         if (deck == null) {
             // todo generate cards for the singleton
