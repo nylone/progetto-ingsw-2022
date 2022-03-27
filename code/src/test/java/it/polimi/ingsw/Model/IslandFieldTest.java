@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 public class IslandFieldTest extends TestCase {
+    private IslandField field = new IslandField();
 
     @Test
     public void testValidIslandGroupById() {
@@ -33,6 +34,26 @@ public class IslandFieldTest extends TestCase {
         } catch (InvalidInputException e) {
             // assert
             assertEquals("IslandGroup.id problem: id out of bound", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testValidIslandId() {
+        // act
+        Island actualIsland = field.getIslandById(2);
+        // assert
+        assertTrue(actualIsland.getId() == 2);
+    }
+
+    @Test
+    public void testInvalidIslandId() {
+        // act
+        try {
+            field.getIslandById(18);
+            fail("Exception was thrown");
+        } catch (InvalidInputException e) {
+            // assert
+            assertEquals("Island.id problem: id out of bound", e.getMessage());
         }
     }
 }

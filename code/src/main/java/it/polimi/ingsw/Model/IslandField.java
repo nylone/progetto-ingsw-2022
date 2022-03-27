@@ -54,6 +54,13 @@ public class IslandField implements Serializable {
                 .orElseThrow(() -> new InvalidInputException("IslandGroup.id problem: id out of bound"));
     }
 
+    public Island getIslandById(int id){
+        return islands.stream()
+                .filter(i -> i.getId() == id)
+                .findAny()
+                .orElseThrow(() -> new InvalidInputException("Island.id problem: id out of bound"));
+    }
+
 
     protected void moveMotherNature(int moves) {
         motherNaturePosition = groups.get((groups.indexOf(motherNaturePosition) + moves) % groups.size());
