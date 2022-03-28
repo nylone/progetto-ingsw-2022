@@ -16,10 +16,10 @@ public class PlayerBoard implements Serializable {
     private final int id;
     private int coinBalance;
 
-    public PlayerBoard(int id, int numOfPlayers, String nickname, TowerStorage towerStorage, StudentBag studentBag) {
+    public PlayerBoard(int id, int numOfPlayers, String nickname, StudentBag studentBag) {
         this.nickname = nickname;
         this.assistantCards = new AssistantCard[10];
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i < 10; i++) {
             assistantCards[i] = new AssistantCard(i);
         }
         this.coinBalance = 1;
@@ -54,6 +54,9 @@ public class PlayerBoard implements Serializable {
     public int getId() {
         return id;
     }
+
+    public String getNickname() { return nickname; }
+
 
     public void addStudentToDiningRoom(PawnColour colour) throws FullDiningRoomException {
         if (diningRoom.get(colour) != null && diningRoom.get(colour) == 10) {
