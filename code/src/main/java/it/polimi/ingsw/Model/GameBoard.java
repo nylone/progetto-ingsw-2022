@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.InvalidInputException;
+
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,6 +31,7 @@ public class GameBoard implements Serializable {
         this.teachers = new EnumMap<>(PawnColour.class);
         this.turnOrder = new TurnOrder();
         this.playerTeams = new HashMap<>(); // creates team associations based on number of players
+
         for (int i = 0; i < nop; i++) {
             this.playerTeams.put(this.playerBoards.get(i), i % (nop == 4 ? 2 : nop));
         } // note: for 4 players the first team is always made up by the first 2 nicknames
@@ -78,6 +81,20 @@ public class GameBoard implements Serializable {
 
     public List<CharacterCard> getCharacterCards() {
         return characterCards;
+    }
+
+    public PlayerBoard getPlayerBoardById(int id) {
+        return playerBoards.stream()
+                .filter(p -> p.getId() == id)
+                .findAny()
+                .orElseThrow(() -> new InvalidInputException());
+    }
+
+    public PlayerBoard getPlayerBoardByNickname(String nickname) {
+        return playerBoards.stream()
+                .filter(p -> p.getNickname().equals(nickname))
+                .findAny()
+                .orElseThrow(() -> new InvalidInputException());
     }
 
     public Optional<Integer> influencerOf(IslandGroup ig) {
