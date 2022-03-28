@@ -27,12 +27,13 @@ public class GameBoard implements Serializable {
         this.islandField = new IslandField();
         this.gameMode = gameMode;
         this.studentBag = new StudentBag(24);
-        this.playerBoards = new ArrayList<>(); //todo create arraylists
+        this.playerBoards = new ArrayList<>();
         this.teachers = new EnumMap<>(PawnColour.class);
         this.turnOrder = new TurnOrder();
         this.playerTeams = new HashMap<>(); // creates team associations based on number of players
 
         for (int i = 0; i < nop; i++) {
+            this.playerBoards.add(new PlayerBoard(i+1, nop, playerNicknames[i], this.studentBag));
             this.playerTeams.put(this.playerBoards.get(i), i % (nop == 4 ? 2 : nop));
         } // note: for 4 players the first team is always made up by the first 2 nicknames
         this.towerStorageTeams = new HashMap<>(); // creates tower storage associations based on number of players
@@ -44,7 +45,7 @@ public class GameBoard implements Serializable {
             this.coinReserve = 20 - nop;
         }
         // todo add clouds
-        // todo create playerBoards
+        
         this.gamePhase = GamePhase.SETUP;
     }
 
