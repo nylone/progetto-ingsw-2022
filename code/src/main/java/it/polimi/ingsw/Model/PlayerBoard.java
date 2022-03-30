@@ -14,6 +14,7 @@ public class PlayerBoard implements Serializable {
     private final AssistantCard[] assistantCards;
     private final Map<PawnColour, Integer> diningRoom;
     private final ArrayList<PawnColour> entrance;
+    private final int maximum_entrance_students;
     private final int id;
     private int coinBalance;
 
@@ -30,6 +31,7 @@ public class PlayerBoard implements Serializable {
         for (int i = 0; i < (numOfPlayers == 3 ? 9 : 7); i++) { // todo check playernum for consistency
             entrance.add(studentBag.extract());
         }
+        this.maximum_entrance_students = this.entrance.size();
     }
 
     public AssistantCard[] getAssistantCards() {
@@ -60,27 +62,31 @@ public class PlayerBoard implements Serializable {
 
 
     public void addStudentToDiningRoom(PawnColour colour) throws FullDiningRoomException {
-        if (diningRoom.get(colour) != null && diningRoom.get(colour) == 10) {
+        if (this.diningRoom.get(colour) != null && this.diningRoom.get(colour) == 10) {
             throw new FullDiningRoomException();
         } else {
-            diningRoom.merge(colour, 1, Integer::sum);
-            if (diningRoom.get(colour) % 3 == 0) {
-                coinBalance++;
+            this.diningRoom.merge(colour, 1, Integer::sum);
+            if (this.diningRoom.get(colour) % 3 == 0) {
+                this.coinBalance++;
             }
         }
     }
 
     public void addStudentsToEntrance(ArrayList<PawnColour> students) throws FullEntranceException {
-        if (entrance.size() + students.size() > 7) { // todo entrance max size varies based on game type
+        if (this.entrance.size() + students.size() > maximum_entrance_students) { // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
             throw new FullEntranceException();
         } else {
-            entrance.addAll(students);
+            this.entrance.addAll(students);
         }
     }
-
     // todo add checks for balance, this is not the way to pay
     public void PayCharacterEffect(int id) {
-        coinBalance--;
+        if(this.coinBalance >0) {
+            coinBalance--;
+            //todo activate character effect
+        }else {
+            //todo call exception
+        }
     }
 
     //test-purspose only
