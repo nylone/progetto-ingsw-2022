@@ -8,11 +8,14 @@ import java.util.*;
 public class IslandGroup implements Serializable {
     private final int id;
     private final ArrayList<Island> islands;
+    private NoEntryTile noEntry;
+    private boolean denyTowerInfluence;
 
     public IslandGroup(Island i) {
         this.islands = new ArrayList<>();
         this.id = i.getId();
         this.islands.add(i);
+        this.denyTowerInfluence = false;
     }
 
     public IslandGroup(IslandGroup... islandGroups) {
@@ -71,6 +74,16 @@ public class IslandGroup implements Serializable {
         return islandGroupStudents;
     }
 
+    public void setDenyTowerInfluence(boolean b){
+        this.denyTowerInfluence = b;
+    }
+    public void setNoEntry(NoEntryTile t){
+        this.noEntry = t;
+    }
+
+    public void resetNoEntry(){
+        this.noEntry = null;
+    }
     public void swapTower(TowerStorage ts) {
         if (ts.getTowerCount() >= this.islands.size()) {
             for (Island i : this.islands) {

@@ -45,13 +45,12 @@ public class GameBoard implements Serializable {
             this.characterCards = CharacterDeckGenerator.generateCardSet();
             this.coinReserve = 20 - nop;
         }
-        // todo add clouds
         clouds = new ArrayList<>(nop);
         //2 players: 2 cloud tiles - 3 players: 3 cloud tiles: 4 players: 4 cloud tiles
         for(int i=1; i<= nop; i++){
             clouds.add(new Cloud(i));
         }
-
+        //todo fill clouds
         this.gamePhase = GamePhase.SETUP;
     }
 
