@@ -31,6 +31,7 @@ public class GameBoard implements Serializable {
         this.teachers = new EnumMap<>(PawnColour.class);
         this.turnOrder = new TurnOrder();
         this.playerTeams = new HashMap<>(); // creates team associations based on number of players
+        this.coinReserve = 20-nop; //hp: we assume 20 as amount of available coin like the real game.
 
         for (int i = 0; i < nop; i++) {
             this.playerBoards.add(new PlayerBoard(i+1, nop, playerNicknames[i], this.studentBag));
@@ -45,7 +46,12 @@ public class GameBoard implements Serializable {
             this.coinReserve = 20 - nop;
         }
         // todo add clouds
-        
+        clouds = new ArrayList<>(nop);
+        //2 players: 2 cloud tiles - 3 players: 3 cloud tiles: 4 players: 4 cloud tiles
+        for(int i=1; i<= nop; i++){
+            clouds.add(new Cloud(i));
+        }
+
         this.gamePhase = GamePhase.SETUP;
     }
 
@@ -108,7 +114,7 @@ public class GameBoard implements Serializable {
         }
         ig.getTowerColour()
                 .ifPresent(towerColour -> ic.merge(towerColour.getTeamId(), ig.getTowerCount(), Integer::sum));
-        List<Map.Entry<Integer, Integer>> tbi = ic.entrySet().stream() // tbi is team by infulence
+        List<Map.Entry<Integer, Integer>> tbi = ic.entrySet().stream() // tbi is team by influence
                 .sorted(Comparator.comparingInt(Map.Entry::getValue))
                 .collect(Collectors.toCollection(ArrayList::new));
 

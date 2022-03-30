@@ -5,6 +5,7 @@ import it.polimi.ingsw.Exceptions.FullEntranceException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -81,4 +82,19 @@ public class PlayerBoard implements Serializable {
     public void PayCharacterEffect(int id) {
         coinBalance--;
     }
+
+    //test-purspose only
+
+    @Override
+    public String toString() {
+        return "PlayerBoard{" +
+                "nickname='" + nickname + '\'' +
+                ", assistantCards=" + Arrays.toString(assistantCards) +
+                ", diningRoom=" + diningRoom +
+                ", entrance=" + entrance +
+                ", id=" + id +
+                ", coinBalance=" + coinBalance +
+                '}';
+    }
 }
+
