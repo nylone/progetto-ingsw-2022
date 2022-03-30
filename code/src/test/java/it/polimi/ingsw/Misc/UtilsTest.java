@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Misc;
 
 import it.polimi.ingsw.Misc.Utils;
 import org.junit.Test;
