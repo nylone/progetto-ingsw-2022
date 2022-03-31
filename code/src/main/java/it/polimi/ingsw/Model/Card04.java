@@ -1,5 +1,9 @@
 package it.polimi.ingsw.Model;
-
+/*
+You may move Mother Nature up to 2
+additional Islands than is indicated by the Assistant
+card you've played.
+ */
 public class Card04 extends StatelessEffect {
     public Card04(GameBoard ctx) {
         super(4, 1, ctx);
@@ -19,6 +23,7 @@ public class Card04 extends StatelessEffect {
 
     public void Use(CharacterCardInput input) {
         //todo
+        this.cost++;
     }
 
     //test purpose only

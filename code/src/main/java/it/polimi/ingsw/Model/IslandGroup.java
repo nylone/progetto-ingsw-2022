@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InvalidInputException;
 
+import javax.swing.text.html.Option;
 import java.io.Serializable;
 import java.util.*;
 
@@ -72,6 +73,14 @@ public class IslandGroup implements Serializable {
             islandGroupStudents.addAll(s.getStudents());
         }
         return islandGroupStudents;
+    }
+    public Optional<IslandGroup> find(Island i){
+        for(Island island : islands){
+            if(island.getId()==i.getId()){
+                return Optional.of(this);
+            }
+        }
+        return Optional.empty();
     }
 
     public void setDenyTowerInfluence(boolean b){

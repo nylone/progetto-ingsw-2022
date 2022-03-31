@@ -33,6 +33,8 @@ public class Island implements Serializable {
         students.add(bag.extract());
     }
 
+    public void addStudent(PawnColour p){students.add(p);}
+
     public void swapTower(Tower t) {
         if (this.tower != null) this.tower.linkBackToStorage();
         this.tower = t;

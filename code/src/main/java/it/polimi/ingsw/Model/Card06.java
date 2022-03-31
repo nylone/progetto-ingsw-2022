@@ -1,5 +1,9 @@
 package it.polimi.ingsw.Model;
 
+/*
+When resolving a Conquering on an Island,
+ed. ye Powers do not count towards influence.
+ */
 public class Card06 extends StatelessEffect{
     public Card06(GameBoard ctx) {
         super(6, 3, ctx);
@@ -19,6 +23,7 @@ public class Card06 extends StatelessEffect{
 
     public void Use(CharacterCardInput input) {
         //todo
+
     }
 
     //test purpose only

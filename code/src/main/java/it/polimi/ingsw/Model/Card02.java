@@ -18,6 +18,7 @@ public class Card02 extends StatelessEffect{
 
     public void Use(CharacterCardInput input){
         //todo
+        this.cost++;
     }
 
     //test purpose only

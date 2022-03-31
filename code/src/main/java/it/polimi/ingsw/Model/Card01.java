@@ -31,8 +31,26 @@ public class Card01 extends StatefulEffect{
         return stateType;
     }
 
+    public void addStudent(PawnColour p){ //add PawnColour into first empty position
+        for(int i=0; i<4; i++){
+            if(this.students[i] == null){
+                this.students[i] = p;
+                break;
+            }
+        }
+    }
+
+    public PawnColour getStudent(int i){ //todo assure 0<= i< 4
+        PawnColour student = this.students[i];
+        this.students[i] = null;
+        return student;
+
+    }
+
     public void Use(CharacterCardInput input) {
         //todo
+        input.getTargetIsland().get().addStudent(input.getTargetPawn().get());
+        this.cost++;
     }
 
 
