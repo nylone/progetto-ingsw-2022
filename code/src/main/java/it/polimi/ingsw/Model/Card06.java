@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import java.util.Optional;
+
 /*
 When resolving a Conquering on an Island,
 ed. ye Powers do not count towards influence.
@@ -23,7 +25,8 @@ public class Card06 extends StatelessEffect{
 
     public void Use(CharacterCardInput input) {
         //todo
-
+        context.getIslandField().getMotherNaturePosition().setDenyTowerInfluence(true);
+        this.cost++;
     }
 
     //test purpose only

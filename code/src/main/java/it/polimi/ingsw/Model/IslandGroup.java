@@ -51,6 +51,10 @@ public class IslandGroup implements Serializable {
         else return 0;
     }
 
+    public boolean getDenyTowerInfluence(){
+        return denyTowerInfluence;
+    }
+
     public int getId() {
         return id;
     }
