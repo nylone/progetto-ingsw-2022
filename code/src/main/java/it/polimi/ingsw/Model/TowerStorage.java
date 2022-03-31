@@ -29,7 +29,9 @@ public class TowerStorage implements Serializable {
     }
 
     public void pushTower(Tower t) {
-        if (!this.storage.contains(t) && t.getColour() == this.colour) {
+        boolean checkIfPresent = storage.stream()
+                .anyMatch(i -> t == i);
+        if (!checkIfPresent && t.getColour() == this.colour) {
             this.storage.push(t);
         }
         ; // todo else throw an exception for duplicate items and invalid colour
