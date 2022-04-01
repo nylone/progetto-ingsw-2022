@@ -103,19 +103,24 @@ public class GameBoard implements Serializable {
                 .orElseThrow(() -> new InvalidInputException());
     }
 
-    public Optional<Integer> influencerOf(IslandGroup ig) { //todo calculate influence whether ig.denyTowerInfluence == true
-            Map<PawnColour, Integer> sc = ig.getStudentCount();
-            Map<Integer, Integer> ic = new HashMap<>(); // maps the team with the influence count
-            for (Map.Entry<PawnColour, Integer> e : sc.entrySet()) {
-                PawnColour colour = e.getKey();
-                int count = e.getValue();
-                ic.merge(this.playerTeams.get(this.teachers.get(colour)), count, Integer::sum);
-            }
+    public Optional<Integer> influencerOf(IslandGroup ig) {
+        Map<PawnColour, Integer> sc = ig.getStudentCount();
+        Map<Integer, Integer> ic = new HashMap<>(); // maps the team with the influence count
+
+        for (Map.Entry<PawnColour, Integer> e : sc.entrySet()) {
+            PawnColour colour = e.getKey();
+            int count = e.getValue();
+            ic.merge(this.playerTeams.get(this.teachers.get(colour)), count, Integer::sum);
+        }
+        if (ig.getDenyTowerInfluence() == false) {
             ig.getTowerColour()
                     .ifPresent(towerColour -> ic.merge(towerColour.getTeamId(), ig.getTowerCount(), Integer::sum));
-            List<Map.Entry<Integer, Integer>> tbi = ic.entrySet().stream() // tbi is team by influence
-                    .sorted(Comparator.comparingInt(Map.Entry::getValue))
-                    .collect(Collectors.toCollection(ArrayList::new));
+        }
+
+        List<Map.Entry<Integer, Integer>> tbi = ic.entrySet().stream() // tbi is team by influence
+                .sorted(Comparator.comparingInt(Map.Entry::getValue))
+                .collect(Collectors.toCollection(ArrayList::new));
+
         ig.setDenyTowerInfluence(false);
         switch (tbi.size()) {
             case 0:
