@@ -32,10 +32,12 @@ public class Cloud implements Serializable {
         return new ArrayList<>(contents);
     }
 
-    public void fill(ArrayList<PawnColour> colours) {
-        // todo raise an exception when cloud is not empty
+    public void fill(ArrayList<PawnColour> colours) throws NoPawnInCloudException {
         if (contents.isEmpty()) {
             contents.addAll(colours); }
+        else {
+            throw new NoPawnInCloudException();
+        }
     }
 }
 
