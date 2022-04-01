@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 public class Card05 extends StatefulEffect{
     private ArrayList<NoEntryTile> tiles;
@@ -35,6 +36,13 @@ public class Card05 extends StatefulEffect{
     }
 
     public void Use(CharacterCardInput input) {
+        //todo
+        Optional<IslandGroup> islandGroup = Optional.empty();
+        for(IslandGroup ig : this.context.getIslandField().getGroups()){
+            islandGroup = ig.find(input.getTargetIsland().get());
+            if(islandGroup.isPresent()) break;
+        }
+        islandGroup.get().setNoEntry(Optional.of(tiles.remove(0)));
         //todo
     }
 

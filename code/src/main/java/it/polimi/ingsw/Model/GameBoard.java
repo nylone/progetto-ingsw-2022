@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.InvalidInputException;
 import it.polimi.ingsw.Exceptions.NoPawnInCloudException;
 
+import javax.swing.text.html.Option;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class GameBoard implements Serializable {
         this.teachers = new EnumMap<>(PawnColour.class);
         this.turnOrder = new TurnOrder();
         this.playerTeams = new HashMap<>(); // creates team associations based on number of players
-        this.coinReserve = 20-nop; //hp: we assume 20 as amount of available coin like the real game.
+        this.coinReserve = 20-nop; //hp: we assume 20 as amount of available coins just like the real game.
 
         for (int i = 0; i < nop; i++) {
             this.playerBoards.add(new PlayerBoard(i+1, nop, playerNicknames[i], this.studentBag));
@@ -143,16 +144,22 @@ public class GameBoard implements Serializable {
     public void moveMotherNature(int steps) {
         this.islandField.moveMotherNature(steps);
         IslandGroup mnp = this.islandField.getMotherNaturePosition();
-        Optional<Integer> optInfluencer = influencerOf(mnp);
-        if (optInfluencer.isPresent()) {
-            int newInfluencer = optInfluencer.get();
-            if (
-                    !mnp.getTowerColour().isPresent() ||
-                            mnp.getTowerColour().get() != TowerColour.fromTeamId(newInfluencer)
-            ) {
-                mnp.swapTower(this.towerStorageTeams.get(newInfluencer));
+        if(!mnp.getNoEntry().isPresent()) {
+            Optional<Integer> optInfluencer = influencerOf(mnp);
+            if (optInfluencer.isPresent()) {
+                int newInfluencer = optInfluencer.get();
+                if (
+                        !mnp.getTowerColour().isPresent() ||
+                                mnp.getTowerColour().get() != TowerColour.fromTeamId(newInfluencer)
+                ) {
+                    mnp.swapTower(this.towerStorageTeams.get(newInfluencer));
+                }
+            }
+            this.islandField.joinGroups();
+        }else{
+            NoEntryTile noEntryTile = mnp.getNoEntry().get();
+            mnp.setNoEntry(Optional.empty());
+            //todo send back the noEntryTile to the card05
             }
         }
-        this.islandField.joinGroups();
     }
-}

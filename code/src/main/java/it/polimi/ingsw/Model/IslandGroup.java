@@ -9,7 +9,7 @@ import java.util.*;
 public class IslandGroup implements Serializable {
     private final int id;
     private final ArrayList<Island> islands;
-    private NoEntryTile noEntry;
+    private Optional<NoEntryTile> noEntry;
     private boolean denyTowerInfluence;
 
     public IslandGroup(Island i) {
@@ -63,6 +63,10 @@ public class IslandGroup implements Serializable {
         return new ArrayList<>(islands);
     }
 
+    public Optional<NoEntryTile> getNoEntry() {
+        return noEntry;
+    }
+
     public Map<PawnColour, Integer> getStudentCount() { //the map will contain the colours of the placed pawns with relative counter
         Map<PawnColour, Integer> studentCount = new EnumMap<>(PawnColour.class);
         for (PawnColour p : this.getStudents()) {
@@ -90,7 +94,7 @@ public class IslandGroup implements Serializable {
     public void setDenyTowerInfluence(boolean b){
         this.denyTowerInfluence = b;
     }
-    public void setNoEntry(NoEntryTile t){
+    public void setNoEntry(Optional<NoEntryTile> t){
         this.noEntry = t;
     }
 
