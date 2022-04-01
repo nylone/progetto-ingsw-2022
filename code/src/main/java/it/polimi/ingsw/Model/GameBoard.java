@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InvalidInputException;
+import it.polimi.ingsw.Exceptions.NoPawnInCloudException;
 
 import java.io.Serializable;
 import java.util.*;
@@ -49,8 +50,12 @@ public class GameBoard implements Serializable {
         //2 players: 2 cloud tiles - 3 players: 3 cloud tiles: 4 players: 4 cloud tiles
         for(int i=1; i<= nop; i++){
             clouds.add(new Cloud(i));
+
+            try {
+                clouds.get(i).fill((ArrayList<PawnColour>) studentBag.multiple_extraction(nop == 3 ? 4 : 3));
+            } catch (NoPawnInCloudException e) { System.out.println(e.getMessage()); }
         }
-        //todo fill clouds
+
         this.gamePhase = GamePhase.SETUP;
     }
 
