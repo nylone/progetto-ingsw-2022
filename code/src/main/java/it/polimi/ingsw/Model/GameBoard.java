@@ -22,6 +22,8 @@ public class GameBoard implements Serializable {
     private int coinReserve;
     private List<Cloud> clouds;
     private final GamePhase gamePhase;
+    private boolean increasedInfluenceFlag;
+    private Optional<PawnColour> denyPawnColourInfluence;
 
     // todo
     public GameBoard(GameMode gameMode, String... playerNicknames) {
@@ -34,6 +36,7 @@ public class GameBoard implements Serializable {
         this.turnOrder = new TurnOrder();
         this.playerTeams = new HashMap<>(); // creates team associations based on number of players
         this.coinReserve = 20-nop; //hp: we assume 20 as amount of available coins just like the real game.
+        this.increasedInfluenceFlag = false;
 
         for (int i = 0; i < nop; i++) {
             this.playerBoards.add(new PlayerBoard(i+1, nop, playerNicknames[i], this.studentBag));
@@ -109,7 +112,18 @@ public class GameBoard implements Serializable {
                 .orElseThrow(() -> new InvalidInputException());
     }
 
+    public void setIncreasedInfluenceFlag(boolean increasedInfluenceFlag) {
+        this.increasedInfluenceFlag = increasedInfluenceFlag;
+    }
+
+    public void setDenyPawnColourInfluence(Optional<PawnColour> denyPawnColourInfluence) {
+        this.denyPawnColourInfluence = denyPawnColourInfluence;
+    }
+
     public Optional<Integer> influencerOf(IslandGroup ig) {
+        //todo ignorare le torri nel calcolo ogni volta che DenyTowerInfluence è true (effetto carta 6)
+        //todo aumentare di 2 il conteggio del'influenza quando IncreasedInfluenceFlag è true (effetto carta 8)
+        //todo calcolare l'influenza considerando un colore escluso dall'effetto della carta 9
         Map<PawnColour, Integer> sc = ig.getStudentCount();
         Map<Integer, Integer> ic = new HashMap<>(); // maps the team with the influence count
 

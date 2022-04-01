@@ -19,12 +19,14 @@ public class Card09 extends StatelessEffect{
 
     public void Use(CharacterCardInput input) {
         //todo
+        this.context.setDenyPawnColourInfluence(input.getTargetPawn());
+        this.cost++;
     }
 
     //test purpose only
     @Override
     public String toString() {
-        return "Card02{" +
+        return "Card09{" +
                 "id=" + id +
                 ", cost=" + cost +
                 ", timeUsed=" + timeUsed +

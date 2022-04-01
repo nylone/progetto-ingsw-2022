@@ -19,12 +19,14 @@ public class Card08 extends StatelessEffect{
 
     public void Use(CharacterCardInput input) {
         //todo
+        context.setIncreasedInfluenceFlag(true);
+        this.cost++;
     }
 
     //test purpose only
     @Override
     public String toString() {
-        return "Card02{" +
+        return "Card08{" +
                 "id=" + id +
                 ", cost=" + cost +
                 ", timeUsed=" + timeUsed +

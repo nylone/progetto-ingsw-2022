@@ -54,7 +54,7 @@ public class Card05 extends StatefulEffect{
     //test-purpose only
     @Override
     public String toString() {
-        return "Card01{" +
+        return "Card05{" +
                 "id=" + id +
                 ", cost=" + cost +
                 ", timeUsed=" + timeUsed +

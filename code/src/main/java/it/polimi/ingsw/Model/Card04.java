@@ -29,7 +29,7 @@ public class Card04 extends StatelessEffect {
     //test purpose only
     @Override
     public String toString() {
-        return "Card02{" +
+        return "Card04{" +
                 "id=" + id +
                 ", cost=" + cost +
                 ", timeUsed=" + timeUsed +
