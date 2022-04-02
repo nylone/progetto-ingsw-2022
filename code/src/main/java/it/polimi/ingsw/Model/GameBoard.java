@@ -3,7 +3,6 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.InvalidInputException;
 import it.polimi.ingsw.Exceptions.NoPawnInCloudException;
 
-import javax.swing.text.html.Option;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,7 +34,7 @@ public class GameBoard implements Serializable {
         this.teachers = new EnumMap<>(PawnColour.class);
         this.turnOrder = new TurnOrder();
         this.playerTeams = new HashMap<>(); // creates team associations based on number of players
-        this.coinReserve = 20-nop; //hp: we assume 20 as amount of available coins just like the real game.
+        this.coinReserve = 20-nop; // hp: we assume 20 as amount of available coins just like the real game.
         this.increasedInfluenceFlag = false;
 
         for (int i = 0; i < nop; i++) {
@@ -121,15 +120,19 @@ public class GameBoard implements Serializable {
     }
 
     public Optional<Integer> influencerOf(IslandGroup ig) {
-        //todo ignorare le torri nel calcolo ogni volta che DenyTowerInfluence è true (effetto carta 6)
         //todo aumentare di 2 il conteggio del'influenza quando IncreasedInfluenceFlag è true (effetto carta 8)
-        //todo calcolare l'influenza considerando un colore escluso dall'effetto della carta 9
+
         Map<PawnColour, Integer> sc = ig.getStudentCount();
         Map<Integer, Integer> ic = new HashMap<>(); // maps the team with the influence count
 
         for (Map.Entry<PawnColour, Integer> e : sc.entrySet()) {
             PawnColour colour = e.getKey();
             int count = e.getValue();
+            if (denyPawnColourInfluence.isPresent()){
+                if (colour == denyPawnColourInfluence.get()){
+                    count = 0; // todo test that a colour doesn't influence
+                }
+            }
             ic.merge(this.playerTeams.get(this.teachers.get(colour)), count, Integer::sum);
         }
         if (ig.getDenyTowerInfluence() == false) {
