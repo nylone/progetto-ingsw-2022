@@ -27,6 +27,9 @@ public class PlayerBoard implements Serializable {
         this.coinBalance = 1;
         this.id = id;
         this.diningRoom = new EnumMap<>(PawnColour.class);
+        for (PawnColour p : PawnColour.values()) {
+            diningRoom.put(p, 0);
+        }
         this.entrance = new ArrayList<>();
         for (int i = 0; i < (numOfPlayers == 3 ? 9 : 7); i++) { // todo check playernum for consistency
             entrance.add(studentBag.extract());
