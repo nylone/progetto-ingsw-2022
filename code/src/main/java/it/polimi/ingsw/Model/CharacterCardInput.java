@@ -8,8 +8,7 @@ public class CharacterCardInput {
     private PawnColour[][] targetPawnPairs;
     private PlayerBoard caller;
 
-    public CharacterCardInput(PlayerBoard caller){
-
+    public CharacterCardInput(PlayerBoard caller) {
         this.caller = caller;
         targetPawnPairs = new PawnColour[2][];
     }
@@ -42,7 +41,6 @@ public class CharacterCardInput {
     }
 
     public void setTargetPawnPairs(PawnColour[][] targetPawnPairs) {
-
         this.targetPawnPairs = targetPawnPairs;
     }
 }

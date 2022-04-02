@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.InvalidInputException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -7,7 +9,7 @@ public class Card01 extends StatefulEffect{
     private PawnColour[] students = new PawnColour[4];
 
     public Card01(GameBoard ctx){
-        super(1,1,StateType.PAWNCOLOUR,ctx);
+        super(1,1, StateType.PAWNCOLOUR, ctx);
     }
 
     public int getId() {
@@ -40,17 +42,20 @@ public class Card01 extends StatefulEffect{
         }
     }
 
-    public PawnColour getStudent(int i){ //todo assure 0<= i< 4
-        PawnColour student = this.students[i];
-        this.students[i] = null;
-        return student;
-
+    public PawnColour getStudent(int i){
+        if(0 <= i && i < 4) {
+            PawnColour student = this.students[i];
+            this.students[i] = null;
+            return student;
+        }
+        else throw new InvalidInputException();
     }
 
     public void Use(CharacterCardInput input) {
-        //todo
+        // todo raise exception when there's no island
         input.getTargetIsland().get().addStudent(input.getTargetPawn().get());
-        this.cost++;
+        if (timeUsed == 1) { this.cost++; }
+        // todo refill the card with one student from the bag
     }
 
 
