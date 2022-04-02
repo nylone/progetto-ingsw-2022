@@ -2,11 +2,14 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InvalidInputException;
 
-import javax.swing.text.html.Option;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
 public class IslandGroup implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 123L; // convention: 1 for model, (01 -> 99) for objects
+
     private final int id;
     private final ArrayList<Island> islands;
     private Optional<NoEntryTile> noEntry;

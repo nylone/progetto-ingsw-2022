@@ -1,10 +1,14 @@
 package it.polimi.ingsw.Model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Optional;
 
 public class Island implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 121L; // convention: 1 for model, (01 -> 99) for objects
+
     private final int id;
     private final ArrayList<PawnColour> students;
     private final boolean isLocked;

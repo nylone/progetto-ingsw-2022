@@ -1,13 +1,17 @@
 package it.polimi.ingsw.Model;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Card11 extends StatefulEffect{
-    private PawnColour[] students = new PawnColour[4];
+public class Card11 extends StatefulEffect {
+    @Serial
+    private static final long serialVersionUID = 113L; // convention: 1 for model, (01 -> 99) for objects
 
-    public Card11(GameBoard ctx){
-        super(11,2,StateType.PAWNCOLOUR,ctx);
+    private final PawnColour[] students = new PawnColour[4];
+
+    public Card11(GameBoard ctx) {
+        super(11, 2, StateType.PAWNCOLOUR, ctx);
     }
 
     public int getId() {

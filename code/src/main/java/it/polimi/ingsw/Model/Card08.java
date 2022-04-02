@@ -1,6 +1,11 @@
 package it.polimi.ingsw.Model;
 
-public class Card08 extends StatelessEffect{
+import java.io.Serial;
+
+public class Card08 extends StatelessEffect {
+    @Serial
+    private static final long serialVersionUID = 110L; // convention: 1 for model, (01 -> 99) for objects
+
     public Card08(GameBoard ctx) {
         super(8, 2, ctx);
     }

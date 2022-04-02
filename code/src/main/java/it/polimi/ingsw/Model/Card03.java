@@ -7,9 +7,13 @@ Nature will still move and the Island where she ends
 her movement will also be resolved.
  */
 
+import java.io.Serial;
 import java.util.Optional;
 
 public class Card03 extends StatelessEffect {
+    @Serial
+    private static final long serialVersionUID = 105L; // convention: 1 for model, (01 -> 99) for objects
+
     public Card03(GameBoard ctx) {
         super(3, 3, ctx);
     }

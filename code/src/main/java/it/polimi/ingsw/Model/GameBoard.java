@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.InvalidInputException;
 import it.polimi.ingsw.Exceptions.NoPawnInCloudException;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,10 +20,13 @@ public class GameBoard implements Serializable {
     private final TurnOrder turnOrder;
     private List<CharacterCard> characterCards;
     private int coinReserve;
-    private List<Cloud> clouds;
+    @Serial
+    private static final long serialVersionUID = 101L; // convention: 1 for model, (01 -> 99) for objects
     private final GamePhase gamePhase;
     private boolean increasedInfluenceFlag;
     private Optional<PawnColour> denyPawnColourInfluence;
+    private final List<Cloud> clouds;
+
 
     // todo
     public GameBoard(GameMode gameMode, String... playerNicknames) {

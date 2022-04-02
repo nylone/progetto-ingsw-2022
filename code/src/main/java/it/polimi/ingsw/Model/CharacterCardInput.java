@@ -3,10 +3,12 @@ package it.polimi.ingsw.Model;
 import java.util.Optional;
 
 public class CharacterCardInput {
+    private static final long serialVersionUID = 116L; // convention: 1 for model, (01 -> 99) for objects
+
     private Island targetIsland;
     private PawnColour targetPawn;
     private PawnColour[][] targetPawnPairs;
-    private PlayerBoard caller;
+    private final PlayerBoard caller;
 
     public CharacterCardInput(PlayerBoard caller) {
         this.caller = caller;

@@ -1,18 +1,24 @@
 package it.polimi.ingsw.Model;
 
-public class Card02 extends StatelessEffect{
-    public Card02(GameBoard ctx){
+import java.io.Serial;
+
+public class Card02 extends StatelessEffect {
+    @Serial
+    private static final long serialVersionUID = 104L; // convention: 1 for model, (01 -> 99) for objects
+
+    public Card02(GameBoard ctx) {
         super(2, 2, ctx);
     }
-    public int getId(){
+
+    public int getId() {
         return this.id;
     }
 
-    public int getCost(){
+    public int getCost() {
         return this.cost;
     }
 
-    public int getTimeUsed(){
+    public int getTimeUsed() {
         return this.timeUsed;
     }
 

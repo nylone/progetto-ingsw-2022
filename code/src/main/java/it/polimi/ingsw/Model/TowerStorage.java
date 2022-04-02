@@ -1,9 +1,12 @@
 package it.polimi.ingsw.Model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Stack;
 
 public class TowerStorage implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 133L; // convention: 1 for model, (01 -> 99) for objects
 
     private final TowerColour colour;
     private final Stack<Tower> storage;
@@ -34,6 +37,6 @@ public class TowerStorage implements Serializable {
         if (!checkIfPresent && t.getColour() == this.colour) {
             this.storage.push(t);
         }
-        ; // todo else throw an exception for duplicate items and invalid colour
+        // todo else throw an exception for duplicate items and invalid colour
     }
 }

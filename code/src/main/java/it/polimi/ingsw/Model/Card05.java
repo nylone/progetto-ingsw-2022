@@ -1,16 +1,19 @@
 package it.polimi.ingsw.Model;
 
+import java.io.Serial;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
-public class Card05 extends StatefulEffect{
-    private ArrayList<NoEntryTile> tiles;
+public class Card05 extends StatefulEffect {
+    @Serial
+    private static final long serialVersionUID = 107L; // convention: 1 for model, (01 -> 99) for objects
 
-    public Card05(GameBoard ctx){
-        super(5,2,StateType.NOENTRY,ctx);
+    private final ArrayList<NoEntryTile> tiles;
+
+    public Card05(GameBoard ctx) {
+        super(5, 2, StateType.NOENTRY, ctx);
         tiles = new ArrayList<>(4);
-        for(int i=0; i<4; i++){
+        for (int i = 0; i < 4; i++) {
             tiles.add(new NoEntryTile(this));
         }
     }

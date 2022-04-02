@@ -1,10 +1,14 @@
 package it.polimi.ingsw.Model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class AssistantCard implements Serializable {
     private final int cardNumber;
     private boolean used;
+    @Serial
+    private static final long serialVersionUID = 102L; // convention: 1 for model, (01 -> 99) for objects
+
 
     public AssistantCard(int cardNumber) {
         this.cardNumber = cardNumber;

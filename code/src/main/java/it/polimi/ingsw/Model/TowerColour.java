@@ -1,11 +1,16 @@
 package it.polimi.ingsw.Model;
 
-public enum TowerColour {
+import java.io.Serial;
+import java.io.Serializable;
+
+public enum TowerColour implements Serializable {
     BLACK(0),
     WHITE(1),
     GRAY(2);
 
     private final int teamId;
+    @Serial
+    private static final long serialVersionUID = 132L; // convention: 1 for model, (01 -> 99) for objects
 
     TowerColour(int teamId) {
         this.teamId = teamId;

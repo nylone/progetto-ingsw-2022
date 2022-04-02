@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.FullDiningRoomException;
 import it.polimi.ingsw.Exceptions.FullEntranceException;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +11,8 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class PlayerBoard implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 126L; // convention: 1 for model, (01 -> 99) for objects
     private final String nickname;
     private final AssistantCard[] assistantCards;
     private final Map<PawnColour, Integer> diningRoom;

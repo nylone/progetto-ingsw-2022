@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 // todo create interface to make the turn order modifiable only by the playerboards and readable from the game handler
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -8,6 +9,8 @@ import java.util.stream.Collectors;
 public class TurnOrder implements Serializable {
     private final Map<PlayerBoard, AssistantCard> selectedCards;
     private PlayerBoard currentPlayer;
+    @Serial
+    private static final long serialVersionUID = 134L; // convention: 1 for model, (01 -> 99) for objects
 
     public TurnOrder() {
         this.selectedCards = new HashMap<>();

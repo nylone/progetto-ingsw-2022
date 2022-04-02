@@ -3,10 +3,14 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.InvalidInputException;
 import it.polimi.ingsw.Misc.Utils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class IslandField implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 122L; // convention: 1 for model, (01 -> 99) for objects
+
     private static final int FIELD_SIZE = 12;
     private final ArrayList<IslandGroup> groups;
     private final ArrayList<Island> islands;

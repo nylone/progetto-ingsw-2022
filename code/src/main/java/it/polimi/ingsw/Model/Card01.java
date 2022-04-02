@@ -2,14 +2,18 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InvalidInputException;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Card01 extends StatefulEffect{
-    private PawnColour[] students = new PawnColour[4];
+public class Card01 extends StatefulEffect {
+    @Serial
+    private static final long serialVersionUID = 103L; // convention: 1 for model, (01 -> 99) for objects
+    private final PawnColour[] students = new PawnColour[4];
 
-    public Card01(GameBoard ctx){
-        super(1,1, StateType.PAWNCOLOUR, ctx);
+
+    public Card01(GameBoard ctx) {
+        super(1, 1, StateType.PAWNCOLOUR, ctx);
     }
 
     public int getId() {
