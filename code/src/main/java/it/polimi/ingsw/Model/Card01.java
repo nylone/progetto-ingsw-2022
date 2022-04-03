@@ -5,6 +5,11 @@ import it.polimi.ingsw.Exceptions.InvalidInputException;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
+/*
+In setup, draw 4 Students and place them on this card.
+ EFFECT: Take 1 Student from this card and place it on
+an Island of your choice. Then, draw a new Student from the Bag and place it on this card. w
+ */
 
 public class Card01 extends StatefulEffect {
     @Serial

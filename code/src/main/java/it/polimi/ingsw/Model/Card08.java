@@ -2,6 +2,9 @@ package it.polimi.ingsw.Model;
 
 import java.io.Serial;
 
+/*
+EFFECT: During the influence calculation this turn, you count as having 2 more influence
+ */
 public class Card08 extends StatelessEffect {
     @Serial
     private static final long serialVersionUID = 110L; // convention: 1 for model, (01 -> 99) for objects

@@ -180,7 +180,7 @@ public class GameBoard implements Serializable {
         }else{
             NoEntryTile noEntryTile = mnp.getNoEntry().get();
             mnp.setNoEntry(Optional.empty());
-            //todo send back the noEntryTile to the card05
+            noEntryTile.goHome();
             }
         }
     }

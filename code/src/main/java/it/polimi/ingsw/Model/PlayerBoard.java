@@ -78,6 +78,9 @@ public class PlayerBoard implements Serializable {
         }
     }
 
+    public void removeStudentFromDiningRoom(PawnColour colour, int amount){ //todo emptyDiningRoomException
+        this.diningRoom.merge(colour, -amount, Integer::sum);
+    }
     public void addStudentsToEntrance(ArrayList<PawnColour> students) throws FullEntranceException {
         if (this.entrance.size() + students.size() > maximum_entrance_students) { // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
             throw new FullEntranceException();

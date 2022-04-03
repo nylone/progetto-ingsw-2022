@@ -3,8 +3,7 @@ package it.polimi.ingsw.Model;
 import java.io.Serial;
 
 /*
-When resolving a Conquering on an Island,
-ed. ye Powers do not count towards influence.
+When resolving a Conquering on an Island, Towers do not count towards influence.
  */
 public class Card06 extends StatelessEffect {
     @Serial

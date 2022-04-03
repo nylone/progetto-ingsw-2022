@@ -4,6 +4,11 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Optional;
 
+/*In Setup, put the 4 No Entry tiles on this card.
+EFFECT: Place a No Entrytile on an Island of your choice.
+The first time Mother Nature ends her movement there, put the No Entry tile back onto this card
+DO NOT calculate influence on that Island, or place any Towers.
+*/
 public class Card05 extends StatefulEffect {
     @Serial
     private static final long serialVersionUID = 107L; // convention: 1 for model, (01 -> 99) for objects

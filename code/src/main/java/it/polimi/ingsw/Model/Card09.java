@@ -2,6 +2,9 @@ package it.polimi.ingsw.Model;
 
 import java.io.Serial;
 
+/*
+ EFFECT: Choose a color of Student: during the influence calculation this turn, that color adds no influence
+ */
 public class Card09 extends StatelessEffect {
     @Serial
     private static final long serialVersionUID = 111L; // convention: 1 for model, (01 -> 99) for objects
