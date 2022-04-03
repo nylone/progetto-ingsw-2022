@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.FullEntranceException;
+
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,8 +49,18 @@ public class Card11 extends StatefulEffect {
 
     public void Use(CharacterCardInput input) {
         //todo
-
-        this.cost++;
+        try {
+            input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawn().get())));
+            this.cost++;
+        }catch(FullEntranceException fe){
+            fe.printStackTrace();
+        }
+        for(int i=0; i<4; i++){
+            if(students[i]==null){
+                students[i] = context.getStudentBag().extract();
+                break;
+            }
+        }
     }
 
 

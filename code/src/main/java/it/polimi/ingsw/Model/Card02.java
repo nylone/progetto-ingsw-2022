@@ -29,7 +29,7 @@ public class Card02 extends StatelessEffect {
     }
 
     public void Use(CharacterCardInput input){
-        //todo
+        context.setAlternativeTeacherFlag(true);
         this.cost++;
     }
 

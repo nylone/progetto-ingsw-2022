@@ -24,6 +24,7 @@ public class GameBoard implements Serializable {
     private static final long serialVersionUID = 101L; // convention: 1 for model, (01 -> 99) for objects
     private final GamePhase gamePhase;
     private boolean increasedInfluenceFlag;
+    private boolean alternativeTeacherFlag;
     private Optional<PawnColour> denyPawnColourInfluence;
     private final List<Cloud> clouds;
 
@@ -40,6 +41,7 @@ public class GameBoard implements Serializable {
         this.playerTeams = new HashMap<>(); // creates team associations based on number of players
         this.coinReserve = 20-nop; // hp: we assume 20 as amount of available coins just like the real game.
         this.increasedInfluenceFlag = false;
+        this.alternativeTeacherFlag = false;
 
         for (int i = 0; i < nop; i++) {
             this.playerBoards.add(new PlayerBoard(i+1, nop, playerNicknames[i], this.studentBag));
@@ -66,8 +68,9 @@ public class GameBoard implements Serializable {
         this.gamePhase = GamePhase.SETUP;
     }
 
-    public StudentBag getStudentBag() {
-        return studentBag;
+
+    public List<CharacterCard> getCharacterCards() {
+        return characterCards;
     }
 
     public IslandField getIslandField() {
@@ -92,14 +95,14 @@ public class GameBoard implements Serializable {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
+    public StudentBag getStudentBag() {
+        return studentBag;
+    }
 
     public TurnOrder getTurnOrder() {
         return turnOrder;
     }
 
-    public List<CharacterCard> getCharacterCards() {
-        return characterCards;
-    }
 
     public PlayerBoard getPlayerBoardById(int id) {
         return playerBoards.stream()
@@ -113,6 +116,10 @@ public class GameBoard implements Serializable {
                 .filter(p -> p.getNickname().equals(nickname))
                 .findAny()
                 .orElseThrow(() -> new InvalidInputException());
+    }
+
+    public void setAlternativeTeacherFlag(boolean alternativeTeacherFlag) {
+        this.alternativeTeacherFlag = alternativeTeacherFlag;
     }
 
     public void setIncreasedInfluenceFlag(boolean increasedInfluenceFlag) {
@@ -149,6 +156,7 @@ public class GameBoard implements Serializable {
                 .collect(Collectors.toCollection(ArrayList::new));
 
         ig.setDenyTowerInfluence(false);
+        setAlternativeTeacherFlag(false);
         switch (tbi.size()) {
             case 0:
                 return Optional.empty();

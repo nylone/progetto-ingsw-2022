@@ -43,7 +43,8 @@ public class Card07 extends StatefulEffect {
     }
 
     public void Use(CharacterCardInput input) {
-        //todo
+        //convention of input.targetPawnPairs ---> index 0 students from Entrance/ index 1 students from DiningRoom
+        
     }
 
 
