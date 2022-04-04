@@ -131,8 +131,8 @@ public class GameBoard implements Serializable {
     }
 
     public Optional<Integer> influencerOf(IslandGroup ig) {
-        //todo aumentare di 2 il conteggio del'influenza quando IncreasedInfluenceFlag è true (effetto carta 8)
-
+        // todo aumentare di 2 il conteggio del'influenza quando IncreasedInfluenceFlag è true (effetto carta 8)
+        // todo: influence count deve tenere conto di alternativeTeacherFlag
         Map<PawnColour, Integer> sc = ig.getStudentCount();
         Map<Integer, Integer> ic = new HashMap<>(); // maps the team with the influence count
 
