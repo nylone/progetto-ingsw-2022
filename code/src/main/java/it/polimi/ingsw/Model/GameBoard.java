@@ -57,7 +57,7 @@ public class GameBoard implements Serializable {
         }
         clouds = new ArrayList<>(nop);
         //2 players: 2 cloud tiles - 3 players: 3 cloud tiles: 4 players: 4 cloud tiles
-        for(int i=1; i<= nop; i++){
+        for(int i = 0; i <= nop; i++){
             clouds.add(new Cloud(i));
 
             try {
