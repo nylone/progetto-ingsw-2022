@@ -52,7 +52,7 @@ public class GameBoard implements Serializable {
             this.towerStorageTeams.put(i, new TowerStorage(TowerColour.fromTeamId(i), nop == 3 ? 6 : 8));
         } // note: for 4 players the first team is always made up by the first 2 nicknames
         if (this.gameMode.equals(GameMode.ADVANCED)) {
-            this.characterCards = CharacterDeckGenerator.generateCardSet();
+            this.characterCards = CharacterDeckGenerator.generateCardSet(this);
             this.coinReserve = 20 - nop;
         }
         clouds = new ArrayList<>(nop);
