@@ -17,18 +17,6 @@ public class Card12 extends StatelessEffect {
         super(12, 3, ctx);
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public int getCost() {
-        return this.cost;
-    }
-
-    public int getTimeUsed() {
-        return this.timeUsed;
-    }
-
     public void Use(CharacterCardInput input) {
         //todo
         int pawn_to_remove = 0;
@@ -39,7 +27,7 @@ public class Card12 extends StatelessEffect {
         for(int i=0; i<pawn_to_remove; i++){
             context.getStudentBag().appendAndShuffle(input.getTargetPawn().get());
         }
-        this.cost++;
+        addUse();
     }
 
     //test purpose only

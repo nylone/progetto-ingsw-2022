@@ -23,19 +23,6 @@ public class Card07 extends StatefulEffect {
         }
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public int getCost() {
-        return cost;
-    }
-
-    public int getTimeUsed() {
-        return timeUsed;
-    }
-
-
     public ArrayList<Object> getState() {
         return new ArrayList<>(Arrays.asList(students));
     }
@@ -59,7 +46,7 @@ public class Card07 extends StatefulEffect {
         }catch(FullEntranceException ex){
             ex.printStackTrace();
         }
-        
+        addUse();
     }
 
 

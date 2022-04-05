@@ -13,22 +13,10 @@ public class Card09 extends StatelessEffect {
         super(9, 3, ctx);
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public int getCost() {
-        return this.cost;
-    }
-
-    public int getTimeUsed() {
-        return this.timeUsed;
-    }
-
     public void Use(CharacterCardInput input) {
         //todo
         this.context.setDenyPawnColourInfluence(input.getTargetPawn());
-        this.cost++;
+        addUse();
     }
 
     //test purpose only

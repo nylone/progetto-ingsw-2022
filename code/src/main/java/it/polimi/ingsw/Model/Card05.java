@@ -23,24 +23,12 @@ public class Card05 extends StatefulEffect {
         }
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public int getCost() {
-        return cost;
-    }
-
-    public int getTimeUsed() {
-        return timeUsed;
-    }
-
     public ArrayList<Object> getState() {
         return new ArrayList<>(tiles);
     }
 
     public StateType getStateType() {
-        return null;
+        return stateType;
     }
 
     public void Use(CharacterCardInput input) {
@@ -52,8 +40,8 @@ public class Card05 extends StatefulEffect {
         }
         islandGroup.get().setNoEntry(Optional.of(tiles.remove(0)));
         //todo
+        addUse();
     }
-
 
     public void tileReset(NoEntryTile tile){
         this.tiles.add(tile);

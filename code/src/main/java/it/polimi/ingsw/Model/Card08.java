@@ -13,22 +13,10 @@ public class Card08 extends StatelessEffect {
         super(8, 2, ctx);
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public int getCost() {
-        return this.cost;
-    }
-
-    public int getTimeUsed() {
-        return this.timeUsed;
-    }
-
     public void Use(CharacterCardInput input) {
         //todo
         context.setIncreasedInfluenceFlag(true);
-        this.cost++;
+        addUse();
     }
 
     //test purpose only

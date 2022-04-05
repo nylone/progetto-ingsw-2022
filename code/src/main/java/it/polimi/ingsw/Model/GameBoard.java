@@ -179,7 +179,10 @@ public class GameBoard implements Serializable {
 
     public void moveMotherNature(int steps) {
         this.islandField.moveMotherNature(steps);
-        IslandGroup mnp = this.islandField.getMotherNaturePosition();
+        actMotherNaturePower(this.islandField.getMotherNaturePosition());
+    }
+
+    public void actMotherNaturePower(IslandGroup mnp) {
         if(mnp.getNoEntry().isEmpty()) {
             Optional<Integer> optInfluencer = influencerOf(mnp);
             if (optInfluencer.isPresent()) {
@@ -196,6 +199,6 @@ public class GameBoard implements Serializable {
             NoEntryTile noEntryTile = mnp.getNoEntry().get();
             mnp.setNoEntry(Optional.empty());
             noEntryTile.goHome();
-            }
         }
     }
+}

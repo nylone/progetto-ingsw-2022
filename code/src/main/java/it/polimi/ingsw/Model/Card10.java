@@ -18,18 +18,6 @@ public class Card10 extends StatelessEffect {
         super(10, 1, ctx);
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public int getCost() {
-        return this.cost;
-    }
-
-    public int getTimeUsed() {
-        return this.timeUsed;
-    }
-
     public void Use(CharacterCardInput input) { //todo: can be written better
         //convention of input.targetPawnPairs ---> index 0 students from Entrance/ index 1 students from DiningRoom
         //assuming that students have already been removed from Entrance and DiningRoom when the input has been created
@@ -45,7 +33,7 @@ public class Card10 extends StatelessEffect {
         }catch(FullDiningRoomException ex){
             ex.printStackTrace();
         }
-
+        addUse();
     }
 
     //test purpose only

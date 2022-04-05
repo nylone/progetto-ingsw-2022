@@ -15,21 +15,9 @@ public class Card04 extends StatelessEffect {
         super(4, 1, ctx);
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public int getCost() {
-        return this.cost;
-    }
-
-    public int getTimeUsed() {
-        return this.timeUsed;
-    }
-
     public void Use(CharacterCardInput input) {
         //todo
-        this.cost++;
+        addUse();
     }
 
     //test purpose only

@@ -19,8 +19,18 @@ abstract class CharacterCard implements Serializable {
         this.context = context;
     }
 
-    public abstract int getId();
-    public abstract int getCost();
-    public abstract int getTimeUsed();
+
+    public int getId() {
+        return this.id;
+    }
+    public int getCost() {
+        return this.timeUsed > 0 ? this.cost + 1 : this.cost;
+    }
+    public int getTimeUsed() {
+        return this.timeUsed;
+    }
+    public void addUse() {this.timeUsed++;}
+
     public abstract void Use(CharacterCardInput input);
+
 }
