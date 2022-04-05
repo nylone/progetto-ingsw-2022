@@ -130,6 +130,7 @@ public class GameBoard implements Serializable {
         this.denyPawnColourInfluence = denyPawnColourInfluence;
     }
 
+    // returns the team that holds influence over a particular islandgroup
     public Optional<Integer> influencerOf(IslandGroup ig) {
         // todo aumentare di 2 il conteggio del'influenza quando IncreasedInfluenceFlag è true (effetto carta 8)
         // todo: influence count deve tenere conto di alternativeTeacherFlag
@@ -138,17 +139,23 @@ public class GameBoard implements Serializable {
 
         for (Map.Entry<PawnColour, Integer> e : sc.entrySet()) {
             PawnColour colour = e.getKey();
-            int count = e.getValue();
-            if (denyPawnColourInfluence.isPresent()){
+            int count = e.getValue();if (denyPawnColourInfluence.isPresent()){
                 if (colour == denyPawnColourInfluence.get()){
-                    count = 0; // todo test that a colour doesn't influence
+                    continue;
                 }
             }
-            ic.merge(this.playerTeams.get(this.teachers.get(colour)), count, Integer::sum);
+            ic.merge(
+                    this.playerTeams.get(
+                            this.teachers.get(colour)
+                    ),
+                    count,
+                    Integer::sum
+            );
         }
-        if (ig.getDenyTowerInfluence() == false) {
+
+        if (!ig.getDenyTowerInfluence()) {
             ig.getTowerColour()
-                    .ifPresent(towerColour -> ic.merge(towerColour.getTeamId(), ig.getTowerCount(), Integer::sum));
+                    .ifPresent(tc -> ic.merge(tc.getTeamId(), ig.getTowerCount(), Integer::sum));
         }
 
         List<Map.Entry<Integer, Integer>> tbi = ic.entrySet().stream() // tbi is team by influence
@@ -165,7 +172,7 @@ public class GameBoard implements Serializable {
             default: {
                 if (tbi.get(0).getValue() > tbi.get(1).getValue())
                     return Optional.of(tbi.get(0).getKey());
-                else return Optional.empty();
+                else return ig.getTowerColour().flatMap(tc -> Optional.of(tc.getTeamId()));
             }
         }
     }
@@ -173,12 +180,12 @@ public class GameBoard implements Serializable {
     public void moveMotherNature(int steps) {
         this.islandField.moveMotherNature(steps);
         IslandGroup mnp = this.islandField.getMotherNaturePosition();
-        if(!mnp.getNoEntry().isPresent()) {
+        if(mnp.getNoEntry().isEmpty()) {
             Optional<Integer> optInfluencer = influencerOf(mnp);
             if (optInfluencer.isPresent()) {
                 int newInfluencer = optInfluencer.get();
                 if (
-                        !mnp.getTowerColour().isPresent() ||
+                        mnp.getTowerColour().isEmpty() ||
                                 mnp.getTowerColour().get() != TowerColour.fromTeamId(newInfluencer)
                 ) {
                     mnp.swapTower(this.towerStorageTeams.get(newInfluencer));

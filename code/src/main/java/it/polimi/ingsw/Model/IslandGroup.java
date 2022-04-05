@@ -23,7 +23,7 @@ public class IslandGroup implements Serializable {
     }
 
     public IslandGroup(IslandGroup... islandGroups) {
-        if (isJoinable(islandGroups)) {
+        if (islandGroups[0].isJoinable(islandGroups)) {
             this.islands = new ArrayList<>();
             for (IslandGroup i : islandGroups) {
                 islands.addAll(i.getIslands());
@@ -37,12 +37,10 @@ public class IslandGroup implements Serializable {
         }
     }
 
-    public static boolean isJoinable(IslandGroup... groups) {
-        return Arrays.stream(groups).allMatch(g -> g.equals(groups[0]));
-    }
-
-    public boolean canJoin(IslandGroup... groups) {
-        return Arrays.stream(groups).allMatch(g -> g.equals(this));
+    // returns true if the inputted IslandGroups all contain the same type of tower
+    public boolean isJoinable(IslandGroup... groups) {
+        if (groups.length <= 0) ; // todo throw exception for empty parameters
+        return Arrays.stream(groups).allMatch(g -> g.getTowerColour().equals(this.getTowerColour()));
     }
 
     public Optional<TowerColour> getTowerColour() {
