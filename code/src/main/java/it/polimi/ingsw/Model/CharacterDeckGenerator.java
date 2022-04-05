@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CharacterDeckGenerator {
     private static final long serialVersionUID = 117L; // convention: 1 for model, (01 -> 99) for objects
@@ -23,7 +24,7 @@ public class CharacterDeckGenerator {
                     new Card11(ctx),
                     new Card12(ctx),
             };
-            deck = Arrays.stream(initdeck).toList();
+            deck = Arrays.stream(initdeck).collect(Collectors.toCollection(ArrayList::new));
         }
         Collections.shuffle(deck, new Random(System.currentTimeMillis()));
         return deck.subList(0, 3);
