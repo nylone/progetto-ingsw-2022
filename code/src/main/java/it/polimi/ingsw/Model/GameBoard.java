@@ -54,6 +54,7 @@ public class GameBoard implements Serializable {
         if (this.gameMode.equals(GameMode.ADVANCED)) {
             this.characterCards = CharacterDeckGenerator.generateCardSet(this);
             this.coinReserve = 20 - nop;
+
         }
         clouds = new ArrayList<>(nop);
         //2 players: 2 cloud tiles - 3 players: 3 cloud tiles: 4 players: 4 cloud tiles
@@ -144,13 +145,7 @@ public class GameBoard implements Serializable {
                     continue;
                 }
             }
-            ic.merge(
-                    this.playerTeams.get(
-                            this.teachers.get(colour)
-                    ),
-                    count,
-                    Integer::sum
-            );
+            ic.merge(this.playerTeams.get(this.teachers.get(colour)), count, Integer::sum);
         }
 
         if (!ig.getDenyTowerInfluence()) {

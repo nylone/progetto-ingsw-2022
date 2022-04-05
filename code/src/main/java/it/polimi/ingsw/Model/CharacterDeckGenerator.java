@@ -26,6 +26,6 @@ public class CharacterDeckGenerator {
             deck = Arrays.stream(initdeck).toList();
         }
         Collections.shuffle(deck, new Random(System.currentTimeMillis()));
-        return deck.subList(0, 2);
+        return deck.subList(0, 3);
     }
 }

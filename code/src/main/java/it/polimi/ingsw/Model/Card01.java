@@ -63,7 +63,7 @@ public class Card01 extends StatefulEffect {
     public void Use(CharacterCardInput input) {
         // todo raise exception when there's no island
         input.getTargetIsland().get().addStudent(input.getTargetPawn().get());
-        if (timeUsed == 1) { this.cost++; }
+        addUse();
         // todo refill the card with one student from the bag
     }
 
