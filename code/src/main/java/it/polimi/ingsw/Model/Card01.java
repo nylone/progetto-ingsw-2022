@@ -61,10 +61,19 @@ public class Card01 extends StatefulEffect {
     }
 
     public void Use(CharacterCardInput input) {
-        // todo raise exception when there's no island
-        input.getTargetIsland().get().addStudent(input.getTargetPawn().get());
-        addUse();
-        // todo refill the card with one student from the bag
+        if(!input.getTargetIsland().isPresent()||!input.getTargetPawn().isPresent()){
+            throw new InvalidInputException();
+        }else {
+            input.getTargetIsland().get().addStudent(input.getTargetPawn().get());
+            addUse();
+            for(int i=0; i<4; i++){
+                if(this.students[i]== null){
+                    this.students[i] = context.getStudentBag().extract();
+                    break;
+                }
+            }
+            // todo refill the card with one student from the bag
+        }
     }
 
 
