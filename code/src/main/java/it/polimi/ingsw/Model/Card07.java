@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.FullEntranceException;
+import it.polimi.ingsw.Exceptions.InvalidInputException;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -32,21 +33,25 @@ public class Card07 extends StatefulEffect {
     }
 
     public void Use(CharacterCardInput input) {
-        //convention of input.targetPawnPairs ---> index 0 students from PlayerBoard/ index 1 students from Card
-        int cont=0;
-        for(int i=0; i<6; i++){
-            if(this.students[i]==null){
-                this.students[i]= input.getTargetPawnPairs().get()[0][cont]; //adding students from PlayerBoard's entrance into the card
-                cont++;
-                if(cont==3) break;
+        if(!input.getTargetPawnPairs().isPresent()){
+            throw new InvalidInputException();
+        }else {
+            //convention of input.targetPawnPairs ---> index 0 students from PlayerBoard/ index 1 students from Card
+            int cont = 0;
+            for (int i = 0; i < 6; i++) {
+                if (this.students[i] == null) {
+                    this.students[i] = input.getTargetPawnPairs().get()[0][cont]; //adding students from PlayerBoard's entrance into the card
+                    cont++;
+                    if (cont == 3) break;
+                }
             }
+            try { //adding student from Card to PlayerBoard's entrance
+                input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawnPairs().get()[1]))); //todo check this statement
+            } catch (FullEntranceException ex) {
+                ex.printStackTrace();
+            }
+            addUse();
         }
-        try { //adding student from Card to PlayerBoard's entrance
-            input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawnPairs().get()[1]))); //todo check this statement
-        }catch(FullEntranceException ex){
-            ex.printStackTrace();
-        }
-        addUse();
     }
 
 

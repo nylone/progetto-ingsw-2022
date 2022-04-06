@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.FullDiningRoomException;
 import it.polimi.ingsw.Exceptions.FullEntranceException;
+import it.polimi.ingsw.Exceptions.InvalidInputException;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -21,19 +22,23 @@ public class Card10 extends StatelessEffect {
     public void Use(CharacterCardInput input) { //todo: can be written better
         //convention of input.targetPawnPairs ---> index 0 students from Entrance/ index 1 students from DiningRoom
         //assuming that students have already been removed from Entrance and DiningRoom when the input has been created
-        try {
-            input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawnPairs().get()[0][0])));
-            input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawnPairs().get()[0][1])));
-        }catch(FullEntranceException ex){
-            ex.printStackTrace();
+        if(!input.getTargetPawnPairs().isPresent()){
+            throw new InvalidInputException();
+        }else {
+            try {
+                input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawnPairs().get()[0][0])));
+                input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawnPairs().get()[0][1])));
+            } catch (FullEntranceException ex) {
+                ex.printStackTrace();
+            }
+            try {
+                input.getCaller().addStudentToDiningRoom(input.getTargetPawnPairs().get()[1][0]);
+                input.getCaller().addStudentToDiningRoom(input.getTargetPawnPairs().get()[1][1]);
+            } catch (FullDiningRoomException ex) {
+                ex.printStackTrace();
+            }
+            addUse();
         }
-        try {
-            input.getCaller().addStudentToDiningRoom(input.getTargetPawnPairs().get()[1][0]);
-            input.getCaller().addStudentToDiningRoom(input.getTargetPawnPairs().get()[1][1]);
-        }catch(FullDiningRoomException ex){
-            ex.printStackTrace();
-        }
-        addUse();
     }
 
     //test purpose only

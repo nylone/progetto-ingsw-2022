@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.InvalidInputException;
+
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -32,15 +34,15 @@ public class Card05 extends StatefulEffect {
     }
 
     public void Use(CharacterCardInput input) {
-        //todo
-        Optional<IslandGroup> islandGroup = Optional.empty();
-        for(IslandGroup ig : this.context.getIslandField().getGroups()){
-            islandGroup = ig.find(input.getTargetIsland().get());
-            if(islandGroup.isPresent()) break;
+        Island ti = input.getTargetIsland().orElseThrow(InvalidInputException::new);
+        for (IslandGroup ig : this.context.getIslandField().getGroups()) {
+            Optional<IslandGroup> tg = ig.find(ti); // Islangroup containing targetIsland
+            if (tg.isPresent()) {
+                tg.get().setNoEntry(Optional.of(tiles.remove(0)));
+                break;
+            }
+            addUse();
         }
-        islandGroup.get().setNoEntry(Optional.of(tiles.remove(0)));
-        //todo
-        addUse();
     }
 
     public void tileReset(NoEntryTile tile){
