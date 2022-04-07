@@ -52,13 +52,10 @@ public class IslandGroup implements Serializable {
     // returns true if the inputted IslandGroups all contain the same type of tower
     public boolean isJoinable(IslandGroup... groups) {
         if (groups.length <= 0){
-            try {
-                throw new NoParamaterException();
-            } catch (NoParamaterException e) {
-                e.printStackTrace();
-            }
-        }
+                return false;
+        }else {
             return Arrays.stream(groups).allMatch(g -> g.getTowerColour().equals(this.getTowerColour()));
+        }
     }
 
     public Optional<TowerColour> getTowerColour() {

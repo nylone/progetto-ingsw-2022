@@ -72,7 +72,6 @@ public class Card01 extends StatefulEffect {
                     break;
                 }
             }
-            // todo refill the card with one student from the bag
         }
     }
 
