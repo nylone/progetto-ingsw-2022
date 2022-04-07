@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InvalidInputException;
+import it.polimi.ingsw.Exceptions.NoParamaterException;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -23,24 +24,41 @@ public class IslandGroup implements Serializable {
     }
 
     public IslandGroup(IslandGroup... islandGroups) {
-        if (islandGroups[0].isJoinable(islandGroups)) {
-            this.islands = new ArrayList<>();
-            for (IslandGroup i : islandGroups) {
-                islands.addAll(i.getIslands());
+        if (islandGroups.length > 0) {
+            if (islandGroups[0].isJoinable(islandGroups)) {
+                this.islands = new ArrayList<>();
+                for (IslandGroup i : islandGroups) {
+                    islands.addAll(i.getIslands());
+                }
+                this.id = Arrays.stream(islandGroups)
+                        .min(Comparator.comparingInt(islandGroup -> islandGroup.getId()))
+                        .orElseThrow(() -> new InvalidInputException())
+                        .getId();
+            } else {
+                throw new RuntimeException(); // todo implement unjoinablegroups exception
             }
-            this.id = Arrays.stream(islandGroups)
-                    .min(Comparator.comparingInt(islandGroup -> islandGroup.getId()))
-                    .orElseThrow(() -> new InvalidInputException())
-                    .getId();
-        } else {
-            throw new RuntimeException(); // todo implement unjoinablegroups exception
+        }else{
+            try {
+                throw new NoParamaterException();
+            } catch (NoParamaterException e) {
+                e.printStackTrace();
+                this.id=0;
+                this.islands = null;
+
+            }
         }
     }
 
     // returns true if the inputted IslandGroups all contain the same type of tower
     public boolean isJoinable(IslandGroup... groups) {
-        if (groups.length <= 0) ; // todo throw exception for empty parameters
-        return Arrays.stream(groups).allMatch(g -> g.getTowerColour().equals(this.getTowerColour()));
+        if (groups.length <= 0){
+            try {
+                throw new NoParamaterException();
+            } catch (NoParamaterException e) {
+                e.printStackTrace();
+            }
+        }
+            return Arrays.stream(groups).allMatch(g -> g.getTowerColour().equals(this.getTowerColour()));
     }
 
     public Optional<TowerColour> getTowerColour() {
