@@ -96,6 +96,10 @@ public class GameBoard implements Serializable {
                 .collect(Collectors.toList());
     }
 
+    public boolean getIncreasedInfluenceFlag() {
+        return increasedInfluenceFlag;
+    }
+
     public TowerStorage getTowerStorageByTeam(int team) {
         return towerStorageTeams.get(team);
     }
@@ -108,6 +112,9 @@ public class GameBoard implements Serializable {
         return turnOrder;
     }
 
+    public Optional<PawnColour> getDenyPawnColourInfluence() {
+        return denyPawnColourInfluence;
+    }
 
     public PlayerBoard getPlayerBoardById(int id) {
         return playerBoards.stream()

@@ -41,16 +41,13 @@ public class TowerStorageTest {
         Tower t3 = new Tower(5, TowerColour.WHITE, ts);
     }
 
-    @Test
-    public void checkIllegalColourPush(){
+    @Test(expected = InvalidTowerPushException.class)
+    public void checkIllegalColourPush() throws InvalidTowerPushException {
         Tower t = new Tower(3, TowerColour.BLACK, ts);
         TowerStorage ts2 = new TowerStorage(TowerColour.WHITE, 6);
-        try {
-            ts2.pushTower(t);
-        } catch (InvalidTowerPushException e) {
-            e.printStackTrace();
-            assertTrue(ts2.getTowerCount() == 6);
-        }
+        ts2.extractTower();
+        ts2.pushTower(t);
+
     }
 
     @Test(expected = InvalidTowerPushException.class)

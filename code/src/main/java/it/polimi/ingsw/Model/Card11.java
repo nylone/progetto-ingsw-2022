@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.FullDiningRoomException;
 import it.polimi.ingsw.Exceptions.FullEntranceException;
+import it.polimi.ingsw.Exceptions.InvalidInputException;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -35,21 +37,32 @@ public class Card11 extends StatefulEffect {
     }
 
     public void Use(CharacterCardInput input) {
-        try {
-            input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawn().get())));
-            this.cost++;
-        }catch(FullEntranceException fe){
-            fe.printStackTrace();
+        if(!input.getTargetPawn().isPresent()){
+            throw new InvalidInputException("No pawn in input");
+        }else {
+            try {
+                removeFromCard(input.getTargetPawn().get());
+                input.getCaller().addStudentToDiningRoom(input.getTargetPawn().get());
+            } catch (FullDiningRoomException fe) {
+                fe.printStackTrace();
+            }
+            for (int i = 0; i < 4; i++) {
+                if (this.students[i] == null) {
+                    this.students[i] = context.getStudentBag().extract();
+                    break;
+                }
+            }
+            addUse();
         }
+    }
+    private void removeFromCard(PawnColour p){
         for(int i=0; i<4; i++){
-            if(students[i]==null){
-                students[i] = context.getStudentBag().extract();
+            if(this.students[i].equals(p)){
+                this.students[i] = null;
                 break;
             }
         }
-        addUse();
     }
-
 
     //test-purpose only
     @Override

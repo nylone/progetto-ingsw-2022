@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model;
 
+
+import it.polimi.ingsw.Exceptions.InvalidInputException;
+
 import java.io.Serial;
 
 /*
@@ -14,8 +17,12 @@ public class Card09 extends StatelessEffect {
     }
 
     public void Use(CharacterCardInput input) {
-        this.context.setDenyPawnColourInfluence(input.getTargetPawn());
-        addUse();
+        if(input.getTargetPawn().isEmpty()){
+            throw new InvalidInputException("No pawn in input");
+        }else {
+            this.context.setDenyPawnColourInfluence(input.getTargetPawn());
+            addUse();
+        }
     }
 
     //test purpose only

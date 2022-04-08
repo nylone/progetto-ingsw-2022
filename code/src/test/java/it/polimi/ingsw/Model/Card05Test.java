@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.InvalidInputException;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -26,7 +27,10 @@ public class Card05Test {
         assertTrue(!field.getIslandGroupById(1).getNoEntry().isPresent());
 
         assertTrue(card05.getState().size()==4); //4 tiles left after the return of the NoEntryTile
-
-
+    }
+    @Test(expected = InvalidInputException.class)
+    public void checkInputException(){
+        CharacterCardInput input = new CharacterCardInput(pb);
+        card05.Use(input);
     }
 }
