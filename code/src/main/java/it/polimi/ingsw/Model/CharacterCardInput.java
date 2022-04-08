@@ -12,7 +12,6 @@ public class CharacterCardInput {
 
     public CharacterCardInput(PlayerBoard caller) {
         this.caller = caller;
-        targetPawnPairs = new PawnColour[2][];
     }
 
     public PlayerBoard getCaller() {
