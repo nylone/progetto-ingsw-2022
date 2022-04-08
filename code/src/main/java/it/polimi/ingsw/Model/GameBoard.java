@@ -25,7 +25,7 @@ public class GameBoard implements Serializable {
     private final GamePhase gamePhase;
     private boolean increasedInfluenceFlag;
     private boolean alternativeTeacherFlag;
-    private Optional<PawnColour> denyPawnColourInfluence;
+    private Optional<PawnColour> denyPawnColourInfluence = Optional.empty();
     private final List<Cloud> clouds;
 
 
@@ -96,6 +96,11 @@ public class GameBoard implements Serializable {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
+
+    public TowerStorage getTowerStorageByTeam(int team) {
+        return towerStorageTeams.get(team);
+    }
+
     public StudentBag getStudentBag() {
         return studentBag;
     }
@@ -119,6 +124,11 @@ public class GameBoard implements Serializable {
                 .orElseThrow(() -> new InvalidInputException());
     }
 
+
+    public void setTeacher(PawnColour teacher, PlayerBoard player) {
+        teachers.put(teacher, player);
+    }
+
     public void setAlternativeTeacherFlag(boolean alternativeTeacherFlag) {
         this.alternativeTeacherFlag = alternativeTeacherFlag;
     }
@@ -140,8 +150,10 @@ public class GameBoard implements Serializable {
 
         for (Map.Entry<PawnColour, Integer> e : sc.entrySet()) {
             PawnColour colour = e.getKey();
-            int count = e.getValue();if (denyPawnColourInfluence.isPresent()){
-                if (colour == denyPawnColourInfluence.get()){
+            if (!(teachers.get(colour) instanceof PlayerBoard)) { continue; } //
+            int count = e.getValue();
+            if (denyPawnColourInfluence.isPresent()) {
+                if (colour == denyPawnColourInfluence.get()) {
                     continue;
                 }
             }
@@ -156,6 +168,7 @@ public class GameBoard implements Serializable {
         List<Map.Entry<Integer, Integer>> tbi = ic.entrySet().stream() // tbi is team by influence
                 .sorted(Comparator.comparingInt(Map.Entry::getValue))
                 .collect(Collectors.toCollection(ArrayList::new));
+        Collections.reverse(tbi);
 
         ig.setDenyTowerInfluence(false);
         setAlternativeTeacherFlag(false);
