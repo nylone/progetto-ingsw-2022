@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model;
 
+
+import it.polimi.ingsw.Exceptions.InvalidTowerPushException;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Stack;
@@ -31,12 +34,18 @@ public class TowerStorage implements Serializable {
         return this.storage.pop();
     }
 
-    public void pushTower(Tower t) {
+    public void pushTower(Tower t) throws InvalidTowerPushException {
         boolean checkIfPresent = storage.stream()
                 .anyMatch(i -> t == i);
         if (!checkIfPresent && t.getColour() == this.colour) {
             this.storage.push(t);
+        }else{
+            if(checkIfPresent){
+                throw new InvalidTowerPushException("the tower is already in the storage");
+            }
+            if(t.getColour()!=this.colour){
+                throw new InvalidTowerPushException("Tower's colour and Storage's Colour are different");
+            }
         }
-        // todo else throw an exception for duplicate items and invalid colour
     }
 }

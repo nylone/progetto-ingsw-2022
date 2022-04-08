@@ -35,7 +35,6 @@ public class Card11 extends StatefulEffect {
     }
 
     public void Use(CharacterCardInput input) {
-        //todo
         try {
             input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawn().get())));
             this.cost++;

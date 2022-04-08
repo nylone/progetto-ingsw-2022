@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.InvalidTowerPushException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -14,7 +15,11 @@ public class TowerStorageTest {
         Tower t = new Tower(3, TowerColour.BLACK, ts);
         int initialCapacity = ts.getTowerCount();
         // act
-        ts.pushTower(t);
+        try {
+            ts.pushTower(t);
+        } catch (InvalidTowerPushException e) {
+            e.printStackTrace();
+        }
         // assert
         assertTrue(ts.getTowerCount() == initialCapacity + 1);
     }
@@ -27,5 +32,33 @@ public class TowerStorageTest {
         ts.extractTower();
         // assert
         assertTrue(ts.getTowerCount() == initialCapacity - 1);
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void checkTowerCreationException(){
+        Tower t = new Tower(3, TowerColour.BLACK, ts);
+       // Tower t2 = new Tower(3, TowerColour.BLACK, ts);
+        Tower t3 = new Tower(5, TowerColour.WHITE, ts);
+    }
+
+    @Test
+    public void checkIllegalColourPush(){
+        Tower t = new Tower(3, TowerColour.BLACK, ts);
+        TowerStorage ts2 = new TowerStorage(TowerColour.WHITE, 6);
+        try {
+            ts2.pushTower(t);
+        } catch (InvalidTowerPushException e) {
+            e.printStackTrace();
+            assertTrue(ts2.getTowerCount() == 6);
+        }
+    }
+
+    @Test(expected = InvalidTowerPushException.class)
+    public void checkIllegalDuplicatePush() throws InvalidTowerPushException {
+        ts.extractTower();
+        ts.extractTower();
+        Tower t = new Tower(3, TowerColour.BLACK, ts);
+
+        ts.pushTower(t);
+        ts.pushTower(t);
     }
 }

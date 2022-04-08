@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.InvalidTowerPushException;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,6 +14,9 @@ public class Tower implements Serializable {
     private final TowerStorage storage;
 
     public Tower(int id, TowerColour colour, TowerStorage storage) {
+        if(!colour.equals(storage.getColour())){
+            throw new IllegalArgumentException("Tower's colour and TowerStorage's colour are different");
+        }
         this.id = id;
         this.colour = colour;
         this.storage = storage;
@@ -22,7 +27,11 @@ public class Tower implements Serializable {
     }
 
     public void linkBackToStorage() {
-        this.storage.pushTower(this);
+        try {
+            this.storage.pushTower(this);
+        } catch (InvalidTowerPushException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

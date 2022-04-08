@@ -14,7 +14,6 @@ public class Card06 extends StatelessEffect {
     }
 
     public void Use(CharacterCardInput input) {
-        //todo
         context.getIslandField().getMotherNaturePosition().setDenyTowerInfluence(true);
         addUse();
     }

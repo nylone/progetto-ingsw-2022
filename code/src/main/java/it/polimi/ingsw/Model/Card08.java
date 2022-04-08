@@ -14,7 +14,6 @@ public class Card08 extends StatelessEffect {
     }
 
     public void Use(CharacterCardInput input) {
-        //todo
         context.setIncreasedInfluenceFlag(true);
         addUse();
     }
