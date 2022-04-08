@@ -54,7 +54,9 @@ public class IslandGroup implements Serializable {
         if (groups.length <= 0){
                 return false;
         }else {
-            return Arrays.stream(groups).allMatch(g -> g.getTowerColour().equals(this.getTowerColour()));
+            if (this.getTowerColour().isEmpty()) return false;
+            else return
+                    Arrays.stream(groups).allMatch(g -> g.getTowerColour().equals(this.getTowerColour()));
         }
     }
 
