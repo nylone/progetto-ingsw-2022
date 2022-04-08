@@ -33,6 +33,7 @@ public class TowerStorageTest {
         // assert
         assertTrue(ts.getTowerCount() == initialCapacity - 1);
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void checkTowerCreationException(){
         Tower t = new Tower(3, TowerColour.BLACK, ts);
