@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.EmptyDiningRoomException;
 import it.polimi.ingsw.Exceptions.FullDiningRoomException;
 import it.polimi.ingsw.Exceptions.FullEntranceException;
 
@@ -78,8 +79,12 @@ public class PlayerBoard implements Serializable {
         }
     }
 
-    public void removeStudentFromDiningRoom(PawnColour colour, int amount){ //todo emptyDiningRoomException
-        this.diningRoom.merge(colour, -amount, Integer::sum);
+    public void removeStudentFromDiningRoom(PawnColour colour, int amount) throws EmptyDiningRoomException { //todo emptyDiningRoomException
+        if(this.getDiningRoomCount(colour)==0){
+            throw new EmptyDiningRoomException("No students of that colour in DiningRoom");
+        }else {
+            this.diningRoom.merge(colour, -amount, Integer::sum);
+        }
     }
     public void addStudentsToEntrance(ArrayList<PawnColour> students) throws FullEntranceException {
         if (this.entrance.size() + students.size() > maximum_entrance_students) { // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.EmptyDiningRoomException;
+
 import java.io.Serial;
 
 /*
@@ -22,7 +24,11 @@ public class Card12 extends StatelessEffect {
         int pawn_to_remove = 0;
         for(PlayerBoard p : context.getPlayerBoards()){
             pawn_to_remove += Math.min(3, p.getDiningRoomCount(input.getTargetPawn().get()));
-            input.getCaller().removeStudentFromDiningRoom(input.getTargetPawn().get(), Math.max(0, p.getDiningRoomCount(input.getTargetPawn().get())) -3); //assume to remove a consistent quantity of pawns (avoid negative quantity of students in diningroom)
+            try {
+                input.getCaller().removeStudentFromDiningRoom(input.getTargetPawn().get(), Math.max(0, p.getDiningRoomCount(input.getTargetPawn().get())) -3); //assume to remove a consistent quantity of pawns (avoid negative quantity of students in diningroom)
+            } catch (EmptyDiningRoomException e) {
+                e.printStackTrace();
+            }
         }
         for(int i=0; i<pawn_to_remove; i++){
             context.getStudentBag().appendAndShuffle(input.getTargetPawn().get());

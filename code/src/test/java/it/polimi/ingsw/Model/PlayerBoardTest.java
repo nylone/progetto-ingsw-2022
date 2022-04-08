@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 
+import it.polimi.ingsw.Exceptions.EmptyDiningRoomException;
 import it.polimi.ingsw.Exceptions.FullDiningRoomException;
 import it.polimi.ingsw.Exceptions.FullEntranceException;
 import org.junit.Test;
@@ -41,16 +42,32 @@ public class PlayerBoardTest {
     }
 
     @Test
-    public void sizeDecreasedAfterRemovingStudent() {
+    public void sizeDecreasedAfterRemovingStudent() throws EmptyDiningRoomException, FullDiningRoomException {
         // arrange
         PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
+        playerBoard.addStudentToDiningRoom(PawnColour.BLUE);
+        playerBoard.addStudentToDiningRoom(PawnColour.BLUE);
         int expected = playerBoard.getDiningRoomCount(PawnColour.BLUE);
         // act
         playerBoard.removeStudentFromDiningRoom(PawnColour.BLUE, 2);
         // assert
         assertTrue(playerBoard.getDiningRoomCount(PawnColour.BLUE) == expected - 2);
     }
+    @Test(expected = EmptyDiningRoomException.class)
+    public void removeStudentException() throws EmptyDiningRoomException {
+        PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
+        playerBoard.removeStudentFromDiningRoom(PawnColour.RED,1);
+    }
+    @Test(expected = FullDiningRoomException.class)
+    public void addStudentException() throws FullDiningRoomException {
+        PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
+        for(int i=0; i<10; i++){
+            playerBoard.addStudentToDiningRoom(PawnColour.RED);
+        }
 
+        //adding an eleventh pawn
+        playerBoard.addStudentToDiningRoom(PawnColour.RED);
+    }
     @Test
     public void sizeIncreasedAfterAddingStudentToEntrance() {
         // arrange
