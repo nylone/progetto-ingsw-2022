@@ -78,8 +78,7 @@ public class PlayerBoard implements Serializable {
             }
         }
     }
-
-    public void removeStudentFromDiningRoom(PawnColour colour, int amount) throws EmptyDiningRoomException { //todo emptyDiningRoomException
+    public void removeStudentFromDiningRoom(PawnColour colour, int amount) throws EmptyDiningRoomException {
         if(this.getDiningRoomCount(colour)==0){
             throw new EmptyDiningRoomException("No students of that colour in DiningRoom");
         }else {
@@ -93,13 +92,12 @@ public class PlayerBoard implements Serializable {
             this.entrance.addAll(students);
         }
     }
-    // todo add checks for balance, this is not the way to pay
-    public void PayCharacterEffect(int id) {
-        if(this.coinBalance >0) {
-            coinBalance--;
-            //todo activate character effect
+    public boolean PayCharacterEffect(int id){ //this method checks if the CharacterCard can be activated, true --> gameBoard activates the CharacterCard / false--> GameBoard doesn't activate the CharacterCard
+        if(this.coinBalance >= id) {
+            coinBalance-= id;
+            return true;
         }else {
-            //todo call exception
+            return false;
         }
     }
 

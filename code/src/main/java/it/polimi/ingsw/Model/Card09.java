@@ -14,7 +14,6 @@ public class Card09 extends StatelessEffect {
     }
 
     public void Use(CharacterCardInput input) {
-        //todo
         this.context.setDenyPawnColourInfluence(input.getTargetPawn());
         addUse();
     }

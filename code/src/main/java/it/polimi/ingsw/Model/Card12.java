@@ -20,7 +20,7 @@ public class Card12 extends StatelessEffect {
     }
 
     public void Use(CharacterCardInput input) {
-        //todo
+        //todo check the method
         int pawn_to_remove = 0;
         for(PlayerBoard p : context.getPlayerBoards()){
             pawn_to_remove += Math.min(3, p.getDiningRoomCount(input.getTargetPawn().get()));
