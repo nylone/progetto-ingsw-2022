@@ -29,7 +29,6 @@ public class GameBoard implements Serializable {
     private final List<Cloud> clouds;
 
 
-    // todo
     public GameBoard(GameMode gameMode, String... playerNicknames) {
         final int nop = playerNicknames.length;
         this.islandField = new IslandField();
@@ -205,8 +204,7 @@ public class GameBoard implements Serializable {
             this.islandField.joinGroups();
         }else{
             NoEntryTile noEntryTile = mnp.getNoEntry().get();
-            mnp.setNoEntry(Optional.empty());
-            noEntryTile.goHome();
+            noEntryTile.goHome(mnp);
         }
     }
 }

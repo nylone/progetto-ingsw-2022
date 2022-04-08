@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.NoParamaterException;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -45,6 +46,6 @@ public class IslandGroupTest {
         // assert
         assertEquals(expected, actual);
         assertTrue(actual.size() == 3);
-
+        assertTrue(islandGroup1.getStudentCount().get(PawnColour.BLUE)==1);
     }
 }

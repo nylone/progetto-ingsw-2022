@@ -10,7 +10,7 @@ public class Card01Test {
     @Test
     public void addingStudentUntilPossibleShouldWork() {
         // arrange
-        GameBoard g = new GameBoard(GameMode.SIMPLE, "ari", "teo");
+        GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
         Card01 card = new Card01(g);
         // act
         card.addStudent(PawnColour.BLUE);
@@ -22,7 +22,7 @@ public class Card01Test {
     @Test
     public void cardShouldContainFrom0To4Cards() {
         // arrange
-        GameBoard g = new GameBoard(GameMode.SIMPLE, "ari", "teo");
+        GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
         Card01 card = new Card01(g);
         // act
         try {
@@ -37,7 +37,7 @@ public class Card01Test {
     @Test
     public void usingEffectShouldAddStudentToIsland() {
         // arrange
-        GameBoard g = new GameBoard(GameMode.SIMPLE, "ari", "teo");
+        GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
         CharacterCardInput input = new CharacterCardInput(g.getPlayerBoardByNickname("ari"));
         Island island = g.getIslandField().getIslandById(3);
         int expected = island.getStudents().size();

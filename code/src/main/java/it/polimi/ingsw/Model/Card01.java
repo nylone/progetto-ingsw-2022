@@ -21,19 +21,6 @@ public class Card01 extends StatefulEffect {
         super(1, 1, StateType.PAWNCOLOUR, ctx);
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public int getCost() {
-        return cost;
-    }
-
-    public int getTimeUsed() {
-        return timeUsed;
-    }
-
-
     public ArrayList<Object> getState() {
         return new ArrayList<>(Arrays.asList(students));
     }

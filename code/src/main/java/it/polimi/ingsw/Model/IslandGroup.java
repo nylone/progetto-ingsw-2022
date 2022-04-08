@@ -42,10 +42,9 @@ public class IslandGroup implements Serializable {
                 throw new NoParamaterException();
             } catch (NoParamaterException e) {
                 e.printStackTrace();
-                this.id=0;
-                this.islands = null;
-
             }
+            this.id=0;
+            this.islands = null;
         }
     }
 

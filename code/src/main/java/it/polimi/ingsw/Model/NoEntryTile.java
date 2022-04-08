@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Optional;
 
 public class NoEntryTile implements Serializable {
     @Serial
@@ -12,7 +13,8 @@ public class NoEntryTile implements Serializable {
         this.home = card;
     }
 
-    public void goHome() {
+    public void goHome(IslandGroup islandGroup) {
+        islandGroup.setNoEntry(Optional.empty()); //remove the noEntryTile from the islandGroup
         home.tileReset(this);
     }
 
