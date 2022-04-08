@@ -21,6 +21,7 @@ public class IslandGroup implements Serializable {
         this.id = i.getId();
         this.islands.add(i);
         this.denyTowerInfluence = false;
+        this.noEntry = Optional.empty();
     }
 
     public IslandGroup(IslandGroup... islandGroups) {
@@ -124,12 +125,13 @@ public class IslandGroup implements Serializable {
         }
     }
 
-    //test-purpose only
     @Override
     public String toString() {
-        return "ISLANDGROUP{" +
+        return "IslandGroup{" +
                 "id=" + id +
                 ", islands=" + islands +
+                ", noEntry=" + noEntry +
+                ", denyTowerInfluence=" + denyTowerInfluence +
                 '}';
     }
 }

@@ -48,7 +48,15 @@ public class Card01Test {
         card.Use(input);
         // assert
         assertTrue(island.getStudents().size() == expected + 1);
+    }
 
+    @Test(expected = InvalidInputException.class)
+    public void checkUseException(){
+        GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
+        CharacterCardInput input = new CharacterCardInput(g.getPlayerBoardByNickname("ari"));
+        Card01 card = new Card01(g);
+        assertTrue(card.getState().size()==4);
+        card.Use(input);
     }
 
 
