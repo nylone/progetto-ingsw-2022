@@ -25,19 +25,21 @@ public class Card10 extends StatelessEffect {
         if(!input.getTargetPawnPairs().isPresent()){
             throw new InvalidInputException();
         }else {
-            try {
-                input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawnPairs().get()[0][0])));
-                input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawnPairs().get()[0][1])));
-            } catch (FullEntranceException ex) {
-                ex.printStackTrace();
-            }
-            try {
-                input.getCaller().addStudentToDiningRoom(input.getTargetPawnPairs().get()[1][0]);
-                input.getCaller().addStudentToDiningRoom(input.getTargetPawnPairs().get()[1][1]);
-            } catch (FullDiningRoomException ex) {
-                ex.printStackTrace();
-            }
-            addUse();
+            if (input.getTargetPawnPairs().get()[0].length <= 2 && input.getTargetPawnPairs().get()[0].length <= 2 && input.getTargetPawnPairs().get()[0].length==input.getTargetPawnPairs().get()[1].length) {
+                try {
+                    input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawnPairs().get()[1])));
+                } catch (FullEntranceException ex) {
+                    ex.printStackTrace();
+                }
+                try {
+                    for(int i=0; i<input.getTargetPawnPairs().get()[1].length; i++){
+                        input.getCaller().addStudentToDiningRoom(input.getTargetPawnPairs().get()[0][i]);
+                    }
+                } catch (FullDiningRoomException ex) {
+                    ex.printStackTrace();
+                }
+                addUse();
+            }else{ throw new InvalidInputException("more than 2 pawns"); }
         }
     }
 
