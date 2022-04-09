@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Model.GameBoard;
+
 public class MoveMotherNature extends PlayerAction {
 
     private final int distanceToMove;
@@ -8,4 +10,11 @@ public class MoveMotherNature extends PlayerAction {
         super(playerBoardId);
         this.distanceToMove = distanceToMove;
     }
+
+    //todo check
+    public void executeAction(GameBoard ctx) {
+
+    }
+
+
 }

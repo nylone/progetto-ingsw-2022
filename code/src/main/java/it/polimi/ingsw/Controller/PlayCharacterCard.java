@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Model.GameBoard;
+
 public class PlayCharacterCard extends PlayerAction {
 
     private final int selectedCard;
@@ -7,5 +9,9 @@ public class PlayCharacterCard extends PlayerAction {
     public PlayCharacterCard(int playerBoardId, int selectedCard) {
         super(playerBoardId);
         this.selectedCard = selectedCard;
+    }
+
+    public void executeAction(GameBoard ctx) {
+
     }
 }

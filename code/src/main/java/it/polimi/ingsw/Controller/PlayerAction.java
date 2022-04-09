@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Model.GameBoard;
+
 public abstract class PlayerAction {
 
     private final int playerBoardId;
@@ -11,5 +13,7 @@ public abstract class PlayerAction {
     public int getPlayerBoardId() {
         return playerBoardId;
     }
+
+    public abstract void executeAction(GameBoard ctx);
 
 }

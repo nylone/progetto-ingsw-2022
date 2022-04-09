@@ -9,12 +9,19 @@ public class GameHandler {
 
     private final ArrayList<PlayerAction> actionHistory;
     private GameBoard game;  // todo needs to be init on game start
-
+    private ArrayList<PlayerInfo> players;
     public GameHandler(GameMode gameMode) {
         this.actionHistory = new ArrayList<>(6);
     }
 
+    public void addPlayer(String nickname){
+        //todo
+    }
     public void executeAction(PlayerAction action) {
+        //todo
+    }
+
+    public void rollback(){
         //todo
     }
 

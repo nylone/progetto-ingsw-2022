@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Model.GameBoard;
+
 public class MoveStudent extends PlayerAction {
 
     private final int selectedEntrancePosition;
@@ -12,4 +14,7 @@ public class MoveStudent extends PlayerAction {
         this.destination = destination;
     }
 
+    public void executeAction(GameBoard ctx) {
+
+    }
 }
