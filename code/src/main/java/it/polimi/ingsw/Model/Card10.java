@@ -19,7 +19,7 @@ public class Card10 extends StatelessEffect {
         super(10, 1, ctx);
     }
 
-    public void Use(CharacterCardInput input) { //todo: can be written better
+    public void Use(CharacterCardInput input) {
         //convention of input.targetPawnPairs ---> index 0 students from Entrance/ index 1 students from DiningRoom
         //assuming that students have already been removed from Entrance and DiningRoom when the input has been created
         if(!input.getTargetPawnPairs().isPresent()){

@@ -48,7 +48,7 @@ public class Card07 extends StatefulEffect {
                     }
                 }
                 try { //adding student from Card to PlayerBoard's entrance
-                    input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawnPairs().get()[1]))); //todo check this statement
+                    input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawnPairs().get()[1])));
                 } catch (FullEntranceException ex) {
                     ex.printStackTrace();
                 }

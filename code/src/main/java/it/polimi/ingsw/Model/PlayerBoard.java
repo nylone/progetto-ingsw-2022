@@ -79,10 +79,12 @@ public class PlayerBoard implements Serializable {
         }
     }
     public void removeStudentFromDiningRoom(PawnColour colour, int amount) throws EmptyDiningRoomException {
-        if(this.getDiningRoomCount(colour)==0){
-            throw new EmptyDiningRoomException("No students of that colour in DiningRoom");
-        }else {
-            this.diningRoom.merge(colour, -amount, Integer::sum);
+        if(amount>0) {
+            if (this.getDiningRoomCount(colour) == 0) {
+                throw new EmptyDiningRoomException("No students of that colour in DiningRoom");
+            } else {
+                this.diningRoom.merge(colour, -amount, Integer::sum);
+            }
         }
     }
     public void addStudentsToEntrance(ArrayList<PawnColour> students) throws FullEntranceException {

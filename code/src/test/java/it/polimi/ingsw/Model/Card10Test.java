@@ -1,11 +1,10 @@
 package it.polimi.ingsw.Model;
-import com.sun.source.tree.AssertTree;
+
 import it.polimi.ingsw.Exceptions.EmptyDiningRoomException;
 import it.polimi.ingsw.Exceptions.FullDiningRoomException;
 import it.polimi.ingsw.Exceptions.InvalidInputException;
-import org.junit.Assert;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertTrue;
 
 public class Card10Test {

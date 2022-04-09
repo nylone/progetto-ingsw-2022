@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.EmptyDiningRoomException;
+import it.polimi.ingsw.Exceptions.InvalidInputException;
 
 import java.io.Serial;
 
@@ -20,20 +21,24 @@ public class Card12 extends StatelessEffect {
     }
 
     public void Use(CharacterCardInput input) {
-        //todo check the method
-        int pawn_to_remove = 0;
-        for(PlayerBoard p : context.getPlayerBoards()){
-            pawn_to_remove += Math.min(3, p.getDiningRoomCount(input.getTargetPawn().get()));
-            try {
-                input.getCaller().removeStudentFromDiningRoom(input.getTargetPawn().get(), Math.max(0, p.getDiningRoomCount(input.getTargetPawn().get())) -3); //assume to remove a consistent quantity of pawns (avoid negative quantity of students in diningroom)
-            } catch (EmptyDiningRoomException e) {
-                e.printStackTrace();
+        if(input.getTargetPawn().isPresent()) {
+            int pawn_to_remove = 0;
+            for (PlayerBoard p : this.context.getPlayerBoards()) {
+                pawn_to_remove += Math.min(3, p.getDiningRoomCount(input.getTargetPawn().get())); //If any player has fewer than 3 Students of that type, return as many Students as they have.
+                try {
+                    p.removeStudentFromDiningRoom(input.getTargetPawn().get(), pawn_to_remove);
+                    for (int i = 0; i < pawn_to_remove; i++) {
+                        this.context.getStudentBag().appendAndShuffle(input.getTargetPawn().get());
+                    }
+                    pawn_to_remove=0;
+                } catch (EmptyDiningRoomException e) {
+                    e.printStackTrace();
+                }
             }
+            addUse();
+        }else{
+            throw new InvalidInputException();
         }
-        for(int i=0; i<pawn_to_remove; i++){
-            context.getStudentBag().appendAndShuffle(input.getTargetPawn().get());
-        }
-        addUse();
     }
 
     //test purpose only
