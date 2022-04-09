@@ -94,11 +94,14 @@ public class IslandField implements Serializable {
             IslandGroup joined = new IslandGroup(motherGroup, prevGroup);
             this.groups.remove(prevGroup);
             this.groups.set(this.groups.indexOf(motherGroup), joined);
+            motherNaturePosition = joined;
         }
+        motherGroup = this.getMotherNaturePosition();
         if (motherGroup.isJoinable(nextGroup)) {
             IslandGroup joined = new IslandGroup(motherGroup, nextGroup);
             this.groups.remove(nextGroup);
             this.groups.set(this.groups.indexOf(motherGroup), joined);
+            motherNaturePosition = joined;
         }
     }
 
