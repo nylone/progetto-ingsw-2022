@@ -21,9 +21,9 @@ public class Utils {
         return sublist;
     }
 
-    public static <T> T modularSelection(T element, List<T> group, int movement) {
-        int index = group.indexOf(element);
+    public static <T> T modularSelection(T startingElement, List<T> group, int movement) {
+        int index = group.indexOf(startingElement);
         // todo add exception for element not in list
-        return group.get((index + movement) % group.size());
+        return group.get((index + group.size() + movement) % group.size());
     }
 }
