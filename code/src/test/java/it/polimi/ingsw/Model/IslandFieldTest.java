@@ -17,7 +17,7 @@ public class IslandFieldTest {
         // arrange
         IslandField islandField = new IslandField();
         int initialPosition = islandField.getMotherNaturePosition().getId();
-        int movement = new Random().nextInt();
+        int movement = new Random().nextInt(0, 12);
         // act
         islandField.moveMotherNature(movement);
         // assert
