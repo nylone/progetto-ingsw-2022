@@ -6,7 +6,6 @@ import java.io.Serial;
 During this turn, you take control of any
 number of Professors even if you have the same
 number of Students as the player who currentlly controls them.
-
  */
 public class Card02 extends StatelessEffect {
     @Serial
@@ -16,8 +15,16 @@ public class Card02 extends StatelessEffect {
         super(2, 2, ctx);
     }
 
-    public void Use(CharacterCardInput input){
-        context.setAlternativeTeacherFlag(true);
+    public void Use(CharacterCardInput input) {
+        for(PawnColour pawnColour : PawnColour.values()) {
+            for (PlayerBoard p : context.getPlayerBoards()) {
+                if (p.equals(input.getCaller())) continue;
+                if (p.getDiningRoomCount(pawnColour) == input.getCaller().getDiningRoomCount(pawnColour)
+                        && p.getDiningRoomCount(pawnColour) != 0) {
+                    context.setTeacher(pawnColour, input.getCaller());
+                }
+            }
+        }
         addUse();
     }
 

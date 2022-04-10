@@ -24,7 +24,6 @@ public class GameBoard implements Serializable {
     private static final long serialVersionUID = 101L; // convention: 1 for model, (01 -> 99) for objects
     private final GamePhase gamePhase;
     private boolean increasedInfluenceFlag;
-    private boolean alternativeTeacherFlag;
     private Optional<PawnColour> denyPawnColourInfluence = Optional.empty();
     private final List<Cloud> clouds;
 
@@ -40,7 +39,6 @@ public class GameBoard implements Serializable {
         this.playerTeams = new HashMap<>(); // creates team associations based on number of players
         this.coinReserve = 20-nop; // hp: we assume 20 as amount of available coins just like the real game.
         this.increasedInfluenceFlag = false;
-        this.alternativeTeacherFlag = false;
 
         for (int i = 0; i < nop; i++) {
             this.playerBoards.add(new PlayerBoard(i+1, nop, playerNicknames[i], this.studentBag));
@@ -135,10 +133,6 @@ public class GameBoard implements Serializable {
         teachers.put(teacher, player);
     }
 
-    public void setAlternativeTeacherFlag(boolean alternativeTeacherFlag) {
-        this.alternativeTeacherFlag = alternativeTeacherFlag;
-    }
-
     public void setIncreasedInfluenceFlag(boolean increasedInfluenceFlag) {
         this.increasedInfluenceFlag = increasedInfluenceFlag;
     }
@@ -150,7 +144,6 @@ public class GameBoard implements Serializable {
     // returns the team that holds influence over a particular islandgroup
     public Optional<Integer> influencerOf(IslandGroup ig) {
         // todo aumentare di 2 il conteggio del'influenza quando IncreasedInfluenceFlag è true (effetto carta 8)
-        // todo: influence count deve tenere conto di alternativeTeacherFlag
         Map<PawnColour, Integer> sc = ig.getStudentCount();
         Map<Integer, Integer> ic = new HashMap<>(); // maps the team with the influence count
 
@@ -177,7 +170,6 @@ public class GameBoard implements Serializable {
         Collections.reverse(tbi);
 
         ig.setDenyTowerInfluence(false);
-        setAlternativeTeacherFlag(false);
         switch (tbi.size()) {
             case 0:
                 return Optional.empty();
