@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model;
+package it.polimi.ingsw.Model.Enums;
 
 import java.io.Serial;
 import java.io.Serializable;

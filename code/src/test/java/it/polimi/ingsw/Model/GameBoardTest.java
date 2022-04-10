@@ -2,6 +2,9 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InvalidInputException;
 import it.polimi.ingsw.Misc.Utils;
+import it.polimi.ingsw.Model.Enums.GameMode;
+import it.polimi.ingsw.Model.Enums.PawnColour;
+import it.polimi.ingsw.Model.Enums.TeamID;
 import org.junit.Test;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
@@ -82,13 +85,13 @@ public class GameBoardTest {
         gb_adv_3.setTeacher(PawnColour.BLUE, gb_adv_3.getPlayerBoardByNickname("ari"));
         gb_adv_4.setTeacher(PawnColour.BLUE, gb_adv_4.getPlayerBoardByNickname("ari"));
         // act
-        int actualInfluencer_s2 = gb_sim_2.influencerOf(ig_s2).get();
-        int actualInfluencer_a3 = gb_adv_3.influencerOf(ig_a3).get();
-        int actualInfluencer_a4 = gb_adv_4.influencerOf(ig_a4).get();
+        TeamID actualInfluencer_s2 = gb_sim_2.influencerOf(ig_s2).get();
+        TeamID actualInfluencer_a3 = gb_adv_3.influencerOf(ig_a3).get();
+        TeamID actualInfluencer_a4 = gb_adv_4.influencerOf(ig_a4).get();
         // assert
-        assertEquals(0, actualInfluencer_s2);
-        assertEquals(0, actualInfluencer_a3);
-        assertEquals(0, actualInfluencer_a4);
+        assertEquals(TeamID.ONE, actualInfluencer_s2);
+        assertEquals(TeamID.ONE, actualInfluencer_a3);
+        assertEquals(TeamID.ONE, actualInfluencer_a4);
     }
 
     @Test
@@ -97,7 +100,7 @@ public class GameBoardTest {
         IslandGroup empty = Utils.modularSelection(gb_sim_2.getIslandField().getMotherNaturePosition(),
                 gb_sim_2.getIslandField().getGroups(), 6);
         // act
-        Optional<Integer> actual = gb_sim_2.influencerOf(empty);
+        Optional<TeamID> actual = gb_sim_2.influencerOf(empty);
         // assert
         assertEquals(Optional.empty(), actual);
 
@@ -110,7 +113,7 @@ public class GameBoardTest {
     public void testingInfluenceOnIslandWithSameInfluence() {
         // arrange
         IslandGroup ig = gb_sim_2.getIslandField().getIslandGroupById(6);
-        ig.getIslands().get(0).swapTower(gb_sim_2.getTowerStorageByTeam(1).extractTower());
+        ig.getIslands().get(0).swapTower(gb_sim_2.getTeamMap().getTowerStorage(TeamID.fromInteger(1)).extractTower());
 
         PawnColour studentOnTheIslandAtBeginning;
         if (ig.getStudents().size() != 0) {
@@ -134,9 +137,9 @@ public class GameBoardTest {
             gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getPlayerBoardByNickname("ale"));
         }
         // act
-        int actualInfluencer = gb_sim_2.influencerOf(ig).get();
+        TeamID actualInfluencer = gb_sim_2.influencerOf(ig).get();
         // assert
-        assertEquals(1, actualInfluencer);
+        assertEquals(TeamID.TWO, actualInfluencer);
     }
 
     /**
@@ -153,9 +156,9 @@ public class GameBoardTest {
         gb_sim_2.setTeacher(PawnColour.BLUE, gb_sim_2.getPlayerBoardByNickname("ari"));
         gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getPlayerBoardByNickname("ale"));
         // act
-        int actualInfluencer = gb_sim_2.influencerOf(ig).get();
+        TeamID actualInfluencer = gb_sim_2.influencerOf(ig).get();
         // assert
-        assertEquals(0, actualInfluencer);
+        assertEquals(TeamID.ONE, actualInfluencer);
     }
 
     /**
@@ -173,9 +176,9 @@ public class GameBoardTest {
         gb_sim_2.setTeacher(PawnColour.YELLOW, gb_sim_2.getPlayerBoardByNickname("ari"));
         gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getPlayerBoardByNickname("ale"));
         // act
-        int actualInfluencer = gb_sim_2.influencerOf(islandGroup).get();
+        TeamID actualInfluencer = gb_sim_2.influencerOf(islandGroup).get();
         // assert
-        assertEquals(1, actualInfluencer);
+        assertEquals(TeamID.TWO, actualInfluencer);
 
     }
 }

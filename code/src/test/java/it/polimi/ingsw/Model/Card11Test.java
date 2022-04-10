@@ -3,6 +3,8 @@ import static org.junit.Assert.*;
 
 import it.polimi.ingsw.Exceptions.FullDiningRoomException;
 import it.polimi.ingsw.Exceptions.InvalidInputException;
+import it.polimi.ingsw.Model.Enums.GameMode;
+import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
 public class Card11Test {

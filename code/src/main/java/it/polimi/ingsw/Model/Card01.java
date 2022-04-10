@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InvalidInputException;
+import it.polimi.ingsw.Model.Enums.PawnColour;
+import it.polimi.ingsw.Model.Enums.StateType;
 
 import java.io.Serial;
 import java.util.ArrayList;

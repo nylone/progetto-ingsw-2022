@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.Enums.GameMode;
 import org.junit.Test;
 public class Card03Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");

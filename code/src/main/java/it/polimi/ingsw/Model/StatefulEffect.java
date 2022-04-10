@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.Enums.StateType;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;

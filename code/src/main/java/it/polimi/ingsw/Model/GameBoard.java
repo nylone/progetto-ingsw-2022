@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InvalidInputException;
 import it.polimi.ingsw.Exceptions.NoPawnInCloudException;
+import it.polimi.ingsw.Model.Enums.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,8 +16,7 @@ public class GameBoard implements Serializable {
     private final StudentBag studentBag;
     private final List<PlayerBoard> playerBoards;
     private final Map<PawnColour, PlayerBoard> teachers;
-    private final Map<PlayerBoard, Integer> playerTeams;
-    private final Map<Integer, TowerStorage> towerStorageTeams;
+    private final TeamMapper teamMap;
     private final TurnOrder turnOrder;
     private List<CharacterCard> characterCards;
     private int coinReserve;
@@ -37,23 +37,17 @@ public class GameBoard implements Serializable {
         this.playerBoards = new ArrayList<>();
         this.teachers = new EnumMap<>(PawnColour.class);
         this.turnOrder = new TurnOrder();
-        this.playerTeams = new HashMap<>(); // creates team associations based on number of players
         this.coinReserve = 20-nop; // hp: we assume 20 as amount of available coins just like the real game.
         this.increasedInfluenceFlag = false;
         this.alternativeTeacherFlag = false;
 
         for (int i = 0; i < nop; i++) {
             this.playerBoards.add(new PlayerBoard(i+1, nop, playerNicknames[i], this.studentBag));
-            this.playerTeams.put(this.playerBoards.get(i), i % (nop == 4 ? 2 : nop));
-        } // note: for 4 players the first team is always made up by the first 2 nicknames
-        this.towerStorageTeams = new HashMap<>(); // creates tower storage associations based on number of players
-        for (int i = 0; i < (nop == 4 ? 2 : nop); i++) {
-            this.towerStorageTeams.put(i, new TowerStorage(TowerColour.fromTeamId(i), nop == 3 ? 6 : 8));
-        } // note: for 4 players the first team is always made up by the first 2 nicknames
+        } // add generate player based on nickname and store it
+        this.teamMap = new TeamMapper(this.playerBoards);
         if (this.gameMode.equals(GameMode.ADVANCED)) {
             this.characterCards = CharacterDeckGenerator.generateCardSet(this);
             this.coinReserve = 20 - nop;
-
         }
         clouds = new ArrayList<>(nop);
         //2 players: 2 cloud tiles - 3 players: 3 cloud tiles: 4 players: 4 cloud tiles
@@ -100,10 +94,6 @@ public class GameBoard implements Serializable {
         return increasedInfluenceFlag;
     }
 
-    public TowerStorage getTowerStorageByTeam(int team) {
-        return towerStorageTeams.get(team);
-    }
-
     public StudentBag getStudentBag() {
         return studentBag;
     }
@@ -148,30 +138,30 @@ public class GameBoard implements Serializable {
     }
 
     // returns the team that holds influence over a particular islandgroup
-    public Optional<Integer> influencerOf(IslandGroup ig) {
+    public Optional<TeamID> influencerOf(IslandGroup ig) {
         // todo aumentare di 2 il conteggio del'influenza quando IncreasedInfluenceFlag è true (effetto carta 8)
         // todo: influence count deve tenere conto di alternativeTeacherFlag
         Map<PawnColour, Integer> sc = ig.getStudentCount();
-        Map<Integer, Integer> ic = new HashMap<>(); // maps the team with the influence count
+        Map<TeamID, Integer> ic = new HashMap<>(); // maps the team with the influence count
 
         for (Map.Entry<PawnColour, Integer> e : sc.entrySet()) {
             PawnColour colour = e.getKey();
-            if (!(teachers.get(colour) instanceof PlayerBoard)) { continue; } //
+            if (teachers.get(colour) == null) { continue; } //
             int count = e.getValue();
             if (denyPawnColourInfluence.isPresent()) {
                 if (colour == denyPawnColourInfluence.get()) {
                     continue;
                 }
             }
-            ic.merge(this.playerTeams.get(this.teachers.get(colour)), count, Integer::sum);
+            ic.merge(this.teamMap.getTeamID(this.teachers.get(colour)), count, Integer::sum);
         }
 
         if (!ig.getDenyTowerInfluence()) {
             ig.getTowerColour()
-                    .ifPresent(tc -> ic.merge(tc.getTeamId(), ig.getTowerCount(), Integer::sum));
+                    .ifPresent(tc -> ic.merge(tc.getTeamID(), ig.getTowerCount(), Integer::sum));
         }
 
-        List<Map.Entry<Integer, Integer>> tbi = ic.entrySet().stream() // tbi is team by influence
+        List<Map.Entry<TeamID, Integer>> tbi = ic.entrySet().stream() // tbi is team by influence
                 .sorted(Comparator.comparingInt(Map.Entry::getValue))
                 .collect(Collectors.toCollection(ArrayList::new));
         Collections.reverse(tbi);
@@ -186,7 +176,7 @@ public class GameBoard implements Serializable {
             default: {
                 if (tbi.get(0).getValue() > tbi.get(1).getValue())
                     return Optional.of(tbi.get(0).getKey());
-                else return ig.getTowerColour().flatMap(tc -> Optional.of(tc.getTeamId()));
+                else return ig.getTowerColour().flatMap(tc -> Optional.of(tc.getTeamID()));
             }
         }
     }
@@ -198,14 +188,14 @@ public class GameBoard implements Serializable {
 
     public void actMotherNaturePower(IslandGroup mnp) {
         if(mnp.getNoEntry().isEmpty()) {
-            Optional<Integer> optInfluencer = influencerOf(mnp);
+            Optional<TeamID> optInfluencer = influencerOf(mnp);
             if (optInfluencer.isPresent()) {
-                int newInfluencer = optInfluencer.get();
+                TeamID newInfluencer = optInfluencer.get();
                 if (
                         mnp.getTowerColour().isEmpty() ||
                                 mnp.getTowerColour().get() != TowerColour.fromTeamId(newInfluencer)
                 ) {
-                    mnp.swapTower(this.towerStorageTeams.get(newInfluencer));
+                    mnp.swapTower(this.teamMap.getTowerStorage(newInfluencer));
                 }
             }
             this.islandField.joinGroups();
@@ -213,5 +203,9 @@ public class GameBoard implements Serializable {
             NoEntryTile noEntryTile = mnp.getNoEntry().get();
             noEntryTile.goHome(mnp);
         }
+    }
+
+    public TeamMapper getTeamMap() {
+        return teamMap;
     }
 }

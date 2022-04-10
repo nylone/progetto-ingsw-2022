@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.Enums.GameMode;
+import it.polimi.ingsw.Model.Enums.PawnColour;
+import it.polimi.ingsw.Model.Enums.TeamID;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -31,13 +34,14 @@ public class IslandGroupTest {
     public void testGetStudents() {
         // arrange
         GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo");
+        TeamMapper tm = gb.getTeamMap();
         Island i1 = new Island(2);
         Island i2 = new Island(3);
         i1.addStudent(PawnColour.BLUE);
         i1.addStudent(PawnColour.RED);
         i2.addStudent(PawnColour.GREEN);
-        i1.swapTower(gb.getTowerStorageByTeam(0).extractTower());
-        i2.swapTower(gb.getTowerStorageByTeam(0).extractTower());
+        i1.swapTower(tm.getTowerStorage(TeamID.ONE).extractTower());
+        i2.swapTower(tm.getTowerStorage(TeamID.ONE).extractTower());
         IslandGroup islandGroup1 = new IslandGroup(i1);
         IslandGroup islandGroup2 = new IslandGroup(i2);
         IslandGroup islandGroup = new IslandGroup(islandGroup1, islandGroup2);

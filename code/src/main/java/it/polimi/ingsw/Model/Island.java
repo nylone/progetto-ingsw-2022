@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.Enums.PawnColour;
+import it.polimi.ingsw.Model.Enums.TowerColour;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;

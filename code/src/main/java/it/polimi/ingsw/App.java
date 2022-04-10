@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.Model.Island;
 import it.polimi.ingsw.Model.IslandGroup;
-import it.polimi.ingsw.Model.TowerColour;
+import it.polimi.ingsw.Model.Enums.TowerColour;
 import it.polimi.ingsw.Model.TowerStorage;
 
 /**

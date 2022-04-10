@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InvalidTowerPushException;
+import it.polimi.ingsw.Model.Enums.TowerColour;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

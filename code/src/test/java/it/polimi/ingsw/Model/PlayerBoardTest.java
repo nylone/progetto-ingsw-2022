@@ -4,11 +4,10 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.EmptyDiningRoomException;
 import it.polimi.ingsw.Exceptions.FullDiningRoomException;
 import it.polimi.ingsw.Exceptions.FullEntranceException;
+import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 import static org.junit.Assert.*;
 

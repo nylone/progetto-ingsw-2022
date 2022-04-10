@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.NoPawnInCloudException;
+import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
 import java.util.ArrayList;

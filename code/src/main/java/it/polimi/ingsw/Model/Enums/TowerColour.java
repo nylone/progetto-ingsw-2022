@@ -1,29 +1,29 @@
-package it.polimi.ingsw.Model;
+package it.polimi.ingsw.Model.Enums;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 public enum TowerColour implements Serializable {
-    BLACK(0),
-    WHITE(1),
-    GRAY(2);
+    BLACK(TeamID.ONE),
+    WHITE(TeamID.TWO),
+    GRAY(TeamID.THREE);
 
-    private final int teamId;
+    private final TeamID teamID;
     @Serial
     private static final long serialVersionUID = 132L; // convention: 1 for model, (01 -> 99) for objects
 
-    TowerColour(int teamId) {
-        this.teamId = teamId;
+    TowerColour(TeamID teamId) {
+        this.teamID = teamId;
     }
 
-    public static TowerColour fromTeamId(int id) {
+    public static TowerColour fromTeamId(TeamID tID) {
         for (TowerColour e : TowerColour.values()) {
-            if (e.getTeamId() == id) return e;
+            if (e.getTeamID() == tID) return e;
         }
         return null; // add exception if team id is not found
     }
 
-    public int getTeamId() {
-        return teamId;
+    public TeamID getTeamID() {
+        return teamID;
     }
 }

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model;
 
 import static org.junit.Assert.*;
+
+import it.polimi.ingsw.Model.Enums.GameMode;
 import org.junit.Test;
 
 public class Card06And08Test{
