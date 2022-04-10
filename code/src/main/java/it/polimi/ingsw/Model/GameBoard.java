@@ -60,6 +60,9 @@ public class GameBoard implements Serializable {
         this.gamePhase = GamePhase.SETUP;
     }
 
+    public List<Cloud> getClouds() {
+        return this.clouds;
+    }
 
     public List<CharacterCard> getCharacterCards() {
         return characterCards;

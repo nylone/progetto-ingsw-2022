@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.GameBoard;
-import it.polimi.ingsw.Model.GameMode;
+import it.polimi.ingsw.Model.Enums.*;
 
 import java.util.ArrayList;
 

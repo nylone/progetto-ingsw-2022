@@ -1,4 +1,5 @@
 package it.polimi.ingsw.Model;
+import it.polimi.ingsw.Model.Enums.*;
 
 import it.polimi.ingsw.Exceptions.FullDiningRoomException;
 import org.junit.Test;

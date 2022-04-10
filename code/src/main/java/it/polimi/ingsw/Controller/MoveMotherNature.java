@@ -13,7 +13,7 @@ public class MoveMotherNature extends PlayerAction {
 
     //todo check
     public void executeAction(GameBoard ctx) {
-
+        ctx.moveMotherNature(distanceToMove); //todo by ale: non so se il controller debba fare così :(
     }
 
 

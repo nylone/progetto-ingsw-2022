@@ -14,7 +14,6 @@ public class TeamMapper {
 
     public TeamMapper(List<PlayerBoard> players) {
         this.playerTeamMap  = new HashMap<>();
-        this.towerStorageMap = new HashMap<>();
         int nop = players.size();
         for (int i = 0; i < nop; i++) {
             this.playerTeamMap.put(players.get(i),  TeamID.fromInteger(i % (nop == 4 ? 2 : nop)));

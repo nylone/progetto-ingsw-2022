@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.*;
 
 public class ChooseCloudTile extends PlayerAction {
 
@@ -12,6 +12,6 @@ public class ChooseCloudTile extends PlayerAction {
     }
 
     public void executeAction(GameBoard ctx) {
-
+        Cloud chosenCloud = ctx.getClouds().get(selectedTile);
     }
 }
