@@ -176,7 +176,7 @@ public class GameBoard implements Serializable {
         }
     }
 
-    public void moveMotherNature(int steps) {
+    public void moveAndActMotherNature(int steps) {
         this.islandField.moveMotherNature(steps);
         actMotherNaturePower(this.islandField.getMotherNaturePosition());
     }
