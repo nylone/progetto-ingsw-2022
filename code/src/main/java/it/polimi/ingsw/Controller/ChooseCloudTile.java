@@ -11,7 +11,8 @@ public class ChooseCloudTile extends PlayerAction {
         this.selectedTile = selectedTile;
     }
 
-    public void executeAction(GameBoard ctx) {
-        Cloud chosenCloud = ctx.getClouds().get(selectedTile);
+    @Override
+    protected void execute(GameBoard ctx) {
+
     }
 }

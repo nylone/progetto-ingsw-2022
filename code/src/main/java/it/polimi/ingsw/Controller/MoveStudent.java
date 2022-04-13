@@ -14,7 +14,7 @@ public class MoveStudent extends PlayerAction {
         this.destination = destination;
     }
 
-    public void executeAction(GameBoard ctx) {
+    public void execute(GameBoard ctx) {
 
     }
 }

@@ -1,6 +1,10 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.CharacterCard;
+import it.polimi.ingsw.Model.CharacterCardInput;
+
+import java.util.List;
 
 public class PlayCharacterCard extends PlayerAction {
 
@@ -11,7 +15,13 @@ public class PlayCharacterCard extends PlayerAction {
         this.selectedCard = selectedCard;
     }
 
-    public void executeAction(GameBoard ctx) {
-
+    @Override
+    protected void execute(GameBoard ctx) {
+        //ctx.getCharacterCards().get(this.selectedCard).Use();
     }
+
+   /* @Override
+    protected boolean validate(List<PlayerAction> history, GameBoard ctx) {
+
+    }*/
 }

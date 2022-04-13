@@ -7,7 +7,7 @@ public class EndTurnOfActionPhase extends PlayerAction {
         super(playerBoardId);
     }
 
-    public void executeAction(GameBoard ctx) {
+    public void execute(GameBoard ctx) {
 
     }
 }
