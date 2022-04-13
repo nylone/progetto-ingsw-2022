@@ -26,10 +26,10 @@ public class PlayAssistantCard extends PlayerAction {
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) {
         PlayerBoard currentPlayer = ctx.getTurnOrder().getCurrent();
-        AssistantCard assistantCard = currentPlayer.getAssistantCards()[selectedAssistant];
 
         return super.validate(history,ctx) &&
-               !assistantCard.getUsed() && //true if not used/ false if the card has been used
-                this.selectedAssistant>=0 && this.selectedAssistant<=currentPlayer.getAssistantCards().length-1;
+                this.selectedAssistant>=0 && this.selectedAssistant<=currentPlayer.getAssistantCards().length-1 &&
+               !currentPlayer.getAssistantCards()[selectedAssistant].getUsed(); //true if not used/ false if the card has been used
+
     }
 }

@@ -30,9 +30,9 @@ public class ChooseCloudTile extends PlayerAction {
 
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx){
-        Cloud selectedCloud = ctx.getClouds().get(selectedTile); //get cloud
         return super.validate(history, ctx) &&
-                selectedCloud.getContents().size()>0 && //Selected cloud has not been already picked
-                selectedTile>=0 && selectedTile<= ctx.getClouds().size()-1; //selected a consistent cloud
+                selectedTile>=0 && selectedTile<= ctx.getClouds().size()-1 &&  //selected a consistent cloud
+                ctx.getClouds().get(selectedTile).getContents().size()>0; //Selected cloud has not been already picked
+
     }
 }
