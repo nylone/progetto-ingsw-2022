@@ -29,6 +29,7 @@ public class PlayAssistantCard extends PlayerAction {
         AssistantCard assistantCard = currentPlayer.getAssistantCards()[selectedAssistant];
 
         return super.validate(history,ctx) &&
-               !assistantCard.getUsed(); //true if not used/ false if the card has been used
+               !assistantCard.getUsed() && //true if not used/ false if the card has been used
+                this.selectedAssistant>=0 && this.selectedAssistant<=currentPlayer.getAssistantCards().length-1;
     }
 }

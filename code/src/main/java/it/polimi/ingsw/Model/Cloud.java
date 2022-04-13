@@ -33,7 +33,7 @@ public class Cloud implements Serializable {
         }
     }
 
-    public ArrayList<PawnColour> getContents() throws NoPawnInCloudException {
+    public ArrayList<PawnColour> getContents(){
         return new ArrayList<>(contents);
     }
 
