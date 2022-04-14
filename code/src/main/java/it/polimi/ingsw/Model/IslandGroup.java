@@ -15,15 +15,12 @@ public class IslandGroup implements Serializable {
 
     private final int id;
     private final ArrayList<Island> islands;
-    private Optional<NoEntryTile> noEntry;
-    private boolean denyTowerInfluence;
+    private EffectTracker effects;
 
     public IslandGroup(Island i) {
         this.islands = new ArrayList<>();
         this.id = i.getId();
         this.islands.add(i);
-        this.denyTowerInfluence = false;
-        this.noEntry = Optional.empty();
     }
 
     public IslandGroup(IslandGroup... islandGroups) {
@@ -71,20 +68,12 @@ public class IslandGroup implements Serializable {
         else return 0;
     }
 
-    public boolean getDenyTowerInfluence(){
-        return denyTowerInfluence;
-    }
-
     public int getId() {
         return id;
     }
 
     public ArrayList<Island> getIslands() {
         return new ArrayList<>(islands);
-    }
-
-    public Optional<NoEntryTile> getNoEntry() {
-        return noEntry;
     }
 
     public Map<PawnColour, Integer> getStudentCount() { //the map will contain the colours of the placed pawns with relative counter
@@ -111,16 +100,6 @@ public class IslandGroup implements Serializable {
         return Optional.empty();
     }
 
-    public void setDenyTowerInfluence(boolean b){
-        this.denyTowerInfluence = b;
-    }
-    public void setNoEntry(Optional<NoEntryTile> t){
-        this.noEntry = t;
-    }
-
-    public void resetNoEntry(){
-        this.noEntry = null;
-    }
     public void swapTower(TowerStorage ts) {
         if (ts.getTowerCount() >= this.islands.size()) {
             for (Island i : this.islands) {
@@ -134,8 +113,6 @@ public class IslandGroup implements Serializable {
         return "IslandGroup{" +
                 "id=" + id +
                 ", islands=" + islands +
-                ", noEntry=" + noEntry +
-                ", denyTowerInfluence=" + denyTowerInfluence +
                 '}';
     }
 }

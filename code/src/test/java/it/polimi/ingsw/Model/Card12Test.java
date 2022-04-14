@@ -25,7 +25,7 @@ public class Card12Test {
     }
 
     @Test(expected = InvalidInputException.class)
-    public void checkEmptyInput(){
+    public void checkEmptyInput() {
         PlayerBoard pb2 = gb.getPlayerBoardByNickname("rouge");
         CharacterCardInput input = new CharacterCardInput(pb2);
         card.Use(input);

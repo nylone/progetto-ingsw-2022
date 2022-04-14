@@ -15,6 +15,7 @@ public class GameBoardTest {
     GameBoard gb_sim_2 = new GameBoard(GameMode.SIMPLE, "ari", "ale");
     GameBoard gb_adv_3 = new GameBoard(GameMode.ADVANCED, "ari", "ale", "teo");
     GameBoard gb_adv_4 = new GameBoard(GameMode.ADVANCED, "ari", "ale", "teo", "eriantys");
+
     @Test
     public void testPlayerBoardId() {
         // act
@@ -167,7 +168,7 @@ public class GameBoardTest {
     @Test
     public void testingInfluenceAfterCardEffect() {
         // arrange
-        gb_sim_2.setDenyPawnColourInfluence(Optional.of(PawnColour.YELLOW));
+        gb_sim_2.effects.setByCard09(true, PawnColour.YELLOW);
         IslandGroup islandGroup = gb_sim_2.getIslandField().getIslandGroupById(6);
         islandGroup.getIslands().get(0).addStudent(PawnColour.YELLOW);
         islandGroup.getIslands().get(0).addStudent(PawnColour.YELLOW);

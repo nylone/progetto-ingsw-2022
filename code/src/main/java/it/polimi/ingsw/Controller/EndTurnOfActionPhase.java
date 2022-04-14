@@ -8,6 +8,6 @@ public class EndTurnOfActionPhase extends PlayerAction {
     }
 
     public void execute(GameBoard ctx) {
-
+        // reset effects through EffectTracker
     }
 }

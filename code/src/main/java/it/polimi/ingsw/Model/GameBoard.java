@@ -23,8 +23,7 @@ public class GameBoard implements Serializable {
     @Serial
     private static final long serialVersionUID = 101L; // convention: 1 for model, (01 -> 99) for objects
     private final GamePhase gamePhase;
-    private boolean increasedInfluenceFlag;
-    private Optional<PawnColour> denyPawnColourInfluence = Optional.empty();
+    public EffectTracker effects;
     private final List<Cloud> clouds;
 
 
@@ -37,7 +36,6 @@ public class GameBoard implements Serializable {
         this.teachers = new EnumMap<>(PawnColour.class);
         this.turnOrder = new TurnOrder();
         this.coinReserve = 20-nop; // hp: we assume 20 as amount of available coins just like the real game.
-        this.increasedInfluenceFlag = false;
 
         for (int i = 0; i < nop; i++) {
             this.playerBoards.add(new PlayerBoard(i+1, nop, playerNicknames[i], this.studentBag));
@@ -47,6 +45,7 @@ public class GameBoard implements Serializable {
             this.characterCards = CharacterDeckGenerator.generateCardSet(this);
             this.coinReserve = 20 - nop;
         }
+        effects = new EffectTracker();
         clouds = new ArrayList<>(nop);
         //2 players: 2 cloud tiles - 3 players: 3 cloud tiles: 4 players: 4 cloud tiles
         for(int i = 0; i <= nop; i++){
@@ -91,20 +90,12 @@ public class GameBoard implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    public boolean getIncreasedInfluenceFlag() {
-        return increasedInfluenceFlag;
-    }
-
     public StudentBag getStudentBag() {
         return studentBag;
     }
 
     public TurnOrder getTurnOrder() {
         return turnOrder;
-    }
-
-    public Optional<PawnColour> getDenyPawnColourInfluence() {
-        return denyPawnColourInfluence;
     }
 
     public PlayerBoard getPlayerBoardById(int id) {
@@ -126,14 +117,6 @@ public class GameBoard implements Serializable {
         teachers.put(teacher, player);
     }
 
-    public void setIncreasedInfluenceFlag(boolean increasedInfluenceFlag) {
-        this.increasedInfluenceFlag = increasedInfluenceFlag;
-    }
-
-    public void setDenyPawnColourInfluence(Optional<PawnColour> denyPawnColourInfluence) {
-        this.denyPawnColourInfluence = denyPawnColourInfluence;
-    }
-
     // returns the team that holds influence over a particular islandgroup
     public Optional<TeamID> influencerOf(IslandGroup ig) {
         // todo aumentare di 2 il conteggio del'influenza quando IncreasedInfluenceFlag è true (effetto carta 8)
@@ -144,15 +127,15 @@ public class GameBoard implements Serializable {
             PawnColour colour = e.getKey();
             if (teachers.get(colour) == null) { continue; } //
             int count = e.getValue();
-            if (denyPawnColourInfluence.isPresent()) {
-                if (colour == denyPawnColourInfluence.get()) {
+            if (effects.isCard09Active()) {
+                if (colour == effects.getDeniedPawnColour().get()) {
                     continue;
                 }
             }
             ic.merge(this.teamMap.getTeamID(this.teachers.get(colour)), count, Integer::sum);
         }
 
-        if (!ig.getDenyTowerInfluence()) {
+        if (!effects.islandGroupHasTowerDenied(ig)) {
             ig.getTowerColour()
                     .ifPresent(tc -> ic.merge(tc.getTeamID(), ig.getTowerCount(), Integer::sum));
         }
@@ -162,7 +145,6 @@ public class GameBoard implements Serializable {
                 .collect(Collectors.toCollection(ArrayList::new));
         Collections.reverse(tbi);
 
-        ig.setDenyTowerInfluence(false);
         switch (tbi.size()) {
             case 0:
                 return Optional.empty();
@@ -182,7 +164,7 @@ public class GameBoard implements Serializable {
     }
 
     public void actMotherNaturePower(IslandGroup mnp) {
-        if(mnp.getNoEntry().isEmpty()) {
+        if(effects.islandGroupHasDenyTile(mnp)) {
             Optional<TeamID> optInfluencer = influencerOf(mnp);
             if (optInfluencer.isPresent()) {
                 TeamID newInfluencer = optInfluencer.get();
@@ -194,9 +176,8 @@ public class GameBoard implements Serializable {
                 }
             }
             this.islandField.joinGroups();
-        }else{
-            NoEntryTile noEntryTile = mnp.getNoEntry().get();
-            noEntryTile.goHome(mnp);
+        } else {
+            effects.removeTile(mnp);
         }
     }
 

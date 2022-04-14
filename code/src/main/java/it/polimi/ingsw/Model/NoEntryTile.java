@@ -13,8 +13,7 @@ public class NoEntryTile implements Serializable {
         this.home = card;
     }
 
-    public void goHome(IslandGroup islandGroup) {
-        islandGroup.setNoEntry(Optional.empty()); //remove the noEntryTile from the islandGroup
+    public void goHome() {
         home.tileReset(this);
     }
 

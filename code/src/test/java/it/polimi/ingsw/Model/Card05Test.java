@@ -19,14 +19,12 @@ public class Card05Test {
 
         card05.Use(input);
         assertTrue(card05.getState().size()==3); //3 tiles left after one use
+        assertTrue(gb.effects.islandGroupHasDenyTile(field.getIslandGroupById(1))); //the island group contains the NoEntryTile
 
-        assertTrue(field.getIslandGroupById(1).getNoEntry().isPresent()); //the island group contains the NoEntryTile
-
-        field.getIslandGroupById(1).getNoEntry().get().goHome(field.getIslandGroupById(1));
+        gb.effects.removeTile(field.getIslandGroupById(1));
 
         //force return the NoEntryTile
-        assertTrue(!field.getIslandGroupById(1).getNoEntry().isPresent());
-
+        assertTrue(!gb.effects.islandGroupHasDenyTile(field.getIslandGroupById(1)));
         assertTrue(card05.getState().size()==4); //4 tiles left after the return of the NoEntryTile
     }
     @Test(expected = InvalidInputException.class)
