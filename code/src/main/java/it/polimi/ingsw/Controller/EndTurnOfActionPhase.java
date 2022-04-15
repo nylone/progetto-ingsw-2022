@@ -7,7 +7,7 @@ public class EndTurnOfActionPhase extends PlayerAction {
         super(playerBoardId);
     }
 
-    public void execute(GameBoard ctx) {
+    public void unsafeExecute(GameBoard ctx) {
         // reset effects through EffectTracker
     }
 }
