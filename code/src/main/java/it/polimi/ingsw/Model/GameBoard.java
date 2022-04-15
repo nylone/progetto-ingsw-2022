@@ -164,7 +164,7 @@ public class GameBoard implements Serializable {
     }
 
     public void actMotherNaturePower(IslandGroup mnp) {
-        if(effects.islandGroupHasDenyTile(mnp)) {
+        if(!effects.islandGroupHasDenyTile(mnp)) {
             Optional<TeamID> optInfluencer = influencerOf(mnp);
             if (optInfluencer.isPresent()) {
                 TeamID newInfluencer = optInfluencer.get();

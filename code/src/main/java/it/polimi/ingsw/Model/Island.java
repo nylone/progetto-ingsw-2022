@@ -14,14 +14,13 @@ public class Island implements Serializable {
 
     private final int id;
     private final ArrayList<PawnColour> students;
-    private final boolean isLocked;
     private Tower tower;
 
     public Island(int id) {
         this.id = id;
         this.students = new ArrayList<>();
         this.tower = null;
-        this.isLocked = false;
+       // this.isLocked = false;
     }
 
     public int getId() {
@@ -30,10 +29,6 @@ public class Island implements Serializable {
 
     public ArrayList<PawnColour> getStudents() {
         return new ArrayList<>(students);
-    }
-
-    public boolean isLocked() {
-        return isLocked;
     }
 
     public void addStudent(StudentBag bag) {
@@ -60,7 +55,6 @@ public class Island implements Serializable {
                 "id=" + id +
                 ", students=" + students +
                 ", tower=" + tower +
-                ", isLocked=" + isLocked +
                 '}';
     }
 }

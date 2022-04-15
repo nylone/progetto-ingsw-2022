@@ -15,7 +15,6 @@ public class IslandGroup implements Serializable {
 
     private final int id;
     private final ArrayList<Island> islands;
-    private EffectTracker effects;
 
     public IslandGroup(Island i) {
         this.islands = new ArrayList<>();
