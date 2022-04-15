@@ -15,13 +15,13 @@ public class Card06And08Test{
         CharacterCardInput input = new CharacterCardInput(pb);
         card06.Use(input);
 
-        assertTrue(gb.effects.islandGroupHasTowerDenied(gb.getIslandField().getMotherNaturePosition()));
+        assertTrue(gb.effects.getDenyTowerInfluence());
     }
     @Test
     public void checkUse08(){
         CharacterCardInput input = new CharacterCardInput(pb);
         card08.Use(input);
 
-        assertTrue(gb.effects.isCard08Active());
+        assertTrue(gb.effects.getIncreasedInfluenceIsActive());
     }
 }

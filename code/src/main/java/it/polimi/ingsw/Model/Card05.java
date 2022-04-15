@@ -39,7 +39,7 @@ public class Card05 extends StatefulEffect {
         for (IslandGroup ig : this.context.getIslandField().getGroups()) {
             Optional<IslandGroup> tg = ig.find(ti); // Islandgroup containing targetIsland
             if (tg.isPresent()) {
-                context.effects.setByCard05(tg.get(), tiles.remove(0) );
+                tg.get().setNoEntry(tiles.remove(0));
                 break;
             }
             addUse();

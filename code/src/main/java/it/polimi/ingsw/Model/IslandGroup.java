@@ -15,11 +15,13 @@ public class IslandGroup implements Serializable {
 
     private final int id;
     private final ArrayList<Island> islands;
+    private List<NoEntryTile> noEntryTiles;
 
     public IslandGroup(Island i) {
         this.islands = new ArrayList<>();
         this.id = i.getId();
         this.islands.add(i);
+        this.noEntryTiles = new ArrayList<>();
     }
 
     public IslandGroup(IslandGroup... islandGroups) {
@@ -75,6 +77,10 @@ public class IslandGroup implements Serializable {
         return new ArrayList<>(islands);
     }
 
+    public List<NoEntryTile> getNoEntryTiles() {
+        return noEntryTiles;
+    }
+
     public Map<PawnColour, Integer> getStudentCount() { //the map will contain the colours of the placed pawns with relative counter
         Map<PawnColour, Integer> studentCount = new EnumMap<>(PawnColour.class);
         for (PawnColour p : this.getStudents()) {
@@ -99,6 +105,18 @@ public class IslandGroup implements Serializable {
         return Optional.empty();
     }
 
+    public void setNoEntry(NoEntryTile tile) {
+        this.noEntryTiles.add(tile);
+        //set IsLocked true to the first not locked island
+        islands.stream().filter(i -> !i.getIsLocked()).findFirst().get().setIsLocked(true);
+    }
+
+    public void resetNoEntry(){
+        this.noEntryTiles.remove(0);
+        //set IsLocked false to the first not locked island
+        islands.stream().filter(i -> i.getIsLocked()).findFirst().get().setIsLocked(false);
+    }
+
     public void swapTower(TowerStorage ts) {
         if (ts.getTowerCount() >= this.islands.size()) {
             for (Island i : this.islands) {
@@ -112,6 +130,7 @@ public class IslandGroup implements Serializable {
         return "IslandGroup{" +
                 "id=" + id +
                 ", islands=" + islands +
+                "noEntryTiles"+ noEntryTiles +
                 '}';
     }
 }

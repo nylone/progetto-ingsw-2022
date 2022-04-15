@@ -127,15 +127,16 @@ public class GameBoard implements Serializable {
             PawnColour colour = e.getKey();
             if (teachers.get(colour) == null) { continue; } //
             int count = e.getValue();
-            if (effects.isCard09Active()) {
+            if (effects.getDenyPawnColour()) {
                 if (colour == effects.getDeniedPawnColour().get()) {
+                    effects.setDeniedPawnColour(false, colour); //reset DenyPawnColour flag to false
                     continue;
                 }
             }
             ic.merge(this.teamMap.getTeamID(this.teachers.get(colour)), count, Integer::sum);
         }
 
-        if (!effects.islandGroupHasTowerDenied(ig)) {
+        if (!effects.getDenyTowerInfluence()) {
             ig.getTowerColour()
                     .ifPresent(tc -> ic.merge(tc.getTeamID(), ig.getTowerCount(), Integer::sum));
         }
@@ -144,6 +145,7 @@ public class GameBoard implements Serializable {
                 .sorted(Comparator.comparingInt(Map.Entry::getValue))
                 .collect(Collectors.toCollection(ArrayList::new));
         Collections.reverse(tbi);
+        this.effects.setDenyTowerInfluence(false);
 
         switch (tbi.size()) {
             case 0:
@@ -164,7 +166,7 @@ public class GameBoard implements Serializable {
     }
 
     public void actMotherNaturePower(IslandGroup mnp) {
-        if(!effects.islandGroupHasDenyTile(mnp)) {
+        if(mnp.getNoEntryTiles().isEmpty()) {
             Optional<TeamID> optInfluencer = influencerOf(mnp);
             if (optInfluencer.isPresent()) {
                 TeamID newInfluencer = optInfluencer.get();
@@ -177,7 +179,9 @@ public class GameBoard implements Serializable {
             }
             this.islandField.joinGroups();
         } else {
-            effects.removeTile(mnp);
+              NoEntryTile noEntryTile = mnp.getNoEntryTiles().get(0);
+              mnp.resetNoEntry();
+              noEntryTile.goHome();
         }
     }
 
