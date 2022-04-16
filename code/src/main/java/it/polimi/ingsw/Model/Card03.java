@@ -10,7 +10,6 @@ her movement will also be resolved.
 import it.polimi.ingsw.Exceptions.InvalidInputException;
 
 import java.io.Serial;
-import java.util.Optional;
 
 public class Card03 extends StatelessEffect {
     @Serial

@@ -5,7 +5,6 @@ import it.polimi.ingsw.Model.Enums.StateType;
 
 import java.io.Serial;
 import java.util.ArrayList;
-import java.util.Optional;
 
 /*In Setup, put the 4 No Entry tiles on this card.
 EFFECT: Place a No Entrytile on an Island of your choice.

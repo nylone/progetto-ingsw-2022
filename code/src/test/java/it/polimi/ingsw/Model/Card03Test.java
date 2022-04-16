@@ -5,22 +5,19 @@ import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
-import java.util.Optional;
-
 import static org.junit.Assert.*;
 public class Card03Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
     Card03 card = new Card03(gb);
 
     @Test
-    public void checkUse(){
-        Optional<IslandGroup> tg = Optional.empty();
+    public void checkUse() {
         PlayerBoard pb1 = gb.getPlayerBoardByNickname("ari");
         PlayerBoard pb2 = gb.getPlayerBoardByNickname("teo");
-        Island island = gb.getIslandField().getIslandById(5);
-        for(IslandGroup ig : gb.getIslandField().getGroups()){
-             if(ig.contains(island)){ break;}
-        }
+        IslandGroup ig = gb.getIslandField().getIslandGroupById(5);
+        Island island = ig.getIslands().get(0);
+        IslandGroup expectedMotherNaturePosition = gb.getIslandField().getMotherNaturePosition();
+
         island.addStudent(PawnColour.BLUE);
         island.addStudent(PawnColour.BLUE);
         island.addStudent(PawnColour.BLUE);
@@ -33,8 +30,8 @@ public class Card03Test {
         input.setTargetIsland(island);
         card.Use(input);
 
-        assertTrue(tg.get().getTowerColour().get().equals(gb.getTeamMap().getTowerStorage(pb1).getColour()));
-
+        assertTrue(ig.getTowerColour().get().equals(gb.getTeamMap().getTowerStorage(pb1).getColour()));
+        assertEquals(expectedMotherNaturePosition, gb.getIslandField().getMotherNaturePosition());
     }
 
     @Test(expected = InvalidInputException.class)
@@ -43,5 +40,4 @@ public class Card03Test {
         CharacterCardInput input = new CharacterCardInput(pb1);
         card.Use(input);
     }
-
 }
