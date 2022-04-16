@@ -11,7 +11,7 @@ import org.junit.Test;
 public class Card09Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
     Card09 card09 = new Card09(gb);
-    PlayerBoard pb = new PlayerBoard(1, 1, "ari", gb.getStudentBag());
+    PlayerBoard pb = new PlayerBoard(1, 2, "ari", gb.getStudentBag());
 
     @Test(expected = InvalidInputException.class)
     public void UseException(){

@@ -36,8 +36,13 @@ public class PlayerBoard implements Serializable {
             diningRoom.put(p, 0);
         }
         this.entrance = new ArrayList<>();
-        for (int i = 0; i < (numOfPlayers == 3 ? 9 : 7); i++) { // todo check playernum for consistency
-            entrance.add(studentBag.extract());
+        if(numOfPlayers>=2 && numOfPlayers <=4) {
+            for (int i = 0; i < (numOfPlayers == 3 ? 9 : 7); i++) {
+                entrance.add(studentBag.extract());
+            }
+        }
+        else{
+            throw new RuntimeException("Inconsistent number of players");
         }
         this.maximum_entrance_students = this.entrance.size();
     }

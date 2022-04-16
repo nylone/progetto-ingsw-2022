@@ -10,7 +10,7 @@ import org.junit.Test;
 public class Card11Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
     Card11 card11 = new Card11(gb);
-    PlayerBoard pb = new PlayerBoard(1, 1, "ari", gb.getStudentBag());
+    PlayerBoard pb = new PlayerBoard(1, 2, "ari", gb.getStudentBag());
 
     @Test
     public void checkUse(){

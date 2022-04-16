@@ -16,6 +16,8 @@ public class GameBoardTest {
     GameBoard gb_adv_3 = new GameBoard(GameMode.ADVANCED, "ari", "ale", "teo");
     GameBoard gb_adv_4 = new GameBoard(GameMode.ADVANCED, "ari", "ale", "teo", "eriantys");
 
+
+
     @Test
     public void testPlayerBoardId() {
         // act
@@ -181,5 +183,10 @@ public class GameBoardTest {
         // assert
         assertEquals(TeamID.TWO, actualInfluencer);
 
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testingIncostintentNumOfPlyaers(){
+        GameBoard gb_adv_5 = new GameBoard(GameMode.SIMPLE, "ari", "ale", "teo", "polimi", "java");
     }
 }
