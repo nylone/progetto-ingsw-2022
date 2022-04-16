@@ -19,8 +19,7 @@ public class Card03Test {
         PlayerBoard pb2 = gb.getPlayerBoardByNickname("teo");
         Island island = gb.getIslandField().getIslandById(5);
         for(IslandGroup ig : gb.getIslandField().getGroups()){
-             tg = ig.find(island);
-             if(tg.isPresent()){ break;}
+             if(ig.contains(island)){ break;}
         }
         island.addStudent(PawnColour.BLUE);
         island.addStudent(PawnColour.BLUE);

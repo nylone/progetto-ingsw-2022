@@ -168,7 +168,7 @@ public class GameBoardTest {
     @Test
     public void testingInfluenceAfterCardEffect() {
         // arrange
-        gb_sim_2.effects.setDeniedPawnColour(true, PawnColour.YELLOW);
+        gb_sim_2.effects.setDeniedPawnColour(PawnColour.YELLOW);
         IslandGroup islandGroup = gb_sim_2.getIslandField().getIslandGroupById(6);
         islandGroup.getIslands().get(0).addStudent(PawnColour.YELLOW);
         islandGroup.getIslands().get(0).addStudent(PawnColour.YELLOW);

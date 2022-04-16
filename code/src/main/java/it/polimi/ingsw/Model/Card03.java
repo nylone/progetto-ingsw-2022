@@ -23,9 +23,8 @@ public class Card03 extends StatelessEffect {
     public void Use(CharacterCardInput input) {
         Island ti = input.getTargetIsland().orElseThrow(InvalidInputException::new);
         for(IslandGroup ig : this.context.getIslandField().getGroups()){
-            Optional<IslandGroup> tg = ig.find(ti); // Islandgroup containing targetIsland
-            if (tg.isPresent()) {
-                context.actMotherNaturePower(tg.get());
+            if (ig.contains(ti)) {
+                context.actMotherNaturePower(ig);
                 break;
             }
         }

@@ -127,16 +127,15 @@ public class GameBoard implements Serializable {
             PawnColour colour = e.getKey();
             if (teachers.get(colour) == null) { continue; } //
             int count = e.getValue();
-            if (effects.getDenyPawnColour()) {
+            if (effects.isPawnColourDenied()) {
                 if (colour == effects.getDeniedPawnColour().get()) {
-                    effects.setDeniedPawnColour(false, colour); //reset DenyPawnColour flag to false
                     continue;
                 }
             }
             ic.merge(this.teamMap.getTeamID(this.teachers.get(colour)), count, Integer::sum);
         }
 
-        if (!effects.getDenyTowerInfluence()) {
+        if (!effects.isTowerInfluenceDenied()) {
             ig.getTowerColour()
                     .ifPresent(tc -> ic.merge(tc.getTeamID(), ig.getTowerCount(), Integer::sum));
         }
@@ -145,7 +144,8 @@ public class GameBoard implements Serializable {
                 .sorted(Comparator.comparingInt(Map.Entry::getValue))
                 .collect(Collectors.toCollection(ArrayList::new));
         Collections.reverse(tbi);
-        this.effects.setDenyTowerInfluence(false);
+
+        this.effects.reset();
 
         switch (tbi.size()) {
             case 0:
@@ -179,9 +179,7 @@ public class GameBoard implements Serializable {
             }
             this.islandField.joinGroups();
         } else {
-              NoEntryTile noEntryTile = mnp.getNoEntryTiles().get(0);
               mnp.resetNoEntry();
-              noEntryTile.goHome();
         }
     }
 

@@ -15,13 +15,13 @@ public class Card06And08Test{
         CharacterCardInput input = new CharacterCardInput(pb);
         card06.Use(input);
 
-        assertTrue(gb.effects.getDenyTowerInfluence());
+        assertTrue(gb.effects.isTowerInfluenceDenied());
     }
     @Test
     public void checkUse08(){
         CharacterCardInput input = new CharacterCardInput(pb);
         card08.Use(input);
 
-        assertTrue(gb.effects.getIncreasedInfluenceIsActive());
+        assertTrue(gb.effects.isInfluenceIncreased());
     }
 }

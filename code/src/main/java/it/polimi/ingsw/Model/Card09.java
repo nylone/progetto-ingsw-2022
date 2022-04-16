@@ -20,7 +20,7 @@ public class Card09 extends StatelessEffect {
         if(input.getTargetPawn().isEmpty()){
             throw new InvalidInputException("No pawn in input");
         }else {
-            this.context.effects.setDeniedPawnColour(true, input.getTargetPawn().get());
+            this.context.effects.setDeniedPawnColour(input.getTargetPawn().get());
             addUse();
         }
     }

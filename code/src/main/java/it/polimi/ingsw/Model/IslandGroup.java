@@ -15,13 +15,13 @@ public class IslandGroup implements Serializable {
 
     private final int id;
     private final ArrayList<Island> islands;
-    private List<NoEntryTile> noEntryTiles;
+    private Stack<NoEntryTile> noEntryTiles;
 
     public IslandGroup(Island i) {
         this.islands = new ArrayList<>();
         this.id = i.getId();
         this.islands.add(i);
-        this.noEntryTiles = new ArrayList<>();
+        this.noEntryTiles = new Stack<>();
     }
 
     public IslandGroup(IslandGroup... islandGroups) {
@@ -96,25 +96,21 @@ public class IslandGroup implements Serializable {
         }
         return islandGroupStudents;
     }
-    public Optional<IslandGroup> find(Island i){
-        for(Island island : islands){
-            if(island.getId()==i.getId()){
-                return Optional.of(this);
+    public boolean contains(Island i){
+        for(Island island : islands) {
+            if(island.equals(i)){
+                return true;
             }
         }
-        return Optional.empty();
+        return false;
     }
 
-    public void setNoEntry(NoEntryTile tile) {
+    public void addNoEntry(NoEntryTile tile) {
         this.noEntryTiles.add(tile);
-        //set IsLocked true to the first not locked island
-        islands.stream().filter(i -> !i.getIsLocked()).findFirst().get().setIsLocked(true);
     }
 
     public void resetNoEntry(){
-        this.noEntryTiles.remove(0);
-        //set IsLocked false to the first not locked island
-        islands.stream().filter(i -> i.getIsLocked()).findFirst().get().setIsLocked(false);
+        this.noEntryTiles.remove(0).goHome();
     }
 
     public void swapTower(TowerStorage ts) {
