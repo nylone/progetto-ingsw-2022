@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model;
 // todo create interface to make the turn order modifiable only by the playerboards and readable from the game handler
 
+import it.polimi.ingsw.Exceptions.DuplicateAssistantCardException;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
@@ -28,7 +30,11 @@ public class TurnOrder implements Serializable {
                 this.selectedCards.put(p, ac);
                 this.setNext();
             } else {
-                //todo throw exception for already used card
+                try {
+                    throw new DuplicateAssistantCardException();
+                } catch (DuplicateAssistantCardException e) {
+                    e.printStackTrace();
+                }
             }
         } else {
             // todo throw exception for out of turn access
