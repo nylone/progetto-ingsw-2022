@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InvalidInputException;
 import it.polimi.ingsw.Exceptions.NoParamaterException;
+import it.polimi.ingsw.Exceptions.UnjoinableGroupsException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 
@@ -36,16 +37,23 @@ public class IslandGroup implements Serializable {
                         .orElseThrow(() -> new InvalidInputException())
                         .getId();
             } else {
-                throw new RuntimeException(); // todo implement unjoinablegroups exception
+                try {
+                    throw new UnjoinableGroupsException();
+                } catch (UnjoinableGroupsException e) {
+                    e.printStackTrace();
+                    this.id=0;
+                    this.islands = null;
+                }
             }
         }else{
             try {
                 throw new NoParamaterException();
             } catch (NoParamaterException e) {
                 e.printStackTrace();
+                this.id=0;
+                this.islands = null;
             }
-            this.id=0;
-            this.islands = null;
+
         }
     }
 

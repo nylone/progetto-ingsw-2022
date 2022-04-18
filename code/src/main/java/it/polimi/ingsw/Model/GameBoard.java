@@ -140,6 +140,11 @@ public class GameBoard implements Serializable {
                     .ifPresent(tc -> ic.merge(tc.getTeamID(), ig.getTowerCount(), Integer::sum));
         }
 
+        if(effects.isInfluenceIncreased()){
+            TeamID currentTeam = this.teamMap.getTeamID(turnOrder.getCurrent());
+            ic.merge(currentTeam, 2, Integer::sum);
+        }
+
         List<Map.Entry<TeamID, Integer>> tbi = ic.entrySet().stream() // tbi is team by influence
                 .sorted(Comparator.comparingInt(Map.Entry::getValue))
                 .collect(Collectors.toCollection(ArrayList::new));
