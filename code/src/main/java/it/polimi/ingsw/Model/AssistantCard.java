@@ -27,7 +27,7 @@ public class AssistantCard implements Serializable {
         return used;
     }
 
-    public void use() {
+    public void setUsed() {
         this.used = true;
     }
 

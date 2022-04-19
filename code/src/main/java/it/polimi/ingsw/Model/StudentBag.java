@@ -1,13 +1,12 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class StudentBag implements Serializable {
     @Serial
@@ -22,7 +21,7 @@ public class StudentBag implements Serializable {
                 studentBag.add(colour);
             }
         }
-        Collections.shuffle(this.studentBag, new Random(System.currentTimeMillis()));
+        Utils.shuffle(this.studentBag);
     }
 
     public PawnColour extract() {
@@ -37,6 +36,6 @@ public class StudentBag implements Serializable {
 
     public void appendAndShuffle(PawnColour colour) {
         this.studentBag.add(colour);
-        Collections.shuffle(this.studentBag, new Random(System.currentTimeMillis()));
+        Utils.shuffle(this.studentBag);
     }
 }

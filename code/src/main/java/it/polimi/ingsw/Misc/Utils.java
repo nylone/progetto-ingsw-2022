@@ -1,10 +1,15 @@
 package it.polimi.ingsw.Misc;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class Utils {
+
+    public static <T> void shuffle(List<T> coll) {
+        Collections.shuffle(coll, new Random(System.currentTimeMillis()));
+    }
 
     public static <T> T random(List<T> list) {
         Random random = new Random();

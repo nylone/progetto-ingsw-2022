@@ -22,7 +22,6 @@ public class GameBoard implements Serializable {
     private int coinReserve;
     @Serial
     private static final long serialVersionUID = 101L; // convention: 1 for model, (01 -> 99) for objects
-    private final GamePhase gamePhase;
     public EffectTracker effects;
     private final List<Cloud> clouds;
 
@@ -141,7 +140,7 @@ public class GameBoard implements Serializable {
         }
 
         if(effects.isInfluenceIncreased()){
-            TeamID currentTeam = this.teamMap.getTeamID(turnOrder.getCurrent());
+            TeamID currentTeam = this.teamMap.getTeamID(turnOrder.getCurrentPlayer());
             ic.merge(currentTeam, 2, Integer::sum);
         }
 
