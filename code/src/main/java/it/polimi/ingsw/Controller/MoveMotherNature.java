@@ -18,7 +18,7 @@ public class MoveMotherNature extends PlayerAction {
 
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) {
-        PlayerBoard currentPlayer = ctx.getTurnOrder().getCurrent();
+        PlayerBoard currentPlayer = ctx.getTurnOrder().getCurrentPlayer();
         Optional<AssistantCard> optionalAssistantCard = ctx.getTurnOrder()
                 .getSelectedCard(currentPlayer);
 

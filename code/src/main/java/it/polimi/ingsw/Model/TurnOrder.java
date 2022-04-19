@@ -21,22 +21,27 @@ public class TurnOrder implements Serializable {
     private static final long serialVersionUID = 134L; // convention: 1 for model, (01 -> 99) for objects
 
     public TurnOrder(@NotNull PlayerBoard... playerBoards) {
-        // add all players to their cards map and set them to not skipped
-        this.selectedCards = new HashMap<>(playerBoards.length);
-        this.skippedPlayers = new HashMap<>(playerBoards.length);
-        for (PlayerBoard pb :
-                playerBoards) {
-            this.selectedCards.put(pb, Optional.empty());
-            this.skippedPlayers.put(pb, false);
+        if (playerBoards.length >= 2 && playerBoards.length <= 4) {
+            // add all players to their cards map and set them to not skipped
+            this.selectedCards = new HashMap<>(playerBoards.length);
+            this.skippedPlayers = new HashMap<>(playerBoards.length);
+            for (PlayerBoard pb :
+                    playerBoards) {
+                this.selectedCards.put(pb, Optional.empty());
+                this.skippedPlayers.put(pb, false);
+            }
+            // create turn order
+            this.currentTurnOrder = Arrays.stream(playerBoards).collect(Collectors.toList());
+            Utils.shuffle(currentTurnOrder); // starting order for first turn is randomized
+            // set current turn position
+            this.currentTurnPosition = 0;
+            // set game phase
+            this.gamePhase = GamePhase.SETUP;
+        } else {
+            throw new RuntimeException("Inconsistent amount of Playerboards");
         }
-        // create turn order
-        this.currentTurnOrder = Arrays.stream(playerBoards).collect(Collectors.toList());
-        Utils.shuffle(currentTurnOrder); // starting order for first turn is randomized
-        // set current turn position
-        this.currentTurnPosition = 0;
-        // set game phase
-        this.gamePhase = GamePhase.SETUP;
     }
+
 
     // cycles game-phases
     private void stepNextGamePhase() {

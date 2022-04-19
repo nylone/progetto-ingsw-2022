@@ -33,12 +33,12 @@ public class GameBoard implements Serializable {
         this.studentBag = new StudentBag(24);
         this.playerBoards = new ArrayList<>();
         this.teachers = new EnumMap<>(PawnColour.class);
-        this.turnOrder = new TurnOrder();
         this.coinReserve = 20-nop; // hp: we assume 20 as amount of available coins just like the real game.
 
         for (int i = 0; i < nop; i++) {
             this.playerBoards.add(new PlayerBoard(i+1, nop, playerNicknames[i], this.studentBag));
         } // add generate player based on nickname and store it
+        this.turnOrder = new TurnOrder(playerBoards.toArray(new PlayerBoard[0]));
         this.teamMap = new TeamMapper(this.playerBoards);
         if (this.gameMode.equals(GameMode.ADVANCED)) {
             this.characterCards = CharacterDeckGenerator.generateCardSet(this);
@@ -141,7 +141,6 @@ public class GameBoard implements Serializable {
             TeamID currentTeam = this.teamMap.getTeamID(turnOrder.getCurrentPlayer());
             ic.merge(currentTeam, 2, Integer::sum);
         }
-
         List<Map.Entry<TeamID, Integer>> tbi = ic.entrySet().stream() // tbi is team by influence
                 .sorted(Comparator.comparingInt(Map.Entry::getValue))
                 .collect(Collectors.toCollection(ArrayList::new));

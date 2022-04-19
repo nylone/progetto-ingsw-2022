@@ -28,7 +28,7 @@ public abstract class PlayerAction {
 
     // can be used in validate to make sure the turn is correct
     boolean isCorrectTurn(GameBoard ctx) {
-        return ctx.getTurnOrder().getCurrent().getId() == this.getPlayerBoardId();
+        return ctx.getTurnOrder().getCurrentPlayer().getId() == this.getPlayerBoardId();
     }
 
     // can be used in validate to make sure the action is not yet in the history
