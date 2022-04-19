@@ -54,8 +54,6 @@ public class GameBoard implements Serializable {
                 clouds.get(i).fill((ArrayList<PawnColour>) studentBag.multiple_extraction(nop == 3 ? 4 : 3));
             } catch (NoPawnInCloudException e) { System.out.println(e.getMessage()); }
         }
-
-        this.gamePhase = GamePhase.SETUP;
     }
 
     public List<Cloud> getClouds() {

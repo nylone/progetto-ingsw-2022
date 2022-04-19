@@ -20,7 +20,7 @@ public class TurnOrder implements Serializable {
     @Serial
     private static final long serialVersionUID = 134L; // convention: 1 for model, (01 -> 99) for objects
 
-    public TurnOrder(PlayerBoard... playerBoards) {
+    public TurnOrder(@NotNull PlayerBoard... playerBoards) {
         // add all players to their cards map and set them to not skipped
         this.selectedCards = new HashMap<>(playerBoards.length);
         this.skippedPlayers = new HashMap<>(playerBoards.length);
@@ -55,28 +55,28 @@ public class TurnOrder implements Serializable {
         return gamePhase;
     }
 
-    public boolean isOwnTurn(PlayerBoard pb) {
+    public boolean isOwnTurn(@NotNull PlayerBoard pb) {
         return getCurrentPlayer() == pb;
     }
 
     // this function verifies if the playerboard passed to the obj is valid
-    private boolean isPlayerSubscribed(PlayerBoard pb) {
+    private boolean isPlayerSubscribed(@NotNull PlayerBoard pb) {
         return skippedPlayers.containsKey(pb);
     }
 
-    public void addPlayerToSkip(PlayerBoard pb) {
+    public void addPlayerToSkip(@NotNull PlayerBoard pb) {
         if (isPlayerSubscribed(pb)) {
             this.skippedPlayers.put(pb, true);
         }
     }
 
-    public void removePlayerToSkip(PlayerBoard pb) {
+    public void removePlayerToSkip(@NotNull PlayerBoard pb) {
         if (isPlayerSubscribed(pb)) {
             this.skippedPlayers.put(pb, false);
         }
     }
 
-    public boolean isPlayerSkipped(PlayerBoard pb) {
+    public boolean isPlayerSkipped(@NotNull PlayerBoard pb) {
         return skippedPlayers.get(pb);
     }
 
@@ -87,26 +87,42 @@ public class TurnOrder implements Serializable {
                 .toList(); // returns unmodifiable List
     }
 
-    public Optional<AssistantCard> getSelectedCard(PlayerBoard pb) {
+    public Optional<AssistantCard> getSelectedCard(@NotNull PlayerBoard pb) {
         return this.selectedCards.get(pb);
+    }
+
+    public List<AssistantCard> getSelectedCards() {
+        return selectedCards.values().stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
     }
 
     private void cleanSelectedCards() {
         selectedCards.replaceAll((k, v) -> Optional.empty());
     }
 
-    public void setSelectedCard(PlayerBoard pb, @NotNull AssistantCard ac) {
+    private boolean isAlreadyInSelection(@NotNull AssistantCard ac) {
+        return getSelectedCards().stream()
+                .anyMatch(selected -> selected.getPriority() == ac.getPriority());
+    }
+
+    private boolean canOnlyPlayDuplicates(@NotNull AssistantCard[] acDeck) {
+        return Arrays.stream(acDeck).allMatch(this::isAlreadyInSelection);
+    }
+
+    public void setSelectedCard(@NotNull PlayerBoard pb, @NotNull AssistantCard ac, @NotNull AssistantCard[] acDeck) {
         if (getGamePhase() == GamePhase.SETUP &&
                 isOwnTurn(pb)) {
-            if (!ac.getUsed()) {
-                ac.setUsed();
-                this.selectedCards.put(pb, Optional.of(ac));
-            } else {
-                try {
-                    throw new DuplicateAssistantCardException();
-                } catch (DuplicateAssistantCardException e) {
-                    e.printStackTrace();
+            if (!isAlreadyInSelection(ac) || canOnlyPlayDuplicates(acDeck)) {
+                if (!ac.getUsed()) {
+                    ac.setUsed();
+                    this.selectedCards.put(pb, Optional.of(ac));
+                } else {
+                    // todo exception for already used card
                 }
+            } else {
+                // todo exception for duplicate card
             }
         } else {
             // todo throw exception for out of turn access
@@ -131,11 +147,16 @@ public class TurnOrder implements Serializable {
     }
 
     public void commitTurnOrder() {
-        currentTurnOrder = selectedCards.entrySet().stream()
-                .filter(es -> es.getValue().isPresent())
-                .sorted(Comparator.comparingInt(t -> t.getValue().get().getPriority()))
+        // the starting elements of playersInOrder are players that have not been skipped
+        // the last elements of playersInOrder are all the players that have been skipped
+        this.currentTurnOrder = selectedCards.entrySet().stream()
+                .sorted(Comparator.comparingInt(t -> // sort based on priority
+                        t.getValue()
+                                .flatMap(ac -> Optional.of(
+                                        ac.getPriority())) // if a card was selected extract the priority
+                                .orElse(100))) // otherwise use a priority level that is higher than any other card
                 .map(Map.Entry::getKey)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public List<PlayerBoard> getCurrentTurnOrder() {
