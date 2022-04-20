@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Model.Enums.*;
 
-import it.polimi.ingsw.Exceptions.FullDiningRoomException;
+import it.polimi.ingsw.Exceptions.toremove.FullDiningRoomException;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 

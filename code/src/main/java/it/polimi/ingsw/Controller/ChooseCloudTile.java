@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Exceptions.FullEntranceException;
-import it.polimi.ingsw.Exceptions.NoPawnInCloudException;
+import it.polimi.ingsw.Exceptions.toremove.FullEntranceException;
+import it.polimi.ingsw.Exceptions.toremove.NoPawnInCloudException;
 import it.polimi.ingsw.Model.Cloud;
 import it.polimi.ingsw.Model.GameBoard;
 

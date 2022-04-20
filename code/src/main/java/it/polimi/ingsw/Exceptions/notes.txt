@@ -1,0 +1,13 @@
+Exceptions:
+ContainerException                      | Exceptions regarding container operations
+    EmptyContainerException             | a container was found empty where it shouldn't have been
+    FullContainerException              | a container could not be expanded to accommodate more elements
+    InvalidContainerIndexException      | a container was accessed at an index that was forbidden
+
+InputValidationException                | Exceptions regarding input validation and sanitization
+    DuplicateElementException           | the input was supposed to be unique
+    InvalidElementException             | the element in question was found to be inadequate
+
+OperationException                      | Exceptions regarding the execution and abrupt termination of tasks
+    ForbiddenOperationException         | a task was found to be forbidden
+    FailedOperationException            | an operation failed even after validation

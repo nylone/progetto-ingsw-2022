@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.InvalidInputException;
-import it.polimi.ingsw.Exceptions.NoParamaterException;
-import it.polimi.ingsw.Exceptions.UnjoinableGroupsException;
+import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
+import it.polimi.ingsw.Exceptions.toremove.NoParamaterException;
+import it.polimi.ingsw.Exceptions.toremove.UnjoinableGroupsException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 
@@ -33,8 +33,8 @@ public class IslandGroup implements Serializable {
                     islands.addAll(i.getIslands());
                 }
                 this.id = Arrays.stream(islandGroups)
-                        .min(Comparator.comparingInt(islandGroup -> islandGroup.getId()))
-                        .orElseThrow(() -> new InvalidInputException())
+                        .min(Comparator.comparingInt(IslandGroup::getId))
+                        .orElseThrow(InvalidInputException::new)
                         .getId();
             } else {
                 try {

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.EmptyDiningRoomException;
-import it.polimi.ingsw.Exceptions.FullDiningRoomException;
-import it.polimi.ingsw.Exceptions.FullEntranceException;
+import it.polimi.ingsw.Exceptions.toremove.EmptyDiningRoomException;
+import it.polimi.ingsw.Exceptions.toremove.FullDiningRoomException;
+import it.polimi.ingsw.Exceptions.toremove.FullEntranceException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;

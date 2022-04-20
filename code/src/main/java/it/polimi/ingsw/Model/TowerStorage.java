@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model;
 
 
-import it.polimi.ingsw.Exceptions.InvalidTowerPushException;
+import it.polimi.ingsw.Exceptions.toremove.InvalidTowerPushException;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 
 import java.io.Serial;

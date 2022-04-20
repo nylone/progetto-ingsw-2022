@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Exceptions;
+package it.polimi.ingsw.Exceptions.toremove;
 
 public class InvalidInputException extends RuntimeException {
     public InvalidInputException() {

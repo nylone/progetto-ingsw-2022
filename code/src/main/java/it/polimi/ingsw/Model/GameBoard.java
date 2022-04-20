@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.InvalidInputException;
-import it.polimi.ingsw.Exceptions.NoPawnInCloudException;
+import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
+import it.polimi.ingsw.Exceptions.toremove.NoPawnInCloudException;
 import it.polimi.ingsw.Model.Enums.*;
 
 import java.io.Serial;

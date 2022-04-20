@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.InvalidInputException;
+import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
 import static org.junit.Assert.*;
 
 import it.polimi.ingsw.Model.Enums.GameMode;

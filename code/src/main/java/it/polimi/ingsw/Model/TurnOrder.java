@@ -1,5 +1,4 @@
 package it.polimi.ingsw.Model;
-import it.polimi.ingsw.Exceptions.DuplicateAssistantCardException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GamePhase;
 import org.jetbrains.annotations.NotNull;
