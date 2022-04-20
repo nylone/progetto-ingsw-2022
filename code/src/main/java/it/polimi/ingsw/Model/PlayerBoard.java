@@ -19,7 +19,7 @@ public class PlayerBoard implements Serializable {
     private final AssistantCard[] assistantCards;
     private final Map<PawnColour, Integer> diningRoom;
     private final ArrayList<PawnColour> entrance;
-    private final int maximum_entrance_students;
+    private final int entranceSize;
     private final int id;
     private int coinBalance;
 
@@ -35,16 +35,16 @@ public class PlayerBoard implements Serializable {
         for (PawnColour p : PawnColour.values()) {
             diningRoom.put(p, 0);
         }
-        this.entrance = new ArrayList<>();
+        this.entranceSize = numOfPlayers == 3 ? 9 : 7;
+        this.entrance = new ArrayList<>(entranceSize);
         if(numOfPlayers>=2 && numOfPlayers <=4) {
-            for (int i = 0; i < (numOfPlayers == 3 ? 9 : 7); i++) {
+            for (int i = 0; i < entranceSize; i++) {
                 entrance.add(studentBag.extract());
             }
         }
         else{
             throw new RuntimeException("Inconsistent number of players");
         }
-        this.maximum_entrance_students = this.entrance.size();
     }
 
     public AssistantCard[] getAssistantCards() {
@@ -84,6 +84,7 @@ public class PlayerBoard implements Serializable {
             }
         }
     }
+
     public void removeStudentFromDiningRoom(PawnColour colour, int amount) throws EmptyDiningRoomException {
         if(amount>0) {
             if (this.getDiningRoomCount(colour) == 0) {
@@ -93,13 +94,31 @@ public class PlayerBoard implements Serializable {
             }
         }
     }
+
     public void addStudentsToEntrance(ArrayList<PawnColour> students) throws FullEntranceException {
-        if (this.entrance.size() + students.size() > maximum_entrance_students) { // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
+        if (this.entrance.size() + students.size() > entranceSize) {
+            // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
             throw new FullEntranceException();
         } else {
             this.entrance.addAll(students);
         }
     }
+
+    // todo add exceptions
+    public void removeStudentFromEntrance(int pos) throws Exception {
+        if (pos < 0 && pos >= this.entranceSize) {
+            throw new IndexOutOfBoundsException();
+        } else if (this.entrance.get(pos) != null) {
+            this.entrance.remove(pos);
+        } else {
+            throw new Exception(); // todo exception is invalid cell (empty cell)
+        }
+    }
+
+    public int getEntranceSpaceLeft() {
+       return entranceSize - entrance.size();
+    }
+
     public boolean PayCharacterEffect(int id){ //this method checks if the CharacterCard can be activated, true --> gameBoard activates the CharacterCard / false--> GameBoard doesn't activate the CharacterCard
         if(this.coinBalance >= id) {
             coinBalance-= id;

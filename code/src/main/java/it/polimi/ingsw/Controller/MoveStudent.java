@@ -39,7 +39,11 @@ public class MoveStudent extends PlayerAction {
                 .getEntranceStudents().get(this.selectedEntrancePosition);
         PlayerBoard pb = ctx.getPlayerBoardById(this.getPlayerBoardId());
         // set entrance position to null
-        pb.getEntranceStudents().set(this.selectedEntrancePosition, null);
+        try {
+            pb.removeStudentFromEntrance(selectedEntrancePosition);
+        } catch (Exception e) { // todo handle exceptions better
+            e.printStackTrace();
+        }
         switch (this.destination.getDestinationType()) {
             case ISLAND -> {
                 try {

@@ -20,8 +20,9 @@ public class ChooseCloudTile extends PlayerAction {
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) {
         return super.validate(history, ctx) &&
                 selectedTile >= 0 && selectedTile <= ctx.getClouds().size() - 1 &&  //selected a consistent cloud
-                ctx.getClouds().get(selectedTile).getContents().size() > 0; //Selected cloud has not been already picked
-
+                ctx.getClouds().get(selectedTile).getContents().size() > 0 && //Selected cloud has not been already picked
+                ctx.getTurnOrder().getCurrentPlayer().getEntranceSpaceLeft() >= ctx.getClouds().get(selectedTile).getContents().size();
+                // check that entrance is not full
     }
 
     @Override
