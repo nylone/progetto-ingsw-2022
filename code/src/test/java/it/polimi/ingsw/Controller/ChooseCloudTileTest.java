@@ -28,7 +28,22 @@ public class ChooseCloudTileTest {
     }
 
     @Test
-    public void fullEntranceShouldRaiseException() {
+    public void fullEntranceShouldPreventActionExecution() {
+        // arrange
+        GameHandler gh = new GameHandler(GameMode.SIMPLE);
+        GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
+        PlayerBoard currentPlayer = gameBoard.getTurnOrder().getCurrentPlayer();
+        int selectedCloud = Utils.random(gameBoard.getClouds()).getId();
+        ChooseCloudTile action = new ChooseCloudTile(currentPlayer.getId(), selectedCloud);
+        // act
+        action.safeExecute(gh.getHistory(), gameBoard);
+        // assert
+        assertTrue(gameBoard.getClouds().get(selectedCloud).getContents().size() == 3);
+        assertTrue(currentPlayer.getEntranceStudents().size() == 7);
+    }
+
+    @Test
+    public void fullEntranceShouldLogExceptionInUnsafeEnvironment() {
         // arrange
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
         PlayerBoard currentPlayer = gameBoard.getTurnOrder().getCurrentPlayer();
@@ -37,8 +52,6 @@ public class ChooseCloudTileTest {
         // act
         action.unsafeExecute(gameBoard);
         // assert
-        assertTrue(gameBoard.getClouds().get(selectedCloud).getContents().size() == 3);
         assertTrue(currentPlayer.getEntranceStudents().size() == 7);
     }
-
 }
