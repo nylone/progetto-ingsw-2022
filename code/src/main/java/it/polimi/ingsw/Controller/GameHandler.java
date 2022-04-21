@@ -16,6 +16,10 @@ public class GameHandler {
         this.history = new ArrayList<PlayerAction>(6);
     }
 
+    public List<PlayerAction> getHistory() {
+        return history;
+    }
+
     public void addPlayer(String nickname) {
         //todo
     }
