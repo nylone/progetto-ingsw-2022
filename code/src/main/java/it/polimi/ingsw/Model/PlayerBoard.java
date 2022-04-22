@@ -26,8 +26,8 @@ public class PlayerBoard implements Serializable {
     public PlayerBoard(int id, int numOfPlayers, String nickname, StudentBag studentBag) {
         this.nickname = nickname;
         this.assistantCards = new AssistantCard[10];
-        for (int i = 0; i < 10; i++) {
-            assistantCards[i] = new AssistantCard(i);
+        for (int i = 1; i <= 10; i++) {
+            assistantCards[i-1] = new AssistantCard(i);
         }
         this.coinBalance = 1;
         this.id = id;

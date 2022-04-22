@@ -12,7 +12,7 @@ public class PlayAssistantCard extends PlayerAction {
 
     public PlayAssistantCard(int playerBoardId, int selectedAssistant) {
         super(playerBoardId);
-        this.selectedAssistant = selectedAssistant;
+        this.selectedAssistant = selectedAssistant-1;
     }
 
     public void unsafeExecute(GameBoard ctx) {
