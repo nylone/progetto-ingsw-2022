@@ -17,6 +17,11 @@ public class MoveMotherNature extends PlayerAction {
     }
 
     @Override
+    protected void unsafeExecute(GameBoard ctx) {
+        ctx.moveAndActMotherNature(distanceToMove);
+    }
+
+    @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) {
         PlayerBoard currentPlayer = ctx.getTurnOrder().getCurrentPlayer();
         Optional<AssistantCard> optionalAssistantCard = ctx.getTurnOrder()
@@ -28,8 +33,4 @@ public class MoveMotherNature extends PlayerAction {
                 distanceToMove <= optionalAssistantCard.get().getMaxMovement();
     }
 
-    @Override
-    protected void unsafeExecute(GameBoard ctx) {
-        ctx.moveAndActMotherNature(distanceToMove);
-    }
 }

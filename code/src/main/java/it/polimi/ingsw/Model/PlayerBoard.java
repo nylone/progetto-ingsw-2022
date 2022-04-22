@@ -63,6 +63,10 @@ public class PlayerBoard implements Serializable {
         return diningRoom.get(colour);
     }
 
+    public int getEntranceSize() {
+        return entranceSize;
+    }
+
     public ArrayList<PawnColour> getEntranceStudents() {
         return entrance;
     }
@@ -72,6 +76,7 @@ public class PlayerBoard implements Serializable {
     }
 
     public String getNickname() { return nickname; }
+
 
 
     public void addStudentToDiningRoom(PawnColour colour) throws FullDiningRoomException {
@@ -119,12 +124,9 @@ public class PlayerBoard implements Serializable {
        return entranceSize - entrance.size();
     }
 
-    public boolean PayCharacterEffect(int id){ //this method checks if the CharacterCard can be activated, true --> gameBoard activates the CharacterCard / false--> GameBoard doesn't activate the CharacterCard
-        if(this.coinBalance >= id) {
-            coinBalance-= id;
-            return true;
-        }else {
-            return false;
+    public void PayCharacterEffect(int cost) { //this method checks if the CharacterCard can be activated, true --> gameBoard activates the CharacterCard / false--> GameBoard doesn't activate the CharacterCard
+        if (this.coinBalance >= cost) {
+            this.coinBalance -= cost;
         }
     }
 

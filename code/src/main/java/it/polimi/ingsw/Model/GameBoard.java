@@ -118,6 +118,11 @@ public class GameBoard implements Serializable {
         teachers.put(teacher, player);
     }
 
+    //add coins to balance
+    public void addToCoinReserve(int coins){
+        this.coinReserve += coins;
+    }
+
     // returns the team that holds influence over a particular islandgroup
     public Optional<TeamID> influencerOf(IslandGroup ig) {
         // todo aumentare di 2 il conteggio del'influenza quando IncreasedInfluenceFlag è true (effetto carta 8)
