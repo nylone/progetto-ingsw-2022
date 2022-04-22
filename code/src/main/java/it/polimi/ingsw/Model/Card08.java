@@ -14,7 +14,7 @@ public class Card08 extends StatelessEffect {
     }
 
     public void Use(CharacterCardInput input) {
-        context.effects.enableIncreasedInfluence();
+        context.getEffects().enableIncreasedInfluence();
         addUse();
     }
 

@@ -16,7 +16,7 @@ public class Card06And08Test{
         CharacterCardInput input = new CharacterCardInput(pb);
         card06.Use(input);
 
-        assertTrue(gb.effects.isTowerInfluenceDenied());
+        assertTrue(gb.getEffects().isTowerInfluenceDenied());
     }
     @Test
     public void checkUse08(){

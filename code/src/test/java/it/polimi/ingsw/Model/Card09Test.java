@@ -27,6 +27,6 @@ public class Card09Test {
 
         card09.Use(input);
 
-        assertTrue(gb.effects.getDeniedPawnColour().get().equals(p));
+        assertTrue(gb.getEffects().getDeniedPawnColour().get().equals(p));
     }
 }
