@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.util.Optional;
@@ -9,7 +10,7 @@ public class CharacterCardInput {
 
     private Island targetIsland;
     private PawnColour targetPawn;
-    private PawnColour[][] targetPawnPairs;
+    private Pair<PawnColour, PawnColour>[] targetPawnPairs;
     private final PlayerBoard caller;
 
     public CharacterCardInput(PlayerBoard caller) {
@@ -29,7 +30,7 @@ public class CharacterCardInput {
         else return Optional.of(targetPawn);
     }
 
-    public Optional<PawnColour[][]> getTargetPawnPairs() {
+    public Optional<Pair<PawnColour, PawnColour>[]> getTargetPawnPairs() {
         if(this.targetPawnPairs==null) return Optional.empty();
         else return Optional.of(targetPawnPairs);
     }
@@ -43,7 +44,7 @@ public class CharacterCardInput {
         this.targetPawn = targetPawn;
     }
 
-    public void setTargetPawnPairs(PawnColour[][] targetPawnPairs) {
+    public void setTargetPawnPairs(Pair<PawnColour, PawnColour>[] targetPawnPairs) {
         this.targetPawnPairs = targetPawnPairs;
     }
 }

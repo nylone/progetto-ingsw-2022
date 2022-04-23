@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
-import it.polimi.ingsw.Model.Enums.*;
+
+import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
 
@@ -16,8 +17,8 @@ public class Card02 extends StatelessEffect {
         super(2, 2, ctx);
     }
 
-    public void Use(CharacterCardInput input) {
-        for(PawnColour pawnColour : PawnColour.values()) {
+    public void checkInput(CharacterCardInput input) {
+        for (PawnColour pawnColour : PawnColour.values()) {
             for (PlayerBoard p : context.getPlayerBoards()) {
                 if (p.equals(input.getCaller())) continue;
                 if (p.getDiningRoomCount(pawnColour) == input.getCaller().getDiningRoomCount(pawnColour)

@@ -33,7 +33,7 @@ public class Card05 extends StatefulEffect {
         return stateType;
     }
 
-    public void Use(CharacterCardInput input) {
+    public void checkInput(CharacterCardInput input) {
         Island ti = input.getTargetIsland().orElseThrow(InvalidInputException::new);
         for (IslandGroup ig : this.context.getIslandField().getGroups()) {
             if (ig.contains(ti)) {
@@ -44,7 +44,7 @@ public class Card05 extends StatefulEffect {
         }
     }
 
-    public void tileReset(NoEntryTile tile){
+    public void tileReset(NoEntryTile tile) {
         this.tiles.add(tile);
     }
 

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Exceptions.toremove.FullDiningRoomException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -34,33 +33,21 @@ public class MoveStudent extends PlayerAction {
     }
 
     @Override
-    protected void unsafeExecute(GameBoard ctx) {
+    protected void unsafeExecute(GameBoard ctx) throws Exception {
         PawnColour toMove = ctx.getPlayerBoardById(this.getPlayerBoardId())
                 .getEntranceStudents().get(this.selectedEntrancePosition);
         PlayerBoard pb = ctx.getPlayerBoardById(this.getPlayerBoardId());
         // set entrance position to null
-        try {
             pb.removeStudentFromEntrance(selectedEntrancePosition);
-        } catch (Exception e) { // todo handle exceptions better
-            e.printStackTrace();
-        }
-        switch (this.destination.getDestinationType()) {
-            case ISLAND -> {
-                try {
+            switch (this.destination.getDestinationType()) {
+                case ISLAND -> {
                     int id = this.destination.getIslandID();
                     ctx.getIslandField().getIslandById(id)
                             .addStudent(toMove);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-            case DININGROOM -> {
-                try {
+                case DININGROOM -> {
                     pb.addStudentToDiningRoom(toMove);
-                } catch (FullDiningRoomException e) {
-                    e.printStackTrace();
                 }
             }
-        }
     }
 }

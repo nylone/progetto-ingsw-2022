@@ -8,6 +8,7 @@ import it.polimi.ingsw.Model.Enums.StateType;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 /*
 In Setup, draw 6 Students and place them on this card
 EFFECT: you may take up to 3 students from this card and replace them with the same number of Students
@@ -21,7 +22,7 @@ public class Card07 extends StatefulEffect {
 
     public Card07(GameBoard ctx) {
         super(7, 1, StateType.PAWNCOLOUR, ctx);
-        for(int i=0; i<6; i++){
+        for (int i = 0; i < 6; i++) {
             this.students[i] = ctx.getStudentBag().extract();
         }
     }
@@ -34,10 +35,10 @@ public class Card07 extends StatefulEffect {
         return stateType;
     }
 
-    public void Use(CharacterCardInput input) {
-        if(!input.getTargetPawnPairs().isPresent()){
+    public void checkInput(CharacterCardInput input) {
+        if (!input.getTargetPawnPairs().isPresent()) {
             throw new InvalidInputException();
-        }else{
+        } else {
             if (input.getTargetPawnPairs().get()[0].length <= 3 && input.getTargetPawnPairs().get()[1].length <= 3) {
                 //convention of input.targetPawnPairs ---> index 0 students from PlayerBoard/ index 1 students from Card
                 removeFromCard(input.getTargetPawnPairs().get()[1]);
@@ -55,19 +56,19 @@ public class Card07 extends StatefulEffect {
                     ex.printStackTrace();
                 }
                 addUse();
-            }else{
+            } else {
                 throw new InvalidInputException("More than 3 pairs");
             }
         }
     }
 
-    private void removeFromCard(PawnColour[] pawns){
-        int cont=0;
-        for(int i=0; i<6; i++){
-            if(this.students[i].equals(pawns[cont])){
-                this.students[i]=null;
+    private void removeFromCard(PawnColour[] pawns) {
+        int cont = 0;
+        for (int i = 0; i < 6; i++) {
+            if (this.students[i].equals(pawns[cont])) {
+                this.students[i] = null;
                 cont++;
-                if(cont==pawns.length) break;
+                if (cont == pawns.length) break;
             }
         }
     }

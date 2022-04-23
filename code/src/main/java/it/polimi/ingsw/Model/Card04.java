@@ -15,7 +15,7 @@ public class Card04 extends StatelessEffect {
         super(4, 1, ctx);
     }
 
-    public void Use(CharacterCardInput input) {
+    public void checkInput(CharacterCardInput input) {
         //todo
         addUse();
     }

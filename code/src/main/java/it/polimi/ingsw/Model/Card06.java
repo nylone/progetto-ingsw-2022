@@ -13,7 +13,7 @@ public class Card06 extends StatelessEffect {
         super(6, 3, ctx);
     }
 
-    public void Use(CharacterCardInput input) {
+    public void checkInput(CharacterCardInput input) {
         context.getEffects().enableDenyTowerInfluence();
         addUse();
     }

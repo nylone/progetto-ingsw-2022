@@ -31,32 +31,31 @@ public class Card01 extends StatefulEffect {
         return stateType;
     }
 
-    public void addStudent(PawnColour p){ //add PawnColour into first empty position
-        for(int i=0; i<4; i++){
-            if(this.students[i] == null){
+    public void addStudent(PawnColour p) { //add PawnColour into first empty position
+        for (int i = 0; i < 4; i++) {
+            if (this.students[i] == null) {
                 this.students[i] = p;
                 break;
             }
         }
     }
 
-    public PawnColour getStudent(int i){
-        if(0 <= i && i < 4) {
+    public PawnColour getStudent(int i) {
+        if (0 <= i && i < 4) {
             PawnColour student = this.students[i];
             this.students[i] = null;
             return student;
-        }
-        else throw new InvalidInputException();
+        } else throw new InvalidInputException();
     }
 
-    public void Use(CharacterCardInput input) {
-        if(!input.getTargetIsland().isPresent()||!input.getTargetPawn().isPresent()){
+    public void checkInput(CharacterCardInput input) {
+        if (!input.getTargetIsland().isPresent() || !input.getTargetPawn().isPresent()) {
             throw new InvalidInputException();
-        }else {
+        } else {
             input.getTargetIsland().get().addStudent(input.getTargetPawn().get());
             addUse();
-            for(int i=0; i<4; i++){
-                if(this.students[i]== null){
+            for (int i = 0; i < 4; i++) {
+                if (this.students[i] == null) {
                     this.students[i] = context.getStudentBag().extract();
                     break;
                 }

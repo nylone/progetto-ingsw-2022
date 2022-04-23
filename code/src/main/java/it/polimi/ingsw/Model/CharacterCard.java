@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.InputValidationException;
+import it.polimi.ingsw.Model.Enums.PawnColour;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -20,17 +23,25 @@ public abstract class CharacterCard implements Serializable {
     }
 
 
-    public int getId() {
+    public final int getId() {
         return this.id;
     }
-    public int getCost() {
+    public final int getCost() {
         return this.timeUsed > 0 ? this.cost + 1 : this.cost;
     }
-    public int getTimeUsed() {
+    public final int getTimeUsed() {
         return this.timeUsed;
     }
-    public void addUse() {this.timeUsed++;}
+    private void addUse() {this.timeUsed++;}
 
-    public abstract void Use(CharacterCardInput input);
-
+    public abstract boolean checkInput(CharacterCardInput input) throws InputValidationException;
+    protected abstract void unsafeApplyEffect(CharacterCardInput input) throws Exception;
+    public final void unsafeUseCard(CharacterCardInput input) {
+        try { // we should never get an exception now, if we do we crash
+            unsafeApplyEffect(input);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        addUse();
+    }
 }

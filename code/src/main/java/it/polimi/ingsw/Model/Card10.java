@@ -1,12 +1,18 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.toremove.FullDiningRoomException;
-import it.polimi.ingsw.Exceptions.toremove.FullEntranceException;
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
+import it.polimi.ingsw.Exceptions.GenericInputValidationException;
+import it.polimi.ingsw.Exceptions.InputValidationException;
+import it.polimi.ingsw.Exceptions.InvalidElementException;
+import it.polimi.ingsw.Misc.Pair;
+import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static it.polimi.ingsw.Constants.*;
 
 /*
 EFFECT: You may exchange up to 2 Students between your entrance and your Dining Room
@@ -19,27 +25,59 @@ public class Card10 extends StatelessEffect {
         super(10, 1, ctx);
     }
 
-    public void Use(CharacterCardInput input) {
-        //convention of input.targetPawnPairs ---> index 0 students from Entrance/ index 1 students from DiningRoom
-        //assuming that students have already been removed from Entrance and DiningRoom when the input has been created
-        if(!input.getTargetPawnPairs().isPresent()){
-            throw new InvalidInputException();
-        }else {
-            if (input.getTargetPawnPairs().get()[0].length <= 2 && input.getTargetPawnPairs().get()[0].length <= 2 && input.getTargetPawnPairs().get()[0].length==input.getTargetPawnPairs().get()[1].length) {
-                try {
-                    input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawnPairs().get()[1])));
-                } catch (FullEntranceException ex) {
-                    ex.printStackTrace();
-                }
-                try {
-                    for(int i=0; i<input.getTargetPawnPairs().get()[1].length; i++){
-                        input.getCaller().addStudentToDiningRoom(input.getTargetPawnPairs().get()[0][i]);
-                    }
-                } catch (FullDiningRoomException ex) {
-                    ex.printStackTrace();
-                }
-                addUse();
-            }else{ throw new InvalidInputException("more than 2 pawns"); }
+    public boolean checkInput(CharacterCardInput input) throws InputValidationException {
+        //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from diningroom
+        Optional<Pair<PawnColour, PawnColour>[]> optionalPawnPair = input.getTargetPawnPairs();
+        // make sure that:
+        if (
+                optionalPawnPair.isEmpty() || // target pawn pairs was set as parameter
+                        optionalPawnPair.get().length == 0 || // target pawn pairs is not empty
+                        optionalPawnPair.get().length > 2 || // target pawn pairs are not over the pair limit of 2 swaps
+                        Arrays.stream(optionalPawnPair.get()).anyMatch(p -> p.getFirst() == null || p.getSecond() == null) // no null values in pair
+        ) {
+            // in case throw exception for invalid element in input
+            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
+        }
+        // explode pawnpairs into respective arrays of elements
+        Pair<PawnColour, PawnColour>[] pawnPairs = optionalPawnPair.get();
+        List<PawnColour> fromEntrance = new ArrayList<>(pawnPairs.length);
+        // get the playerboard to operate on
+        for (Pair<PawnColour, PawnColour> p : pawnPairs) {
+            fromEntrance.add(p.getFirst());
+        }
+        PlayerBoard playerBoard = input.getCaller();
+
+        // validate size of entrance
+        if (playerBoard.getEntranceSpaceLeft() < pawnPairs.length) {
+            throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
+                    CONTAINER_NAME_ENTRANCE + "can't contain " + pawnPairs.length
+                            + " element's without overflowing.");
+        }
+        // validate size of dining room
+        if (!playerBoard.canDiningRoomFit(fromEntrance)) {
+            throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
+                    CONTAINER_NAME_DININGROOM + "can't contain " + pawnPairs.length
+                            + "elements without overflowing on one of its lanes.");
+        }
+        return true; // all checks passed, return true
+    }
+
+    @Override
+    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
+        // execute the card effect now that we know nothing can go wrong
+        // explode pawnpairs into respective arrays of elements
+        Pair<PawnColour, PawnColour>[] pawnPairs = input.getTargetPawnPairs().get();
+        List<PawnColour> fromEntrance = new ArrayList<>(pawnPairs.length);
+        List<PawnColour> fromDiningRoom = new ArrayList<>(pawnPairs.length);
+        // get the playerboard to operate on
+        for (Pair<PawnColour, PawnColour> p : pawnPairs) {
+            fromEntrance.add(p.getFirst());
+            fromDiningRoom.add(p.getSecond());
+        }
+        PlayerBoard playerBoard = input.getCaller();
+        playerBoard.addStudentsToEntrance(fromDiningRoom);
+        for (PawnColour student : fromEntrance) {
+            playerBoard.addStudentToDiningRoom(student);
         }
     }
 

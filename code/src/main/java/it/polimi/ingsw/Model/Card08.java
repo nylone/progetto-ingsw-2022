@@ -13,7 +13,7 @@ public class Card08 extends StatelessEffect {
         super(8, 2, ctx);
     }
 
-    public void Use(CharacterCardInput input) {
+    public void checkInput(CharacterCardInput input) {
         context.getEffects().enableIncreasedInfluence();
         addUse();
     }

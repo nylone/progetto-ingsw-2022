@@ -1,16 +1,13 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.toremove.EmptyDiningRoomException;
-import it.polimi.ingsw.Exceptions.toremove.FullDiningRoomException;
-import it.polimi.ingsw.Exceptions.toremove.FullEntranceException;
-import it.polimi.ingsw.Model.Enums.PawnColour;
+import it.polimi.ingsw.Exceptions.*;
+import it.polimi.ingsw.Model.Enums.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.*;
+
+import static it.polimi.ingsw.Constants.*;
 
 public class PlayerBoard implements Serializable {
     @Serial
@@ -78,10 +75,9 @@ public class PlayerBoard implements Serializable {
     public String getNickname() { return nickname; }
 
 
-
-    public void addStudentToDiningRoom(PawnColour colour) throws FullDiningRoomException {
-        if (this.diningRoom.get(colour) != null && this.diningRoom.get(colour) == 10) {
-            throw new FullDiningRoomException();
+    public void addStudentToDiningRoom(PawnColour colour) throws FullContainerException, InvalidElementException {
+        if (this.diningRoom.get(colour) == 10) {
+            throw new FullContainerException(CONTAINER_NAME_DININGROOM);
         } else {
             this.diningRoom.merge(colour, 1, Integer::sum);
             if (this.diningRoom.get(colour) % 3 == 0) {
@@ -90,38 +86,42 @@ public class PlayerBoard implements Serializable {
         }
     }
 
-    public void removeStudentFromDiningRoom(PawnColour colour, int amount) throws EmptyDiningRoomException {
+    public void removeStudentFromDiningRoom(PawnColour colour, int amount) throws EmptyContainerException {
         if(amount>0) {
             if (this.getDiningRoomCount(colour) == 0) {
-                throw new EmptyDiningRoomException("No students of that colour in DiningRoom");
+                throw new EmptyContainerException(CONTAINER_NAME_DININGROOM);
             } else {
                 this.diningRoom.merge(colour, -amount, Integer::sum);
             }
         }
     }
 
-    public void addStudentsToEntrance(ArrayList<PawnColour> students) throws FullEntranceException {
-        if (this.entrance.size() + students.size() > entranceSize) {
-            // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
-            throw new FullEntranceException();
-        } else {
-            this.entrance.addAll(students);
+    public boolean canDiningRoomFit(List<PawnColour> students) {
+        Map<PawnColour, Integer> inputCount = new HashMap<>(5);
+        students.forEach(s -> inputCount.merge(s, 1, Integer::sum));
+        for (Map.Entry<PawnColour, Integer> entry: inputCount.entrySet()) {
+            if (entry.getValue() + getDiningRoomCount(entry.getKey()) > 10) return false;
         }
+        return true;
     }
 
-    // todo add exceptions
-    public void removeStudentFromEntrance(int pos) throws Exception {
-        if (pos < 0 && pos >= this.entranceSize) {
-            throw new IndexOutOfBoundsException();
-        } else if (this.entrance.get(pos) != null) {
-            this.entrance.remove(pos);
-        } else {
-            throw new Exception(); // todo exception is invalid cell (empty cell)
+    public void addStudentsToEntrance(List<PawnColour> students) throws FullContainerException {
+        if (this.entrance.size() + students.size() > entranceSize) {
+            // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
+            throw new FullContainerException(CONTAINER_NAME_ENTRANCE);
         }
+        this.entrance.addAll(students);
+    }
+
+    public void removeStudentFromEntrance(int pos) throws InvalidContainerIndexException {
+        if (pos < 0 && pos >= this.entranceSize && this.entrance.get(pos)==null) {
+            throw new InvalidContainerIndexException(CONTAINER_NAME_ENTRANCE);
+        }
+        this.entrance.remove(pos);
     }
 
     public int getEntranceSpaceLeft() {
-       return entranceSize - entrance.size();
+        return entranceSize - entrance.size();
     }
 
     public void PayCharacterEffect(int cost) { //this method checks if the CharacterCard can be activated, true --> gameBoard activates the CharacterCard / false--> GameBoard doesn't activate the CharacterCard

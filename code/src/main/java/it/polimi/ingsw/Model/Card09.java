@@ -16,10 +16,10 @@ public class Card09 extends StatelessEffect {
         super(9, 3, ctx);
     }
 
-    public void Use(CharacterCardInput input) {
-        if(input.getTargetPawn().isEmpty()){
+    public void checkInput(CharacterCardInput input) {
+        if (input.getTargetPawn().isEmpty()) {
             throw new InvalidInputException("No pawn in input");
-        }else {
+        } else {
             this.context.getEffects().setDeniedPawnColour(input.getTargetPawn().get());
             addUse();
         }

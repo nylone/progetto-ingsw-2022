@@ -20,8 +20,8 @@ public class Card12 extends StatelessEffect {
         super(12, 3, ctx);
     }
 
-    public void Use(CharacterCardInput input) {
-        if(input.getTargetPawn().isPresent()) {
+    public void checkInput(CharacterCardInput input) {
+        if (input.getTargetPawn().isPresent()) {
             int pawn_to_remove = 0;
             for (PlayerBoard p : this.context.getPlayerBoards()) {
                 pawn_to_remove += Math.min(3, p.getDiningRoomCount(input.getTargetPawn().get())); //If any player has fewer than 3 Students of that type, return as many Students as they have.
@@ -30,13 +30,13 @@ public class Card12 extends StatelessEffect {
                     for (int i = 0; i < pawn_to_remove; i++) {
                         this.context.getStudentBag().appendAndShuffle(input.getTargetPawn().get());
                     }
-                    pawn_to_remove=0;
+                    pawn_to_remove = 0;
                 } catch (EmptyDiningRoomException e) {
                     e.printStackTrace();
                 }
             }
             addUse();
-        }else{
+        } else {
             throw new InvalidInputException();
         }
     }

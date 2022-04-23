@@ -24,7 +24,7 @@ public class Card11 extends StatefulEffect {
 
     public Card11(GameBoard ctx) {
         super(11, 2, StateType.PAWNCOLOUR, ctx);
-        for(int i=0; i<4; i++){
+        for (int i = 0; i < 4; i++) {
             this.students[i] = ctx.getStudentBag().extract();
         }
     }
@@ -37,10 +37,10 @@ public class Card11 extends StatefulEffect {
         return stateType;
     }
 
-    public void Use(CharacterCardInput input) {
-        if(!input.getTargetPawn().isPresent()){
+    public void checkInput(CharacterCardInput input) {
+        if (!input.getTargetPawn().isPresent()) {
             throw new InvalidInputException("No pawn in input");
-        }else {
+        } else {
             try {
                 removeFromCard(input.getTargetPawn().get());
                 input.getCaller().addStudentToDiningRoom(input.getTargetPawn().get());
@@ -56,9 +56,10 @@ public class Card11 extends StatefulEffect {
             addUse();
         }
     }
-    private void removeFromCard(PawnColour p){
-        for(int i=0; i<4; i++){
-            if(this.students[i].equals(p)){
+
+    private void removeFromCard(PawnColour p) {
+        for (int i = 0; i < 4; i++) {
+            if (this.students[i].equals(p)) {
                 this.students[i] = null;
                 break;
             }

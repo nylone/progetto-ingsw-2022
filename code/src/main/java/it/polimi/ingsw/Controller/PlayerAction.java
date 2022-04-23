@@ -17,10 +17,16 @@ public abstract class PlayerAction {
     }
 
     protected void safeExecute(List<PlayerAction> history, GameBoard ctx) {
-        if (validate(history, ctx)) unsafeExecute(ctx);
+        if (validate(history, ctx)) {
+            try {
+                unsafeExecute(ctx);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    protected abstract void unsafeExecute(GameBoard ctx);
+    protected abstract void unsafeExecute(GameBoard ctx) throws Exception;
 
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) {
         return isCorrectTurn(ctx) && isNotDuplicateAction(history);
