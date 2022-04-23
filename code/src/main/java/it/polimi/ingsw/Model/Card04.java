@@ -15,9 +15,13 @@ public class Card04 extends StatelessEffect {
         super(4, 1, ctx);
     }
 
-    public void checkInput(CharacterCardInput input) {
+    public boolean checkInput(CharacterCardInput input) {
         //todo
-        addUse();
+    }
+
+    @Override
+    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
+
     }
 
     //test purpose only

@@ -17,7 +17,12 @@ public class Card02 extends StatelessEffect {
         super(2, 2, ctx);
     }
 
-    public void checkInput(CharacterCardInput input) {
+    public boolean checkInput(CharacterCardInput input) {
+        //todo
+    }
+
+    @Override
+    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         for (PawnColour pawnColour : PawnColour.values()) {
             for (PlayerBoard p : context.getPlayerBoards()) {
                 if (p.equals(input.getCaller())) continue;
@@ -27,7 +32,6 @@ public class Card02 extends StatelessEffect {
                 }
             }
         }
-        addUse();
     }
 
     //test purpose only

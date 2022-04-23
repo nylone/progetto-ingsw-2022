@@ -48,21 +48,24 @@ public class Card01 extends StatefulEffect {
         } else throw new InvalidInputException();
     }
 
-    public void checkInput(CharacterCardInput input) {
-        if (!input.getTargetIsland().isPresent() || !input.getTargetPawn().isPresent()) {
+    public boolean checkInput(CharacterCardInput input) {
+        if (!input.getTargetIsland().isPresent() || !input.getTargetPawn().isPresent()) { //targetIsland is empty or TargetPawn is empty
             throw new InvalidInputException();
-        } else {
-            input.getTargetIsland().get().addStudent(input.getTargetPawn().get());
-            addUse();
-            for (int i = 0; i < 4; i++) {
-                if (this.students[i] == null) {
-                    this.students[i] = context.getStudentBag().extract();
-                    break;
-                }
+        }
+        return true;
+    }
+
+    @Override
+    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception{
+        // execute the card effect now that we know nothing can go wrong
+        input.getTargetIsland().get().addStudent(input.getTargetPawn().get());
+        for (int i = 0; i < 4; i++) {
+            if (this.students[i] == null) {
+                this.students[i] = context.getStudentBag().extract();
+                break;
             }
         }
     }
-
 
     //test-purpose only
     @Override

@@ -13,9 +13,13 @@ public class Card06 extends StatelessEffect {
         super(6, 3, ctx);
     }
 
-    public void checkInput(CharacterCardInput input) {
+    public boolean checkInput(CharacterCardInput input) {
+
+    }
+
+    @Override
+    protected void unsafeApplyEffect(CharacterCardInput input){
         context.getEffects().enableDenyTowerInfluence();
-        addUse();
     }
 
     //test purpose only

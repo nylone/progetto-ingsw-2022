@@ -62,6 +62,11 @@ public class Card07 extends StatefulEffect {
         }
     }
 
+    @Override
+    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
+
+    }
+
     private void removeFromCard(PawnColour[] pawns) {
         int cont = 0;
         for (int i = 0; i < 6; i++) {
