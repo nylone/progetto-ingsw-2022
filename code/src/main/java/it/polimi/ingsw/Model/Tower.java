@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.toremove.InvalidTowerPushException;
+import it.polimi.ingsw.Exceptions.DuplicateElementException;
+import it.polimi.ingsw.Exceptions.InvalidElementException;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 
 import java.io.Serial;
@@ -30,7 +31,7 @@ public class Tower implements Serializable {
     public void linkBackToStorage() {
         try {
             this.storage.pushTower(this);
-        } catch (InvalidTowerPushException e) {
+        } catch (DuplicateElementException | InvalidElementException e) {
             e.printStackTrace();
         }
     }
