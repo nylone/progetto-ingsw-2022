@@ -23,13 +23,13 @@ public class Card09 extends StatelessEffect {
 
     public boolean checkInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetPawn().isEmpty()) {
-            throw new InvalidElementException(INPUT_NAME_PAWN_COLOUR);
+            throw new InvalidInputException();
         }
         return true;
     }
 
     @Override
-    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
+    protected void unsafeApplyEffect(CharacterCardInput input){
         this.context.getEffects().setDeniedPawnColour(input.getTargetPawn().get());
     }
 

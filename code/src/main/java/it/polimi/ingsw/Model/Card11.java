@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.FailedOperationException;
+import it.polimi.ingsw.Exceptions.GenericInputValidationException;
+import it.polimi.ingsw.Exceptions.InputValidationException;
 import it.polimi.ingsw.Exceptions.toremove.FullDiningRoomException;
 import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -8,6 +11,8 @@ import it.polimi.ingsw.Model.Enums.StateType;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static it.polimi.ingsw.Constants.*;
 
 /*
 In Setup, draw 4 Students and place them on this card
@@ -37,26 +42,42 @@ public class Card11 extends StatefulEffect {
         return stateType;
     }
 
-    public void checkInput(CharacterCardInput input) {
+    public boolean checkInput(CharacterCardInput input) throws InputValidationException {
         if (!input.getTargetPawn().isPresent()) {
-            throw new InvalidInputException("No pawn in input");
-        } else {
-            try {
-                removeFromCard(input.getTargetPawn().get());
-                input.getCaller().addStudentToDiningRoom(input.getTargetPawn().get());
-            } catch (FullDiningRoomException fe) {
-                fe.printStackTrace();
-            }
-            for (int i = 0; i < 4; i++) {
-                if (this.students[i] == null) {
-                    this.students[i] = context.getStudentBag().extract();
-                    break;
-                }
-            }
-            addUse();
+            throw new InvalidInputException();
         }
+        // find if the target pawn colour is present in the card's stored pawn
+        if (Arrays.stream(this.students).noneMatch(cell -> cell == input.getTargetPawn().get())) {
+            throw new InvalidInputException();
+        }
+
+        PlayerBoard playerBoard = input.getCaller();
+        // validate size of dining room
+        if (!playerBoard.canDiningRoomFit(Arrays.asList(input.getTargetPawn().get()))) {
+            throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
+                    CONTAINER_NAME_DININGROOM + "can't contain " + input.getTargetPawn().get()
+                            + "without overflowing.");
+        }
+        //all tests passed
+        return true;
     }
 
+    @Override
+    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
+        PawnColour movedPawn = input.getTargetPawn().get();
+        //add target pawn to caller's dining room
+        input.getCaller().addStudentToDiningRoom(input.getTargetPawn().get());
+        // find first occurrence of same target pawn in card state and swap it with a new pawn
+        for (int i = 0; i < 4; i++) {
+            if (this.students[i] == movedPawn) {
+                this.students[i] = context.getStudentBag().extract();
+                return;
+            }
+        }
+        throw new FailedOperationException(OPERATION_NAME_CARD11_APPLY_EFFECT, "Target pawn was not contained in card's state");
+    }
+
+    //todo do we need it?
     private void removeFromCard(PawnColour p) {
         for (int i = 0; i < 4; i++) {
             if (this.students[i].equals(p)) {

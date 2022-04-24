@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.FailedOperationException;
+import it.polimi.ingsw.Exceptions.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.InputValidationException;
 import it.polimi.ingsw.Exceptions.InvalidElementException;
 import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
@@ -8,7 +10,7 @@ import it.polimi.ingsw.Model.Enums.StateType;
 import java.io.Serial;
 import java.util.ArrayList;
 
-import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_ISLAND;
+import static it.polimi.ingsw.Constants.*;
 
 /*In Setup, put the 4 No Entry tiles on this card.
 EFFECT: Place a No Entrytile on an Island of your choice.
@@ -39,24 +41,26 @@ public class Card05 extends StatefulEffect {
 
     public boolean checkInput(CharacterCardInput input) throws InputValidationException {
         if(input.getTargetIsland().isEmpty()){
-            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND);
+            throw new InvalidInputException();
         }
         if(tiles.size()==0){
-            return false; //no more tiles available on card
+            throw new GenericInputValidationException(CONTAINER_NAME_CARD,
+                    CONTAINER_NAME_CARD + "has finished its NoEntryTile");
         }
+        //all tests passed
         return true;
     }
 
     @Override
-    protected void unsafeApplyEffect(CharacterCardInput input){
+    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception{
         Island ti = input.getTargetIsland().get();
         for (IslandGroup ig : this.context.getIslandField().getGroups()) {
             if (ig.contains(ti)) {
                 ig.addNoEntry(tiles.remove(0));
-                break;
+                return;
             }
         }
-
+        throw new FailedOperationException(OPERATION_NAME_CARD05_APPLY_EFFECT, "Target Island was not contained in any IslandGroup");
     }
 
     public void tileReset(NoEntryTile tile) {

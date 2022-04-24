@@ -7,13 +7,14 @@ Nature will still move and the Island where she ends
 her movement will also be resolved.
  */
 
+import it.polimi.ingsw.Exceptions.FailedOperationException;
 import it.polimi.ingsw.Exceptions.InputValidationException;
 import it.polimi.ingsw.Exceptions.InvalidElementException;
 import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
 
 import java.io.Serial;
 
-import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_ISLAND;
+import static it.polimi.ingsw.Constants.*;
 
 public class Card03 extends StatelessEffect {
     @Serial
@@ -25,7 +26,7 @@ public class Card03 extends StatelessEffect {
 
     public boolean checkInput(CharacterCardInput input) throws InputValidationException {
         if(input.getTargetPawn().isEmpty()){
-            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND);
+            throw new InvalidInputException();
         }
         return true;
     }
@@ -36,10 +37,10 @@ public class Card03 extends StatelessEffect {
         for (IslandGroup ig : this.context.getIslandField().getGroups()) {
             if (ig.contains(ti)) {
                 context.actMotherNaturePower(ig);
-                break;
+                return;
             }
         }
-
+        throw new FailedOperationException(OPERATION_NAME_CARD03_APPLY_EFFECT, "Target Island was not contained in any IslandGroup");
     }
 
     //test purpose only
