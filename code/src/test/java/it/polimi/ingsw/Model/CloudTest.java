@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.toremove.NoPawnInCloudException;
+import it.polimi.ingsw.Exceptions.EmptyContainerException;
+import it.polimi.ingsw.Exceptions.FullContainerException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
@@ -18,13 +19,13 @@ public class CloudTest {
             cloud.extractContents();
             fail("Extracting from empty cloud");
         }
-        catch(NoPawnInCloudException e) {
-            assertEquals("Cloud is empty", e.getMessage());
+        catch(EmptyContainerException e) {
+            assertEquals("An error occured on: Cloud\nThe error was: Cloud was found empty.", e.getMessage());
         }
     }
 
     @Test
-    public void cloudShouldBeEmptied() throws NoPawnInCloudException {
+    public void cloudShouldBeEmptied() throws FullContainerException, EmptyContainerException {
         // arrange
         Cloud cloud = new Cloud(2);
         ArrayList<PawnColour> colours = new ArrayList<>(3);
@@ -39,7 +40,7 @@ public class CloudTest {
     }
 
     @Test
-    public void shouldReturnCorrectStudents() throws NoPawnInCloudException{
+    public void shouldReturnCorrectStudents() throws EmptyContainerException, FullContainerException {
         // arrange
         Cloud cloud = new Cloud(2);
         ArrayList<PawnColour> expected = new ArrayList<>(3);
@@ -56,7 +57,7 @@ public class CloudTest {
 
     // testing fill method
     @Test
-    public void checkCloudHasBeenFilled() throws NoPawnInCloudException {
+    public void checkCloudHasBeenFilled() throws FullContainerException {
         // arrange
         Cloud cloud = new Cloud(1);
         ArrayList<PawnColour> colours = new ArrayList<>(3);
@@ -70,7 +71,7 @@ public class CloudTest {
     }
 
     @Test
-    public void filledCloudShouldRaiseException() throws NoPawnInCloudException {
+    public void filledCloudShouldRaiseException() throws FullContainerException {
         Cloud cloud = new Cloud(3);
         ArrayList<PawnColour> colours = new ArrayList<>(3);
         colours.add(PawnColour.RED);
@@ -81,8 +82,8 @@ public class CloudTest {
             cloud.fill(colours);
             fail("Cloud already filled");
         }
-        catch (NoPawnInCloudException e) {
-            assertEquals("Cloud is empty", e.getMessage());
+        catch (FullContainerException e) {
+            assertEquals("An error occured on: Cloud\nThe error was: Cloud was found full.", e.getMessage());
         }
     }
 }

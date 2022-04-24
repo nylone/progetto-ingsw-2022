@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
-import it.polimi.ingsw.Exceptions.toremove.NoPawnInCloudException;
+import it.polimi.ingsw.Exceptions.FullContainerException;
 import it.polimi.ingsw.Model.Enums.*;
 
 import java.io.Serial;
@@ -52,7 +51,7 @@ public class GameBoard implements Serializable {
 
             try {
                 clouds.get(i).fill((ArrayList<PawnColour>) studentBag.multiple_extraction(nop == 3 ? 4 : 3));
-            } catch (NoPawnInCloudException e) { System.out.println(e.getMessage()); }
+            } catch (FullContainerException e) { System.out.println(e.getMessage()); }
         }
     }
 

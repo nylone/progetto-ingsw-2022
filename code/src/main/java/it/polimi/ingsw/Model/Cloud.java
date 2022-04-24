@@ -1,11 +1,14 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.toremove.NoPawnInCloudException;
+import it.polimi.ingsw.Exceptions.EmptyContainerException;
+import it.polimi.ingsw.Exceptions.FullContainerException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import static it.polimi.ingsw.Constants.CONTAINER_NAME_CLOUD;
 
 public class Cloud implements Serializable {
     @Serial
@@ -23,13 +26,13 @@ public class Cloud implements Serializable {
         return id;
     }
 
-    public ArrayList<PawnColour> extractContents() throws NoPawnInCloudException {
+    public ArrayList<PawnColour> extractContents() throws EmptyContainerException {
         if (contents.size() > 0) {
             ArrayList<PawnColour> toReturn = new ArrayList<>(this.contents);
             this.contents = new ArrayList<>(3);
             return toReturn;
         } else {
-            throw new NoPawnInCloudException();
+            throw new EmptyContainerException(CONTAINER_NAME_CLOUD);
         }
     }
 
@@ -37,11 +40,11 @@ public class Cloud implements Serializable {
         return new ArrayList<>(contents);
     }
 
-    public void fill(ArrayList<PawnColour> colours) throws NoPawnInCloudException {
+    public void fill(ArrayList<PawnColour> colours) throws FullContainerException {
         if (contents.isEmpty()) {
             contents.addAll(colours); }
         else {
-            throw new NoPawnInCloudException();
+            throw new FullContainerException(CONTAINER_NAME_CLOUD);
         }
     }
 }
