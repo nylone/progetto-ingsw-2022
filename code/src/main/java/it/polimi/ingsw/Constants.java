@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 public class Constants {
     public static final String CONTAINER_NAME_DININGROOM = "DiningRoom";
     public static final String CONTAINER_NAME_ENTRANCE = "Entrance";
+    public static final String CONTAINER_NAME_CLOUD = "Cloud";
 
     public static final String CONTAINER_NAME_CARD = "Card";
     public static final String CONTAINER_NAME_ISLANDFIELD_ISLANDGROUPS = "IslandField.groups";
