@@ -16,12 +16,12 @@ public class Card04 extends StatelessEffect {
     }
 
     public boolean overridableCheckInput(CharacterCardInput input) {
-        //todo
+        return true; //nothing to check for this card
     }
 
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
-
+        this.context.getEffects().enableIncreasedMotherNatureMovement();
     }
 
     //test purpose only
