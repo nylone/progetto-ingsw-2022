@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
+import it.polimi.ingsw.Exceptions.InvalidContainerIndexException;
 import it.polimi.ingsw.Misc.Utils;
-
+import static it.polimi.ingsw.Constants.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -51,18 +51,18 @@ public class IslandField implements Serializable {
         return motherNaturePosition;
     }
 
-    public IslandGroup getIslandGroupById(int id){
+    public IslandGroup getIslandGroupById(int id) throws InvalidContainerIndexException {
         return groups.stream()
                 .filter(g -> g.getId() == id)
                 .findAny()
-                .orElseThrow(() -> new InvalidInputException("IslandGroup.id problem: id out of bound"));
+                .orElseThrow(() -> new InvalidContainerIndexException(CONTAINER_NAME_ISLANDFIELD_ISLANDGROUPS));
     }
 
-    public Island getIslandById(int id){
+    public Island getIslandById(int id) throws InvalidContainerIndexException {
         return islands.stream()
                 .filter(i -> i.getId() == id)
                 .findAny()
-                .orElseThrow(() -> new InvalidInputException("Island.id problem: id out of bound"));
+                .orElseThrow(() -> new InvalidContainerIndexException(CONTAINER_NAME_ISLANDFIELD_ISLANDS));
     }
 
 
