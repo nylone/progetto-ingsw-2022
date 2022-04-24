@@ -64,17 +64,18 @@ public class Card10 extends StatelessEffect {
 
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
-        // execute the card effect now that we know nothing can go wrong
         // explode pawnpairs into respective arrays of elements
         Pair<PawnColour, PawnColour>[] pawnPairs = input.getTargetPawnPairs().get();
         List<PawnColour> fromEntrance = new ArrayList<>(pawnPairs.length);
         List<PawnColour> fromDiningRoom = new ArrayList<>(pawnPairs.length);
-        // get the playerboard to operate on
         for (Pair<PawnColour, PawnColour> p : pawnPairs) {
             fromEntrance.add(p.getFirst());
             fromDiningRoom.add(p.getSecond());
         }
+        // get the playerboard to operate on
         PlayerBoard playerBoard = input.getCaller();
+
+        // true effect happens here
         playerBoard.addStudentsToEntrance(fromDiningRoom);
         for (PawnColour student : fromEntrance) {
             playerBoard.addStudentToDiningRoom(student);
