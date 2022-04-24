@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.toremove.InvalidTowerPushException;
+import it.polimi.ingsw.Exceptions.DuplicateElementException;
+import it.polimi.ingsw.Exceptions.InvalidElementException;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 import org.junit.Test;
 
@@ -11,16 +12,12 @@ public class TowerStorageTest {
     TowerStorage ts = new TowerStorage(TowerColour.BLACK, 6);
 
     @Test
-    public void checkThatTowerHasBeenAdded() {
+    public void checkThatTowerHasBeenAdded() throws InvalidElementException, DuplicateElementException {
         // arrange
         Tower t = new Tower(3, TowerColour.BLACK, ts);
         int initialCapacity = ts.getTowerCount();
         // act
-        try {
-            ts.pushTower(t);
-        } catch (InvalidTowerPushException e) {
-            e.printStackTrace();
-        }
+        ts.pushTower(t);
         // assert
         assertTrue(ts.getTowerCount() == initialCapacity + 1);
     }
@@ -42,8 +39,8 @@ public class TowerStorageTest {
         Tower t3 = new Tower(5, TowerColour.WHITE, ts);
     }
 
-    @Test(expected = InvalidTowerPushException.class)
-    public void checkIllegalColourPush() throws InvalidTowerPushException {
+    @Test(expected = InvalidElementException.class)
+    public void checkIllegalColourPush() throws InvalidElementException, DuplicateElementException {
         Tower t = new Tower(3, TowerColour.BLACK, ts);
         TowerStorage ts2 = new TowerStorage(TowerColour.WHITE, 6);
         ts2.extractTower();
@@ -51,8 +48,8 @@ public class TowerStorageTest {
 
     }
 
-    @Test(expected = InvalidTowerPushException.class)
-    public void checkIllegalDuplicatePush() throws InvalidTowerPushException {
+    @Test(expected = DuplicateElementException.class)
+    public void checkIllegalDuplicatePush() throws DuplicateElementException, InvalidElementException {
         ts.extractTower();
         ts.extractTower();
         Tower t = new Tower(3, TowerColour.BLACK, ts);

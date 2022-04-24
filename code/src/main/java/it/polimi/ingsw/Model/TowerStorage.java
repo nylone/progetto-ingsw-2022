@@ -1,12 +1,15 @@
 package it.polimi.ingsw.Model;
 
 
-import it.polimi.ingsw.Exceptions.toremove.InvalidTowerPushException;
+import it.polimi.ingsw.Exceptions.DuplicateElementException;
+import it.polimi.ingsw.Exceptions.InvalidElementException;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Stack;
+
+import static it.polimi.ingsw.Constants.INPUT_NAME_TOWER;
 
 public class TowerStorage implements Serializable {
     @Serial
@@ -35,17 +38,17 @@ public class TowerStorage implements Serializable {
         return this.storage.pop();
     }
 
-    public void pushTower(Tower t) throws InvalidTowerPushException {
+    public void pushTower(Tower t) throws DuplicateElementException, InvalidElementException {
         boolean checkIfPresent = storage.stream()
                 .anyMatch(i -> t == i);
         if (!checkIfPresent && t.getColour() == this.colour) {
             this.storage.push(t);
         }else{
             if(checkIfPresent){
-                throw new InvalidTowerPushException("the tower is already in the storage");
+                throw new DuplicateElementException(INPUT_NAME_TOWER);
             }
             if(t.getColour()!=this.colour){
-                throw new InvalidTowerPushException("Tower's colour and Storage's Colour are different");
+                throw new InvalidElementException(INPUT_NAME_TOWER);
             }
         }
     }
