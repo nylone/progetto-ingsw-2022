@@ -11,6 +11,7 @@ import java.io.Serial;
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.Constants.*;
+import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_ISLAND;
 
 /*In Setup, put the 4 No Entry tiles on this card.
 EFFECT: Place a No Entrytile on an Island of your choice.
@@ -40,19 +41,26 @@ public class Card05 extends StatefulEffect {
     }
 
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
-        if(input.getTargetIsland().isEmpty()){
-            throw new InvalidInputException();
+        if (input.getTargetIsland().isEmpty()){
+            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not set
         }
-        if(tiles.size()==0){
-            throw new GenericInputValidationException(CONTAINER_NAME_CARD,
-                    CONTAINER_NAME_CARD + "has finished its NoEntryTile");
+        Island ti = input.getTargetIsland().get();
+        if (ti.getId() < 0 && ti.getId() >= 12) {
+            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti out of bounds for id
+        }
+        if (!this.context.getIslandField().getIslands().contains(ti)) {
+            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not in field
+        } // note: if island is in field then the island must also be in a group, due to how islandfield works.
+        if (tiles.size() == 0) {
+            throw new GenericInputValidationException(CONTAINER_NAME_CARD05,
+                    CONTAINER_NAME_CARD05 + "has finished all its NoEntryTile(s)");
         }
         //all tests passed
         return true;
     }
 
     @Override
-    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception{
+    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         Island ti = input.getTargetIsland().get();
         for (IslandGroup ig : this.context.getIslandField().getGroups()) {
             if (ig.contains(ti)) {
