@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Controller.Enums.DestinationType;
 import org.jetbrains.annotations.NotNull;
 
 public class MoveDestination {
