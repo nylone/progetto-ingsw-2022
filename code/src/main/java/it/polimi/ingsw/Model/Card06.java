@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.InputValidationException;
+
 import java.io.Serial;
 
 /*
@@ -13,12 +15,12 @@ public class Card06 extends StatelessEffect {
         super(6, 3, ctx);
     }
 
-    public boolean overridableCheckInput(CharacterCardInput input) {
-
+    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
+        return true; // nothing to check
     }
 
     @Override
-    protected void unsafeApplyEffect(CharacterCardInput input){
+    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         context.getEffects().enableDenyTowerInfluence();
     }
 
