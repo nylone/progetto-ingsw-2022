@@ -1,7 +1,10 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.*;
-import it.polimi.ingsw.Model.Enums.*;
+import it.polimi.ingsw.Exceptions.EmptyContainerException;
+import it.polimi.ingsw.Exceptions.FullContainerException;
+import it.polimi.ingsw.Exceptions.InvalidContainerIndexException;
+import it.polimi.ingsw.Exceptions.InvalidElementException;
+import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -24,7 +27,7 @@ public class PlayerBoard implements Serializable {
         this.nickname = nickname;
         this.assistantCards = new AssistantCard[10];
         for (int i = 1; i <= 10; i++) {
-            assistantCards[i-1] = new AssistantCard(i);
+            assistantCards[i - 1] = new AssistantCard(i);
         }
         this.coinBalance = 1;
         this.id = id;
@@ -34,12 +37,11 @@ public class PlayerBoard implements Serializable {
         }
         this.entranceSize = numOfPlayers == 3 ? 9 : 7;
         this.entrance = new ArrayList<>(entranceSize);
-        if(numOfPlayers>=2 && numOfPlayers <=4) {
+        if (numOfPlayers >= 2 && numOfPlayers <= 4) {
             for (int i = 0; i < entranceSize; i++) {
                 entrance.add(studentBag.extract());
             }
-        }
-        else{
+        } else {
             throw new RuntimeException("Inconsistent number of players");
         }
     }
@@ -72,7 +74,9 @@ public class PlayerBoard implements Serializable {
         return id;
     }
 
-    public String getNickname() { return nickname; }
+    public String getNickname() {
+        return nickname;
+    }
 
 
     public void addStudentToDiningRoom(PawnColour colour) throws FullContainerException, InvalidElementException {
@@ -87,7 +91,7 @@ public class PlayerBoard implements Serializable {
     }
 
     public void removeStudentsFromDiningRoom(PawnColour colour, int amount) throws EmptyContainerException {
-        if(amount>0) {
+        if (amount > 0) {
             if (this.getDiningRoomCount(colour) == 0) {
                 throw new EmptyContainerException(CONTAINER_NAME_DININGROOM);
             } else {
@@ -99,7 +103,7 @@ public class PlayerBoard implements Serializable {
     public boolean canDiningRoomFit(List<PawnColour> students) {
         Map<PawnColour, Integer> inputCount = new HashMap<>(5);
         students.forEach(s -> inputCount.merge(s, 1, Integer::sum));
-        for (Map.Entry<PawnColour, Integer> entry: inputCount.entrySet()) {
+        for (Map.Entry<PawnColour, Integer> entry : inputCount.entrySet()) {
             if (entry.getValue() + getDiningRoomCount(entry.getKey()) > 10) return false;
         }
         return true;
@@ -122,7 +126,7 @@ public class PlayerBoard implements Serializable {
     }
 
     public void removeStudentFromEntrance(int pos) throws InvalidContainerIndexException {
-        if (pos < 0 && pos >= this.entranceSize && this.entrance.get(pos)==null) {
+        if (pos < 0 && pos >= this.entranceSize && this.entrance.get(pos) == null) {
             throw new InvalidContainerIndexException(CONTAINER_NAME_ENTRANCE);
         }
         this.entrance.remove(pos);

@@ -41,16 +41,16 @@ public class IslandGroup implements Serializable {
                     throw new UnjoinableGroupsException();
                 } catch (UnjoinableGroupsException e) {
                     e.printStackTrace();
-                    this.id=0;
+                    this.id = 0;
                     this.islands = null;
                 }
             }
-        }else{
+        } else {
             try {
                 throw new NoParamaterException();
             } catch (NoParamaterException e) {
                 e.printStackTrace();
-                this.id=0;
+                this.id = 0;
                 this.islands = null;
             }
 
@@ -59,9 +59,9 @@ public class IslandGroup implements Serializable {
 
     // returns true if the inputted IslandGroups all contain the same type of tower
     public boolean isJoinable(IslandGroup... groups) {
-        if (groups.length <= 0){
-                return false;
-        }else {
+        if (groups.length <= 0) {
+            return false;
+        } else {
             if (this.getTowerColour().isEmpty()) return false;
             else return
                     Arrays.stream(groups).allMatch(g -> g.getTowerColour().equals(this.getTowerColour()));
@@ -104,9 +104,10 @@ public class IslandGroup implements Serializable {
         }
         return islandGroupStudents;
     }
-    public boolean contains(Island i){
-        for(Island island : islands) {
-            if(island.equals(i)){
+
+    public boolean contains(Island i) {
+        for (Island island : islands) {
+            if (island.equals(i)) {
                 return true;
             }
         }
@@ -117,7 +118,7 @@ public class IslandGroup implements Serializable {
         this.noEntryTiles.add(tile);
     }
 
-    public void resetNoEntry(){
+    public void resetNoEntry() {
         this.noEntryTiles.remove(0).goHome();
     }
 
@@ -134,7 +135,7 @@ public class IslandGroup implements Serializable {
         return "IslandGroup{" +
                 "id=" + id +
                 ", islands=" + islands +
-                "noEntryTiles"+ noEntryTiles +
+                "noEntryTiles" + noEntryTiles +
                 '}';
     }
 }

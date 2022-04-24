@@ -38,16 +38,16 @@ public class MoveStudent extends PlayerAction {
                 .getEntranceStudents().get(this.selectedEntrancePosition);
         PlayerBoard pb = ctx.getPlayerBoardById(this.getPlayerBoardId());
         // set entrance position to null
-            pb.removeStudentFromEntrance(selectedEntrancePosition);
-            switch (this.destination.getDestinationType()) {
-                case ISLAND -> {
-                    int id = this.destination.getIslandID();
-                    ctx.getIslandField().getIslandById(id)
-                            .addStudent(toMove);
-                }
-                case DININGROOM -> {
-                    pb.addStudentToDiningRoom(toMove);
-                }
+        pb.removeStudentFromEntrance(selectedEntrancePosition);
+        switch (this.destination.getDestinationType()) {
+            case ISLAND -> {
+                int id = this.destination.getIslandID();
+                ctx.getIslandField().getIslandById(id)
+                        .addStudent(toMove);
             }
+            case DININGROOM -> {
+                pb.addStudentToDiningRoom(toMove);
+            }
+        }
     }
 }

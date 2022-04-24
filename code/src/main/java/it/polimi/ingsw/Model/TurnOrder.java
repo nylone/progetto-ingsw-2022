@@ -1,4 +1,5 @@
 package it.polimi.ingsw.Model;
+
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GamePhase;
 import org.jetbrains.annotations.NotNull;
@@ -9,6 +10,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TurnOrder implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 134L; // convention: 1 for model, (01 -> 99) for objects
     private final Map<PlayerBoard, Optional<AssistantCard>> selectedCards; // used to generate the new turn order
     // if a playerboard is associated with an empty optional then their card has not yet been chosen for the turn
     // or said player is currently being skipped
@@ -16,8 +19,6 @@ public class TurnOrder implements Serializable {
     private int currentTurnPosition; // selects the current player from currentTurnOrder
     private List<PlayerBoard> currentTurnOrder; // represents the order for the turn in play
     private GamePhase gamePhase;
-    @Serial
-    private static final long serialVersionUID = 134L; // convention: 1 for model, (01 -> 99) for objects
 
     public TurnOrder(@NotNull PlayerBoard... playerBoards) {
         if (playerBoards.length >= 2 && playerBoards.length <= 4) {

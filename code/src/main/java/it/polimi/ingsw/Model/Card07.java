@@ -12,10 +12,10 @@ import java.util.*;
 import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_PAIRS;
 import static it.polimi.ingsw.Misc.Utils.canCollectionFit;
 
-/*
-In Setup, draw 6 Students and place them on this card
-EFFECT: you may take up to 3 students from this card and replace them with the same number of Students
-from your Entrance
+/**
+ * In Setup, draw 6 Students and place them on this card <br>
+ * EFFECT: you may take up to 3 students from this card and replace them with the same number of Students
+ * from your Entrance
  */
 public class Card07 extends StatefulEffect {
     @Serial
@@ -58,7 +58,7 @@ public class Card07 extends StatefulEffect {
         // first count how many students of each colour the user picked
         Map<PawnColour, Integer> firstMap = new EnumMap<>(PawnColour.class); // counts user entrance selected colours
         Map<PawnColour, Integer> secondMap = new EnumMap<>(PawnColour.class); // counts card state selected colours
-        for (Pair<PawnColour, PawnColour> pair: pawnPairs) {
+        for (Pair<PawnColour, PawnColour> pair : pawnPairs) {
             firstMap.merge(pair.getFirst(), 1, Integer::sum);
             secondMap.merge(pair.getSecond(), 1, Integer::sum);
         }
@@ -66,7 +66,7 @@ public class Card07 extends StatefulEffect {
         // get user entrance counts per colour
         PlayerBoard me = input.getCaller();
         Map<PawnColour, Integer> entranceMap = new EnumMap<>(PawnColour.class); // counts user entrance total colours
-        for (PawnColour pawn: me.getEntranceStudents()) {
+        for (PawnColour pawn : me.getEntranceStudents()) {
             entranceMap.merge(pawn, 1, Integer::sum);
         }
         // make sure the elements coming from user (first) are also mapped to entrance
@@ -76,7 +76,7 @@ public class Card07 extends StatefulEffect {
 
         // get card storage counts per colour
         Map<PawnColour, Integer> cardMap = new EnumMap<>(PawnColour.class); // counts user entrance total colours
-        for (PawnColour pawn: this.students) {
+        for (PawnColour pawn : this.students) {
             cardMap.merge(pawn, 1, Integer::sum);
         }
         // make sure the elements coming from card (second) are also mapped to the card state
@@ -92,7 +92,7 @@ public class Card07 extends StatefulEffect {
         PlayerBoard me = input.getCaller();
 
         //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from card
-        for (Pair<PawnColour, PawnColour> pair: input.getTargetPawnPairs().get()) {
+        for (Pair<PawnColour, PawnColour> pair : input.getTargetPawnPairs().get()) {
             // match the first element in entrance with first and swap it with second
             me.removeStudentFromEntrance(pair.getFirst());
             me.addStudentToEntrance(pair.getSecond());

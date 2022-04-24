@@ -14,8 +14,8 @@ import java.util.Optional;
 
 import static it.polimi.ingsw.Constants.*;
 
-/*
-EFFECT: You may exchange up to 2 Students between your entrance and your Dining Room
+/**
+ * EFFECT: You may exchange up to 2 Students between your entrance and your Dining Room
  */
 public class Card10 extends StatelessEffect {
     @Serial

@@ -28,9 +28,9 @@ public class StudentBag implements Serializable {
         return this.studentBag.remove(this.studentBag.size() - 1);
     }
 
-    public List<PawnColour> multiple_extraction(int extractions){
+    public List<PawnColour> multiple_extraction(int extractions) {
         List<PawnColour> extracted = new ArrayList<>();
-        for(int i=0; i<extractions; i++) extracted.add(this.extract());
+        for (int i = 0; i < extractions; i++) extracted.add(this.extract());
         return extracted;
     }
 

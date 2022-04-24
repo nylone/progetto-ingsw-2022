@@ -6,10 +6,10 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 import java.io.Serial;
 import java.util.Map;
 
-/*
-During this turn, you take control of any
-number of Professors even if you have the same
-number of Students as the player who currently controls them.
+/**
+ * EFFECT: During this turn, you take control of any
+ * number of Professors even if you have the same
+ * number of Students as the player who currently controls them.
  */
 public class Card02 extends StatelessEffect {
     @Serial

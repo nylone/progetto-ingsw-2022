@@ -16,7 +16,7 @@ public class Tower implements Serializable {
     private final TowerStorage storage;
 
     public Tower(int id, TowerColour colour, TowerStorage storage) {
-        if(!colour.equals(storage.getColour())){
+        if (!colour.equals(storage.getColour())) {
             throw new IllegalArgumentException("Tower's colour and TowerStorage's colour are different");
         }
         this.id = id;

@@ -2,7 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.FailedOperationException;
 import it.polimi.ingsw.Exceptions.InputValidationException;
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
+import it.polimi.ingsw.Exceptions.InvalidElementException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
 
@@ -10,11 +10,12 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static it.polimi.ingsw.Constants.OPERATION_NAME_CARD01_APPLY_EFFECT;
-/*
-In setup, draw 4 Students and place them on this card.
-EFFECT: Take 1 Student from this card and place it on
-an Island of your choice. Then, draw a new Student from the Bag and place it on this card.
+import static it.polimi.ingsw.Constants.*;
+
+/**
+ * In setup, draw 4 Students and place them on this card. <br>
+ * EFFECT: Take 1 Student from this card and place it on
+ * an Island of your choice. Then, draw a new Student from the Bag and place it on this card.
  */
 
 public class Card01 extends StatefulEffect {
@@ -22,9 +23,11 @@ public class Card01 extends StatefulEffect {
     private static final long serialVersionUID = 103L; // convention: 1 for model, (01 -> 99) for objects
     private final PawnColour[] students = new PawnColour[4];
 
-
     public Card01(GameBoard ctx) {
         super(1, 1, StateType.PAWNCOLOUR, ctx);
+        for (int i = 0; i < 4; i++) {
+            this.students[i] = ctx.getStudentBag().extract();
+        }
     }
 
     public ArrayList<Object> getState() {
@@ -35,35 +38,17 @@ public class Card01 extends StatefulEffect {
         return stateType;
     }
 
-    // todo do we need it?
-    public void addStudent(PawnColour p) { //add PawnColour into first empty position
-        for (int i = 0; i < 4; i++) {
-            if (this.students[i] == null) {
-                this.students[i] = p;
-                return;
-            }
-        }
-    }
-
-    public PawnColour getStudent(int i) {
-        if (0 <= i && i < 4) {
-            PawnColour student = this.students[i];
-            this.students[i] = null;
-            return student;
-        } else throw new InvalidInputException();
-    }
-
     @Override
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetIsland().isEmpty()) {
-            throw new InvalidInputException();
+            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND);
         }
         if (input.getTargetPawn().isEmpty()) {
-            throw new InvalidInputException();
+            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
         }
         // find if the target pawn colour is present in the card's stored pawn
         if (Arrays.stream(this.students).noneMatch(cell -> cell == input.getTargetPawn().get())) {
-            throw new InvalidInputException();
+            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
         }
         return true;
     }

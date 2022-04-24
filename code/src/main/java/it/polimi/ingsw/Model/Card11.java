@@ -15,10 +15,10 @@ import java.util.List;
 import static it.polimi.ingsw.Constants.*;
 
 /**
-In Setup, draw 4 Students and place them on this card
-EFFECT: Take 1 Student from this card and place it in
-your Dining Room. Then, draw a new Student from the
-Bag and place it on this card.
+ * In Setup, draw 4 Students and place them on this card <br>
+ * EFFECT: Take 1 Student from this card and place it in
+ * your Dining Room. Then, draw a new Student from the
+ * Bag and place it on this card.
  */
 public class Card11 extends StatefulEffect {
     @Serial

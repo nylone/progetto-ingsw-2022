@@ -1,11 +1,6 @@
 package it.polimi.ingsw.Misc;
 
-import it.polimi.ingsw.Exceptions.InvalidElementException;
-import it.polimi.ingsw.Model.Enums.PawnColour;
-
 import java.util.*;
-
-import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_PAIRS;
 
 public class Utils {
 
@@ -22,7 +17,7 @@ public class Utils {
     public static <T> List<T> random(List<T> list, int size) {
         Random r = new Random();
         List<T> sublist = new ArrayList<>(size);
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             sublist.add(random(list));
         }
         return sublist;
@@ -34,11 +29,11 @@ public class Utils {
         return group.get((index + group.size() + movement) % group.size());
     }
 
-    public static <T,C extends Integer> boolean canCollectionFit(Map<T, C> originalSet, Map<T, C> possibleSubset) {
-        for (Map.Entry<T, C> entry: possibleSubset.entrySet()) {
+    public static <T, C extends Integer> boolean canCollectionFit(Map<T, C> originalSet, Map<T, C> possibleSubset) {
+        for (Map.Entry<T, C> entry : possibleSubset.entrySet()) {
             T colour = entry.getKey();
             int count = entry.getValue();
-            if ( (int) originalSet.get(colour) - count < 0) {
+            if ((int) originalSet.get(colour) - count < 0) {
                 return false;
             }
         }

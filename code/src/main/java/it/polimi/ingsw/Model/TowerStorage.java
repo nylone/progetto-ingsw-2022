@@ -43,11 +43,11 @@ public class TowerStorage implements Serializable {
                 .anyMatch(i -> t == i);
         if (!checkIfPresent && t.getColour() == this.colour) {
             this.storage.push(t);
-        }else{
-            if(checkIfPresent){
+        } else {
+            if (checkIfPresent) {
                 throw new DuplicateElementException(INPUT_NAME_TOWER);
             }
-            if(t.getColour()!=this.colour){
+            if (t.getColour() != this.colour) {
                 throw new InvalidElementException(INPUT_NAME_TOWER);
             }
         }

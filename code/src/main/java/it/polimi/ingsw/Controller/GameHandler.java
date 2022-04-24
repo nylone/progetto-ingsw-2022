@@ -27,7 +27,8 @@ public class GameHandler {
     public void executeAction(PlayerAction action) {
         action.safeExecute(history, model);
     }
-    public void rollback(){
+
+    public void rollback() {
         //todo
     }
 

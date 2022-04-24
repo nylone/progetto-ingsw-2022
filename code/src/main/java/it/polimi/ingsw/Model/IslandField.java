@@ -2,10 +2,13 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InvalidContainerIndexException;
 import it.polimi.ingsw.Misc.Utils;
-import static it.polimi.ingsw.Constants.*;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import static it.polimi.ingsw.Constants.CONTAINER_NAME_ISLANDFIELD_ISLANDGROUPS;
+import static it.polimi.ingsw.Constants.CONTAINER_NAME_ISLANDFIELD_ISLANDS;
 
 public class IslandField implements Serializable {
     @Serial

@@ -8,8 +8,8 @@ import java.io.Serial;
 
 import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_COLOUR;
 
-/*
- EFFECT: Choose a color of Student: during the influence calculation this turn, that color adds no influence
+/**
+ * EFFECT: Choose a color of Student: during the influence calculation this turn, that color adds no influence
  */
 public class Card09 extends StatelessEffect {
     @Serial

@@ -4,8 +4,8 @@ import it.polimi.ingsw.Exceptions.InputValidationException;
 
 import java.io.Serial;
 
-/*
-When resolving a Conquering on an Island, Towers do not count towards influence.
+/**
+ * EFFECT: When resolving a Conquering on an Island, Towers do not count towards influence.
  */
 public class Card06 extends StatelessEffect {
     @Serial

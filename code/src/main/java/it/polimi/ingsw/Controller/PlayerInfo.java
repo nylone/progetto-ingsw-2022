@@ -4,7 +4,7 @@ public class PlayerInfo {
     private final String nickname;
     private final int playerBoardId;
 
-    public PlayerInfo(String nickname, int playerBoardId){
+    public PlayerInfo(String nickname, int playerBoardId) {
         this.nickname = nickname;
         this.playerBoardId = playerBoardId;
     }

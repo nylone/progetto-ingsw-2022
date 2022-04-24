@@ -8,9 +8,9 @@ public enum TowerColour implements Serializable {
     WHITE(TeamID.TWO),
     GRAY(TeamID.THREE);
 
-    private final TeamID teamID;
     @Serial
     private static final long serialVersionUID = 132L; // convention: 1 for model, (01 -> 99) for objects
+    private final TeamID teamID;
 
     TowerColour(TeamID teamId) {
         this.teamID = teamId;

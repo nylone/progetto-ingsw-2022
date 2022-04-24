@@ -36,14 +36,14 @@ public class Cloud implements Serializable {
         }
     }
 
-    public ArrayList<PawnColour> getContents(){
+    public ArrayList<PawnColour> getContents() {
         return new ArrayList<>(contents);
     }
 
     public void fill(ArrayList<PawnColour> colours) throws FullContainerException {
         if (contents.isEmpty()) {
-            contents.addAll(colours); }
-        else {
+            contents.addAll(colours);
+        } else {
             throw new FullContainerException(CONTAINER_NAME_CLOUD);
         }
     }

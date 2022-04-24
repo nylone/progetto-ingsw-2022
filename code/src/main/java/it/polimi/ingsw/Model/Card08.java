@@ -4,8 +4,8 @@ import it.polimi.ingsw.Exceptions.InputValidationException;
 
 import java.io.Serial;
 
-/*
-EFFECT: During the influence calculation this turn, you count as having 2 more influence
+/**
+ * EFFECT: During the influence calculation this turn, you count as having 2 more influence
  */
 public class Card08 extends StatelessEffect {
     @Serial
@@ -21,7 +21,7 @@ public class Card08 extends StatelessEffect {
     }
 
     @Override
-    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception{
+    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         context.getEffects().enableIncreasedInfluence();
     }
 

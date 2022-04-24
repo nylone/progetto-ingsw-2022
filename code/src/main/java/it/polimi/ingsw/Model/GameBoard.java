@@ -1,7 +1,10 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.FullContainerException;
-import it.polimi.ingsw.Model.Enums.*;
+import it.polimi.ingsw.Model.Enums.GameMode;
+import it.polimi.ingsw.Model.Enums.PawnColour;
+import it.polimi.ingsw.Model.Enums.TeamID;
+import it.polimi.ingsw.Model.Enums.TowerColour;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -10,6 +13,8 @@ import java.util.stream.Collectors;
 
 public class GameBoard implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 101L; // convention: 1 for model, (01 -> 99) for objects
     private final IslandField islandField;
     private final GameMode gameMode;
     private final StudentBag studentBag;
@@ -17,12 +22,10 @@ public class GameBoard implements Serializable {
     private final Map<PawnColour, PlayerBoard> teachers;
     private final TeamMapper teamMap;
     private final TurnOrder turnOrder;
-    private List<CharacterCard> characterCards;
-    private int coinReserve;
-    @Serial
-    private static final long serialVersionUID = 101L; // convention: 1 for model, (01 -> 99) for objects
     private final EffectTracker effects;
     private final List<Cloud> clouds;
+    private List<CharacterCard> characterCards;
+    private int coinReserve;
 
 
     public GameBoard(GameMode gameMode, String... playerNicknames) {
@@ -32,10 +35,10 @@ public class GameBoard implements Serializable {
         this.studentBag = new StudentBag(24);
         this.playerBoards = new ArrayList<>();
         this.teachers = new EnumMap<>(PawnColour.class);
-        this.coinReserve = 20-nop; // hp: we assume 20 as amount of available coins just like the real game.
+        this.coinReserve = 20 - nop; // hp: we assume 20 as amount of available coins just like the real game.
 
         for (int i = 0; i < nop; i++) {
-            this.playerBoards.add(new PlayerBoard(i+1, nop, playerNicknames[i], this.studentBag));
+            this.playerBoards.add(new PlayerBoard(i + 1, nop, playerNicknames[i], this.studentBag));
         } // add generate player based on nickname and store it
         this.turnOrder = new TurnOrder(playerBoards.toArray(new PlayerBoard[0]));
         this.teamMap = new TeamMapper(this.playerBoards);
@@ -46,12 +49,14 @@ public class GameBoard implements Serializable {
         effects = new EffectTracker();
         clouds = new ArrayList<>(nop);
         //2 players: 2 cloud tiles - 3 players: 3 cloud tiles: 4 players: 4 cloud tiles
-        for(int i = 0; i < nop; i++){
+        for (int i = 0; i < nop; i++) {
             clouds.add(new Cloud(i));
 
             try {
                 clouds.get(i).fill((ArrayList<PawnColour>) studentBag.multiple_extraction(nop == 3 ? 4 : 3));
-            } catch (FullContainerException e) { System.out.println(e.getMessage()); }
+            } catch (FullContainerException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -118,7 +123,7 @@ public class GameBoard implements Serializable {
     }
 
     //add coins to balance
-    public void addToCoinReserve(int coins){
+    public void addToCoinReserve(int coins) {
         this.coinReserve += coins;
     }
 
@@ -130,7 +135,9 @@ public class GameBoard implements Serializable {
 
         for (Map.Entry<PawnColour, Integer> e : sc.entrySet()) {
             PawnColour colour = e.getKey();
-            if (teachers.get(colour) == null) { continue; } //
+            if (teachers.get(colour) == null) {
+                continue;
+            } //
             int count = e.getValue();
             if (effects.isPawnColourDenied()) {
                 if (colour == effects.getDeniedPawnColour().get()) {
@@ -145,7 +152,7 @@ public class GameBoard implements Serializable {
                     .ifPresent(tc -> ic.merge(tc.getTeamID(), ig.getTowerCount(), Integer::sum));
         }
 
-        if(effects.isInfluenceIncreased()){
+        if (effects.isInfluenceIncreased()) {
             TeamID currentTeam = this.teamMap.getTeamID(turnOrder.getCurrentPlayer());
             ic.merge(currentTeam, 2, Integer::sum);
         }
@@ -175,7 +182,7 @@ public class GameBoard implements Serializable {
     }
 
     public void actMotherNaturePower(IslandGroup mnp) {
-        if(mnp.getNoEntryTiles().isEmpty()) {
+        if (mnp.getNoEntryTiles().isEmpty()) {
             Optional<TeamID> optInfluencer = influencerOf(mnp);
             if (optInfluencer.isPresent()) {
                 TeamID newInfluencer = optInfluencer.get();
@@ -188,7 +195,7 @@ public class GameBoard implements Serializable {
             }
             this.islandField.joinGroups();
         } else {
-              mnp.resetNoEntry();
+            mnp.resetNoEntry();
         }
     }
 

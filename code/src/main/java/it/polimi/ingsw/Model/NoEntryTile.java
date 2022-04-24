@@ -2,7 +2,6 @@ package it.polimi.ingsw.Model;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Optional;
 
 public class NoEntryTile implements Serializable {
     @Serial

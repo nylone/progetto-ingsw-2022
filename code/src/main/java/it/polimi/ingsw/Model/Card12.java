@@ -7,12 +7,12 @@ import java.io.Serial;
 
 import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_COLOUR;
 
-/*
-EFFECT: Choose a type of Student: every player
-(including yourself) must return 3 Students of that type
-from their Dining Room to the bag. If any player has
-fewer than 3 Students of that type, return as many
-Students as they have.
+/**
+ * EFFECT: Choose a type of Student: every player
+ * (including yourself) must return 3 Students of that type
+ * from their Dining Room to the bag. If any player has
+ * fewer than 3 Students of that type, return as many
+ * Students as they have.
  */
 public class Card12 extends StatelessEffect {
     @Serial

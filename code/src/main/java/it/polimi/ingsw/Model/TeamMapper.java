@@ -13,10 +13,10 @@ public class TeamMapper {
     Map<TeamID, TowerStorage> towerStorageMap;
 
     public TeamMapper(List<PlayerBoard> players) {
-        this.playerTeamMap  = new HashMap<>();
+        this.playerTeamMap = new HashMap<>();
         int nop = players.size();
         for (int i = 0; i < nop; i++) {
-            this.playerTeamMap.put(players.get(i),  TeamID.fromInteger(i % (nop == 4 ? 2 : nop)));
+            this.playerTeamMap.put(players.get(i), TeamID.fromInteger(i % (nop == 4 ? 2 : nop)));
         } // note: for 4 players the first team is always made up by the first 2 nicknames
         this.towerStorageMap = new HashMap<>(); // creates tower storage associations based on number of players
         for (int i = 0; i < (nop == 4 ? 2 : nop); i++) {

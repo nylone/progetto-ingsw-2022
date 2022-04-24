@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Exceptions.toremove.FullEntranceException;
-import it.polimi.ingsw.Exceptions.toremove.NoPawnInCloudException;
 import it.polimi.ingsw.Model.Cloud;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -27,7 +25,7 @@ public class ChooseCloudTile extends PlayerAction {
                 selectedTile >= 0 && selectedTile <= ctx.getClouds().size() - 1 &&  //selected a consistent cloud
                 selectedCloud.getContents().size() > 0 && //Selected cloud has not been already picked
                 ctx.getTurnOrder().getCurrentPlayer().getEntranceSpaceLeft() >= selectedCloud.getContents().size();
-                // check that entrance is not full
+        // check that entrance is not full
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 public class IslandFieldTest {
-    private IslandField field = new IslandField();
+    private final IslandField field = new IslandField();
 
     @Test
     public void motherNatureMovementIsCorrect() {

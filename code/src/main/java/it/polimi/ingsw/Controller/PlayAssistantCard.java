@@ -12,7 +12,7 @@ public class PlayAssistantCard extends PlayerAction {
 
     public PlayAssistantCard(int playerBoardId, int selectedAssistant) {
         super(playerBoardId);
-        this.selectedAssistant = selectedAssistant-1;
+        this.selectedAssistant = selectedAssistant - 1;
     }
 
     public void unsafeExecute(GameBoard ctx) {
@@ -26,8 +26,8 @@ public class PlayAssistantCard extends PlayerAction {
         PlayerBoard currentPlayer = ctx.getTurnOrder().getCurrentPlayer();
 
         return super.validate(history, ctx) &&
-                this.selectedAssistant>=0 && this.selectedAssistant<=currentPlayer.getAssistantCards().length-1 &&
-               !currentPlayer.getAssistantCards()[selectedAssistant].getUsed(); //true if not used/ false if the card has been used
+                this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getAssistantCards().length - 1 &&
+                !currentPlayer.getAssistantCards()[selectedAssistant].getUsed(); //true if not used/ false if the card has been used
 
     }
 }
