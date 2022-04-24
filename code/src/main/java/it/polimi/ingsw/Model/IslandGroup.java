@@ -1,11 +1,14 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Operation.*;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
+
+import static it.polimi.ingsw.Constants.OPERATION_NAME_JOIN_GROUPS;
 
 public class IslandGroup implements Serializable {
     @Serial
@@ -22,7 +25,7 @@ public class IslandGroup implements Serializable {
         this.noEntryTiles = new Stack<>();
     }
 
-    public IslandGroup(IslandGroup... islandGroups) {
+    public IslandGroup(IslandGroup... islandGroups) throws OperationException {
         if (islandGroups.length > 0) {
             if (islandGroups[0].isJoinable(islandGroups)) {
                 this.islands = new ArrayList<>();
@@ -31,26 +34,13 @@ public class IslandGroup implements Serializable {
                 }
                 this.id = Arrays.stream(islandGroups)
                         .min(Comparator.comparingInt(IslandGroup::getId))
-                        .orElseThrow(InvalidInputException::new)
+                        .orElseThrow(() -> new FailedOperationException(OPERATION_NAME_JOIN_GROUPS))
                         .getId();
             } else {
-                try {
-                    throw new UnjoinableGroupsException();
-                } catch (UnjoinableGroupsException e) {
-                    e.printStackTrace();
-                    this.id = 0;
-                    this.islands = null;
-                }
+                throw new ForbiddenOperationException(OPERATION_NAME_JOIN_GROUPS);
             }
         } else {
-            try {
-                throw new NoParamaterException();
-            } catch (NoParamaterException e) {
-                e.printStackTrace();
-                this.id = 0;
-                this.islands = null;
-            }
-
+            throw new ForbiddenOperationException(OPERATION_NAME_JOIN_GROUPS);
         }
     }
 
