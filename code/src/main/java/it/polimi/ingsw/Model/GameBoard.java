@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.FullContainerException;
+import it.polimi.ingsw.Exceptions.InputValidationException;
+import it.polimi.ingsw.Exceptions.InvalidContainerIndexException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TeamID;
@@ -10,6 +12,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static it.polimi.ingsw.Constants.CONTAINER_NAME_PLAYERBOARDS;
 
 public class GameBoard implements Serializable {
 
@@ -103,18 +107,18 @@ public class GameBoard implements Serializable {
         return turnOrder;
     }
 
-    public PlayerBoard getPlayerBoardById(int id) {
+    public PlayerBoard getPlayerBoardById(int id) throws InvalidContainerIndexException {
         return playerBoards.stream()
                 .filter(p -> p.getId() == id)
                 .findAny()
-                .orElseThrow(() -> new InvalidInputException());
+                .orElseThrow(() -> new InvalidContainerIndexException(CONTAINER_NAME_PLAYERBOARDS));
     }
 
-    public PlayerBoard getPlayerBoardByNickname(String nickname) {
+    public PlayerBoard getPlayerBoardByNickname(String nickname) throws InvalidContainerIndexException {
         return playerBoards.stream()
                 .filter(p -> p.getNickname().equals(nickname))
                 .findAny()
-                .orElseThrow(() -> new InvalidInputException());
+                .orElseThrow(() -> new InvalidContainerIndexException(CONTAINER_NAME_PLAYERBOARDS));
     }
 
 
@@ -129,7 +133,6 @@ public class GameBoard implements Serializable {
 
     // returns the team that holds influence over a particular islandgroup
     public Optional<TeamID> influencerOf(IslandGroup ig) {
-        // todo aumentare di 2 il conteggio del'influenza quando IncreasedInfluenceFlag è true (effetto carta 8)
         Map<PawnColour, Integer> sc = ig.getStudentCount();
         Map<TeamID, Integer> ic = new HashMap<>(); // maps the team with the influence count
 

@@ -20,10 +20,6 @@ public class GameHandler {
         return history;
     }
 
-    public void addPlayer(String nickname) {
-        //todo
-    }
-
     public void executeAction(PlayerAction action) {
         action.safeExecute(history, model);
     }

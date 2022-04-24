@@ -1,8 +1,5 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
-import it.polimi.ingsw.Exceptions.toremove.NoParamaterException;
-import it.polimi.ingsw.Exceptions.toremove.UnjoinableGroupsException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 
