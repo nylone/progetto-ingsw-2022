@@ -135,7 +135,7 @@ public class PlayerBoard implements Serializable {
                 return;
             }
         }
-        throw new InvalidElementException(INPUT_NAME_PAWN_COLOUR);
+        throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
     }
 
     public int getEntranceSpaceLeft() {

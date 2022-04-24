@@ -3,12 +3,10 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InputValidationException;
 import it.polimi.ingsw.Exceptions.InvalidElementException;
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
 
 import java.io.Serial;
 
-import static it.polimi.ingsw.Constants.INPUT_NAME_PAWN_COLOUR;
-import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_ISLAND;
+import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_COLOUR;
 
 /*
  EFFECT: Choose a color of Student: during the influence calculation this turn, that color adds no influence
@@ -23,13 +21,13 @@ public class Card09 extends StatelessEffect {
 
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetPawn().isEmpty()) {
-            throw new InvalidInputException();
+            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
         }
         return true;
     }
 
     @Override
-    protected void unsafeApplyEffect(CharacterCardInput input){
+    protected void unsafeApplyEffect(CharacterCardInput input) {
         this.context.getEffects().setDeniedPawnColour(input.getTargetPawn().get());
     }
 
