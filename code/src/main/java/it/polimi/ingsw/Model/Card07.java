@@ -35,7 +35,7 @@ public class Card07 extends StatefulEffect {
         return stateType;
     }
 
-    public void checkInput(CharacterCardInput input) {
+    public void overridableCheckInput(CharacterCardInput input) {
         if (!input.getTargetPawnPairs().isPresent()) {
             throw new InvalidInputException();
         } else {

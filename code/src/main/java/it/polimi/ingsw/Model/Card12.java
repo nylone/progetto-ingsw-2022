@@ -20,7 +20,7 @@ public class Card12 extends StatelessEffect {
         super(12, 3, ctx);
     }
 
-    public void checkInput(CharacterCardInput input) {
+    public void overridableCheckInput(CharacterCardInput input) {
         if (input.getTargetPawn().isPresent()) {
             int pawn_to_remove = 0;
             for (PlayerBoard p : this.context.getPlayerBoards()) {

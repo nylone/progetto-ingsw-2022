@@ -15,7 +15,7 @@ public class Card04 extends StatelessEffect {
         super(4, 1, ctx);
     }
 
-    public boolean checkInput(CharacterCardInput input) {
+    public boolean overridableCheckInput(CharacterCardInput input) {
         //todo
     }
 

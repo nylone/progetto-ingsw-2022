@@ -24,7 +24,7 @@ public class Card03 extends StatelessEffect {
         super(3, 3, ctx);
     }
 
-    public boolean checkInput(CharacterCardInput input) throws InputValidationException {
+    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if(input.getTargetPawn().isEmpty()){
             throw new InvalidInputException();
         }

@@ -25,7 +25,8 @@ public class Card10 extends StatelessEffect {
         super(10, 1, ctx);
     }
 
-    public boolean checkInput(CharacterCardInput input) throws InputValidationException {
+    @Override
+    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from diningroom
         Optional<Pair<PawnColour, PawnColour>[]> optionalPawnPair = input.getTargetPawnPairs();
         // make sure that:

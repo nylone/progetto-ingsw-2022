@@ -39,7 +39,7 @@ public class Card05 extends StatefulEffect {
         return stateType;
     }
 
-    public boolean checkInput(CharacterCardInput input) throws InputValidationException {
+    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if(input.getTargetIsland().isEmpty()){
             throw new InvalidInputException();
         }

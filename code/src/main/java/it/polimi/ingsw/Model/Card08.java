@@ -13,7 +13,7 @@ public class Card08 extends StatelessEffect {
         super(8, 2, ctx);
     }
 
-    public boolean checkInput(CharacterCardInput input) {
+    public boolean overridableCheckInput(CharacterCardInput input) {
 
     }
 

@@ -1,10 +1,12 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InputValidationException;
-import it.polimi.ingsw.Model.Enums.PawnColour;
+import it.polimi.ingsw.Exceptions.InvalidElementException;
 
 import java.io.Serial;
 import java.io.Serializable;
+
+import static it.polimi.ingsw.Constants.INPUT_NAME_CALLER;
 
 public abstract class CharacterCard implements Serializable {
     @Serial
@@ -34,7 +36,31 @@ public abstract class CharacterCard implements Serializable {
     }
     private void addUse() {this.timeUsed++;}
 
-    public abstract boolean checkInput(CharacterCardInput input) throws InputValidationException;
+    /**
+     * This function checks whether the correct input has been provided. It should always be called BEFORE calling an
+     * unsafeApplyEffect. Keep in mind this function does not alterate the gamestate.
+     * @param input
+     * @return can only return true as a value, only returns it when the input is correct
+     * @throws InputValidationException whenever the input is invalid
+     */
+    public boolean checkInput(CharacterCardInput input) throws InputValidationException {
+        if (input.getCaller() == null || input.getCaller() != this.context.getTurnOrder().getCurrentPlayer()) {
+            throw new InvalidElementException(INPUT_NAME_CALLER);
+        }
+        return overridableCheckInput(input);
+    }
+
+    /**
+     * This function checks whether the correct input has been provided. It is part of the checkInput function.
+     * Keep in mind this function does not alterate the gamestate.
+     * NOTE: checkInput(input) by default checks whether the correct player has called the card, then relays all other
+     * checks to this function. So don't check the correct user in this function as it is pointless.
+     * @param input
+     * @return can only return true as a value, only returns it when the input is correct
+     * @throws InputValidationException whenever the input is invalid
+     */
+    protected abstract boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException;
+
     protected abstract void unsafeApplyEffect(CharacterCardInput input) throws Exception;
     public final void unsafeUseCard(CharacterCardInput input) {
         try { // we should never get an exception now, if we do we crash

@@ -1,12 +1,10 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.InputValidationException;
-import it.polimi.ingsw.Exceptions.InvalidElementException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
-
-import static it.polimi.ingsw.Constants.INPUT_NAME_CALLER;
+import java.util.Map;
 
 /*
 During this turn, you take control of any
@@ -21,27 +19,20 @@ public class Card02 extends StatelessEffect {
         super(2, 2, ctx);
     }
 
-    public boolean checkInput(CharacterCardInput input) throws InputValidationException {
-        if (input.getCaller() == null) {
-            throw new InvalidElementException(INPUT_NAME_CALLER);
-        }
+    @Override
+    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         return true;
     }
 
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
-        // todo this implementation is wrong
-        for (PawnColour pawnColour : PawnColour.values()) {
-            for (PlayerBoard p : context.getPlayerBoards()) {
-                if (p.equals(input.getCaller())) continue;
-                // todo we take control of a teacher if we and another player have the same number of students
-                // this should be checked only on players with majority on a teacher
-                if (p.getDiningRoomCount(pawnColour) == input.getCaller().getDiningRoomCount(pawnColour)
-                        && p.getDiningRoomCount(pawnColour) != 0) {
-                    context.setTeacher(pawnColour, input.getCaller());
-                }
-            }
-        }
+        Map<PawnColour, PlayerBoard> teachers = this.context.getTeachers();
+        PlayerBoard me = input.getCaller();
+
+        teachers.forEach((teacherColour, teacherOwner) -> {
+            if (teacherOwner.getDiningRoomCount(teacherColour) <= me.getDiningRoomCount(teacherColour))
+                this.context.setTeacher(teacherColour, me);
+        });
     }
 
     //test purpose only

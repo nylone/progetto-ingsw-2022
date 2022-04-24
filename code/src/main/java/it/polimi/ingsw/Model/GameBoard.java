@@ -22,7 +22,7 @@ public class GameBoard implements Serializable {
     private int coinReserve;
     @Serial
     private static final long serialVersionUID = 101L; // convention: 1 for model, (01 -> 99) for objects
-    private EffectTracker effects;
+    private final EffectTracker effects;
     private final List<Cloud> clouds;
 
 
