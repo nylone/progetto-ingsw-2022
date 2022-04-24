@@ -28,17 +28,23 @@ public abstract class CharacterCard implements Serializable {
     public final int getId() {
         return this.id;
     }
+
     public final int getCost() {
         return this.timeUsed > 0 ? this.cost + 1 : this.cost;
     }
+
     public final int getTimeUsed() {
         return this.timeUsed;
     }
-    private void addUse() {this.timeUsed++;}
+
+    private void addUse() {
+        this.timeUsed++;
+    }
 
     /**
      * This function checks whether the correct input has been provided. It should always be called BEFORE calling an
      * unsafeApplyEffect. Keep in mind this function does not alterate the gamestate.
+     *
      * @param input
      * @return can only return true as a value, only returns it when the input is correct
      * @throws InputValidationException whenever the input is invalid
@@ -55,6 +61,7 @@ public abstract class CharacterCard implements Serializable {
      * Keep in mind this function does not alterate the gamestate.
      * NOTE: checkInput(input) by default checks whether the correct player has called the card, then relays all other
      * checks to this function. So don't check the correct user in this function as it is pointless.
+     *
      * @param input
      * @return can only return true as a value, only returns it when the input is correct
      * @throws InputValidationException whenever the input is invalid
@@ -62,6 +69,7 @@ public abstract class CharacterCard implements Serializable {
     protected abstract boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException;
 
     protected abstract void unsafeApplyEffect(CharacterCardInput input) throws Exception;
+
     public final void unsafeUseCard(CharacterCardInput input) {
         try { // we should never get an exception now, if we do we crash
             unsafeApplyEffect(input);

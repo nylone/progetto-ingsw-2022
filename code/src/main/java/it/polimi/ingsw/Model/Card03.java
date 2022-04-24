@@ -10,11 +10,12 @@ her movement will also be resolved.
 import it.polimi.ingsw.Exceptions.FailedOperationException;
 import it.polimi.ingsw.Exceptions.InputValidationException;
 import it.polimi.ingsw.Exceptions.InvalidElementException;
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
+import org.jetbrains.annotations.Contract;
 
 import java.io.Serial;
 
-import static it.polimi.ingsw.Constants.*;
+import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_ISLAND;
+import static it.polimi.ingsw.Constants.OPERATION_NAME_CARD03_APPLY_EFFECT;
 
 public class Card03 extends StatelessEffect {
     @Serial
@@ -25,8 +26,15 @@ public class Card03 extends StatelessEffect {
     }
 
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
-        if(input.getTargetPawn().isEmpty()){
-            throw new InvalidInputException();
+        if (input.getTargetIsland().isEmpty()){
+            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not set
+        }
+        Island ti = input.getTargetIsland().get();
+        if (ti.getId() < 0 && ti.getId() >= 12) {
+            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti out of bounds for id
+        }
+        if (!this.context.getIslandField().getIslands().contains(ti)) {
+            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not in field
         }
         return true;
     }
