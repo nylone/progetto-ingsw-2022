@@ -113,11 +113,29 @@ public class PlayerBoard implements Serializable {
         this.entrance.addAll(students);
     }
 
+    public void addStudentToEntrance(PawnColour student) throws FullContainerException {
+        if (this.entrance.size() + 1 > entranceSize) {
+            // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
+            throw new FullContainerException(CONTAINER_NAME_ENTRANCE);
+        }
+        this.entrance.add(student);
+    }
+
     public void removeStudentFromEntrance(int pos) throws InvalidContainerIndexException {
         if (pos < 0 && pos >= this.entranceSize && this.entrance.get(pos)==null) {
             throw new InvalidContainerIndexException(CONTAINER_NAME_ENTRANCE);
         }
         this.entrance.remove(pos);
+    }
+
+    public void removeStudentFromEntrance(PawnColour colour) throws InvalidElementException {
+        for (int i = 0; i < entranceSize; i++) {
+            if (entrance.get(i) == colour) {
+                entrance.remove(i);
+                return;
+            }
+        }
+        throw new InvalidElementException(INPUT_NAME_PAWN_COLOUR);
     }
 
     public int getEntranceSpaceLeft() {

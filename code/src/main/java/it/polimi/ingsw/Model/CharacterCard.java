@@ -49,7 +49,7 @@ public abstract class CharacterCard implements Serializable {
      * @return can only return true as a value, only returns it when the input is correct
      * @throws InputValidationException whenever the input is invalid
      */
-    public boolean checkInput(CharacterCardInput input) throws InputValidationException {
+    public final boolean checkInput(CharacterCardInput input) throws InputValidationException {
         if (input.getCaller() == null || input.getCaller() != this.context.getTurnOrder().getCurrentPlayer()) {
             throw new InvalidElementException(INPUT_NAME_CALLER);
         }

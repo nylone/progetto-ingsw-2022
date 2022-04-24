@@ -1,13 +1,16 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.toremove.FullEntranceException;
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
+import it.polimi.ingsw.Exceptions.InputValidationException;
+import it.polimi.ingsw.Exceptions.InvalidElementException;
+import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
 
 import java.io.Serial;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
+
+import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_PAIRS;
+import static it.polimi.ingsw.Misc.Utils.canCollectionFit;
 
 /*
 In Setup, draw 6 Students and place them on this card
@@ -35,45 +38,70 @@ public class Card07 extends StatefulEffect {
         return stateType;
     }
 
-    public void overridableCheckInput(CharacterCardInput input) {
-        if (!input.getTargetPawnPairs().isPresent()) {
-            throw new InvalidInputException();
-        } else {
-            if (input.getTargetPawnPairs().get()[0].length <= 3 && input.getTargetPawnPairs().get()[1].length <= 3) {
-                //convention of input.targetPawnPairs ---> index 0 students from PlayerBoard/ index 1 students from Card
-                removeFromCard(input.getTargetPawnPairs().get()[1]);
-                int cont = 0;
-                for (int i = 0; i < 6; i++) {
-                    if (this.students[i] == null) {
-                        this.students[i] = input.getTargetPawnPairs().get()[0][cont]; //adding students from PlayerBoard's entrance into the card
-                        cont++;
-                        if (cont == input.getTargetPawnPairs().get()[0].length) break;
-                    }
-                }
-                try { //adding student from Card to PlayerBoard's entrance
-                    input.getCaller().addStudentsToEntrance(new ArrayList<>(Arrays.asList(input.getTargetPawnPairs().get()[1])));
-                } catch (FullEntranceException ex) {
-                    ex.printStackTrace();
-                }
-                addUse();
-            } else {
-                throw new InvalidInputException("More than 3 pairs");
-            }
+    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
+        //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from card
+        Optional<Pair<PawnColour, PawnColour>[]> optionalPawnPair = input.getTargetPawnPairs();
+
+        // make sure the pair is formatted properly
+        if (
+                optionalPawnPair.isEmpty() || // target pawn pairs was set as parameter
+                        optionalPawnPair.get().length == 0 || // target pawn pairs is not empty
+                        optionalPawnPair.get().length > 3 || // target pawn pairs are not over the pair limit of 2 swaps
+                        Arrays.stream(optionalPawnPair.get()).anyMatch(p -> p.getFirst() == null || p.getSecond() == null) // no null values in pair
+        ) {
+            // in case throw exception for invalid element in input
+            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
         }
+
+        // explode pawnpairs into respective arrays of elements
+        Pair<PawnColour, PawnColour>[] pawnPairs = optionalPawnPair.get();
+        // first count how many students of each colour the user picked
+        Map<PawnColour, Integer> firstMap = new EnumMap<>(PawnColour.class); // counts user entrance selected colours
+        Map<PawnColour, Integer> secondMap = new EnumMap<>(PawnColour.class); // counts card state selected colours
+        for (Pair<PawnColour, PawnColour> pair: pawnPairs) {
+            firstMap.merge(pair.getFirst(), 1, Integer::sum);
+            secondMap.merge(pair.getSecond(), 1, Integer::sum);
+        }
+
+        // get user entrance counts per colour
+        PlayerBoard me = input.getCaller();
+        Map<PawnColour, Integer> entranceMap = new EnumMap<>(PawnColour.class); // counts user entrance total colours
+        for (PawnColour pawn: me.getEntranceStudents()) {
+            entranceMap.merge(pawn, 1, Integer::sum);
+        }
+        // make sure the elements coming from user (first) are also mapped to entrance
+        if (!canCollectionFit(entranceMap, firstMap)) {
+            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
+        }
+
+        // get card storage counts per colour
+        Map<PawnColour, Integer> cardMap = new EnumMap<>(PawnColour.class); // counts user entrance total colours
+        for (PawnColour pawn: this.students) {
+            cardMap.merge(pawn, 1, Integer::sum);
+        }
+        // make sure the elements coming from card (second) are also mapped to the card state
+        if (!canCollectionFit(cardMap, secondMap)) {
+            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
+        }
+
+        return true;
     }
 
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
+        PlayerBoard me = input.getCaller();
 
-    }
+        //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from card
+        for (Pair<PawnColour, PawnColour> pair: input.getTargetPawnPairs().get()) {
+            // match the first element in entrance with first and swap it with second
+            me.removeStudentFromEntrance(pair.getFirst());
+            me.addStudentToEntrance(pair.getSecond());
 
-    private void removeFromCard(PawnColour[] pawns) {
-        int cont = 0;
-        for (int i = 0; i < 6; i++) {
-            if (this.students[i].equals(pawns[cont])) {
-                this.students[i] = null;
-                cont++;
-                if (cont == pawns.length) break;
+            // match the first element in card with second and swap it with first
+            for (int i = 0; i < students.length; i++) {
+                if (students[i] == pair.getSecond()) {
+                    students[i] = pair.getFirst();
+                }
             }
         }
     }
