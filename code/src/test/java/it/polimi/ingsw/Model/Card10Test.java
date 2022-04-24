@@ -22,8 +22,8 @@ public class Card10Test {
         PawnColour[][] pairs = new PawnColour[2][];
         pairs[0] = new PawnColour[]{pb.getEntranceStudents().remove(0), pb.getEntranceStudents().remove(0)};
         pairs[1] = new PawnColour[]{PawnColour.RED, PawnColour.YELLOW};
-        pb.removeStudentFromDiningRoom(PawnColour.RED,1);
-        pb.removeStudentFromDiningRoom(PawnColour.YELLOW,1);
+        pb.removeStudentsFromDiningRoom(PawnColour.RED,1);
+        pb.removeStudentsFromDiningRoom(PawnColour.YELLOW,1);
         input.setTargetPawnPairs(pairs);
         card10.Use(input);
         assertTrue(pb.getDiningRoomCount(pairs[0][0])==1 || pb.getDiningRoomCount(pairs[0][0])==2); //equals 2 if students taken from entrance have the same colour

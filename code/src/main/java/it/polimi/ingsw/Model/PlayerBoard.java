@@ -86,7 +86,7 @@ public class PlayerBoard implements Serializable {
         }
     }
 
-    public void removeStudentFromDiningRoom(PawnColour colour, int amount) throws EmptyContainerException {
+    public void removeStudentsFromDiningRoom(PawnColour colour, int amount) throws EmptyContainerException {
         if(amount>0) {
             if (this.getDiningRoomCount(colour) == 0) {
                 throw new EmptyContainerException(CONTAINER_NAME_DININGROOM);

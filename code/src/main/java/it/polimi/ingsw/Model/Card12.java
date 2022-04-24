@@ -1,9 +1,11 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.toremove.EmptyDiningRoomException;
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
+import it.polimi.ingsw.Exceptions.InputValidationException;
+import it.polimi.ingsw.Exceptions.InvalidElementException;
 
 import java.io.Serial;
+
+import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_COLOUR;
 
 /*
 EFFECT: Choose a type of Student: every player
@@ -20,24 +22,24 @@ public class Card12 extends StatelessEffect {
         super(12, 3, ctx);
     }
 
-    public void overridableCheckInput(CharacterCardInput input) {
-        if (input.getTargetPawn().isPresent()) {
-            int pawn_to_remove = 0;
-            for (PlayerBoard p : this.context.getPlayerBoards()) {
-                pawn_to_remove += Math.min(3, p.getDiningRoomCount(input.getTargetPawn().get())); //If any player has fewer than 3 Students of that type, return as many Students as they have.
-                try {
-                    p.removeStudentFromDiningRoom(input.getTargetPawn().get(), pawn_to_remove);
-                    for (int i = 0; i < pawn_to_remove; i++) {
-                        this.context.getStudentBag().appendAndShuffle(input.getTargetPawn().get());
-                    }
-                    pawn_to_remove = 0;
-                } catch (EmptyDiningRoomException e) {
-                    e.printStackTrace();
-                }
+    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
+        if (input.getTargetPawn().isEmpty()) {
+            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
+        }
+        return true;
+    }
+
+    @Override
+    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
+        for (PlayerBoard p : this.context.getPlayerBoards()) {
+            //If any player has fewer than 3 Students of that type, return as many Students as they have.
+            int amountToRemove = Math.min(3, p.getDiningRoomCount(input.getTargetPawn().get()));
+
+            p.removeStudentsFromDiningRoom(input.getTargetPawn().get(), amountToRemove);
+
+            for (int i = 0; i < amountToRemove; i++) {
+                this.context.getStudentBag().appendAndShuffle(input.getTargetPawn().get());
             }
-            addUse();
-        } else {
-            throw new InvalidInputException();
         }
     }
 

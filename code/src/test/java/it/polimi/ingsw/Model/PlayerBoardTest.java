@@ -48,14 +48,14 @@ public class PlayerBoardTest {
         playerBoard.addStudentToDiningRoom(PawnColour.BLUE);
         int expected = playerBoard.getDiningRoomCount(PawnColour.BLUE);
         // act
-        playerBoard.removeStudentFromDiningRoom(PawnColour.BLUE, 2);
+        playerBoard.removeStudentsFromDiningRoom(PawnColour.BLUE, 2);
         // assert
         assertTrue(playerBoard.getDiningRoomCount(PawnColour.BLUE) == expected - 2);
     }
     @Test(expected = EmptyDiningRoomException.class)
     public void removeStudentException() throws EmptyDiningRoomException {
         PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
-        playerBoard.removeStudentFromDiningRoom(PawnColour.RED,1);
+        playerBoard.removeStudentsFromDiningRoom(PawnColour.RED,1);
     }
     @Test(expected = FullDiningRoomException.class)
     public void addStudentException() throws FullDiningRoomException {
