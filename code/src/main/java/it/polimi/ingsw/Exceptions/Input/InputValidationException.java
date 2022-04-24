@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Exceptions;
+package it.polimi.ingsw.Exceptions.Input;
 
 public abstract class InputValidationException extends Exception {
     public InputValidationException(String failedValidationName, String errorReport) {

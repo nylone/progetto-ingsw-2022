@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Exceptions;
+package it.polimi.ingsw.Exceptions.Container;
 
 public abstract class ContainerException extends Exception {
     public ContainerException(String containerName, String errorReport) {

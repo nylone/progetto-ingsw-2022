@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Exceptions;
+package it.polimi.ingsw.Exceptions.Operation;
 
 public class FailedOperationException extends OperationException {
     public FailedOperationException(String operationName) {

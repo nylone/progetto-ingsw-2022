@@ -1,9 +1,9 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.EmptyContainerException;
-import it.polimi.ingsw.Exceptions.FullContainerException;
-import it.polimi.ingsw.Exceptions.InvalidContainerIndexException;
-import it.polimi.ingsw.Exceptions.InvalidElementException;
+import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
+import it.polimi.ingsw.Exceptions.Container.FullContainerException;
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
+import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;

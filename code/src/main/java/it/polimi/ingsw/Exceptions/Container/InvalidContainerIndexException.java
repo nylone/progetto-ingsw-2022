@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Exceptions;
+package it.polimi.ingsw.Exceptions.Container;
 
 public class InvalidContainerIndexException extends ContainerException {
     public InvalidContainerIndexException(String containerName) {

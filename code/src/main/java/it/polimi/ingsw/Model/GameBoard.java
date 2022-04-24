@@ -1,8 +1,7 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.FullContainerException;
-import it.polimi.ingsw.Exceptions.InputValidationException;
-import it.polimi.ingsw.Exceptions.InvalidContainerIndexException;
+import it.polimi.ingsw.Exceptions.Container.FullContainerException;
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TeamID;

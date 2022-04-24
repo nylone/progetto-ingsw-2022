@@ -1,9 +1,9 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.FailedOperationException;
-import it.polimi.ingsw.Exceptions.GenericInputValidationException;
-import it.polimi.ingsw.Exceptions.InputValidationException;
-import it.polimi.ingsw.Exceptions.InvalidElementException;
+import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
+import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
 

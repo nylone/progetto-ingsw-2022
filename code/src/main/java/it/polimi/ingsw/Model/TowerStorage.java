@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Model;
 
 
-import it.polimi.ingsw.Exceptions.DuplicateElementException;
-import it.polimi.ingsw.Exceptions.InvalidElementException;
+import it.polimi.ingsw.Exceptions.Input.DuplicateElementException;
+import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 
 import java.io.Serial;

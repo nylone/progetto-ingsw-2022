@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Exceptions;
+package it.polimi.ingsw.Exceptions.Operation;
 
 public class ForbiddenOperationException extends OperationException {
     public ForbiddenOperationException(String operationName) {

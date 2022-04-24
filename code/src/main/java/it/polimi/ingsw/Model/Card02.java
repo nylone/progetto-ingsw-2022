@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.InputValidationException;
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Exceptions;
+package it.polimi.ingsw.Exceptions.Container;
 
 public class FullContainerException extends ContainerException {
     public FullContainerException(String containerName) {
