@@ -18,7 +18,7 @@ public class PlayAssistantCard extends PlayerAction {
     public void unsafeExecute(GameBoard ctx) {
         PlayerBoard pb = ctx.getTurnOrder().getCurrentPlayer();
         AssistantCard sa = pb.getAssistantCards()[selectedAssistant];
-        ctx.getTurnOrder().setSelectedCard(pb, sa, pb.getAssistantCards());
+        ctx.getTurnOrder().setSelectedCard(pb, sa);
     }
 
     @Override

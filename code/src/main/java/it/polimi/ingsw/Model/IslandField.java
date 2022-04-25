@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
-import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Misc.Utils;
 
@@ -89,26 +88,30 @@ public class IslandField implements Serializable {
         );
     }
 
-    public boolean joinGroups() throws OperationException {
+    public boolean joinGroups() {
         boolean didJoin = false;
         IslandGroup motherGroup = this.getMotherNaturePosition();
         IslandGroup nextGroup = this.nextGroup(motherGroup);
         IslandGroup prevGroup = this.prevGroup(motherGroup);
         // look to the group before mother nature position and join if necessary
-        if (motherGroup.isJoinable(prevGroup)) {
+        try {
+            if (motherGroup.isJoinable(prevGroup)) {
                 IslandGroup joined = new IslandGroup(motherGroup, prevGroup);
                 this.groups.remove(prevGroup);
                 this.groups.set(this.groups.indexOf(motherGroup), joined);
                 this.motherNaturePosition = joined;
                 didJoin = true;
-        }
-        motherGroup = this.getMotherNaturePosition();
-        if (motherGroup.isJoinable(nextGroup)) {
+            }
+            motherGroup = this.getMotherNaturePosition();
+            if (motherGroup.isJoinable(nextGroup)) {
                 IslandGroup joined = new IslandGroup(motherGroup, nextGroup);
                 this.groups.remove(nextGroup);
                 this.groups.set(this.groups.indexOf(motherGroup), joined);
                 this.motherNaturePosition = joined;
                 didJoin = true;
+            }
+        } catch (OperationException e) {
+            e.printStackTrace();
         }
         return didJoin;
     }

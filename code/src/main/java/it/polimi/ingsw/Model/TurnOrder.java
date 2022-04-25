@@ -1,8 +1,13 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Input.DuplicateElementException;
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
+import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GamePhase;
-import org.jetbrains.annotations.NotNull;
+import static it.polimi.ingsw.Constants.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -20,7 +25,7 @@ public class TurnOrder implements Serializable {
     private List<PlayerBoard> currentTurnOrder; // represents the order for the turn in play
     private GamePhase gamePhase;
 
-    public TurnOrder(@NotNull PlayerBoard... playerBoards) {
+    public TurnOrder(PlayerBoard... playerBoards) {
         if (playerBoards.length >= 2 && playerBoards.length <= 4) {
             // add all players to their cards map and set them to not skipped
             this.selectedCards = new HashMap<>(playerBoards.length);
@@ -60,28 +65,28 @@ public class TurnOrder implements Serializable {
         return gamePhase;
     }
 
-    public boolean isOwnTurn(@NotNull PlayerBoard pb) {
+    public boolean isOwnTurn(PlayerBoard pb) {
         return getCurrentPlayer() == pb;
     }
 
     // this function verifies if the playerboard passed to the obj is valid
-    private boolean isPlayerSubscribed(@NotNull PlayerBoard pb) {
+    private boolean isPlayerSubscribed(PlayerBoard pb) {
         return skippedPlayers.containsKey(pb);
     }
 
-    public void addPlayerToSkip(@NotNull PlayerBoard pb) {
+    public void addPlayerToSkip(PlayerBoard pb) {
         if (isPlayerSubscribed(pb)) {
             this.skippedPlayers.put(pb, true);
         }
     }
 
-    public void removePlayerToSkip(@NotNull PlayerBoard pb) {
+    public void removePlayerToSkip(PlayerBoard pb) {
         if (isPlayerSubscribed(pb)) {
             this.skippedPlayers.put(pb, false);
         }
     }
 
-    public boolean isPlayerSkipped(@NotNull PlayerBoard pb) {
+    public boolean isPlayerSkipped(PlayerBoard pb) {
         return skippedPlayers.get(pb);
     }
 
@@ -92,7 +97,7 @@ public class TurnOrder implements Serializable {
                 .toList(); // returns unmodifiable List
     }
 
-    public Optional<AssistantCard> getSelectedCard(@NotNull PlayerBoard pb) {
+    public Optional<AssistantCard> getSelectedCard(PlayerBoard pb) {
         return this.selectedCards.get(pb);
     }
 
@@ -107,31 +112,36 @@ public class TurnOrder implements Serializable {
         selectedCards.replaceAll((k, v) -> Optional.empty());
     }
 
-    private boolean isAlreadyInSelection(@NotNull AssistantCard ac) {
+    private boolean isAlreadyInSelection(AssistantCard ac) {
         return getSelectedCards().stream()
                 .anyMatch(selected -> selected.getPriority() == ac.getPriority());
     }
 
-    private boolean canOnlyPlayDuplicates(@NotNull AssistantCard[] acDeck) {
+    private boolean canOnlyPlayDuplicates(AssistantCard[] acDeck) {
         return Arrays.stream(acDeck).allMatch(this::isAlreadyInSelection);
     }
 
-    public void setSelectedCard(@NotNull PlayerBoard pb, @NotNull AssistantCard ac, @NotNull AssistantCard[] acDeck) {
-        if (getGamePhase() == GamePhase.SETUP &&
-                isOwnTurn(pb)) {
-            if (!isAlreadyInSelection(ac) || canOnlyPlayDuplicates(acDeck)) {
-                if (!ac.getUsed()) {
-                    ac.setUsed();
-                    this.selectedCards.put(pb, Optional.of(ac));
-                } else {
-                    // todo exception for already used card
-                }
-            } else {
-                // todo exception for duplicate card
-            }
-        } else {
-            // todo throw exception for out of turn access
+    public void setSelectedCard(PlayerBoard pb, AssistantCard ac) throws OperationException, InputValidationException {
+        if (pb == null) { // not null contract
+            throw new InvalidElementException("PlayerBoard pb");
         }
+        if (getGamePhase() != GamePhase.SETUP || !isOwnTurn(pb)) { // correct phase and turn contract
+            throw new ForbiddenOperationException(OPERATION_NAME_PLAY_ASSISTANT);
+        }
+        if (ac == null) { // not null contract
+            throw new InvalidElementException("AssistantCard ac");
+        }
+        if (ac.getUsed()) { // no reuse card contract
+            throw new ForbiddenOperationException(OPERATION_NAME_PLAY_ASSISTANT);
+        }
+        AssistantCard[] acDeck = pb.getAssistantCards();
+        if (isAlreadyInSelection(ac) && !canOnlyPlayDuplicates(acDeck)) { // no duplicate cards contract
+            throw new DuplicateElementException("AssistantCard ac");
+        }
+
+        // validation passed:
+        ac.setUsed();
+        this.selectedCards.put(pb, Optional.of(ac));
     }
 
     public PlayerBoard getCurrentPlayer() {
