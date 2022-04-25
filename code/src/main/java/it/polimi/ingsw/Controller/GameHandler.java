@@ -12,11 +12,12 @@ public class GameHandler {
 
     private final List<PlayerAction> history;
     private GameBoard model;
-    private ArrayList<PlayerInfo> players;
-    private ByteArrayOutputStream backup;
+    private final ByteArrayOutputStream backup;
 
-    public GameHandler(GameMode gameMode) {
-        this.history = new ArrayList<PlayerAction>(6);
+    public GameHandler(GameMode gameMode, String ... players) {
+        this.history = new ArrayList<>(6);
+        this.backup = new ByteArrayOutputStream();
+        this.model = new GameBoard(gameMode, players);
     }
 
     public List<PlayerAction> getHistory() {

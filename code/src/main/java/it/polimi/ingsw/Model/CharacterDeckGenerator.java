@@ -4,8 +4,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CharacterDeckGenerator {
-    private static final long serialVersionUID = 117L; // convention: 1 for model, (01 -> 99) for objects
-
     private static List<CharacterCard> deck;
 
     public static List<CharacterCard> generateCardSet(GameBoard ctx) {
