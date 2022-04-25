@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;
 
@@ -20,7 +21,7 @@ public class GameHandler {
         return history;
     }
 
-    public void executeAction(PlayerAction action) {
+    public void executeAction(PlayerAction action) throws InputValidationException {
         action.safeExecute(history, model);
     }
 

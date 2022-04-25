@@ -45,7 +45,7 @@ public class MoveStudent extends PlayerAction {
         if(!(this.selectedEntrancePosition>=0 && this.selectedEntrancePosition < entranceSize )){
             throw new InvalidElementException("Index Target Entrance Position");
         }
-        if(!(countDuplicateActions(history) < maxCount)){
+        if(!(countDuplicateActions(history) <= maxCount)){
             throw new GenericInputValidationException("Action", "this action can't be executed more than "+maxCount+ " times");
         }
         if(caller.getEntranceStudents().get(this.selectedEntrancePosition) == null){ // todo implement optionals in getentrance
@@ -68,7 +68,7 @@ public class MoveStudent extends PlayerAction {
         }
         // validate size of dining room
         if(this.destination.getDestinationType() == DestinationType.DININGROOM){
-            if(caller.isDiningRoomFull(Arrays.asList(caller.getEntranceStudents().get(this.selectedEntrancePosition)))){
+            if(caller.isDiningRoomFull(List.of(caller.getEntranceStudents().get(this.selectedEntrancePosition)))){
                 throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
                         CONTAINER_NAME_DININGROOM + "can't contain the pawn without overflowing on the lane.");
             }
