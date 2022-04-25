@@ -22,7 +22,7 @@ public class Card08 extends StatelessEffect {
 
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
-        context.getEffects().enableIncreasedInfluence();
+        context.getMutableEffects().enableIncreasedInfluence();
     }
 
     //test purpose only

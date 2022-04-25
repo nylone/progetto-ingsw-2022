@@ -31,7 +31,7 @@ public class Card03 extends StatelessEffect {
         if (ti.getId() < 0 && ti.getId() >= 12) {
             throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti out of bounds for id
         }
-        if (!this.context.getIslandField().getIslands().contains(ti)) {
+        if (!this.context.getMutableIslandField().getIslands().contains(ti)) {
             throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not in field
         }
         return true;
@@ -40,7 +40,7 @@ public class Card03 extends StatelessEffect {
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         Island ti = input.getTargetIsland().get();
-        for (IslandGroup ig : this.context.getIslandField().getGroups()) {
+        for (IslandGroup ig : this.context.getMutableIslandField().getGroups()) {
             if (ig.contains(ti)) {
                 context.actMotherNaturePower(ig);
                 return;

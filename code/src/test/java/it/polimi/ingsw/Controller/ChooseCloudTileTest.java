@@ -14,7 +14,7 @@ public class ChooseCloudTileTest {
     public void playerCanTakeStudentsFromCloud() {
         // arrange
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
-        PlayerBoard currentPlayer = gameBoard.getTurnOrder().getCurrentPlayer();
+        PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getCurrentPlayer();
         int selectedCloud = Utils.random(gameBoard.getClouds()).getId();
         ChooseCloudTile action = new ChooseCloudTile(currentPlayer.getId(), selectedCloud);
         currentPlayer.getEntranceStudents().remove(6);
@@ -32,7 +32,7 @@ public class ChooseCloudTileTest {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE);
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
-        PlayerBoard currentPlayer = gameBoard.getTurnOrder().getCurrentPlayer();
+        PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getCurrentPlayer();
         int selectedCloud = Utils.random(gameBoard.getClouds()).getId();
         ChooseCloudTile action = new ChooseCloudTile(currentPlayer.getId(), selectedCloud);
         // act
@@ -46,7 +46,7 @@ public class ChooseCloudTileTest {
     public void fullEntranceShouldLogExceptionInUnsafeEnvironment() {
         // arrange
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
-        PlayerBoard currentPlayer = gameBoard.getTurnOrder().getCurrentPlayer();
+        PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getCurrentPlayer();
         int selectedCloud = Utils.random(gameBoard.getClouds()).getId();
         ChooseCloudTile action = new ChooseCloudTile(currentPlayer.getId(), selectedCloud);
         // act

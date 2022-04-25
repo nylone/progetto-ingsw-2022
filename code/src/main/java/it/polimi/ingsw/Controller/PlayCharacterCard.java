@@ -40,7 +40,7 @@ public class PlayCharacterCard extends PlayerAction {
 
     @Override
     protected void unsafeExecute(GameBoard ctx) {
-        PlayerBoard caller = ctx.getTurnOrder().getCurrentPlayer();
+        PlayerBoard caller = ctx.getMutableTurnOrder().getCurrentPlayer();
         CharacterCard characterCard = ctx.getCharacterCards().get(this.selectedCard);
         caller.PayCharacterEffect(characterCard.getCost());
         if (characterCard.getTimeUsed() > 0) {
@@ -56,7 +56,7 @@ public class PlayCharacterCard extends PlayerAction {
     }
 
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
-        PlayerBoard caller = ctx.getTurnOrder().getCurrentPlayer();
+        PlayerBoard caller = ctx.getMutableTurnOrder().getCurrentPlayer();
 
         // generate the input object before validation
         CharacterCardInput cardInput;
@@ -85,7 +85,7 @@ public class PlayCharacterCard extends PlayerAction {
         CharacterCardInput out = new CharacterCardInput(caller);
         if (this.optTargetIsland.isPresent()) {
             int id = this.optTargetIsland.get();
-            out.setTargetIsland(ctx.getIslandField().getIslandById(id));
+            out.setTargetIsland(ctx.getMutableIslandField().getIslandById(id));
         }
         this.optTargetPawn.ifPresent(out::setTargetPawn);
         this.optTargetPawnPairs.ifPresent(out::setTargetPawnPairs);

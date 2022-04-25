@@ -28,7 +28,7 @@ public class Card09 extends StatelessEffect {
 
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) {
-        this.context.getEffects().setDeniedPawnColour(input.getTargetPawn().get());
+        this.context.getMutableEffects().setDeniedPawnColour(input.getTargetPawn().get());
     }
 
     //test purpose only

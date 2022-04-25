@@ -28,8 +28,8 @@ public class MoveMotherNature extends PlayerAction {
 
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
-        PlayerBoard currentPlayer = ctx.getTurnOrder().getCurrentPlayer();
-        Optional<AssistantCard> optionalAssistantCard = ctx.getTurnOrder()
+        PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getCurrentPlayer();
+        Optional<AssistantCard> optionalAssistantCard = ctx.getMutableTurnOrder()
                 .getSelectedCard(currentPlayer);
 
         if(!super.validate(history,ctx)){

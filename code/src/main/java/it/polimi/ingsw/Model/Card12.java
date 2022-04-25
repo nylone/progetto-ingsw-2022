@@ -31,14 +31,14 @@ public class Card12 extends StatelessEffect {
 
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
-        for (PlayerBoard p : this.context.getPlayerBoards()) {
+        for (PlayerBoard p : this.context.getMutablePlayerBoards()) {
             //If any player has fewer than 3 Students of that type, return as many Students as they have.
             int amountToRemove = Math.min(3, p.getDiningRoomCount(input.getTargetPawn().get()));
 
             p.removeStudentsFromDiningRoom(input.getTargetPawn().get(), amountToRemove);
 
             for (int i = 0; i < amountToRemove; i++) {
-                this.context.getStudentBag().appendAndShuffle(input.getTargetPawn().get());
+                this.context.getMutableStudentBag().appendAndShuffle(input.getTargetPawn().get());
             }
         }
     }

@@ -21,7 +21,7 @@ public class Card04 extends StatelessEffect {
 
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
-        this.context.getEffects().enableIncreasedMotherNatureMovement();
+        this.context.getMutableEffects().enableIncreasedMotherNatureMovement();
     }
 
     //test purpose only

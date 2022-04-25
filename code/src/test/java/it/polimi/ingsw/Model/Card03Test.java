@@ -13,11 +13,11 @@ public class Card03Test {
 
     @Test
     public void checkUse() throws InvalidContainerIndexException {
-        PlayerBoard pb1 = gb.getPlayerBoardByNickname("ari");
-        PlayerBoard pb2 = gb.getPlayerBoardByNickname("teo");
-        IslandGroup ig = gb.getIslandField().getIslandGroupById(5);
+        PlayerBoard pb1 = gb.getMutablePlayerBoardByNickname("ari");
+        PlayerBoard pb2 = gb.getMutablePlayerBoardByNickname("teo");
+        IslandGroup ig = gb.getMutableIslandField().getIslandGroupById(5);
         Island island = ig.getIslands().get(0);
-        IslandGroup expectedMotherNaturePosition = gb.getIslandField().getMotherNaturePosition();
+        IslandGroup expectedMotherNaturePosition = gb.getMutableIslandField().getMotherNaturePosition();
 
         island.addStudent(PawnColour.BLUE);
         island.addStudent(PawnColour.BLUE);
@@ -32,12 +32,12 @@ public class Card03Test {
         card.Use(input);
 
         assertTrue(ig.getTowerColour().get().equals(gb.getTeamMap().getTowerStorage(pb1).getColour()));
-        assertEquals(expectedMotherNaturePosition, gb.getIslandField().getMotherNaturePosition());
+        assertEquals(expectedMotherNaturePosition, gb.getMutableIslandField().getMotherNaturePosition());
     }
 
     @Test(expected = InvalidInputException.class)
     public void checkInvalidInput() throws InvalidContainerIndexException {
-        PlayerBoard pb1 = gb.getPlayerBoardByNickname("ari");
+        PlayerBoard pb1 = gb.getMutablePlayerBoardByNickname("ari");
         CharacterCardInput input = new CharacterCardInput(pb1);
         card.Use(input);
     }

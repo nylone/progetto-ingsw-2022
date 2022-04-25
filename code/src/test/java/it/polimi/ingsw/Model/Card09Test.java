@@ -11,7 +11,7 @@ import org.junit.Test;
 public class Card09Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
     Card09 card09 = new Card09(gb);
-    PlayerBoard pb = new PlayerBoard(1, 2, "ari", gb.getStudentBag());
+    PlayerBoard pb = new PlayerBoard(1, 2, "ari", gb.getMutableStudentBag());
 
     @Test(expected = InvalidInputException.class)
     public void UseException(){
@@ -27,6 +27,6 @@ public class Card09Test {
 
         card09.Use(input);
 
-        assertTrue(gb.getEffects().getDeniedPawnColour().get().equals(p));
+        assertTrue(gb.getMutableEffects().getDeniedPawnColour().get().equals(p));
     }
 }

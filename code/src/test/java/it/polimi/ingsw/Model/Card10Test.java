@@ -16,7 +16,7 @@ public class Card10Test {
 
     @Test
     public void checkUse() throws FullDiningRoomException, EmptyDiningRoomException, InvalidContainerIndexException {
-        PlayerBoard pb = gb.getPlayerBoardByNickname("Rouge");
+        PlayerBoard pb = gb.getMutablePlayerBoardByNickname("Rouge");
         CharacterCardInput input = new CharacterCardInput(pb);
         pb.addStudentToDiningRoom(PawnColour.RED);
         pb.addStudentToDiningRoom(PawnColour.YELLOW);
@@ -35,13 +35,13 @@ public class Card10Test {
 
     @Test(expected = InvalidInputException.class)
     public void checkEmptyInput() throws InvalidContainerIndexException {
-        PlayerBoard pb = gb.getPlayerBoardByNickname("Rouge");
+        PlayerBoard pb = gb.getMutablePlayerBoardByNickname("Rouge");
         CharacterCardInput input = new CharacterCardInput(pb);
         card10.Use(input);
     }
     @Test(expected = InvalidInputException.class)
     public void asymettricInput() throws FullDiningRoomException, InvalidContainerIndexException {
-        PlayerBoard pb = gb.getPlayerBoardByNickname("Rouge");
+        PlayerBoard pb = gb.getMutablePlayerBoardByNickname("Rouge");
         CharacterCardInput input = new CharacterCardInput(pb);
         pb.addStudentToDiningRoom(PawnColour.RED);
         pb.addStudentToDiningRoom(PawnColour.YELLOW);

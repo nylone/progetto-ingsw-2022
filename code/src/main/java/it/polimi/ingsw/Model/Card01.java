@@ -26,7 +26,7 @@ public class Card01 extends StatefulEffect {
     public Card01(GameBoard ctx) {
         super(1, 1, StateType.PAWNCOLOUR, ctx);
         for (int i = 0; i < 4; i++) {
-            this.students[i] = ctx.getStudentBag().extract();
+            this.students[i] = ctx.getMutableStudentBag().extract();
         }
     }
 
@@ -61,7 +61,7 @@ public class Card01 extends StatefulEffect {
         // find first occurrence of same target pawn in card state and swap it with a new pawn
         for (int i = 0; i < 4; i++) {
             if (this.students[i] == movedPawn) {
-                this.students[i] = context.getStudentBag().extract();
+                this.students[i] = context.getMutableStudentBag().extract();
                 return; // repeat this action only once per loop
             }
         }

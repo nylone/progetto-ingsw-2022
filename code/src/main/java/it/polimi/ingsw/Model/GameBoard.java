@@ -63,63 +63,68 @@ public class GameBoard implements Serializable {
         }
     }
 
+    // IMMUTABLE GETTERS //
     public List<Cloud> getClouds() {
-        return this.clouds;
+        return List.copyOf(this.clouds);
     }
 
     public List<CharacterCard> getCharacterCards() {
-        return characterCards;
-    }
-
-    public EffectTracker getEffects() {
-        return effects;
-    }
-
-    public IslandField getIslandField() {
-        return islandField;
+        return List.copyOf(this.characterCards);
     }
 
     public GameMode getGameMode() {
         return gameMode;
     }
 
-    public List<PlayerBoard> getPlayerBoards() {
-        return playerBoards;
-    }
-
     public Map<PawnColour, PlayerBoard> getTeachers() {
-        return teachers;
+        return Map.copyOf(teachers);
     }
 
     public List<PawnColour> getOwnTeachers(PlayerBoard p) {
         return this.teachers.entrySet().stream()
                 .filter(e -> e.getValue().equals(p))
                 .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    public StudentBag getStudentBag() {
-        return studentBag;
+    public TeamMapper getTeamMap() {
+        return teamMap;
     }
 
-    public TurnOrder getTurnOrder() {
-        return turnOrder;
+    // MUTABLE GETTERS //
+    public List<PlayerBoard> getMutablePlayerBoards() {
+        return List.copyOf(playerBoards);
     }
 
-    public PlayerBoard getPlayerBoardById(int id) throws InvalidContainerIndexException {
+    public PlayerBoard getMutablePlayerBoardById(int id) throws InvalidContainerIndexException {
         return playerBoards.stream()
                 .filter(p -> p.getId() == id)
                 .findAny()
                 .orElseThrow(() -> new InvalidContainerIndexException(CONTAINER_NAME_PLAYERBOARDS));
     }
 
-    public PlayerBoard getPlayerBoardByNickname(String nickname) throws InvalidContainerIndexException {
+    public PlayerBoard getMutablePlayerBoardByNickname(String nickname) throws InvalidContainerIndexException {
         return playerBoards.stream()
                 .filter(p -> p.getNickname().equals(nickname))
                 .findAny()
                 .orElseThrow(() -> new InvalidContainerIndexException(CONTAINER_NAME_PLAYERBOARDS));
     }
 
+    public EffectTracker getMutableEffects() {
+        return effects;
+    }
+
+    public IslandField getMutableIslandField() {
+        return islandField;
+    }
+
+    public StudentBag getMutableStudentBag() {
+        return studentBag;
+    }
+
+    public TurnOrder getMutableTurnOrder() {
+        return turnOrder;
+    }
 
     public void setTeacher(PawnColour teacher, PlayerBoard player) {
         teachers.put(teacher, player);
@@ -131,7 +136,7 @@ public class GameBoard implements Serializable {
     }
 
     // returns the team that holds influence over a particular islandgroup
-    public Optional<TeamID> influencerOf(IslandGroup ig) {
+    public Optional<TeamID> getInfluencerOf(IslandGroup ig) {
         Map<PawnColour, Integer> sc = ig.getStudentCount();
         Map<TeamID, Integer> ic = new HashMap<>(); // maps the team with the influence count
 
@@ -185,7 +190,7 @@ public class GameBoard implements Serializable {
 
     public void actMotherNaturePower(IslandGroup mnp) {
         if (mnp.getNoEntryTiles().isEmpty()) {
-            Optional<TeamID> optInfluencer = influencerOf(mnp);
+            Optional<TeamID> optInfluencer = getInfluencerOf(mnp);
             if (optInfluencer.isPresent()) {
                 TeamID newInfluencer = optInfluencer.get();
                 if (
@@ -199,9 +204,5 @@ public class GameBoard implements Serializable {
         } else {
             mnp.resetNoEntry();
         }
-    }
-
-    public TeamMapper getTeamMap() {
-        return teamMap;
     }
 }

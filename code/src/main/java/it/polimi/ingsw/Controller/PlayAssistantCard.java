@@ -16,14 +16,14 @@ public class PlayAssistantCard extends PlayerAction {
     }
 
     public void unsafeExecute(GameBoard ctx) {
-        PlayerBoard pb = ctx.getTurnOrder().getCurrentPlayer();
+        PlayerBoard pb = ctx.getMutableTurnOrder().getCurrentPlayer();
         AssistantCard sa = pb.getAssistantCards()[selectedAssistant];
-        ctx.getTurnOrder().setSelectedCard(pb, sa);
+        ctx.getMutableTurnOrder().setSelectedCard(pb, sa);
     }
 
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) {
-        PlayerBoard currentPlayer = ctx.getTurnOrder().getCurrentPlayer();
+        PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getCurrentPlayer();
 
         return super.validate(history, ctx) &&
                 this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getAssistantCards().length - 1 &&

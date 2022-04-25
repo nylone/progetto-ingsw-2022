@@ -23,9 +23,9 @@ public class GameBoardTest {
     public void testPlayerBoardId() throws InvalidContainerIndexException {
         // act
         // VALID
-        PlayerBoard actual_s2_valid = gb_sim_2.getPlayerBoardById(1);
-        PlayerBoard actual_a3_valid = gb_adv_3.getPlayerBoardById(2);
-        PlayerBoard actual_a4_valid = gb_adv_4.getPlayerBoardById(3);
+        PlayerBoard actual_s2_valid = gb_sim_2.getMutablePlayerBoardById(1);
+        PlayerBoard actual_a3_valid = gb_adv_3.getMutablePlayerBoardById(2);
+        PlayerBoard actual_a4_valid = gb_adv_4.getMutablePlayerBoardById(3);
 
 
         // assert VALID
@@ -34,11 +34,11 @@ public class GameBoardTest {
         assertTrue("Testing getPlayerBoardById, advanced GameMode 4 people", actual_a4_valid.getNickname().equals("teo"));
         // assert INVALID
         try {
-            PlayerBoard actual_s2_invalid = gb_sim_2.getPlayerBoardById(5);
+            PlayerBoard actual_s2_invalid = gb_sim_2.getMutablePlayerBoardById(5);
             fail("Testing getPlayerBoardById, simple GameMode 2 people, failed for invalid id");
-            PlayerBoard actual_a3_invalid = gb_adv_3.getPlayerBoardById(27);
+            PlayerBoard actual_a3_invalid = gb_adv_3.getMutablePlayerBoardById(27);
             fail("Testing getPlayerBoardById, advanced GameMode 3 people, failed for invalid id");
-            PlayerBoard actual_a4_invalid = gb_adv_4.getPlayerBoardById(323);
+            PlayerBoard actual_a4_invalid = gb_adv_4.getMutablePlayerBoardById(323);
             fail("Testing getPlayerBoardById, advanced GameMode 4 people, failed for invalid id");
         }
         catch(InvalidInputException e) {
@@ -50,9 +50,9 @@ public class GameBoardTest {
     public void testPlayerBoardNickname() throws InvalidContainerIndexException {
         // act
         // VALID
-        PlayerBoard actual_s2_valid = gb_sim_2.getPlayerBoardByNickname("ale");
-        PlayerBoard actual_a3_valid = gb_adv_3.getPlayerBoardByNickname("ari");
-        PlayerBoard actual_a4_valid = gb_adv_4.getPlayerBoardByNickname("teo");
+        PlayerBoard actual_s2_valid = gb_sim_2.getMutablePlayerBoardByNickname("ale");
+        PlayerBoard actual_a3_valid = gb_adv_3.getMutablePlayerBoardByNickname("ari");
+        PlayerBoard actual_a4_valid = gb_adv_4.getMutablePlayerBoardByNickname("teo");
 
 
         // assert VALID
@@ -61,11 +61,11 @@ public class GameBoardTest {
         assertTrue("Testing getPlayerBoardByNickname, advanced GameMode 4 people", actual_a4_valid.getId() == 3);
         // assert INVALID
         try {
-            PlayerBoard actual_s2_invalid = gb_sim_2.getPlayerBoardByNickname("wrong");
+            PlayerBoard actual_s2_invalid = gb_sim_2.getMutablePlayerBoardByNickname("wrong");
             fail("Testing getPlayerBoardByNickname, simple GameMode 2 people, failed for invalid nickname");
-            PlayerBoard actual_a3_invalid = gb_adv_3.getPlayerBoardByNickname("wrong");
+            PlayerBoard actual_a3_invalid = gb_adv_3.getMutablePlayerBoardByNickname("wrong");
             fail("Testing getPlayerBoardByNickname, advanced GameMode 3 people, failed for invalid nickname");
-            PlayerBoard actual_a4_invalid = gb_adv_4.getPlayerBoardByNickname("wrong");
+            PlayerBoard actual_a4_invalid = gb_adv_4.getMutablePlayerBoardByNickname("wrong");
             fail("Testing getPlayerBoardByNickname, advanced GameMode 4 people, failed for invalid nickname");
         }
         catch(InvalidInputException e) {
@@ -76,22 +76,22 @@ public class GameBoardTest {
     @Test
     public void testInfluencerOfSimpleAndAdvanced() throws NoSuchElementException, InvalidContainerIndexException {
         // arrange
-        IslandGroup ig_s2 = gb_sim_2.getIslandField().getIslandGroupById(7);
-        IslandGroup ig_a3 = gb_adv_3.getIslandField().getIslandGroupById(7);
-        IslandGroup ig_a4 = gb_adv_4.getIslandField().getIslandGroupById(7);
+        IslandGroup ig_s2 = gb_sim_2.getMutableIslandField().getIslandGroupById(7);
+        IslandGroup ig_a3 = gb_adv_3.getMutableIslandField().getIslandGroupById(7);
+        IslandGroup ig_a4 = gb_adv_4.getMutableIslandField().getIslandGroupById(7);
         // adding two students because, during initialization of the game, one random students is placed on the islands
         // to be sure that the influence will be granted at least two students should be placed
         for (IslandGroup ig : Arrays.asList(ig_s2, ig_a3, ig_a4)) {
             ig.getIslands().get(0).addStudent(PawnColour.BLUE);
         }
 
-        gb_sim_2.setTeacher(PawnColour.BLUE, gb_sim_2.getPlayerBoardByNickname("ari"));
-        gb_adv_3.setTeacher(PawnColour.BLUE, gb_adv_3.getPlayerBoardByNickname("ari"));
-        gb_adv_4.setTeacher(PawnColour.BLUE, gb_adv_4.getPlayerBoardByNickname("ari"));
+        gb_sim_2.setTeacher(PawnColour.BLUE, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
+        gb_adv_3.setTeacher(PawnColour.BLUE, gb_adv_3.getMutablePlayerBoardByNickname("ari"));
+        gb_adv_4.setTeacher(PawnColour.BLUE, gb_adv_4.getMutablePlayerBoardByNickname("ari"));
         // act
-        TeamID actualInfluencer_s2 = gb_sim_2.influencerOf(ig_s2).get();
-        TeamID actualInfluencer_a3 = gb_adv_3.influencerOf(ig_a3).get();
-        TeamID actualInfluencer_a4 = gb_adv_4.influencerOf(ig_a4).get();
+        TeamID actualInfluencer_s2 = gb_sim_2.getInfluencerOf(ig_s2).get();
+        TeamID actualInfluencer_a3 = gb_adv_3.getInfluencerOf(ig_a3).get();
+        TeamID actualInfluencer_a4 = gb_adv_4.getInfluencerOf(ig_a4).get();
         // assert
         assertEquals(TeamID.ONE, actualInfluencer_s2);
         assertEquals(TeamID.ONE, actualInfluencer_a3);
@@ -101,10 +101,10 @@ public class GameBoardTest {
     @Test
     public void testingInfluenceOnEmptyIsland() {
         // arrange
-        IslandGroup empty = Utils.modularSelection(gb_sim_2.getIslandField().getMotherNaturePosition(),
-                gb_sim_2.getIslandField().getGroups(), 6);
+        IslandGroup empty = Utils.modularSelection(gb_sim_2.getMutableIslandField().getMotherNaturePosition(),
+                gb_sim_2.getMutableIslandField().getGroups(), 6);
         // act
-        Optional<TeamID> actual = gb_sim_2.influencerOf(empty);
+        Optional<TeamID> actual = gb_sim_2.getInfluencerOf(empty);
         // assert
         assertEquals(Optional.empty(), actual);
 
@@ -116,7 +116,7 @@ public class GameBoardTest {
     @Test
     public void testingInfluenceOnIslandWithSameInfluence() throws InvalidContainerIndexException {
         // arrange
-        IslandGroup ig = gb_sim_2.getIslandField().getIslandGroupById(6);
+        IslandGroup ig = gb_sim_2.getMutableIslandField().getIslandGroupById(6);
         ig.getIslands().get(0).swapTower(gb_sim_2.getTeamMap().getTowerStorage(TeamID.fromInteger(1)).extractTower());
 
         PawnColour studentOnTheIslandAtBeginning;
@@ -127,21 +127,21 @@ public class GameBoardTest {
                 else {
                     ig.getIslands().get(0).addStudent(colour);
                     ig.getIslands().get(0).addStudent(colour);
-                    gb_sim_2.setTeacher(colour, gb_sim_2.getPlayerBoardByNickname("ari"));
+                    gb_sim_2.setTeacher(colour, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
                     break;
                 }
             }
-            gb_sim_2.setTeacher(studentOnTheIslandAtBeginning, gb_sim_2.getPlayerBoardByNickname("ale"));
+            gb_sim_2.setTeacher(studentOnTheIslandAtBeginning, gb_sim_2.getMutablePlayerBoardByNickname("ale"));
         }
         else {
             ig.getIslands().get(0).addStudent(PawnColour.BLUE);
             ig.getIslands().get(0).addStudent(PawnColour.BLUE);
             ig.getIslands().get(0).addStudent(PawnColour.RED);
-            gb_sim_2.setTeacher(PawnColour.BLUE, gb_sim_2.getPlayerBoardByNickname("ari"));
-            gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getPlayerBoardByNickname("ale"));
+            gb_sim_2.setTeacher(PawnColour.BLUE, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
+            gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getMutablePlayerBoardByNickname("ale"));
         }
         // act
-        TeamID actualInfluencer = gb_sim_2.influencerOf(ig).get();
+        TeamID actualInfluencer = gb_sim_2.getInfluencerOf(ig).get();
         // assert
         assertEquals(TeamID.TWO, actualInfluencer);
     }
@@ -152,15 +152,15 @@ public class GameBoardTest {
     @Test
     public void testingInfluenceOnIslandWithStudents() throws InvalidContainerIndexException {
         // arrange
-        IslandGroup ig = gb_sim_2.getIslandField().getIslandGroupById(6);
+        IslandGroup ig = gb_sim_2.getMutableIslandField().getIslandGroupById(6);
         ig.getIslands().get(0).addStudent(PawnColour.BLUE);
         ig.getIslands().get(0).addStudent(PawnColour.BLUE);
         ig.getIslands().get(0).addStudent(PawnColour.BLUE);
         ig.getIslands().get(0).addStudent(PawnColour.RED);
-        gb_sim_2.setTeacher(PawnColour.BLUE, gb_sim_2.getPlayerBoardByNickname("ari"));
-        gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getPlayerBoardByNickname("ale"));
+        gb_sim_2.setTeacher(PawnColour.BLUE, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
+        gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getMutablePlayerBoardByNickname("ale"));
         // act
-        TeamID actualInfluencer = gb_sim_2.influencerOf(ig).get();
+        TeamID actualInfluencer = gb_sim_2.getInfluencerOf(ig).get();
         // assert
         assertEquals(TeamID.ONE, actualInfluencer);
     }
@@ -171,16 +171,16 @@ public class GameBoardTest {
     @Test
     public void testingInfluenceAfterCardEffect() throws InvalidContainerIndexException {
         // arrange
-        gb_sim_2.getEffects().setDeniedPawnColour(PawnColour.YELLOW);
-        IslandGroup islandGroup = gb_sim_2.getIslandField().getIslandGroupById(6);
+        gb_sim_2.getMutableEffects().setDeniedPawnColour(PawnColour.YELLOW);
+        IslandGroup islandGroup = gb_sim_2.getMutableIslandField().getIslandGroupById(6);
         islandGroup.getIslands().get(0).addStudent(PawnColour.YELLOW);
         islandGroup.getIslands().get(0).addStudent(PawnColour.YELLOW);
         islandGroup.getIslands().get(0).addStudent(PawnColour.YELLOW);
         islandGroup.getIslands().get(0).addStudent(PawnColour.RED);
-        gb_sim_2.setTeacher(PawnColour.YELLOW, gb_sim_2.getPlayerBoardByNickname("ari"));
-        gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getPlayerBoardByNickname("ale"));
+        gb_sim_2.setTeacher(PawnColour.YELLOW, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
+        gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getMutablePlayerBoardByNickname("ale"));
         // act
-        TeamID actualInfluencer = gb_sim_2.influencerOf(islandGroup).get();
+        TeamID actualInfluencer = gb_sim_2.getInfluencerOf(islandGroup).get();
         // assert
         assertEquals(TeamID.TWO, actualInfluencer);
 

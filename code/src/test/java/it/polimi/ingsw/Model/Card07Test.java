@@ -17,7 +17,7 @@ public class Card07Test {
     @Test
     public void checkUse() throws InvalidContainerIndexException {
         assertTrue(card.getState().size() == 6);
-        PlayerBoard pb = gb.getPlayerBoardByNickname("ari");
+        PlayerBoard pb = gb.getMutablePlayerBoardByNickname("ari");
         CharacterCardInput input = new CharacterCardInput(pb);
         PawnColour[][] pairs = new PawnColour[2][];
         pairs[0] = new PawnColour[]{pb.getEntranceStudents().remove(0), pb.getEntranceStudents().remove(1)};
@@ -30,14 +30,14 @@ public class Card07Test {
 
     @Test(expected = InvalidInputException.class)
     public void checkExceptionUse() throws InvalidContainerIndexException {
-        PlayerBoard pb = gb.getPlayerBoardByNickname("ari");
+        PlayerBoard pb = gb.getMutablePlayerBoardByNickname("ari");
         CharacterCardInput input = new CharacterCardInput(pb);
         card.Use(input);
     }
 
     @Test(expected = InvalidInputException.class)
     public void checkUse4Pawns() throws InvalidContainerIndexException {
-        PlayerBoard pb = gb.getPlayerBoardByNickname("ari");
+        PlayerBoard pb = gb.getMutablePlayerBoardByNickname("ari");
         CharacterCardInput input = new CharacterCardInput(pb);
         PawnColour[][] pairs = new PawnColour[2][];
         pairs[0] = new PawnColour[]{pb.getEntranceStudents().remove(0), pb.getEntranceStudents().remove(0), pb.getEntranceStudents().remove(0), pb.getEntranceStudents().remove(0)};

@@ -21,7 +21,7 @@ public class Card06 extends StatelessEffect {
 
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
-        context.getEffects().enableDenyTowerInfluence();
+        context.getMutableEffects().enableDenyTowerInfluence();
     }
 
     //test purpose only

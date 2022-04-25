@@ -9,12 +9,12 @@ import org.junit.Test;
 public class Card05Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
     Card05 card05 = new Card05(gb);
-    PlayerBoard pb = new PlayerBoard(1, 2, "ari", gb.getStudentBag());
+    PlayerBoard pb = new PlayerBoard(1, 2, "ari", gb.getMutableStudentBag());
 
     @Test
     public void checkUse() throws InvalidContainerIndexException {
         CharacterCardInput input = new CharacterCardInput(pb);
-        IslandField field = gb.getIslandField();
+        IslandField field = gb.getMutableIslandField();
         input.setTargetIsland(field.getIslandById(1));
 
         card05.Use(input);

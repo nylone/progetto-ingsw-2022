@@ -41,8 +41,8 @@ public class Card01Test {
     public void usingEffectShouldAddStudentToIsland() throws InvalidContainerIndexException {
         // arrange
         GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
-        CharacterCardInput input = new CharacterCardInput(g.getPlayerBoardByNickname("ari"));
-        Island island = g.getIslandField().getIslandById(3);
+        CharacterCardInput input = new CharacterCardInput(g.getMutablePlayerBoardByNickname("ari"));
+        Island island = g.getMutableIslandField().getIslandById(3);
         int expected = island.getStudents().size();
         input.setTargetIsland(island);
         input.setTargetPawn(PawnColour.BLUE);
@@ -56,7 +56,7 @@ public class Card01Test {
     @Test(expected = InvalidInputException.class)
     public void checkUseException() throws InvalidContainerIndexException {
         GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
-        CharacterCardInput input = new CharacterCardInput(g.getPlayerBoardByNickname("ari"));
+        CharacterCardInput input = new CharacterCardInput(g.getMutablePlayerBoardByNickname("ari"));
         Card01 card = new Card01(g);
         assertTrue(card.getState().size()==4);
         card.Use(input);
