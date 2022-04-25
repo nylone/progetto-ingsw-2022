@@ -197,7 +197,7 @@ public class GameBoard implements Serializable {
                         mnp.getTowerColour().isEmpty() ||
                                 mnp.getTowerColour().get() != TowerColour.fromTeamId(newInfluencer)
                 ) {
-                    mnp.swapTower(this.teamMap.getTowerStorage(newInfluencer));
+                    mnp.swapTower(this.teamMap.getMutableTowerStorage(newInfluencer));
                 }
             }
             this.islandField.joinGroups();

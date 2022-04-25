@@ -29,18 +29,18 @@ public class TeamMapper {
         return playerTeamMap.entrySet().stream()
                 .filter(e -> e.getValue().equals(tID))
                 .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public TeamID getTeamID(PlayerBoard pb) {
         return playerTeamMap.get(pb);
     }
 
-    public TowerStorage getTowerStorage(PlayerBoard pb) {
-        return this.getTowerStorage(this.getTeamID(pb));
+    public TowerStorage getMutableTowerStorage(PlayerBoard pb) {
+        return this.getMutableTowerStorage(this.getTeamID(pb));
     }
 
-    public TowerStorage getTowerStorage(TeamID tID) {
+    public TowerStorage getMutableTowerStorage(TeamID tID) {
         return towerStorageMap.get(tID);
     }
 }

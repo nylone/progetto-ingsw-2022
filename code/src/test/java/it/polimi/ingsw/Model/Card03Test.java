@@ -31,7 +31,7 @@ public class Card03Test {
         input.setTargetIsland(island);
         card.Use(input);
 
-        assertTrue(ig.getTowerColour().get().equals(gb.getTeamMap().getTowerStorage(pb1).getColour()));
+        assertTrue(ig.getTowerColour().get().equals(gb.getTeamMap().getMutableTowerStorage(pb1).getColour()));
         assertEquals(expectedMotherNaturePosition, gb.getMutableIslandField().getMotherNaturePosition());
     }
 

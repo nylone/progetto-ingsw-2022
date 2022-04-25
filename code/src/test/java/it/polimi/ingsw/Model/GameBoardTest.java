@@ -117,7 +117,7 @@ public class GameBoardTest {
     public void testingInfluenceOnIslandWithSameInfluence() throws InvalidContainerIndexException {
         // arrange
         IslandGroup ig = gb_sim_2.getMutableIslandField().getIslandGroupById(6);
-        ig.getIslands().get(0).swapTower(gb_sim_2.getTeamMap().getTowerStorage(TeamID.fromInteger(1)).extractTower());
+        ig.getIslands().get(0).swapTower(gb_sim_2.getTeamMap().getMutableTowerStorage(TeamID.fromInteger(1)).extractTower());
 
         PawnColour studentOnTheIslandAtBeginning;
         if (ig.getStudents().size() != 0) {

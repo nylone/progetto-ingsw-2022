@@ -41,8 +41,8 @@ public class IslandGroupTest {
         i1.addStudent(PawnColour.BLUE);
         i1.addStudent(PawnColour.RED);
         i2.addStudent(PawnColour.GREEN);
-        i1.swapTower(tm.getTowerStorage(TeamID.ONE).extractTower());
-        i2.swapTower(tm.getTowerStorage(TeamID.ONE).extractTower());
+        i1.swapTower(tm.getMutableTowerStorage(TeamID.ONE).extractTower());
+        i2.swapTower(tm.getMutableTowerStorage(TeamID.ONE).extractTower());
         IslandGroup islandGroup1 = new IslandGroup(i1);
         IslandGroup islandGroup2 = new IslandGroup(i2);
         IslandGroup islandGroup = new IslandGroup(islandGroup1, islandGroup2);

@@ -83,8 +83,8 @@ public class IslandFieldTest {
         IslandGroup previousGroup = Utils.modularSelection(motherNaturePosition, groups, -1);
 
         TeamMapper teamMapper = gameBoard.getTeamMap();
-        motherNaturePosition.getIslands().get(0).swapTower(teamMapper.getTowerStorage(TeamID.ONE).extractTower());
-        previousGroup.getIslands().get(0).swapTower(teamMapper.getTowerStorage(TeamID.ONE).extractTower());
+        motherNaturePosition.getIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
+        previousGroup.getIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         // act
         gameBoard.getMutableIslandField().joinGroups();
         // assert
@@ -103,8 +103,8 @@ public class IslandFieldTest {
         IslandGroup nextGroup = Utils.modularSelection(motherNaturePosition, groups, +1);
 
         TeamMapper teamMapper = gameBoard.getTeamMap();
-        motherNaturePosition.getIslands().get(0).swapTower(teamMapper.getTowerStorage(TeamID.ONE).extractTower());
-        nextGroup.getIslands().get(0).swapTower(teamMapper.getTowerStorage(TeamID.ONE).extractTower());
+        motherNaturePosition.getIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
+        nextGroup.getIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         // act
         gameBoard.getMutableIslandField().joinGroups();
         // assert
@@ -124,9 +124,9 @@ public class IslandFieldTest {
         IslandGroup nextGroup = Utils.modularSelection(motherNaturePosition, groups, +1);
 
         TeamMapper teamMapper = gameBoard.getTeamMap();
-        motherNaturePosition.getIslands().get(0).swapTower(teamMapper.getTowerStorage(TeamID.ONE).extractTower());
-        prevGroup.getIslands().get(0).swapTower(teamMapper.getTowerStorage(TeamID.ONE).extractTower());
-        nextGroup.getIslands().get(0).swapTower(teamMapper.getTowerStorage(TeamID.ONE).extractTower());
+        motherNaturePosition.getIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
+        prevGroup.getIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
+        nextGroup.getIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         // act
         gameBoard.getMutableIslandField().joinGroups();
         // assert
