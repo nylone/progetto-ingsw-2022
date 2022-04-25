@@ -1,11 +1,11 @@
 package it.polimi.ingsw.Model;
-import static org.junit.Assert.*;
 
-import it.polimi.ingsw.Exceptions.toremove.FullDiningRoomException;
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
+import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class Card11Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
@@ -13,34 +13,35 @@ public class Card11Test {
     PlayerBoard pb = new PlayerBoard(1, 2, "ari", gb.getMutableStudentBag());
 
     @Test
-    public void checkUse(){
+    public void checkUse() throws Exception {
         assertTrue(card11.getState().size()==4);
 
         CharacterCardInput input = new CharacterCardInput(pb);
         input.setTargetPawn((PawnColour) card11.getState().get(2));
         PawnColour toAdd = input.getTargetPawn().get();
         assertTrue(card11.getState().size()==4);
-        card11.Use(input);
+        card11.unsafeApplyEffect(input);
         assertTrue(pb.getDiningRoomCount(toAdd)==1);
         assertTrue(card11.getState().size()==4);
     }
-    @Test(expected = InvalidInputException.class)
-    public void checkExceptionInput(){
+    @Test(expected = FailedOperationException.class)
+    public void checkExceptionInput() throws Exception {
         CharacterCardInput input = new CharacterCardInput(pb);
-        card11.Use(input);
+        card11.unsafeApplyEffect(input);
     }
     @Test
-    public void checkFullDiningRoom() throws FullDiningRoomException {
+    public void checkFullDiningRoom() throws Exception {
         CharacterCardInput input = new CharacterCardInput(pb);
         input.setTargetPawn((PawnColour) card11.getState().get(2));
         for(int i=0; i<10; i++){
             pb.addStudentToDiningRoom(input.getTargetPawn().get());
         }
-        card11.Use(input);
-        FullDiningRoomException exception = assertThrows(FullDiningRoomException.class, () -> {
-            throw new FullDiningRoomException();
+        FailedOperationException exception = assertThrows(FailedOperationException.class, () -> {
+            card11.unsafeApplyEffect(input);
         });
-        assertEquals("No more space for that student in dining room", exception.getMessage());
+        assertEquals("An error occurred while running the following operation: [MODEL] Card011 unsafeApplyEffect" +
+                "\nThe error was: could critically failed during execution." +
+                "\nAdditional INFO: Target pawn was not contained in card's state", exception.getMessage());
     }
 
 }

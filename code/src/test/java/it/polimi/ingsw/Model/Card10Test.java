@@ -33,15 +33,15 @@ public class Card10Test {
         assertTrue(pb.getEntranceStudents().contains(pairs[1][1]));
     }
 
-    @Test(expected = InvalidInputException.class)
-    public void checkEmptyInput() throws InvalidContainerIndexException {
+    @Test(expected = FullContainerException.class)
+    public void checkEmptyInput() throws Exception {
         PlayerBoard pb = gb.getMutablePlayerBoardByNickname("Rouge");
         CharacterCardInput input = new CharacterCardInput(pb);
-        card10.Use(input);
+        card10.unsafeApplyEffect(input);
     }
 
-    @Test(expected = InvalidInputException.class)
-    public void asymmetricInput() throws InvalidContainerIndexException, FullContainerException, InvalidElementException {
+    @Test(expected = FullContainerException.class)
+    public void asymmetricInput() throws Exception {
         PlayerBoard pb = gb.getMutablePlayerBoardByNickname("Rouge");
         CharacterCardInput input = new CharacterCardInput(pb);
         pb.addStudentToDiningRoom(PawnColour.RED);
@@ -49,6 +49,6 @@ public class Card10Test {
         PawnColour[][] pairs = new PawnColour[2][];
         pairs[0] = new PawnColour[]{pb.getEntranceStudents().remove(0)};
         pairs[1] = new PawnColour[]{PawnColour.RED, PawnColour.YELLOW};
-        card10.Use(input);
+        card10.unsafeApplyEffect(input);
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;
@@ -28,7 +29,7 @@ public class ChooseCloudTileTest {
     }
 
     @Test
-    public void fullEntranceShouldPreventActionExecution() {
+    public void fullEntranceShouldPreventActionExecution() throws InputValidationException {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE);
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");

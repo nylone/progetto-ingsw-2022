@@ -1,9 +1,5 @@
 package it.polimi.ingsw.Model;
 
-import static org.junit.Assert.*;
-
-import it.polimi.ingsw.Model.Enums.GameMode;
-import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
 public class TurnOrderTest {

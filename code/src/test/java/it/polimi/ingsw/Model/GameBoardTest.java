@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -41,8 +40,8 @@ public class GameBoardTest {
             PlayerBoard actual_a4_invalid = gb_adv_4.getMutablePlayerBoardById(323);
             fail("Testing getPlayerBoardById, advanced GameMode 4 people, failed for invalid id");
         }
-        catch(InvalidInputException e) {
-            assertEquals("Invalid input provided", e.getMessage());
+        catch(InvalidContainerIndexException e) {
+            assertEquals("An error occurred on: Playerboards\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
         }
     }
 
@@ -68,8 +67,8 @@ public class GameBoardTest {
             PlayerBoard actual_a4_invalid = gb_adv_4.getMutablePlayerBoardByNickname("wrong");
             fail("Testing getPlayerBoardByNickname, advanced GameMode 4 people, failed for invalid nickname");
         }
-        catch(InvalidInputException e) {
-            assertEquals("Invalid input provided", e.getMessage());
+        catch(InvalidContainerIndexException e) {
+            assertEquals("An error occurred on: Playerboards\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
         }
     }
 
@@ -187,7 +186,7 @@ public class GameBoardTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void testingIncostintentNumOfPlyaers(){
+    public void testingInconsistentNumOfPlayers(){
         GameBoard gb_adv_5 = new GameBoard(GameMode.SIMPLE, "ari", "ale", "teo", "polimi", "java");
     }
 }

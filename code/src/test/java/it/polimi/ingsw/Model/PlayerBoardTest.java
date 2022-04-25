@@ -1,9 +1,7 @@
 package it.polimi.ingsw.Model;
 
-
-import it.polimi.ingsw.Exceptions.toremove.EmptyDiningRoomException;
-import it.polimi.ingsw.Exceptions.toremove.FullDiningRoomException;
-import it.polimi.ingsw.Exceptions.toremove.FullEntranceException;
+import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
+import it.polimi.ingsw.Exceptions.Container.FullContainerException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
@@ -14,7 +12,7 @@ import static org.junit.Assert.*;
 public class PlayerBoardTest {
 
     @Test
-    public void sizeIncreasedAfterAddingStudentToDiningRoom() throws FullDiningRoomException {
+    public void sizeIncreasedAfterAddingStudentToDiningRoom() throws FullContainerException {
         // arrange
         PlayerBoard playerBoard = new PlayerBoard(2, 3, "ari", new StudentBag(20));
         int expected = playerBoard.getDiningRoomCount(PawnColour.RED);
@@ -25,7 +23,7 @@ public class PlayerBoardTest {
     }
 
     @Test
-    public void FullDiningRoomShouldRaiseException() throws FullDiningRoomException {
+    public void FullDiningRoomShouldRaiseException() throws FullContainerException {
         // arrange
         PlayerBoard playerBoard = new PlayerBoard(1, 2, "alessandro", new StudentBag(50));
         for (int i = 0; i < 10; i++) {
@@ -35,13 +33,13 @@ public class PlayerBoardTest {
             playerBoard.addStudentToDiningRoom(PawnColour.YELLOW);
             fail();
         }
-        catch (FullDiningRoomException e) {
-            assertEquals("No more space for that student in dining room", e.getMessage());
+        catch (FullContainerException e) {
+            assertEquals("An error occurred on: DiningRoom\nThe error was: DiningRoom was found full.", e.getMessage());
         }
     }
 
     @Test
-    public void sizeDecreasedAfterRemovingStudent() throws EmptyDiningRoomException, FullDiningRoomException {
+    public void sizeDecreasedAfterRemovingStudent() throws FullContainerException, EmptyContainerException {
         // arrange
         PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
         playerBoard.addStudentToDiningRoom(PawnColour.BLUE);
@@ -52,13 +50,13 @@ public class PlayerBoardTest {
         // assert
         assertTrue(playerBoard.getDiningRoomCount(PawnColour.BLUE) == expected - 2);
     }
-    @Test(expected = EmptyDiningRoomException.class)
-    public void removeStudentException() throws EmptyDiningRoomException {
+    @Test(expected = EmptyContainerException.class)
+    public void removeStudentException() throws EmptyContainerException {
         PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
         playerBoard.removeStudentsFromDiningRoom(PawnColour.RED,1);
     }
-    @Test(expected = FullDiningRoomException.class)
-    public void addStudentException() throws FullDiningRoomException {
+    @Test(expected = FullContainerException.class)
+    public void addStudentException() throws FullContainerException {
         PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
         for(int i=0; i<10; i++){
             playerBoard.addStudentToDiningRoom(PawnColour.RED);
@@ -79,10 +77,9 @@ public class PlayerBoardTest {
             playerBoard.addStudentsToEntrance(expected);
             fail();
         }
-        catch(FullEntranceException e) {
+        catch(FullContainerException e) {
             // assert
             assertEquals("No more space in entrance", e.getMessage());
-
         }
     }
 }
