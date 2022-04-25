@@ -15,16 +15,16 @@ public class Card05Test {
     public void checkUse() throws Exception {
         CharacterCardInput input = new CharacterCardInput(pb);
         IslandField field = gb.getMutableIslandField();
-        input.setTargetIsland(field.getIslandById(1));
+        input.setTargetIsland(field.getMutableIslandById(1));
 
         card05.unsafeApplyEffect(input);
         assertTrue(card05.getState().size() == 3); // 3 tiles left after one use
-        assertTrue(field.getIslandGroupById(1).getNoEntryTiles().size() == 1); // the island group contains the NoEntryTile
+        assertTrue(field.getMutableIslandGroupById(1).getMutableNoEntryTiles().size() == 1); // the island group contains the NoEntryTile
 
-        field.getIslandGroupById(1).resetNoEntry();
+        field.getMutableIslandGroupById(1).resetNoEntry();
 
         // force return the NoEntryTile
-        assertTrue(field.getIslandGroupById(1).getNoEntryTiles().size() == 0);
+        assertTrue(field.getMutableIslandGroupById(1).getMutableNoEntryTiles().size() == 0);
         assertTrue(card05.getState().size() == 4); // 4 tiles left after the return of the NoEntryTile
     }
 

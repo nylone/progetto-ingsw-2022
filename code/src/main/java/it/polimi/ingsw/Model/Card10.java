@@ -55,7 +55,7 @@ public class Card10 extends StatelessEffect {
                             + " element's without overflowing.");
         }
         // validate size of dining room
-        if (!playerBoard.canDiningRoomFit(fromEntrance)) {
+        if (playerBoard.isDiningRoomFull(fromEntrance)) {
             throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
                     CONTAINER_NAME_DININGROOM + "can't contain " + pawnPairs.length
                             + "elements without overflowing on one of its lanes.");

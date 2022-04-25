@@ -24,17 +24,17 @@ public class PlayAssistantCard extends PlayerAction {
 
     public void unsafeExecute(GameBoard ctx) throws InputValidationException, OperationException {
         PlayerBoard pb = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
-        AssistantCard sa = pb.getAssistantCards()[selectedAssistant];
+        AssistantCard sa = pb.getMutableAssistantCards()[selectedAssistant];
         ctx.getMutableTurnOrder().setSelectedCard(pb, sa);
     }
 
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException{
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
-        if(!(this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getAssistantCards().length - 1)){
+        if(!(this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getMutableAssistantCards().length - 1)){
             throw new InvalidElementException(INPUT_NAME_ASSISTANT_CARD);
         }
-        if(currentPlayer.getAssistantCards()[selectedAssistant].getUsed()){
+        if(currentPlayer.getMutableAssistantCards()[selectedAssistant].getUsed()){
             throw new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + "can only be used once");
         }
         if(!super.validate(history,ctx)){

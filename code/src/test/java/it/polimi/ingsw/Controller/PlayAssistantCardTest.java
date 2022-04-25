@@ -19,9 +19,9 @@ public class PlayAssistantCardTest {
         // act
         action.safeExecute(gh.getHistory(), gameBoard);
         // assert
-        assertTrue(player.getAssistantCards()[2].getUsed());
-        for (int i = 0; i < player.getAssistantCards().length; i++) {
-            if (i != 2) assertTrue(!player.getAssistantCards()[i].getUsed());
+        assertTrue(player.getMutableAssistantCards()[2].getUsed());
+        for (int i = 0; i < player.getMutableAssistantCards().length; i++) {
+            if (i != 2) assertTrue(!player.getMutableAssistantCards()[i].getUsed());
         }
         assertTrue(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getPriority() == 3);
     }

@@ -76,13 +76,13 @@ public class GameBoardTest {
     @Test
     public void testInfluencerOfSimpleAndAdvanced() throws NoSuchElementException, InvalidContainerIndexException {
         // arrange
-        IslandGroup ig_s2 = gb_sim_2.getMutableIslandField().getIslandGroupById(7);
-        IslandGroup ig_a3 = gb_adv_3.getMutableIslandField().getIslandGroupById(7);
-        IslandGroup ig_a4 = gb_adv_4.getMutableIslandField().getIslandGroupById(7);
+        IslandGroup ig_s2 = gb_sim_2.getMutableIslandField().getMutableIslandGroupById(7);
+        IslandGroup ig_a3 = gb_adv_3.getMutableIslandField().getMutableIslandGroupById(7);
+        IslandGroup ig_a4 = gb_adv_4.getMutableIslandField().getMutableIslandGroupById(7);
         // adding two students because, during initialization of the game, one random students is placed on the islands
         // to be sure that the influence will be granted at least two students should be placed
         for (IslandGroup ig : Arrays.asList(ig_s2, ig_a3, ig_a4)) {
-            ig.getIslands().get(0).addStudent(PawnColour.BLUE);
+            ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
         }
 
         gb_sim_2.setTeacher(PawnColour.BLUE, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
@@ -101,8 +101,8 @@ public class GameBoardTest {
     @Test
     public void testingInfluenceOnEmptyIsland() {
         // arrange
-        IslandGroup empty = Utils.modularSelection(gb_sim_2.getMutableIslandField().getMotherNaturePosition(),
-                gb_sim_2.getMutableIslandField().getGroups(), 6);
+        IslandGroup empty = Utils.modularSelection(gb_sim_2.getMutableIslandField().getMutableMotherNaturePosition(),
+                gb_sim_2.getMutableIslandField().getMutableGroups(), 6);
         // act
         Optional<TeamID> actual = gb_sim_2.getInfluencerOf(empty);
         // assert
@@ -116,8 +116,8 @@ public class GameBoardTest {
     @Test
     public void testingInfluenceOnIslandWithSameInfluence() throws InvalidContainerIndexException {
         // arrange
-        IslandGroup ig = gb_sim_2.getMutableIslandField().getIslandGroupById(6);
-        ig.getIslands().get(0).swapTower(gb_sim_2.getTeamMap().getMutableTowerStorage(TeamID.fromInteger(1)).extractTower());
+        IslandGroup ig = gb_sim_2.getMutableIslandField().getMutableIslandGroupById(6);
+        ig.getMutableIslands().get(0).swapTower(gb_sim_2.getTeamMap().getMutableTowerStorage(TeamID.fromInteger(1)).extractTower());
 
         PawnColour studentOnTheIslandAtBeginning;
         if (ig.getStudents().size() != 0) {
@@ -125,8 +125,8 @@ public class GameBoardTest {
             for (PawnColour colour : PawnColour.values()) {
                 if (colour.equals(studentOnTheIslandAtBeginning)) continue;
                 else {
-                    ig.getIslands().get(0).addStudent(colour);
-                    ig.getIslands().get(0).addStudent(colour);
+                    ig.getMutableIslands().get(0).addStudent(colour);
+                    ig.getMutableIslands().get(0).addStudent(colour);
                     gb_sim_2.setTeacher(colour, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
                     break;
                 }
@@ -134,9 +134,9 @@ public class GameBoardTest {
             gb_sim_2.setTeacher(studentOnTheIslandAtBeginning, gb_sim_2.getMutablePlayerBoardByNickname("ale"));
         }
         else {
-            ig.getIslands().get(0).addStudent(PawnColour.BLUE);
-            ig.getIslands().get(0).addStudent(PawnColour.BLUE);
-            ig.getIslands().get(0).addStudent(PawnColour.RED);
+            ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
+            ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
+            ig.getMutableIslands().get(0).addStudent(PawnColour.RED);
             gb_sim_2.setTeacher(PawnColour.BLUE, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
             gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getMutablePlayerBoardByNickname("ale"));
         }
@@ -152,11 +152,11 @@ public class GameBoardTest {
     @Test
     public void testingInfluenceOnIslandWithStudents() throws InvalidContainerIndexException {
         // arrange
-        IslandGroup ig = gb_sim_2.getMutableIslandField().getIslandGroupById(6);
-        ig.getIslands().get(0).addStudent(PawnColour.BLUE);
-        ig.getIslands().get(0).addStudent(PawnColour.BLUE);
-        ig.getIslands().get(0).addStudent(PawnColour.BLUE);
-        ig.getIslands().get(0).addStudent(PawnColour.RED);
+        IslandGroup ig = gb_sim_2.getMutableIslandField().getMutableIslandGroupById(6);
+        ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
+        ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
+        ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
+        ig.getMutableIslands().get(0).addStudent(PawnColour.RED);
         gb_sim_2.setTeacher(PawnColour.BLUE, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
         gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getMutablePlayerBoardByNickname("ale"));
         // act
@@ -172,11 +172,11 @@ public class GameBoardTest {
     public void testingInfluenceAfterCardEffect() throws InvalidContainerIndexException {
         // arrange
         gb_sim_2.getMutableEffects().setDeniedPawnColour(PawnColour.YELLOW);
-        IslandGroup islandGroup = gb_sim_2.getMutableIslandField().getIslandGroupById(6);
-        islandGroup.getIslands().get(0).addStudent(PawnColour.YELLOW);
-        islandGroup.getIslands().get(0).addStudent(PawnColour.YELLOW);
-        islandGroup.getIslands().get(0).addStudent(PawnColour.YELLOW);
-        islandGroup.getIslands().get(0).addStudent(PawnColour.RED);
+        IslandGroup islandGroup = gb_sim_2.getMutableIslandField().getMutableIslandGroupById(6);
+        islandGroup.getMutableIslands().get(0).addStudent(PawnColour.YELLOW);
+        islandGroup.getMutableIslands().get(0).addStudent(PawnColour.YELLOW);
+        islandGroup.getMutableIslands().get(0).addStudent(PawnColour.YELLOW);
+        islandGroup.getMutableIslands().get(0).addStudent(PawnColour.RED);
         gb_sim_2.setTeacher(PawnColour.YELLOW, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
         gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getMutablePlayerBoardByNickname("ale"));
         // act

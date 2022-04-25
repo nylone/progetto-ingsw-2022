@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -47,9 +48,9 @@ public class IslandGroupTest {
         IslandGroup islandGroup2 = new IslandGroup(i2);
         IslandGroup islandGroup = new IslandGroup(islandGroup1, islandGroup2);
 
-        ArrayList<PawnColour> expected = new ArrayList<>(Arrays.asList(PawnColour.BLUE, PawnColour.RED, PawnColour.GREEN));
+        List<PawnColour> expected = new ArrayList<>(Arrays.asList(PawnColour.BLUE, PawnColour.RED, PawnColour.GREEN));
         // act
-        ArrayList<PawnColour> actual = islandGroup.getStudents();
+        List<PawnColour> actual = islandGroup.getStudents();
         // assert
         assertEquals(expected, actual);
         assertTrue(actual.size() == 3);

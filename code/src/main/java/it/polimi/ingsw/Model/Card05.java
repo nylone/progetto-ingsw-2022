@@ -47,7 +47,7 @@ public class Card05 extends StatefulEffect {
         if (ti.getId() < 0 && ti.getId() >= 12) {
             throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti out of bounds for id
         }
-        if (!this.context.getMutableIslandField().getIslands().contains(ti)) {
+        if (!this.context.getMutableIslandField().getMutableIslands().contains(ti)) {
             throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not in field
         } // note: if island is in field then the island must also be in a group, due to how islandfield works.
         if (tiles.size() == 0) {
@@ -61,7 +61,7 @@ public class Card05 extends StatefulEffect {
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         Island ti = input.getTargetIsland().get();
-        for (IslandGroup ig : this.context.getMutableIslandField().getGroups()) {
+        for (IslandGroup ig : this.context.getMutableIslandField().getMutableGroups()) {
             if (ig.contains(ti)) {
                 ig.addNoEntry(tiles.remove(0));
                 return;

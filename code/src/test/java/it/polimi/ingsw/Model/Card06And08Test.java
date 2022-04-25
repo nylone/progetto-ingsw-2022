@@ -21,16 +21,16 @@ public class Card06And08Test{
 
     @Test
     public void checkUse08() throws Exception {
-        Island island = gb.getMutableIslandField().getIslandGroupById(1).getIslands().get(0);
-        IslandGroup islandGroup = gb.getMutableIslandField().getIslandGroupById(0);
+        Island island = gb.getMutableIslandField().getMutableIslandGroupById(1).getMutableIslands().get(0);
+        IslandGroup islandGroup = gb.getMutableIslandField().getMutableIslandGroupById(0);
         PlayerBoard pb2 = gb.getMutablePlayerBoardByNickname("teo");
         TurnOrder turnOrder = gb.getMutableTurnOrder();
         island.addStudent(PawnColour.RED);
         gb.setTeacher(PawnColour.RED, pb2);
 
-        turnOrder.setSelectedCard(turnOrder.getMutableCurrentPlayer(), turnOrder.getMutableCurrentPlayer().getAssistantCards()[1]);
+        turnOrder.setSelectedCard(turnOrder.getMutableCurrentPlayer(), turnOrder.getMutableCurrentPlayer().getMutableAssistantCards().get(1));
         turnOrder.stepToNextPlayer();
-        turnOrder.setSelectedCard(turnOrder.getMutableCurrentPlayer(), turnOrder.getMutableCurrentPlayer().getAssistantCards()[0]);
+        turnOrder.setSelectedCard(turnOrder.getMutableCurrentPlayer(), turnOrder.getMutableCurrentPlayer().getMutableAssistantCards().get(0));
         turnOrder.stepToNextPlayer();
 
         CharacterCardInput input = new CharacterCardInput(turnOrder.getMutableCurrentPlayer());

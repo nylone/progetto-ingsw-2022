@@ -15,9 +15,9 @@ public class Card03Test {
     public void checkUse() throws Exception {
         PlayerBoard pb1 = gb.getMutablePlayerBoardByNickname("ari");
         PlayerBoard pb2 = gb.getMutablePlayerBoardByNickname("teo");
-        IslandGroup ig = gb.getMutableIslandField().getIslandGroupById(5);
-        Island island = ig.getIslands().get(0);
-        IslandGroup expectedMotherNaturePosition = gb.getMutableIslandField().getMotherNaturePosition();
+        IslandGroup ig = gb.getMutableIslandField().getMutableIslandGroupById(5);
+        Island island = ig.getMutableIslands().get(0);
+        IslandGroup expectedMotherNaturePosition = gb.getMutableIslandField().getMutableMotherNaturePosition();
 
         island.addStudent(PawnColour.BLUE);
         island.addStudent(PawnColour.BLUE);
@@ -32,7 +32,7 @@ public class Card03Test {
         card.unsafeApplyEffect(input);
 
         assertTrue(ig.getTowerColour().get().equals(gb.getTeamMap().getMutableTowerStorage(pb1).getColour()));
-        assertEquals(expectedMotherNaturePosition, gb.getMutableIslandField().getMotherNaturePosition());
+        assertEquals(expectedMotherNaturePosition, gb.getMutableIslandField().getMutableMotherNaturePosition());
     }
 
     @Test(expected = FailedOperationException.class)

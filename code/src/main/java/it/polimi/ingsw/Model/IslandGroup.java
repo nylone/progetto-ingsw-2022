@@ -30,7 +30,7 @@ public class IslandGroup implements Serializable {
             if (islandGroups[0].isJoinable(islandGroups)) {
                 this.islands = new ArrayList<>();
                 for (IslandGroup i : islandGroups) {
-                    islands.addAll(i.getIslands());
+                    islands.addAll(i.getMutableIslands());
                 }
                 this.id = Arrays.stream(islandGroups)
                         .min(Comparator.comparingInt(IslandGroup::getId))
@@ -56,11 +56,11 @@ public class IslandGroup implements Serializable {
     }
 
     public Optional<TowerColour> getTowerColour() {
-        return this.getIslands().get(0).getTowerColour();
+        return this.getMutableIslands().get(0).getTowerColour();
     }
 
     public int getTowerCount() {
-        if (getTowerColour().isPresent()) return getIslands().size();
+        if (getTowerColour().isPresent()) return getMutableIslands().size();
         else return 0;
     }
 
@@ -68,12 +68,12 @@ public class IslandGroup implements Serializable {
         return id;
     }
 
-    public ArrayList<Island> getIslands() {
-        return new ArrayList<>(islands);
+    public List<Island> getMutableIslands() {
+        return List.copyOf(islands);
     }
 
-    public List<NoEntryTile> getNoEntryTiles() {
-        return noEntryTiles;
+    public List<NoEntryTile> getMutableNoEntryTiles() {
+        return List.copyOf(noEntryTiles);
     }
 
     public Map<PawnColour, Integer> getStudentCount() { //the map will contain the colours of the placed pawns with relative counter
@@ -81,15 +81,15 @@ public class IslandGroup implements Serializable {
         for (PawnColour p : this.getStudents()) {
             studentCount.merge(p, 1, Integer::sum);
         }
-        return studentCount;
+        return Map.copyOf(studentCount); // make sure the returned map is immutable
     }
 
-    public ArrayList<PawnColour> getStudents() {
-        ArrayList<PawnColour> islandGroupStudents = new ArrayList<>();
-        for (Island s : this.getIslands()) {
+    public List<PawnColour> getStudents() {
+        List<PawnColour> islandGroupStudents = new ArrayList<>();
+        for (Island s : this.getMutableIslands()) {
             islandGroupStudents.addAll(s.getStudents());
         }
-        return islandGroupStudents;
+        return List.copyOf(islandGroupStudents);
     }
 
     public boolean contains(Island i) {

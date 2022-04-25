@@ -42,7 +42,7 @@ public class PlayCharacterCard extends PlayerAction {
     protected void unsafeExecute(GameBoard ctx) {
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCard characterCard = ctx.getCharacterCards().get(this.selectedCard);
-        caller.PayCharacterEffect(characterCard.getCost());
+        caller.payCharacterEffect(characterCard.getCost());
         if (characterCard.getTimeUsed() > 0) {
             ctx.addToCoinReserve(characterCard.getCost());
         } else {
@@ -85,7 +85,7 @@ public class PlayCharacterCard extends PlayerAction {
         CharacterCardInput out = new CharacterCardInput(caller);
         if (this.optTargetIsland.isPresent()) {
             int id = this.optTargetIsland.get();
-            out.setTargetIsland(ctx.getMutableIslandField().getIslandById(id));
+            out.setTargetIsland(ctx.getMutableIslandField().getMutableIslandById(id));
         }
         this.optTargetPawn.ifPresent(out::setTargetPawn);
         this.optTargetPawnPairs.ifPresent(out::setTargetPawnPairs);

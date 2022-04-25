@@ -68,7 +68,7 @@ public class MoveStudent extends PlayerAction {
         }
         // validate size of dining room
         if(this.destination.getDestinationType() == DestinationType.DININGROOM){
-            if(!caller.canDiningRoomFit(Arrays.asList(caller.getEntranceStudents().get(this.selectedEntrancePosition)))){
+            if(caller.isDiningRoomFull(Arrays.asList(caller.getEntranceStudents().get(this.selectedEntrancePosition)))){
                 throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
                         CONTAINER_NAME_DININGROOM + "can't contain the pawn without overflowing on the lane.");
             }
@@ -87,7 +87,7 @@ public class MoveStudent extends PlayerAction {
         switch (this.destination.getDestinationType()) {
             case ISLAND -> {
                 int id = this.destination.getIslandID();
-                ctx.getMutableIslandField().getIslandById(id)
+                ctx.getMutableIslandField().getMutableIslandById(id)
                         .addStudent(toMove);
             }
             case DININGROOM -> {

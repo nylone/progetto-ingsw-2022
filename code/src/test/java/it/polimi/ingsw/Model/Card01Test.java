@@ -14,9 +14,9 @@ public class Card01Test {
     public void cardShouldAlwaysHave4Students() throws Exception {
         GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
         Card01 card = new Card01(g);
-        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getCurrentPlayer());
+        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
         input.setTargetPawn((PawnColour) card.getState().get(1));
-        input.setTargetIsland(Utils.random(g.getMutableIslandField().getGroups()).getIslands().get(0));
+        input.setTargetIsland(Utils.random(g.getMutableIslandField().getMutableGroups()).getMutableIslands().get(0));
         assertTrue(card.getState().size() == 4);
         card.unsafeApplyEffect(input);
         assertTrue(card.getState().size() == 4);
@@ -27,8 +27,8 @@ public class Card01Test {
         // arrange
         GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
         Card01 card = new Card01(g);
-        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getCurrentPlayer());
-        Island island = Utils.random(g.getMutableIslandField().getGroups()).getIslands().get(0);
+        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
+        Island island = Utils.random(g.getMutableIslandField().getMutableGroups()).getMutableIslands().get(0);
         int expected = island.getStudents().size();
         input.setTargetIsland(island);
         input.setTargetPawn((PawnColour) card.getState().get(1));
@@ -41,7 +41,7 @@ public class Card01Test {
     @Test(expected = FailedOperationException.class)
     public void checkUseException() throws Exception {
         GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
-        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getCurrentPlayer());
+        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
         Card01 card = new Card01(g);
         assertTrue(card.getState().size()==4);
         card.unsafeApplyEffect(input);

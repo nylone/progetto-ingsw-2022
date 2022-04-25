@@ -7,6 +7,7 @@ import it.polimi.ingsw.Misc.Utils;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import static it.polimi.ingsw.Constants.*;
 
@@ -42,26 +43,26 @@ public class IslandField implements Serializable {
     }
 
     // GETTER METHODS
-    public ArrayList<IslandGroup> getGroups() {
-        return new ArrayList<>(this.groups);
+    public List<IslandGroup> getMutableGroups() {
+        return List.copyOf(this.groups);
     }
 
-    public ArrayList<Island> getIslands() {
-        return new ArrayList<>(this.islands);
+    public List<Island> getMutableIslands() {
+        return List.copyOf(this.islands);
     }
 
-    public IslandGroup getMotherNaturePosition() {
+    public IslandGroup getMutableMotherNaturePosition() {
         return motherNaturePosition;
     }
 
-    public IslandGroup getIslandGroupById(int id) throws InvalidContainerIndexException {
+    public IslandGroup getMutableIslandGroupById(int id) throws InvalidContainerIndexException {
         return groups.stream()
                 .filter(g -> g.getId() == id)
                 .findAny()
                 .orElseThrow(() -> new InvalidContainerIndexException(CONTAINER_NAME_ISLANDFIELD_ISLANDGROUPS));
     }
 
-    public Island getIslandById(int id) throws InvalidContainerIndexException {
+    public Island getMutableIslandById(int id) throws InvalidContainerIndexException {
         return islands.stream()
                 .filter(i -> i.getId() == id)
                 .findAny()
@@ -90,7 +91,7 @@ public class IslandField implements Serializable {
 
     public boolean joinGroups() {
         boolean didJoin = false;
-        IslandGroup motherGroup = this.getMotherNaturePosition();
+        IslandGroup motherGroup = this.getMutableMotherNaturePosition();
         IslandGroup nextGroup = this.nextGroup(motherGroup);
         IslandGroup prevGroup = this.prevGroup(motherGroup);
         // look to the group before mother nature position and join if necessary
@@ -102,7 +103,7 @@ public class IslandField implements Serializable {
                 this.motherNaturePosition = joined;
                 didJoin = true;
             }
-            motherGroup = this.getMotherNaturePosition();
+            motherGroup = this.getMutableMotherNaturePosition();
             if (motherGroup.isJoinable(nextGroup)) {
                 IslandGroup joined = new IslandGroup(motherGroup, nextGroup);
                 this.groups.remove(nextGroup);

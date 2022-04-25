@@ -46,39 +46,36 @@ public class PlayerBoard implements Serializable {
         }
     }
 
-    public AssistantCard[] getAssistantCards() {
-        return assistantCards;
+    // GETTERS //
+    public List<AssistantCard> getMutableAssistantCards() {
+        return Arrays.stream(assistantCards).toList();
     }
-
     public int getCoinBalance() {
         return coinBalance;
     }
-
     public Map<PawnColour, Integer> getDiningRoom() {
-        return diningRoom;
+        return Map.copyOf(diningRoom);
     }
-
+    public int getEntranceSpaceLeft() {
+        return entranceSize - entrance.size();
+    }
     public int getDiningRoomCount(PawnColour colour) {
         return diningRoom.get(colour);
     }
-
     public int getEntranceSize() {
         return entranceSize;
     }
-
-    public ArrayList<PawnColour> getEntranceStudents() {
-        return entrance;
+    public List<PawnColour> getEntranceStudents() {
+        return List.copyOf(entrance);
     }
-
     public int getId() {
         return id;
     }
-
     public String getNickname() {
         return nickname;
     }
 
-
+    // SETTERS AND THE LIKE //
     public void addStudentToDiningRoom(PawnColour colour) throws FullContainerException, InvalidElementException {
         if (this.diningRoom.get(colour) == 10) {
             throw new FullContainerException(CONTAINER_NAME_DININGROOM);
@@ -100,13 +97,13 @@ public class PlayerBoard implements Serializable {
         }
     }
 
-    public boolean canDiningRoomFit(List<PawnColour> students) {
+    public boolean isDiningRoomFull(List<PawnColour> students) {
         Map<PawnColour, Integer> inputCount = new HashMap<>(5);
         students.forEach(s -> inputCount.merge(s, 1, Integer::sum));
         for (Map.Entry<PawnColour, Integer> entry : inputCount.entrySet()) {
-            if (entry.getValue() + getDiningRoomCount(entry.getKey()) > 10) return false;
+            if (entry.getValue() + getDiningRoomCount(entry.getKey()) > 10) return true;
         }
-        return true;
+        return false;
     }
 
     public void addStudentsToEntrance(List<PawnColour> students) throws FullContainerException {
@@ -142,11 +139,8 @@ public class PlayerBoard implements Serializable {
         throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
     }
 
-    public int getEntranceSpaceLeft() {
-        return entranceSize - entrance.size();
-    }
 
-    public void PayCharacterEffect(int cost) { //this method checks if the CharacterCard can be activated, true --> gameBoard activates the CharacterCard / false--> GameBoard doesn't activate the CharacterCard
+    public void payCharacterEffect(int cost) { //this method checks if the CharacterCard can be activated, true --> gameBoard activates the CharacterCard / false--> GameBoard doesn't activate the CharacterCard
         if (this.coinBalance >= cost) {
             this.coinBalance -= cost;
         }

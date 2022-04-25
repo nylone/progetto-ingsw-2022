@@ -185,11 +185,11 @@ public class GameBoard implements Serializable {
 
     public void moveAndActMotherNature(int steps) {
         this.islandField.moveMotherNature(steps);
-        actMotherNaturePower(this.islandField.getMotherNaturePosition());
+        actMotherNaturePower(this.islandField.getMutableMotherNaturePosition());
     }
 
     public void actMotherNaturePower(IslandGroup mnp) {
-        if (mnp.getNoEntryTiles().isEmpty()) {
+        if (mnp.getMutableNoEntryTiles().isEmpty()) {
             Optional<TeamID> optInfluencer = getInfluencerOf(mnp);
             if (optInfluencer.isPresent()) {
                 TeamID newInfluencer = optInfluencer.get();
