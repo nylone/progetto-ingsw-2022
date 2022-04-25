@@ -1,10 +1,16 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Model.Cloud;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.util.List;
+
+import static it.polimi.ingsw.Constants.CONTAINER_NAME_ENTRANCE;
+import static it.polimi.ingsw.Constants.INPUT_NAME_CLOUD;
 
 public class ChooseCloudTile extends PlayerAction {
 
@@ -16,16 +22,26 @@ public class ChooseCloudTile extends PlayerAction {
     }
 
     @Override
-    protected boolean validate(List<PlayerAction> history, GameBoard ctx) {
+    protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+        if(!(this.selectedTile >= 0 && selectedTile <= ctx.getClouds().size() - 1)){
+            throw new InvalidElementException(INPUT_NAME_CLOUD);
+        }
         PlayerBoard caller = ctx.getTurnOrder().getCurrentPlayer();
         Cloud selectedCloud = ctx.getClouds().get(selectedTile);
 
-        return super.validate(history, ctx) &&
-                caller.getEntranceStudents().size() + selectedCloud.getContents().size() <= caller.getEntranceSize() && //students don't exceed the entranceSize
-                selectedTile >= 0 && selectedTile <= ctx.getClouds().size() - 1 &&  //selected a consistent cloud
-                selectedCloud.getContents().size() > 0 && //Selected cloud has not been already picked
-                ctx.getTurnOrder().getCurrentPlayer().getEntranceSpaceLeft() >= selectedCloud.getContents().size();
-        // check that entrance is not full
+        if(!(caller.getEntranceSpaceLeft() >= selectedCloud.getContents().size())){
+            throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
+                    CONTAINER_NAME_ENTRANCE + "can't contain " + selectedCloud.getContents().size()
+                            + " element's without overflowing.");
+        }
+        if(selectedCloud.getContents().size()==0){
+            throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
+                    CONTAINER_NAME_ENTRANCE + "has already been emptied");
+        }
+        if(!super.validate(history,ctx)){
+
+        }
+        return true;
     }
 
     @Override
