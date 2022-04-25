@@ -16,8 +16,7 @@ public class Card05Test {
         CharacterCardInput input = new CharacterCardInput(pb);
         IslandField field = gb.getMutableIslandField();
         input.setTargetIsland(field.getMutableIslandById(1));
-
-        card05.unsafeApplyEffect(input);
+        if(card05.checkInput(input)) card05.unsafeApplyEffect(input);
         assertTrue(card05.getState().size() == 3); // 3 tiles left after one use
         assertTrue(field.getMutableIslandGroupById(1).getMutableNoEntryTiles().size() == 1); // the island group contains the NoEntryTile
 

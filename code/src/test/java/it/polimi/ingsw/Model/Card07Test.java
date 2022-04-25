@@ -1,13 +1,16 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
 import static org.junit.Assert.*;
 
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Exceptions.Operation.OperationException;
+import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Card07Test {
@@ -15,34 +18,48 @@ public class Card07Test {
     Card07 card = new Card07(gb);
 
     @Test
-    public void checkUse() throws InvalidContainerIndexException {
+    public void checkUse() throws InvalidContainerIndexException, InputValidationException, OperationException {
         assertTrue(card.getState().size() == 6);
-        PlayerBoard pb = gb.getMutablePlayerBoardByNickname("ari");
+
+        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(0));
+        gb.getMutableTurnOrder().stepToNextPlayer();
+        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(6));
+        gb.getMutableTurnOrder().commitTurnOrder();
+
+        PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCardInput input = new CharacterCardInput(pb);
-        PawnColour[][] pairs = new PawnColour[2][];
-        pairs[0] = new PawnColour[]{pb.getEntranceStudents().remove(0), pb.getEntranceStudents().remove(1)};
-        pairs[1] = new PawnColour[]{(PawnColour) card.getState().get(0), (PawnColour) card.getState().get(1)};
-        input.setTargetPawnPairs(pairs);
-        card.Use(input);
-        assertTrue(card.getState().containsAll(List.of(pairs[0])));
-        assertTrue(pb.getEntranceStudents().containsAll(List.of(pairs[1])));
+        List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0), (PawnColour) card.getState().get(0)));
+        pairs.add(new Pair<>( pb.getEntranceStudents().get(1), (PawnColour) card.getState().get(1)));
+        Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
+        input.setTargetPawnPairs(pairs.toArray(pairsArray));
+        pairs.stream().forEach(p -> System.out.println(p.toString()));
+
+        if(card.checkInput(input)) card.unsafeUseCard(input);
+        assertTrue(card.getState().containsAll(pairs.stream().map(p -> p.getFirst()).toList()));
+        assertTrue(pb.getEntranceStudents().containsAll(pairs.stream().map(p -> p.getSecond()).toList()));
     }
 
-    @Test(expected = InvalidInputException.class)
-    public void checkExceptionUse() throws InvalidContainerIndexException {
+    @Test(expected = InputValidationException.class)
+    public void checkExceptionUse() throws InvalidContainerIndexException, InputValidationException {
         PlayerBoard pb = gb.getMutablePlayerBoardByNickname("ari");
         CharacterCardInput input = new CharacterCardInput(pb);
-        card.Use(input);
+        if(card.checkInput(input)) card.unsafeUseCard(input);
     }
 
-    @Test(expected = InvalidInputException.class)
-    public void checkUse4Pawns() throws InvalidContainerIndexException {
+    @Test(expected = InputValidationException.class)
+    public void checkUse4Pawns() throws InvalidContainerIndexException, InputValidationException {
         PlayerBoard pb = gb.getMutablePlayerBoardByNickname("ari");
         CharacterCardInput input = new CharacterCardInput(pb);
-        PawnColour[][] pairs = new PawnColour[2][];
-        pairs[0] = new PawnColour[]{pb.getEntranceStudents().remove(0), pb.getEntranceStudents().remove(0), pb.getEntranceStudents().remove(0), pb.getEntranceStudents().remove(0)};
-        pairs[1] = new PawnColour[]{(PawnColour) card.getState().get(0), (PawnColour) card.getState().get(1)};
-        input.setTargetPawnPairs(pairs);
-        card.Use(input);
+        List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0), (PawnColour) card.getState().get(0)));
+        pb.removeStudentFromEntrance(0);
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0), (PawnColour) card.getState().get(1)));
+        pb.removeStudentFromEntrance(0);
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0), null));
+        pb.removeStudentFromEntrance(0);
+        Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
+        input.setTargetPawnPairs(pairs.toArray(pairsArray));
+        if(card.checkInput(input)) card.unsafeUseCard(input);
     }
 }

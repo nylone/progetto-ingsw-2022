@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Controller;
+/*package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;
@@ -26,3 +26,4 @@ public class PlayAssistantCardTest {
         assertTrue(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getPriority() == 3);
     }
 }
+*/

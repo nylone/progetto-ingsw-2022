@@ -101,6 +101,7 @@ public class Card07 extends StatefulEffect {
             for (int i = 0; i < students.length; i++) {
                 if (students[i] == pair.getSecond()) {
                     students[i] = pair.getFirst();
+                    break;
                 }
             }
         }
