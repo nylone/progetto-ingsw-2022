@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Model.GameBoard;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public abstract class PlayerAction {
         return playerBoardId;
     }
 
-    protected void safeExecute(List<PlayerAction> history, GameBoard ctx) {
+    protected void safeExecute(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         if (validate(history, ctx)) {
             try {
                 unsafeExecute(ctx);
@@ -28,7 +29,7 @@ public abstract class PlayerAction {
 
     protected abstract void unsafeExecute(GameBoard ctx) throws Exception;
 
-    protected boolean validate(List<PlayerAction> history, GameBoard ctx) {
+    protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         return isCorrectTurn(ctx) && isNotDuplicateAction(history);
     }
 

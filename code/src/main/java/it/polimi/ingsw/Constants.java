@@ -9,8 +9,10 @@ public class Constants {
     public static final String CONTAINER_NAME_ISLANDFIELD_ISLANDGROUPS = "IslandField.groups";
     public static final String CONTAINER_NAME_ISLANDFIELD_ISLANDS = "IslandField.islands";
 
+
     public static final String INPUT_NAME_TARGET_PAWN_PAIRS = "Target Pawn Pairs";
     public static final String INPUT_NAME_TARGET_ISLAND = "Target Island";
+    public static final String INPUT_NAME_CHARACTER_CARD = "Character Card";
     public static final String INPUT_NAME_TARGET_PAWN_COLOUR = "Target Pawn Colour";
     public static final String INPUT_NAME_CALLER = "Card Caller";
     public static final String INPUT_NAME_TOWER = "Tower";
