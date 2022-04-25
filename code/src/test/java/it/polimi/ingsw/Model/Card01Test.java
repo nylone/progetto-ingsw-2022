@@ -1,67 +1,49 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
+import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
+import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class Card01Test {
 
     @Test
-    public void addingStudentUntilPossibleShouldWork() {
-        // arrange
+    public void cardShouldAlwaysHave4Students() throws Exception {
         GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
         Card01 card = new Card01(g);
-        // act
-        card.addStudent(PawnColour.BLUE);
-        PawnColour actual = card.getStudent(0);
-        // assert
-        assertEquals(PawnColour.BLUE, actual);
+        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getCurrentPlayer());
+        input.setTargetPawn((PawnColour) card.getState().get(1));
+        input.setTargetIsland(Utils.random(g.getMutableIslandField().getGroups()).getIslands().get(0));
+        assertTrue(card.getState().size() == 4);
+        card.unsafeApplyEffect(input);
+        assertTrue(card.getState().size() == 4);
     }
 
     @Test
-    public void cardShouldContainFrom0To4Cards() {
+    public void usingEffectShouldAddStudentToIsland() throws Exception {
         // arrange
         GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
         Card01 card = new Card01(g);
-        // act
-        try {
-            card.getStudent(7);
-            fail();
-        }
-        catch (InvalidInputException e) {
-            assertEquals("Invalid input provided", e.getMessage());
-        }
-    }
-
-    @Test
-    public void usingEffectShouldAddStudentToIsland() throws InvalidContainerIndexException {
-        // arrange
-        GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
-        CharacterCardInput input = new CharacterCardInput(g.getMutablePlayerBoardByNickname("ari"));
-        Island island = g.getMutableIslandField().getIslandById(3);
+        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getCurrentPlayer());
+        Island island = Utils.random(g.getMutableIslandField().getGroups()).getIslands().get(0);
         int expected = island.getStudents().size();
         input.setTargetIsland(island);
-        input.setTargetPawn(PawnColour.BLUE);
-        Card01 card = new Card01(g);
+        input.setTargetPawn((PawnColour) card.getState().get(1));
         // act
-        card.Use(input);
+        card.unsafeApplyEffect(input);
         // assert
         assertTrue(island.getStudents().size() == expected + 1);
     }
 
-    @Test(expected = InvalidInputException.class)
-    public void checkUseException() throws InvalidContainerIndexException {
+    @Test(expected = FailedOperationException.class)
+    public void checkUseException() throws Exception {
         GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
-        CharacterCardInput input = new CharacterCardInput(g.getMutablePlayerBoardByNickname("ari"));
+        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getCurrentPlayer());
         Card01 card = new Card01(g);
         assertTrue(card.getState().size()==4);
-        card.Use(input);
+        card.unsafeApplyEffect(input);
     }
-
-
-
 }

@@ -1,8 +1,5 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
-import it.polimi.ingsw.Exceptions.FullContainerException;
-import it.polimi.ingsw.Exceptions.InputValidationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
@@ -12,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 public class Card02Test {
 
     @Test
-    public void checkEffectCard02IsWorking() throws FullContainerException, InputValidationException, InvalidContainerIndexException {
+    public void checkEffectCard02IsWorking() throws Exception {
         // arrange
         GameBoard gb = new GameBoard(GameMode.ADVANCED,"ale", "teo");
         gb.getMutablePlayerBoardById(1).addStudentToDiningRoom(PawnColour.BLUE);
@@ -26,7 +23,7 @@ public class Card02Test {
         Card02 card = new Card02(gb);
         CharacterCardInput activateCardAction = new CharacterCardInput(gb.getMutablePlayerBoardByNickname("ale"));
         // act
-        card.checkInput(activateCardAction);
+        card.unsafeApplyEffect(activateCardAction);
         // assert
         assertEquals(gb.getMutablePlayerBoardByNickname("ale"), gb.getTeachers().get(PawnColour.BLUE));
         assertEquals(greenOwner, gb.getTeachers().get(PawnColour.GREEN));

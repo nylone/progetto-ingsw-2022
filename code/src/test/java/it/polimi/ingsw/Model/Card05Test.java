@@ -1,10 +1,10 @@
 package it.polimi.ingsw.Model;
 
-import static org.junit.Assert.*;
-
-import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
+import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class Card05Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
@@ -12,12 +12,12 @@ public class Card05Test {
     PlayerBoard pb = new PlayerBoard(1, 2, "ari", gb.getMutableStudentBag());
 
     @Test
-    public void checkUse() throws InvalidContainerIndexException {
+    public void checkUse() throws Exception {
         CharacterCardInput input = new CharacterCardInput(pb);
         IslandField field = gb.getMutableIslandField();
         input.setTargetIsland(field.getIslandById(1));
 
-        card05.Use(input);
+        card05.unsafeApplyEffect(input);
         assertTrue(card05.getState().size() == 3); // 3 tiles left after one use
         assertTrue(field.getIslandGroupById(1).getNoEntryTiles().size() == 1); // the island group contains the NoEntryTile
 
@@ -28,9 +28,9 @@ public class Card05Test {
         assertTrue(card05.getState().size() == 4); // 4 tiles left after the return of the NoEntryTile
     }
 
-    @Test(expected = InvalidInputException.class)
-    public void checkInputException() {
+    @Test(expected = FailedOperationException.class)
+    public void checkInputException() throws Exception {
         CharacterCardInput input = new CharacterCardInput(pb);
-        card05.Use(input);
+        card05.unsafeApplyEffect(input);
     }
 }

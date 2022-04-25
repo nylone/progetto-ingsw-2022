@@ -1,9 +1,9 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.ContainerException;
+import it.polimi.ingsw.Exceptions.Container.FullContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
-import it.polimi.ingsw.Exceptions.toremove.EmptyDiningRoomException;
-import it.polimi.ingsw.Exceptions.toremove.FullDiningRoomException;
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
+import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
@@ -15,7 +15,7 @@ public class Card10Test {
     Card10 card10 = new Card10(gb);
 
     @Test
-    public void checkUse() throws FullDiningRoomException, EmptyDiningRoomException, InvalidContainerIndexException {
+    public void checkUse() throws ContainerException, InvalidElementException {
         PlayerBoard pb = gb.getMutablePlayerBoardByNickname("Rouge");
         CharacterCardInput input = new CharacterCardInput(pb);
         pb.addStudentToDiningRoom(PawnColour.RED);
@@ -39,8 +39,9 @@ public class Card10Test {
         CharacterCardInput input = new CharacterCardInput(pb);
         card10.Use(input);
     }
+
     @Test(expected = InvalidInputException.class)
-    public void asymettricInput() throws FullDiningRoomException, InvalidContainerIndexException {
+    public void asymmetricInput() throws InvalidContainerIndexException, FullContainerException, InvalidElementException {
         PlayerBoard pb = gb.getMutablePlayerBoardByNickname("Rouge");
         CharacterCardInput input = new CharacterCardInput(pb);
         pb.addStudentToDiningRoom(PawnColour.RED);
