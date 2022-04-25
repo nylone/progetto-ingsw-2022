@@ -16,7 +16,8 @@ public class Constants {
     public static final String INPUT_NAME_TARGET_PAWN_COLOUR = "Target Pawn Colour";
     public static final String INPUT_NAME_CALLER = "Card Caller";
     public static final String INPUT_NAME_TOWER = "Tower";
-
+    public static final String INPUT_NAME_ASSISTANT_CARD = "Assitant Card";
+    public static final String INPUT_NAME_CLOUD = "Cloud";
     public static final String OPERATION_NAME_CONSTRUCTOR_ISLAND_GROUPS = "[MODEL] IslandGroup constructor";
     public static final String OPERATION_NAME_JOIN_GROUPS = "[MODEL] IslandField.joinGroups";
 
