@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.TeamID;
@@ -28,7 +28,7 @@ public class IslandFieldTest {
     }
 
     @Test
-    public void testValidIslandGroupById() {
+    public void testValidIslandGroupById() throws InvalidContainerIndexException {
         // arrange
         IslandField field = new IslandField();
 
@@ -48,14 +48,14 @@ public class IslandFieldTest {
             // act
             IslandGroup found = field.getIslandGroupById(15);
             fail("An exception was thrown");
-        } catch (InvalidInputException e) {
+        } catch (InvalidContainerIndexException e) {
             // assert
-            assertEquals("IslandGroup.id problem: id out of bound", e.getMessage());
+            assertEquals("An error occured on: IslandField.groups\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
         }
     }
 
     @Test
-    public void testValidIslandId() {
+    public void testValidIslandId() throws InvalidContainerIndexException {
         // act
         Island actualIsland = field.getIslandById(2);
         // assert
@@ -68,9 +68,9 @@ public class IslandFieldTest {
         try {
             field.getIslandById(18);
             fail("Exception was thrown");
-        } catch (InvalidInputException e) {
+        } catch (InvalidContainerIndexException e) {
             // assert
-            assertEquals("Island.id problem: id out of bound", e.getMessage());
+            assertEquals("An error occured on: IslandField.islands\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
         }
     }
 

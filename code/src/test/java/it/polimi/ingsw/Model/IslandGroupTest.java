@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TeamID;
@@ -31,7 +32,7 @@ public class IslandGroupTest {
     }
 
     @Test
-    public void testGetStudents() {
+    public void testGetStudents() throws OperationException {
         // arrange
         GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo");
         TeamMapper tm = gb.getTeamMap();

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
 import static org.junit.Assert.*;
 
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ public class Card05Test {
     PlayerBoard pb = new PlayerBoard(1, 2, "ari", gb.getStudentBag());
 
     @Test
-    public void checkUse(){
+    public void checkUse() throws InvalidContainerIndexException {
         CharacterCardInput input = new CharacterCardInput(pb);
         IslandField field = gb.getIslandField();
         input.setTargetIsland(field.getIslandById(1));
