@@ -56,7 +56,7 @@ public class GameBoard implements Serializable {
             clouds.add(new Cloud(i));
 
             try {
-                clouds.get(i).fill((ArrayList<PawnColour>) studentBag.multiple_extraction(nop == 3 ? 4 : 3));
+                clouds.get(i).fill((ArrayList<PawnColour>) studentBag.multipleExtraction(nop == 3 ? 4 : 3));
             } catch (FullContainerException e) {
                 System.out.println(e.getMessage());
             }
