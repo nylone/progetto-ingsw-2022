@@ -1,10 +1,17 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.util.List;
+
+import static it.polimi.ingsw.Constants.INPUT_NAME_ASSISTANT_CARD;
+
 
 public class PlayAssistantCard extends PlayerAction {
 
@@ -15,19 +22,24 @@ public class PlayAssistantCard extends PlayerAction {
         this.selectedAssistant = selectedAssistant - 1;
     }
 
-    public void unsafeExecute(GameBoard ctx) {
+    public void unsafeExecute(GameBoard ctx) throws InputValidationException, OperationException {
         PlayerBoard pb = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard sa = pb.getAssistantCards()[selectedAssistant];
         ctx.getMutableTurnOrder().setSelectedCard(pb, sa);
     }
 
     @Override
-    protected boolean validate(List<PlayerAction> history, GameBoard ctx) {
+    protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException{
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
-
-        return super.validate(history, ctx) &&
-                this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getAssistantCards().length - 1 &&
-                !currentPlayer.getAssistantCards()[selectedAssistant].getUsed(); //true if not used/ false if the card has been used
-
+        if(!(this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getAssistantCards().length - 1)){
+            throw new InvalidElementException(INPUT_NAME_ASSISTANT_CARD);
+        }
+        if(currentPlayer.getAssistantCards()[selectedAssistant].getUsed()){
+            throw new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + "can only be used once");
+        }
+        if(!super.validate(history,ctx)){
+            throw new GenericInputValidationException("Action", "this action can't be executed more than once or executed by other player than the current");
+        }
+        return true;
     }
 }
