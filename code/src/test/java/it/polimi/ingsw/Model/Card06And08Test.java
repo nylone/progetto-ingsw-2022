@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import static org.junit.Assert.*;
 
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class Card06And08Test{
         assertTrue(gb.getEffects().isTowerInfluenceDenied());
     }
     @Test
-    public void checkUse08(){
+    public void checkUse08() throws InvalidContainerIndexException {
         Island island = gb.getIslandField().getIslandGroupById(1).getIslands().get(0);
         IslandGroup islandGroup = gb.getIslandField().getIslandGroupById(0);
         PlayerBoard pb2 = gb.getPlayerBoardByNickname("teo");

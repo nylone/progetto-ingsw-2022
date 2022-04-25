@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -11,7 +12,7 @@ public class Card03Test {
     Card03 card = new Card03(gb);
 
     @Test
-    public void checkUse() {
+    public void checkUse() throws InvalidContainerIndexException {
         PlayerBoard pb1 = gb.getPlayerBoardByNickname("ari");
         PlayerBoard pb2 = gb.getPlayerBoardByNickname("teo");
         IslandGroup ig = gb.getIslandField().getIslandGroupById(5);
@@ -35,7 +36,7 @@ public class Card03Test {
     }
 
     @Test(expected = InvalidInputException.class)
-    public void checkInvalidInput(){
+    public void checkInvalidInput() throws InvalidContainerIndexException {
         PlayerBoard pb1 = gb.getPlayerBoardByNickname("ari");
         CharacterCardInput input = new CharacterCardInput(pb1);
         card.Use(input);

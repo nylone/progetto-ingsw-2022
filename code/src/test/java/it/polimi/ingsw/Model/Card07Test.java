@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
 import static org.junit.Assert.*;
 
@@ -14,7 +15,7 @@ public class Card07Test {
     Card07 card = new Card07(gb);
 
     @Test
-    public void checkUse() {
+    public void checkUse() throws InvalidContainerIndexException {
         assertTrue(card.getState().size() == 6);
         PlayerBoard pb = gb.getPlayerBoardByNickname("ari");
         CharacterCardInput input = new CharacterCardInput(pb);
@@ -28,14 +29,14 @@ public class Card07Test {
     }
 
     @Test(expected = InvalidInputException.class)
-    public void checkExceptionUse() {
+    public void checkExceptionUse() throws InvalidContainerIndexException {
         PlayerBoard pb = gb.getPlayerBoardByNickname("ari");
         CharacterCardInput input = new CharacterCardInput(pb);
         card.Use(input);
     }
 
     @Test(expected = InvalidInputException.class)
-    public void checkUse4Pawns() {
+    public void checkUse4Pawns() throws InvalidContainerIndexException {
         PlayerBoard pb = gb.getPlayerBoardByNickname("ari");
         CharacterCardInput input = new CharacterCardInput(pb);
         PawnColour[][] pairs = new PawnColour[2][];

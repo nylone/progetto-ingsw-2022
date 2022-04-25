@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -37,7 +38,7 @@ public class Card01Test {
     }
 
     @Test
-    public void usingEffectShouldAddStudentToIsland() {
+    public void usingEffectShouldAddStudentToIsland() throws InvalidContainerIndexException {
         // arrange
         GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
         CharacterCardInput input = new CharacterCardInput(g.getPlayerBoardByNickname("ari"));
@@ -53,7 +54,7 @@ public class Card01Test {
     }
 
     @Test(expected = InvalidInputException.class)
-    public void checkUseException(){
+    public void checkUseException() throws InvalidContainerIndexException {
         GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
         CharacterCardInput input = new CharacterCardInput(g.getPlayerBoardByNickname("ari"));
         Card01 card = new Card01(g);

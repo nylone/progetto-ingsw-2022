@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.toremove.FullDiningRoomException;
 import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -11,7 +12,7 @@ public class Card12Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "rouge", "marianna");
     Card12 card = new Card12(gb);
     @Test
-    public void checkUse() throws FullDiningRoomException {
+    public void checkUse() throws FullDiningRoomException, InvalidContainerIndexException {
         PlayerBoard pb = gb.getPlayerBoardByNickname("marianna");
         PlayerBoard pb2 = gb.getPlayerBoardByNickname("rouge");
         CharacterCardInput input = new CharacterCardInput(pb2);
@@ -25,7 +26,7 @@ public class Card12Test {
     }
 
     @Test(expected = InvalidInputException.class)
-    public void checkEmptyInput() {
+    public void checkEmptyInput() throws InvalidContainerIndexException {
         PlayerBoard pb2 = gb.getPlayerBoardByNickname("rouge");
         CharacterCardInput input = new CharacterCardInput(pb2);
         card.Use(input);

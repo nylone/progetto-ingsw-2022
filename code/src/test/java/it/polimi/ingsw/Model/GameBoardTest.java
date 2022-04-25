@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.toremove.InvalidInputException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -19,7 +20,7 @@ public class GameBoardTest {
 
 
     @Test
-    public void testPlayerBoardId() {
+    public void testPlayerBoardId() throws InvalidContainerIndexException {
         // act
         // VALID
         PlayerBoard actual_s2_valid = gb_sim_2.getPlayerBoardById(1);
@@ -46,7 +47,7 @@ public class GameBoardTest {
     }
 
     @Test
-    public void testPlayerBoardNickname() {
+    public void testPlayerBoardNickname() throws InvalidContainerIndexException {
         // act
         // VALID
         PlayerBoard actual_s2_valid = gb_sim_2.getPlayerBoardByNickname("ale");
@@ -73,7 +74,7 @@ public class GameBoardTest {
     }
 
     @Test
-    public void testInfluencerOfSimpleAndAdvanced() throws NoSuchElementException {
+    public void testInfluencerOfSimpleAndAdvanced() throws NoSuchElementException, InvalidContainerIndexException {
         // arrange
         IslandGroup ig_s2 = gb_sim_2.getIslandField().getIslandGroupById(7);
         IslandGroup ig_a3 = gb_adv_3.getIslandField().getIslandGroupById(7);
@@ -113,7 +114,7 @@ public class GameBoardTest {
      * Testing that same influence on an island should keep previous influence
      */
     @Test
-    public void testingInfluenceOnIslandWithSameInfluence() {
+    public void testingInfluenceOnIslandWithSameInfluence() throws InvalidContainerIndexException {
         // arrange
         IslandGroup ig = gb_sim_2.getIslandField().getIslandGroupById(6);
         ig.getIslands().get(0).swapTower(gb_sim_2.getTeamMap().getTowerStorage(TeamID.fromInteger(1)).extractTower());
@@ -149,7 +150,7 @@ public class GameBoardTest {
      * Testing that if there are 2 players with some students on the island will win the one with more students
      */
     @Test
-    public void testingInfluenceOnIslandWithStudents() {
+    public void testingInfluenceOnIslandWithStudents() throws InvalidContainerIndexException {
         // arrange
         IslandGroup ig = gb_sim_2.getIslandField().getIslandGroupById(6);
         ig.getIslands().get(0).addStudent(PawnColour.BLUE);
@@ -168,7 +169,7 @@ public class GameBoardTest {
      * Testing that if the deny influence card is used, the denied colour should not influence the result
      */
     @Test
-    public void testingInfluenceAfterCardEffect() {
+    public void testingInfluenceAfterCardEffect() throws InvalidContainerIndexException {
         // arrange
         gb_sim_2.getEffects().setDeniedPawnColour(PawnColour.YELLOW);
         IslandGroup islandGroup = gb_sim_2.getIslandField().getIslandGroupById(6);
