@@ -39,7 +39,7 @@ public class ChooseCloudTile extends PlayerAction {
                     CONTAINER_NAME_ENTRANCE + "has already been emptied");
         }
         if(!super.validate(history,ctx)){
-
+            throw new GenericInputValidationException("Action", "this action can't be executed more than once or be executed by other player than the current");
         }
         return true;
     }
