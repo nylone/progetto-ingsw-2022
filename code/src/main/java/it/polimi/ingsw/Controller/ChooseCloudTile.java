@@ -26,7 +26,7 @@ public class ChooseCloudTile extends PlayerAction {
         if(!(this.selectedTile >= 0 && selectedTile <= ctx.getClouds().size() - 1)){
             throw new InvalidElementException(INPUT_NAME_CLOUD);
         }
-        PlayerBoard caller = ctx.getMutableTurnOrder().getCurrentPlayer();
+        PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         Cloud selectedCloud = ctx.getClouds().get(selectedTile);
 
         if(!(caller.getEntranceSpaceLeft() >= selectedCloud.getContents().size())){
@@ -48,7 +48,7 @@ public class ChooseCloudTile extends PlayerAction {
     protected void unsafeExecute(GameBoard ctx) {
         Cloud selectedCloud = ctx.getClouds().get(selectedTile); //get cloud
         try {
-            ctx.getMutableTurnOrder().getCurrentPlayer().addStudentsToEntrance(selectedCloud.extractContents());//fill playerboard's entrance
+            ctx.getMutableTurnOrder().getMutableCurrentPlayer().addStudentsToEntrance(selectedCloud.extractContents());//fill playerboard's entrance
         } catch (Exception e) {
             e.printStackTrace();
         }

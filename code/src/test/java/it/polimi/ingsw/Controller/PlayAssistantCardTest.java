@@ -14,7 +14,7 @@ public class PlayAssistantCardTest {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE);
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
-        PlayerBoard player = gameBoard.getMutableTurnOrder().getCurrentPlayer();
+        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayAssistantCard action = new PlayAssistantCard(player.getId(), 3);
         // act
         action.safeExecute(gh.getHistory(), gameBoard);
@@ -23,6 +23,6 @@ public class PlayAssistantCardTest {
         for (int i = 0; i < player.getAssistantCards().length; i++) {
             if (i != 2) assertTrue(!player.getAssistantCards()[i].getUsed());
         }
-        assertTrue(gameBoard.getMutableTurnOrder().getSelectedCard(player).get().getPriority() == 3);
+        assertTrue(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getPriority() == 3);
     }
 }

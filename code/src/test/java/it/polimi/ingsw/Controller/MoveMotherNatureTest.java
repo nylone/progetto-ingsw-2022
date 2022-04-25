@@ -19,7 +19,7 @@ public class MoveMotherNatureTest {
     public void motherNatureShouldBeMoved() {
         // arrange
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
-        PlayerBoard player = gameBoard.getMutableTurnOrder().getCurrentPlayer();
+        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         int randomMovement = new Random().nextInt(1, 7);
         IslandGroup initialPosition = gameBoard.getMutableIslandField().getMotherNaturePosition();
         MoveMotherNature action = new MoveMotherNature(player.getId(), randomMovement);
@@ -35,7 +35,7 @@ public class MoveMotherNatureTest {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE);
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
-        PlayerBoard player = gameBoard.getMutableTurnOrder().getCurrentPlayer();
+        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(List.of(player.getAssistantCards()));
         gameBoard.getMutableTurnOrder().setSelectedCard(player, card, player.getAssistantCards());
         int randomMovement = new Random().nextInt(card.getMaxMovement());
@@ -54,7 +54,7 @@ public class MoveMotherNatureTest {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE);
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
-        PlayerBoard player = gameBoard.getMutableTurnOrder().getCurrentPlayer();
+        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(List.of(player.getAssistantCards()));
         gameBoard.getMutableTurnOrder().setSelectedCard(player, card, player.getAssistantCards());
         int invalidMovement = card.getMaxMovement() + 1;

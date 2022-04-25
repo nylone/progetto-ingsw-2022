@@ -28,15 +28,15 @@ public class Card06And08Test{
         island.addStudent(PawnColour.RED);
         gb.setTeacher(PawnColour.RED, pb2);
 
-        turnOrder.setSelectedCard(turnOrder.getCurrentPlayer(),turnOrder.getCurrentPlayer().getAssistantCards()[1], turnOrder.getCurrentPlayer().getAssistantCards());
+        turnOrder.setSelectedCard(turnOrder.getMutableCurrentPlayer(),turnOrder.getMutableCurrentPlayer().getAssistantCards()[1], turnOrder.getMutableCurrentPlayer().getAssistantCards());
         turnOrder.stepToNextPlayer();
-        turnOrder.setSelectedCard(turnOrder.getCurrentPlayer(), turnOrder.getCurrentPlayer().getAssistantCards()[0], turnOrder.getCurrentPlayer().getAssistantCards());
+        turnOrder.setSelectedCard(turnOrder.getMutableCurrentPlayer(), turnOrder.getMutableCurrentPlayer().getAssistantCards()[0], turnOrder.getMutableCurrentPlayer().getAssistantCards());
         turnOrder.stepToNextPlayer();
 
-        CharacterCardInput input = new CharacterCardInput(turnOrder.getCurrentPlayer());
+        CharacterCardInput input = new CharacterCardInput(turnOrder.getMutableCurrentPlayer());
         card08.Use(input);
 
-        assertTrue(gb.getInfluencerOf(islandGroup).get().equals(gb.getTeamMap().getTeamID(turnOrder.getCurrentPlayer())));
+        assertTrue(gb.getInfluencerOf(islandGroup).get().equals(gb.getTeamMap().getTeamID(turnOrder.getMutableCurrentPlayer())));
         /*in this test, adding 2 points due to card8's effect will always give the influence to the caller; in fact:
                 teo caller --> 3 points of influence teo / 0 points of influence ari
                 ari caller --> 2 points of influence ari / 1 points of influence teo

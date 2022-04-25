@@ -28,9 +28,9 @@ public class MoveMotherNature extends PlayerAction {
 
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
-        PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getCurrentPlayer();
+        PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         Optional<AssistantCard> optionalAssistantCard = ctx.getMutableTurnOrder()
-                .getSelectedCard(currentPlayer);
+                .getMutableSelectedCard(currentPlayer);
 
         if(!super.validate(history,ctx)){
             throw new GenericInputValidationException("Action", "this action can't be executed more than once or be executed by other player than the current");

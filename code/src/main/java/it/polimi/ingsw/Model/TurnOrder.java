@@ -47,6 +47,36 @@ public class TurnOrder implements Serializable {
         }
     }
 
+    // GETTERS //
+    public List<PlayerBoard> getCurrentTurnOrder() {
+        return List.copyOf(currentTurnOrder);
+    }
+
+    public GamePhase getGamePhase() {
+        return gamePhase;
+    }
+
+    public List<PlayerBoard> getSkippedPlayers() {
+        return this.skippedPlayers.entrySet().stream()
+                .filter(Map.Entry::getValue) // filter to only contain the skipped players
+                .map(Map.Entry::getKey)
+                .toList(); // returns unmodifiable List
+    }
+
+    public Optional<AssistantCard> getMutableSelectedCard(PlayerBoard pb) {
+        return this.selectedCards.get(pb);
+    }
+
+    public List<AssistantCard> getSelectedCards() {
+        return selectedCards.values().stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList(); // immutable list
+    }
+
+    public PlayerBoard getMutableCurrentPlayer() {
+        return this.currentTurnOrder.get(this.currentTurnPosition);
+    }
 
     // cycles game-phases
     private void stepNextGamePhase() {
@@ -61,12 +91,8 @@ public class TurnOrder implements Serializable {
         }
     }
 
-    public GamePhase getGamePhase() {
-        return gamePhase;
-    }
-
     public boolean isOwnTurn(PlayerBoard pb) {
-        return getCurrentPlayer() == pb;
+        return getMutableCurrentPlayer() == pb;
     }
 
     // this function verifies if the playerboard passed to the obj is valid
@@ -88,24 +114,6 @@ public class TurnOrder implements Serializable {
 
     public boolean isPlayerSkipped(PlayerBoard pb) {
         return skippedPlayers.get(pb);
-    }
-
-    public List<PlayerBoard> getSkippedPlayers() {
-        return this.skippedPlayers.entrySet().stream()
-                .filter(Map.Entry::getValue) // filter to only contain the skipped players
-                .map(Map.Entry::getKey)
-                .toList(); // returns unmodifiable List
-    }
-
-    public Optional<AssistantCard> getSelectedCard(PlayerBoard pb) {
-        return this.selectedCards.get(pb);
-    }
-
-    public List<AssistantCard> getSelectedCards() {
-        return selectedCards.values().stream()
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .toList();
     }
 
     private void cleanSelectedCards() {
@@ -144,10 +152,6 @@ public class TurnOrder implements Serializable {
         this.selectedCards.put(pb, Optional.of(ac));
     }
 
-    public PlayerBoard getCurrentPlayer() {
-        return this.currentTurnOrder.get(this.currentTurnPosition);
-    }
-
     public void stepToNextPlayer() {
         // for all players except the last in turn
         if (currentTurnPosition < currentTurnOrder.size() - 1) {
@@ -157,7 +161,7 @@ public class TurnOrder implements Serializable {
             stepNextGamePhase();
         }
         // if the new player in turn is to be skipped, recursively call the step function
-        if (isPlayerSkipped(getCurrentPlayer()))
+        if (isPlayerSkipped(getMutableCurrentPlayer()))
             stepToNextPlayer();
     }
 
@@ -172,9 +176,5 @@ public class TurnOrder implements Serializable {
                                 .orElse(100))) // otherwise use a priority level that is higher than any other card
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
-    }
-
-    public List<PlayerBoard> getCurrentTurnOrder() {
-        return currentTurnOrder;
     }
 }

@@ -40,7 +40,7 @@ public class PlayCharacterCard extends PlayerAction {
 
     @Override
     protected void unsafeExecute(GameBoard ctx) {
-        PlayerBoard caller = ctx.getMutableTurnOrder().getCurrentPlayer();
+        PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCard characterCard = ctx.getCharacterCards().get(this.selectedCard);
         caller.PayCharacterEffect(characterCard.getCost());
         if (characterCard.getTimeUsed() > 0) {
@@ -56,7 +56,7 @@ public class PlayCharacterCard extends PlayerAction {
     }
 
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
-        PlayerBoard caller = ctx.getMutableTurnOrder().getCurrentPlayer();
+        PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
 
         // generate the input object before validation
         CharacterCardInput cardInput;
