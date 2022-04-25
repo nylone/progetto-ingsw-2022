@@ -12,25 +12,30 @@ import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.util.List;
+import java.util.Optional;
 
 
 import static it.polimi.ingsw.Constants.INPUT_NAME_CHARACTER_CARD;
+import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_ISLAND;
 
 public class PlayCharacterCard extends PlayerAction {
 
-    private final int selectedCard; //mandatory
-    private Integer targetIsland; //optional
-    private PawnColour targetPawn; //optional
-    private Pair<PawnColour, PawnColour>[] targetPawnPairs;  //optional
+    private final int selectedCard; // mandatory
+    private final Optional<Integer> optTargetIsland;
+    private final Optional<PawnColour> optTargetPawn;
+    private final Optional<Pair<PawnColour, PawnColour>[]> optTargetPawnPairs;
 
-    private CharacterCardInput input;
-
-    public PlayCharacterCard(PlayCharacterCardBuilder builder) {
-        super(builder.playerBoardId);
-        this.selectedCard = builder.selectedCard;
-        this.targetIsland = builder.targetIsland;
-        this.targetPawn = builder.targetPawn;
-        this.targetPawnPairs = builder.targetPawnPairs;
+    public PlayCharacterCard(
+            int playerBoardId,
+            int selectedCard,
+            Optional<Integer> optTargetIsland,
+            Optional<PawnColour> optTargetPawn,
+            Optional<Pair<PawnColour, PawnColour>[]> optTargetPawnPairs) {
+        super(playerBoardId);
+        this.selectedCard = selectedCard;
+        this.optTargetIsland = optTargetIsland;
+        this.optTargetPawn = optTargetPawn;
+        this.optTargetPawnPairs = optTargetPawnPairs;
     }
 
     @Override
@@ -43,15 +48,22 @@ public class PlayCharacterCard extends PlayerAction {
         } else {
             ctx.addToCoinReserve(characterCard.getCost() - 1); //the first time, one coin has to be placed on the card and not in the coin reserve
         }
-        characterCard.unsafeUseCard(input);
+        try {
+            characterCard.unsafeUseCard(generateCharacterCardInput(caller, ctx));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         PlayerBoard caller = ctx.getTurnOrder().getCurrentPlayer();
+
+        // generate the input object before validation
+        CharacterCardInput cardInput;
         try {
-            CreateCharacterCardInput(caller, ctx);
+            cardInput = generateCharacterCardInput(caller, ctx);
         } catch (InvalidContainerIndexException e) {
-            e.printStackTrace();
+            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND);
         }
 
         if(!(this.selectedCard>=0&&this.selectedCard<3)){ //selectedCard out of bounds
@@ -62,53 +74,21 @@ public class PlayCharacterCard extends PlayerAction {
         }
         CharacterCard selectedCard = ctx.getCharacterCards().get(this.selectedCard);
         if(caller.getCoinBalance() < selectedCard.getCost()){
-            throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD, INPUT_NAME_CHARACTER_CARD + "can't be played due to low coins balance");
+            throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD,
+                    INPUT_NAME_CHARACTER_CARD + " can't be played due to low coins balance");
         }
-        if(!selectedCard.checkInput(input)){
 
-        }
-        return true;
+        return selectedCard.checkInput(cardInput);
     }
 
-    private void CreateCharacterCardInput(PlayerBoard caller, GameBoard ctx) throws InvalidContainerIndexException {
-        this.input = new CharacterCardInput(caller);
-        this.input.setTargetIsland(this.targetIsland == null? null : ctx.getIslandField().getIslandById(this.targetIsland.intValue()));
-        this.input.setTargetPawn(this.targetPawn == null? null : this.targetPawn);
-        this.input.setTargetPawnPairs(this.targetPawnPairs == null ? null : this.targetPawnPairs);
-    }
-
-    //BUILDER PATTERN
-
-    public static class PlayCharacterCardBuilder{
-        private final int selectedCard; //mandatory
-        private final int playerBoardId; //mandatory
-        private Integer targetIsland; //optional
-        private PawnColour targetPawn; //optional
-        private Pair<PawnColour, PawnColour>[] targetPawnPairs;  //optional
-
-        public PlayCharacterCardBuilder(int playerBoardId, int selectedCard){
-            this.playerBoardId = playerBoardId;
-            this.selectedCard = selectedCard;
+    private CharacterCardInput generateCharacterCardInput(PlayerBoard caller, GameBoard ctx) throws InvalidContainerIndexException {
+        CharacterCardInput out = new CharacterCardInput(caller);
+        if (this.optTargetIsland.isPresent()) {
+            int id = this.optTargetIsland.get();
+            out.setTargetIsland(ctx.getIslandField().getIslandById(id));
         }
-
-        public PlayCharacterCardBuilder targetIsland(Integer targetIsland){
-            this.targetIsland = targetIsland;
-            return this;
-        }
-
-        public PlayCharacterCardBuilder targetPawn(PawnColour targetPawn){
-            this.targetPawn = targetPawn;
-            return this;
-        }
-
-        public PlayCharacterCardBuilder targetPawnPairs(Pair<PawnColour, PawnColour>[] targetPawnPairs){
-            this.targetPawnPairs = targetPawnPairs;
-            return this;
-        }
-
-        public PlayCharacterCard build(){
-            PlayCharacterCard playCharacterCard = new PlayCharacterCard(this);
-            return playCharacterCard;
-        }
+        this.optTargetPawn.ifPresent(out::setTargetPawn);
+        this.optTargetPawnPairs.ifPresent(out::setTargetPawnPairs);
+        return out;
     }
 }
