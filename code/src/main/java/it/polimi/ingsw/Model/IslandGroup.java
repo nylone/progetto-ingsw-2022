@@ -8,7 +8,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-import static it.polimi.ingsw.Constants.OPERATION_NAME_JOIN_GROUPS;
+import static it.polimi.ingsw.Constants.OPERATION_NAME_CONSTRUCTOR_ISLAND_GROUPS;
 
 public class IslandGroup implements Serializable {
     @Serial
@@ -34,13 +34,13 @@ public class IslandGroup implements Serializable {
                 }
                 this.id = Arrays.stream(islandGroups)
                         .min(Comparator.comparingInt(IslandGroup::getId))
-                        .orElseThrow(() -> new FailedOperationException(OPERATION_NAME_JOIN_GROUPS))
+                        .orElseThrow(() -> new FailedOperationException(OPERATION_NAME_CONSTRUCTOR_ISLAND_GROUPS))
                         .getId();
             } else {
-                throw new ForbiddenOperationException(OPERATION_NAME_JOIN_GROUPS);
+                throw new ForbiddenOperationException(OPERATION_NAME_CONSTRUCTOR_ISLAND_GROUPS);
             }
         } else {
-            throw new ForbiddenOperationException(OPERATION_NAME_JOIN_GROUPS);
+            throw new ForbiddenOperationException(OPERATION_NAME_CONSTRUCTOR_ISLAND_GROUPS);
         }
     }
 

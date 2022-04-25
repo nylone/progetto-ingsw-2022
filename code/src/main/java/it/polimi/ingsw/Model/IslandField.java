@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
+import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Misc.Utils;
 
@@ -8,8 +9,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static it.polimi.ingsw.Constants.CONTAINER_NAME_ISLANDFIELD_ISLANDGROUPS;
-import static it.polimi.ingsw.Constants.CONTAINER_NAME_ISLANDFIELD_ISLANDS;
+import static it.polimi.ingsw.Constants.*;
 
 public class IslandField implements Serializable {
     @Serial
@@ -89,34 +89,28 @@ public class IslandField implements Serializable {
         );
     }
 
-    public void joinGroups() {
+    public boolean joinGroups() throws OperationException {
+        boolean didJoin = false;
         IslandGroup motherGroup = this.getMotherNaturePosition();
         IslandGroup nextGroup = this.nextGroup(motherGroup);
         IslandGroup prevGroup = this.prevGroup(motherGroup);
         // look to the group before mother nature position and join if necessary
         if (motherGroup.isJoinable(prevGroup)) {
-            try {
                 IslandGroup joined = new IslandGroup(motherGroup, prevGroup);
                 this.groups.remove(prevGroup);
                 this.groups.set(this.groups.indexOf(motherGroup), joined);
-                motherNaturePosition = joined;
-            }
-            catch (OperationException e) {
-                e.printStackTrace();
-            }
+                this.motherNaturePosition = joined;
+                didJoin = true;
         }
         motherGroup = this.getMotherNaturePosition();
         if (motherGroup.isJoinable(nextGroup)) {
-            try {
                 IslandGroup joined = new IslandGroup(motherGroup, nextGroup);
                 this.groups.remove(nextGroup);
                 this.groups.set(this.groups.indexOf(motherGroup), joined);
-                motherNaturePosition = joined;
-            }
-            catch (OperationException e) {
-                e.printStackTrace();
-            }
+                this.motherNaturePosition = joined;
+                didJoin = true;
         }
+        return didJoin;
     }
 
     //test-purpose only
