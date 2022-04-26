@@ -24,6 +24,10 @@ public class GameHandler {
         return history;
     }
 
+    GameBoard getContext() {
+        return model;
+    }
+
     public void executeAction(PlayerAction action) throws InputValidationException {
         action.safeExecute(history, model);
         if (action.getClass() == EndTurnOfActionPhase.class) {
