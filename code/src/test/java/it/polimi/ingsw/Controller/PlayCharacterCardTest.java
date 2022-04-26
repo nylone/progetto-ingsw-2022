@@ -1,10 +1,10 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
-import it.polimi.ingsw.Optional;
 import org.junit.Ignore;
 import org.junit.Test;
 
