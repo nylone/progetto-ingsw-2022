@@ -44,7 +44,6 @@ public class ChooseCloudTileTest {
         // act
         action.safeExecute(gh.getHistory(), gameBoard);
         // assert
-        //assertTrue(gameBoard.getClouds().get(selectedCloud).getContents().size() == 3);
         assertTrue(currentPlayer.getEntranceStudents().size() == 7);
     }
 
