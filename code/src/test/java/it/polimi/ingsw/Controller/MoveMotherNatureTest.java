@@ -1,14 +1,11 @@
-/*package it.polimi.ingsw.Controller;
+package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Utils;
-import it.polimi.ingsw.Model.AssistantCard;
+import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
-import it.polimi.ingsw.Model.GameBoard;
-import it.polimi.ingsw.Model.IslandGroup;
-import it.polimi.ingsw.Model.PlayerBoard;
 import org.junit.Test;
 
-import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
@@ -31,13 +28,13 @@ public class MoveMotherNatureTest {
     }
 
     @Test
-    public void playerCanMoveAccordingToChosenCard() {
+    public void playerCanMoveAccordingToChosenCard() throws Exception {
         // arrange
-        GameHandler gh = new GameHandler(GameMode.SIMPLE);
-        GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
+        GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
+        GameBoard gameBoard = gh.getContext();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        AssistantCard card = Utils.random(List.of(player.getMutableAssistantCards()));
-        gameBoard.getMutableTurnOrder().setSelectedCard(player, card, player.getMutableAssistantCards());
+        AssistantCard card = Utils.random(player.getMutableAssistantCards());
+        gameBoard.getMutableTurnOrder().setSelectedCard(player, card);
         int randomMovement = new Random().nextInt(card.getMaxMovement());
         randomMovement = randomMovement == 0 ? 1 : randomMovement;
         IslandGroup initialPosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
@@ -49,20 +46,65 @@ public class MoveMotherNatureTest {
                 gameBoard.getMutableIslandField().getMutableMotherNaturePosition());
     }
 
-    @Test
-    public void playerCantMoveMoreThanAllowed() {
+    @Test(expected = InputValidationException.class)
+    public void playerCantMoveMoreThanAllowed() throws Exception{
         // arrange
-        GameHandler gh = new GameHandler(GameMode.SIMPLE);
-        GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
+        GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
+        GameBoard gameBoard = gh.getContext();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        AssistantCard card = Utils.random(List.of(player.getMutableAssistantCards()));
-        gameBoard.getMutableTurnOrder().setSelectedCard(player, card, player.getMutableAssistantCards());
+        AssistantCard card = Utils.random((player.getMutableAssistantCards()));
+        gameBoard.getMutableTurnOrder().setSelectedCard(player, card);
         int invalidMovement = card.getMaxMovement() + 1;
         IslandGroup initialPosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
         PlayerAction action = new MoveMotherNature(player.getId(), invalidMovement);
         // act
         action.safeExecute(gh.getHistory(), gameBoard);
-        // assert
-        assertEquals(initialPosition, gameBoard.getMutableIslandField().getMutableMotherNaturePosition());
     }
-}*/
+
+    @Test(expected = InputValidationException.class)
+    public void duplicateMoveMotherNatureException() throws Exception {
+        GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
+        GameBoard gameBoard = gh.getContext();
+        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        AssistantCard card = Utils.random(player.getMutableAssistantCards());
+        gameBoard.getMutableTurnOrder().setSelectedCard(player, card);
+        int randomMovement = new Random().nextInt(card.getMaxMovement());
+        randomMovement = randomMovement == 0 ? 1 : randomMovement;
+        PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
+        // act
+        System.out.println(gh.getHistory());
+        action.safeExecute(gh.getHistory(), gameBoard);
+        System.out.println(gh.getHistory());
+        action.safeExecute(gh.getHistory(), gameBoard); //exception, duplicate action
+    }
+
+    @Test(expected = InputValidationException.class)
+    public void NoAssistantCardException() throws Exception{
+        GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
+        GameBoard gameBoard = gh.getContext();
+        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        AssistantCard card = Utils.random(player.getMutableAssistantCards());
+        int randomMovement = new Random().nextInt(card.getMaxMovement());
+        randomMovement = randomMovement == 0 ? 1 : randomMovement;
+        PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
+        action.safeExecute(gh.getHistory(), gameBoard);
+    }
+
+    @Test(expected = InputValidationException.class)
+    public void exceedingMovementExceptionWithCard4Active() throws Exception{
+        // arrange
+        GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
+        GameBoard gameBoard = gh.getContext();
+        Card04 card04 = new Card04(gameBoard);
+        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        CharacterCardInput input = new CharacterCardInput(player);
+        if(card04.checkInput(input)) card04.unsafeUseCard(input);
+        AssistantCard card = Utils.random((player.getMutableAssistantCards()));
+        gameBoard.getMutableTurnOrder().setSelectedCard(player, card);
+        int invalidMovement = card.getMaxMovement() + 3;
+        IslandGroup initialPosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
+        PlayerAction action = new MoveMotherNature(player.getId(), invalidMovement);
+        // act
+        action.safeExecute(gh.getHistory(), gameBoard);
+    }
+}
