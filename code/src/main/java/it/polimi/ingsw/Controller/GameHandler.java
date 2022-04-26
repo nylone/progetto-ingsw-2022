@@ -21,7 +21,7 @@ public class GameHandler {
     }
 
     public List<PlayerAction> getHistory() {
-        return List.copyOf(history);
+        return history;
     }
 
     GameBoard getContext() {
