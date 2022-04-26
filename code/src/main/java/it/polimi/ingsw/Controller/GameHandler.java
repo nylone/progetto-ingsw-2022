@@ -11,10 +11,10 @@ import java.util.List;
 public class GameHandler {
 
     private final List<PlayerAction> history;
-    private GameBoard model;
     private final ByteArrayOutputStream backup;
+    private GameBoard model;
 
-    public GameHandler(GameMode gameMode, String ... players) {
+    public GameHandler(GameMode gameMode, String... players) {
         this.history = new ArrayList<>(6);
         this.backup = new ByteArrayOutputStream();
         this.model = new GameBoard(gameMode, players);
@@ -30,8 +30,19 @@ public class GameHandler {
 
     public void executeAction(PlayerAction action) throws InputValidationException {
         action.safeExecute(history, model);
-        if (action.getClass() == EndTurnOfActionPhase.class) {
+        if (action.getClass() == EndTurnOfActionPhase.class || action.getClass() == PlayAssistantCard.class) {
             commitGameState();
+            this.history.clear();
+        }
+    }
+
+    private void commitGameState() {
+        try {
+            this.backup.reset();
+            ObjectOutputStream serModel = new ObjectOutputStream(this.backup);
+            serModel.writeObject(model);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -47,20 +58,10 @@ public class GameHandler {
     }
 
     public byte[] getSerializedModel() throws IOException {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ObjectOutputStream writer = new ObjectOutputStream(out);
-            writer.writeObject(model);
-            return out.toByteArray();
-    }
-
-    private void commitGameState() {
-        try {
-            this.backup.reset();
-            ObjectOutputStream serModel = new ObjectOutputStream(this.backup);
-            serModel.writeObject(model);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ObjectOutputStream writer = new ObjectOutputStream(out);
+        writer.writeObject(model);
+        return out.toByteArray();
     }
 
     public void rollback() {

@@ -13,10 +13,6 @@ public abstract class PlayerAction {
         this.playerBoardId = playerBoardId;
     }
 
-    public int getPlayerBoardId() {
-        return playerBoardId;
-    }
-
     protected void safeExecute(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         if (validate(history, ctx)) {
             try {
@@ -24,14 +20,15 @@ public abstract class PlayerAction {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            history.add(this);
         }
     }
-
-    protected abstract void unsafeExecute(GameBoard ctx) throws Exception;
 
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         return isCorrectTurn(ctx) && isNotDuplicateAction(history);
     }
+
+    protected abstract void unsafeExecute(GameBoard ctx) throws Exception;
 
     // can be used in validate to make sure the turn is correct
     boolean isCorrectTurn(GameBoard ctx) {
@@ -41,6 +38,10 @@ public abstract class PlayerAction {
     // can be used in validate to make sure the action is not yet in the history
     boolean isNotDuplicateAction(List<PlayerAction> history) {
         return history.stream().noneMatch(h -> h.getClass() == this.getClass());
+    }
+
+    public int getPlayerBoardId() {
+        return playerBoardId;
     }
 
     int countDuplicateActions(List<PlayerAction> history) {
