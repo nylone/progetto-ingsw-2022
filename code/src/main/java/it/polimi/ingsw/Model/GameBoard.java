@@ -51,17 +51,11 @@ public class GameBoard implements Serializable {
             this.characterCards = CharacterDeckGenerator.generateCardSet(this);
             this.coinReserve = 20 - nop;
         }
-        effects = new EffectTracker();
-        clouds = new ArrayList<>(nop);
+        this.effects = new EffectTracker();
+        this.clouds = new ArrayList<>(nop);
         //2 players: 2 cloud tiles - 3 players: 3 cloud tiles: 4 players: 4 cloud tiles
         for (int i = 0; i < nop; i++) {
             clouds.add(new Cloud(i));
-
-            try {
-                clouds.get(i).fill((ArrayList<PawnColour>) studentBag.multipleExtraction(nop == 3 ? 4 : 3));
-            } catch (FullContainerException e) {
-                System.out.println(e.getMessage());
-            }
         }
     }
 
@@ -218,6 +212,16 @@ public class GameBoard implements Serializable {
                         owner.getDiningRoomCount(colour) == me.getDiningRoomCount(colour))
         ) {
             this.setTeacher(colour, me);
+        }
+    }
+
+    public void refillClouds() {
+        for (Cloud cloud: this.clouds) {
+            try {
+                cloud.fill((ArrayList<PawnColour>) studentBag.multipleExtraction(this.playerBoards.size() == 3 ? 4 : 3));
+            } catch (FullContainerException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 }

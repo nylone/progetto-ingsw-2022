@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.GameBoard;
 
 import java.util.List;
@@ -37,6 +38,10 @@ public class EndTurnOfActionPhase extends PlayerAction {
     protected void unsafeExecute(GameBoard ctx) {
         // reset effects through EffectTracker
         ctx.getMutableEffects().reset();
+        ctx.getMutableTurnOrder().stepToNextPlayer();
+        if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.ACTION) {
+            ctx.refillClouds();
+        }
     }
 
 

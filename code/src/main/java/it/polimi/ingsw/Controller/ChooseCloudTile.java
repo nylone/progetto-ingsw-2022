@@ -48,7 +48,9 @@ public class ChooseCloudTile extends PlayerAction {
     protected void unsafeExecute(GameBoard ctx) {
         Cloud selectedCloud = ctx.getClouds().get(selectedTile); //get cloud
         try {
-            ctx.getMutableTurnOrder().getMutableCurrentPlayer().addStudentsToEntrance(selectedCloud.extractContents());//fill playerboard's entrance
+            ctx.getMutableTurnOrder()
+                    .getMutableCurrentPlayer()
+                    .addStudentsToEntrance(selectedCloud.extractContents());//fill playerboard's entrance
         } catch (Exception e) {
             e.printStackTrace();
         }
