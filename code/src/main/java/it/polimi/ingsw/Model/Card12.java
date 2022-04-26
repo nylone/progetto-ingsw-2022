@@ -2,8 +2,6 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
-import org.jetbrains.annotations.VisibleForTesting;
-
 import java.io.Serial;
 
 import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_COLOUR;
@@ -45,7 +43,6 @@ public class Card12 extends StatelessEffect {
     }
 
     //test purpose only
-    @VisibleForTesting
     public String toDebugString() {
         return "Card12{" +
                 "id=" + id +
