@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -35,10 +36,9 @@ public class Card03Test {
         assertEquals(expectedMotherNaturePosition, gb.getMutableIslandField().getMutableMotherNaturePosition());
     }
 
-    @Test(expected = FailedOperationException.class)
+    @Test(expected = InputValidationException.class)
     public void checkInvalidInput() throws Exception {
-        PlayerBoard pb1 = gb.getMutablePlayerBoardByNickname("ari");
-        CharacterCardInput input = new CharacterCardInput(pb1);
-        card.unsafeApplyEffect(input);
+        CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
+        if(card.checkInput(input)) card.unsafeApplyEffect(input);
     }
 }
