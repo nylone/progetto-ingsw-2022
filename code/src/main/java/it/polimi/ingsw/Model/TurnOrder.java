@@ -7,12 +7,14 @@ import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GamePhase;
-import static it.polimi.ingsw.Constants.*;
+import it.polimi.ingsw.Optional;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static it.polimi.ingsw.Constants.OPERATION_NAME_PLAY_ASSISTANT;
 
 public class TurnOrder implements Serializable {
     @Serial
@@ -52,10 +54,6 @@ public class TurnOrder implements Serializable {
         return List.copyOf(currentTurnOrder);
     }
 
-    public GamePhase getGamePhase() {
-        return gamePhase;
-    }
-
     public List<PlayerBoard> getSkippedPlayers() {
         return this.skippedPlayers.entrySet().stream()
                 .filter(Map.Entry::getValue) // filter to only contain the skipped players
@@ -65,17 +63,6 @@ public class TurnOrder implements Serializable {
 
     public Optional<AssistantCard> getMutableSelectedCard(PlayerBoard pb) {
         return this.selectedCards.get(pb);
-    }
-
-    public List<AssistantCard> getSelectedCards() {
-        return selectedCards.values().stream()
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .toList(); // immutable list
-    }
-
-    public PlayerBoard getMutableCurrentPlayer() {
-        return this.currentTurnOrder.get(this.currentTurnPosition);
     }
 
     // cycles game-phases
@@ -91,19 +78,15 @@ public class TurnOrder implements Serializable {
         }
     }
 
-    public boolean isOwnTurn(PlayerBoard pb) {
-        return getMutableCurrentPlayer() == pb;
+    public void addPlayerToSkip(PlayerBoard pb) {
+        if (isPlayerSubscribed(pb)) {
+            this.skippedPlayers.put(pb, true);
+        }
     }
 
     // this function verifies if the playerboard passed to the obj is valid
     private boolean isPlayerSubscribed(PlayerBoard pb) {
         return skippedPlayers.containsKey(pb);
-    }
-
-    public void addPlayerToSkip(PlayerBoard pb) {
-        if (isPlayerSubscribed(pb)) {
-            this.skippedPlayers.put(pb, true);
-        }
     }
 
     public void removePlayerToSkip(PlayerBoard pb) {
@@ -118,15 +101,6 @@ public class TurnOrder implements Serializable {
 
     private void cleanSelectedCards() {
         selectedCards.replaceAll((k, v) -> Optional.empty());
-    }
-
-    private boolean isAlreadyInSelection(AssistantCard ac) {
-        return getSelectedCards().stream()
-                .anyMatch(selected -> selected.getPriority() == ac.getPriority());
-    }
-
-    private boolean canOnlyPlayDuplicates(PlayerBoard pb) {
-        return pb.getMutableAssistantCards().stream().allMatch(this::isAlreadyInSelection);
     }
 
     public void setSelectedCard(PlayerBoard pb, AssistantCard ac) throws OperationException, InputValidationException {
@@ -149,6 +123,34 @@ public class TurnOrder implements Serializable {
         // validation passed:
         ac.setUsed();
         this.selectedCards.put(pb, Optional.of(ac));
+    }
+
+    public GamePhase getGamePhase() {
+        return gamePhase;
+    }
+
+    public boolean isOwnTurn(PlayerBoard pb) {
+        return getMutableCurrentPlayer() == pb;
+    }
+
+    private boolean isAlreadyInSelection(AssistantCard ac) {
+        return getSelectedCards().stream()
+                .anyMatch(selected -> selected.getPriority() == ac.getPriority());
+    }
+
+    private boolean canOnlyPlayDuplicates(PlayerBoard pb) {
+        return pb.getMutableAssistantCards().stream().allMatch(this::isAlreadyInSelection);
+    }
+
+    public PlayerBoard getMutableCurrentPlayer() {
+        return this.currentTurnOrder.get(this.currentTurnPosition);
+    }
+
+    public List<AssistantCard> getSelectedCards() {
+        return selectedCards.values().stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList(); // immutable list
     }
 
     public void stepToNextPlayer() {

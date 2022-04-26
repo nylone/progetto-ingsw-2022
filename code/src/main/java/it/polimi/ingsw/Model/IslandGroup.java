@@ -1,8 +1,11 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.Operation.*;
+import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
+import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
+import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TowerColour;
+import it.polimi.ingsw.Optional;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -55,6 +58,14 @@ public class IslandGroup implements Serializable {
         }
     }
 
+    public List<Island> getMutableIslands() {
+        return List.copyOf(islands);
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public Optional<TowerColour> getTowerColour() {
         return this.getMutableIslands().get(0).getTowerColour();
     }
@@ -62,14 +73,6 @@ public class IslandGroup implements Serializable {
     public int getTowerCount() {
         if (getTowerColour().isPresent()) return getMutableIslands().size();
         else return 0;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public List<Island> getMutableIslands() {
-        return List.copyOf(islands);
     }
 
     public List<NoEntryTile> getMutableNoEntryTiles() {

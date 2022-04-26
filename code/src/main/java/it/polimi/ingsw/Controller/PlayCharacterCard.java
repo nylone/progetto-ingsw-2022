@@ -10,10 +10,9 @@ import it.polimi.ingsw.Model.CharacterCardInput;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
+import it.polimi.ingsw.Optional;
 
 import java.util.List;
-import java.util.Optional;
-
 
 import static it.polimi.ingsw.Constants.INPUT_NAME_CHARACTER_CARD;
 import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_ISLAND;
@@ -66,14 +65,14 @@ public class PlayCharacterCard extends PlayerAction {
             throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND);
         }
 
-        if(!(this.selectedCard>=0&&this.selectedCard<3)){ //selectedCard out of bounds
+        if (!(this.selectedCard >= 0 && this.selectedCard < 3)) { //selectedCard out of bounds
             throw new InvalidElementException(INPUT_NAME_CHARACTER_CARD);
         }
-        if(!super.validate(history,ctx)){
+        if (!super.validate(history, ctx)) {
             throw new GenericInputValidationException("Action", "this action can't be executed more than once or be executed by other player than the current");
         }
         CharacterCard selectedCard = ctx.getCharacterCards().get(this.selectedCard);
-        if(caller.getCoinBalance() < selectedCard.getCost()){
+        if (caller.getCoinBalance() < selectedCard.getCost()) {
             throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD,
                     INPUT_NAME_CHARACTER_CARD + " can't be played due to low coins balance");
         }

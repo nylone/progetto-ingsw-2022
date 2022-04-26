@@ -5,17 +5,18 @@ import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TeamID;
+import it.polimi.ingsw.Optional;
 import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+
 import static org.junit.Assert.*;
 
 public class GameBoardTest {
     GameBoard gb_sim_2 = new GameBoard(GameMode.SIMPLE, "ari", "ale");
     GameBoard gb_adv_3 = new GameBoard(GameMode.ADVANCED, "ari", "ale", "teo");
     GameBoard gb_adv_4 = new GameBoard(GameMode.ADVANCED, "ari", "ale", "teo", "eriantys");
-
 
 
     @Test
@@ -39,8 +40,7 @@ public class GameBoardTest {
             fail("Testing getPlayerBoardById, advanced GameMode 3 people, failed for invalid id");
             PlayerBoard actual_a4_invalid = gb_adv_4.getMutablePlayerBoardById(323);
             fail("Testing getPlayerBoardById, advanced GameMode 4 people, failed for invalid id");
-        }
-        catch(InvalidContainerIndexException e) {
+        } catch (InvalidContainerIndexException e) {
             assertEquals("An error occurred on: Playerboards\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
         }
     }
@@ -66,8 +66,7 @@ public class GameBoardTest {
             fail("Testing getPlayerBoardByNickname, advanced GameMode 3 people, failed for invalid nickname");
             PlayerBoard actual_a4_invalid = gb_adv_4.getMutablePlayerBoardByNickname("wrong");
             fail("Testing getPlayerBoardByNickname, advanced GameMode 4 people, failed for invalid nickname");
-        }
-        catch(InvalidContainerIndexException e) {
+        } catch (InvalidContainerIndexException e) {
             assertEquals("An error occurred on: Playerboards\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
         }
     }
@@ -131,8 +130,7 @@ public class GameBoardTest {
                 }
             }
             gb_sim_2.setTeacher(studentOnTheIslandAtBeginning, gb_sim_2.getMutablePlayerBoardByNickname("ale"));
-        }
-        else {
+        } else {
             ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
             ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
             ig.getMutableIslands().get(0).addStudent(PawnColour.RED);
@@ -186,7 +184,7 @@ public class GameBoardTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void testingInconsistentNumOfPlayers(){
+    public void testingInconsistentNumOfPlayers() {
         GameBoard gb_adv_5 = new GameBoard(GameMode.SIMPLE, "ari", "ale", "teo", "polimi", "java");
     }
 }

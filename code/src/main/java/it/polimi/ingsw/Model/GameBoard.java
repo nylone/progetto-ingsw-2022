@@ -2,18 +2,17 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.FullContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
-import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TeamID;
 import it.polimi.ingsw.Model.Enums.TowerColour;
+import it.polimi.ingsw.Optional;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.Constants.CONTAINER_NAME_DININGROOM;
 import static it.polimi.ingsw.Constants.CONTAINER_NAME_PLAYERBOARDS;
 
 public class GameBoard implements Serializable {
@@ -58,6 +57,16 @@ public class GameBoard implements Serializable {
             clouds.add(new Cloud(i));
         }
         refillClouds();
+    }
+
+    public void refillClouds() {
+        for (Cloud cloud : this.clouds) {
+            try {
+                cloud.fill((ArrayList<PawnColour>) studentBag.multipleExtraction(this.playerBoards.size() == 3 ? 4 : 3));
+            } catch (FullContainerException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     // IMMUTABLE GETTERS //
@@ -123,13 +132,32 @@ public class GameBoard implements Serializable {
         return turnOrder;
     }
 
-    public void setTeacher(PawnColour teacher, PlayerBoard player) {
-        teachers.put(teacher, player);
-    }
-
     //add coins to balance
     public void addToCoinReserve(int coins) {
         this.coinReserve += coins;
+    }
+
+    public void moveAndActMotherNature(int steps) {
+        this.islandField.moveMotherNature(steps);
+        actMotherNaturePower(this.islandField.getMutableMotherNaturePosition());
+    }
+
+    public void actMotherNaturePower(IslandGroup mnp) {
+        if (mnp.getMutableNoEntryTiles().isEmpty()) {
+            Optional<TeamID> optInfluencer = getInfluencerOf(mnp);
+            if (optInfluencer.isPresent()) {
+                TeamID newInfluencer = optInfluencer.get();
+                if (
+                        mnp.getTowerColour().isEmpty() ||
+                                mnp.getTowerColour().get() != TowerColour.fromTeamId(newInfluencer)
+                ) {
+                    mnp.swapTower(this.teamMap.getMutableTowerStorage(newInfluencer));
+                }
+            }
+            this.islandField.joinGroups();
+        } else {
+            mnp.resetNoEntry();
+        }
     }
 
     // returns the team that holds influence over a particular islandgroup
@@ -180,29 +208,6 @@ public class GameBoard implements Serializable {
         }
     }
 
-    public void moveAndActMotherNature(int steps) {
-        this.islandField.moveMotherNature(steps);
-        actMotherNaturePower(this.islandField.getMutableMotherNaturePosition());
-    }
-
-    public void actMotherNaturePower(IslandGroup mnp) {
-        if (mnp.getMutableNoEntryTiles().isEmpty()) {
-            Optional<TeamID> optInfluencer = getInfluencerOf(mnp);
-            if (optInfluencer.isPresent()) {
-                TeamID newInfluencer = optInfluencer.get();
-                if (
-                        mnp.getTowerColour().isEmpty() ||
-                                mnp.getTowerColour().get() != TowerColour.fromTeamId(newInfluencer)
-                ) {
-                    mnp.swapTower(this.teamMap.getMutableTowerStorage(newInfluencer));
-                }
-            }
-            this.islandField.joinGroups();
-        } else {
-            mnp.resetNoEntry();
-        }
-    }
-
     public void addStudentToDiningRoom(PawnColour colour, PlayerBoard me) throws FullContainerException {
         me.addStudentToDiningRoom(colour);
         // trigger calculation of new teacher placements
@@ -216,13 +221,7 @@ public class GameBoard implements Serializable {
         }
     }
 
-    public void refillClouds() {
-        for (Cloud cloud: this.clouds) {
-            try {
-                cloud.fill((ArrayList<PawnColour>) studentBag.multipleExtraction(this.playerBoards.size() == 3 ? 4 : 3));
-            } catch (FullContainerException e) {
-                System.out.println(e.getMessage());
-            }
-        }
+    public void setTeacher(PawnColour teacher, PlayerBoard player) {
+        teachers.put(teacher, player);
     }
 }

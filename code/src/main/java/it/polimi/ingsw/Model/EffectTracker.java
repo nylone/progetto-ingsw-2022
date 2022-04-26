@@ -1,10 +1,10 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.Enums.PawnColour;
+import it.polimi.ingsw.Optional;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Optional;
 
 public class EffectTracker implements Serializable {
     @Serial
@@ -17,6 +17,14 @@ public class EffectTracker implements Serializable {
 
     public EffectTracker() {
         this.reset();
+    }
+
+    public void reset() {
+        this.deniedPawnColour = Optional.empty();
+        this.denyTowerInfluence = false;
+        this.increasedInfluence = false;
+        this.increasedMotherNatureMovement = false;
+        this.alternativeTeacherAssignmente = false;
     }
 
     public void enableIncreasedInfluence() {
@@ -61,13 +69,5 @@ public class EffectTracker implements Serializable {
 
     public void setDeniedPawnColour(PawnColour pawnColour) {
         this.deniedPawnColour = Optional.of(pawnColour);
-    }
-
-    public void reset() {
-        this.deniedPawnColour = Optional.empty();
-        this.denyTowerInfluence = false;
-        this.increasedInfluence = false;
-        this.increasedMotherNatureMovement = false;
-        this.alternativeTeacherAssignmente = false;
     }
 }
