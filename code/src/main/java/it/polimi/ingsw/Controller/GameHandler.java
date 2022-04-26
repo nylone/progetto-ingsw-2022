@@ -35,6 +35,24 @@ public class GameHandler {
         }
     }
 
+    public GameBoard getModelCopy() {
+        try {
+            ByteArrayInputStream stream = new ByteArrayInputStream(getSerializedModel());
+            ObjectInputStream reader = new ObjectInputStream(stream);
+            return (GameBoard) reader.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null; // never executed
+    }
+
+    public byte[] getSerializedModel() throws IOException {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ObjectOutputStream writer = new ObjectOutputStream(out);
+            writer.writeObject(model);
+            return out.toByteArray();
+    }
+
     private void commitGameState() {
         try {
             this.backup.reset();
