@@ -57,6 +57,7 @@ public class GameBoard implements Serializable {
         for (int i = 0; i < nop; i++) {
             clouds.add(new Cloud(i));
         }
+        refillClouds();
     }
 
     // IMMUTABLE GETTERS //
