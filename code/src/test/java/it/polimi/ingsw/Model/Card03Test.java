@@ -1,13 +1,13 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
-import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
 public class Card03Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
     Card03 card = new Card03(gb);
@@ -30,7 +30,7 @@ public class Card03Test {
 
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         input.setTargetIsland(island);
-        if(card.checkInput(input)) card.unsafeApplyEffect(input);
+        if (card.checkInput(input)) card.unsafeApplyEffect(input);
 
         assertTrue(ig.getTowerColour().get().equals(gb.getTeamMap().getMutableTowerStorage(pb1).getColour()));
         assertEquals(expectedMotherNaturePosition, gb.getMutableIslandField().getMutableMotherNaturePosition());
@@ -39,7 +39,7 @@ public class Card03Test {
     @Test(expected = InputValidationException.class)
     public void checkInvalidInput() throws Exception {
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
-        if(card.checkInput(input)) card.unsafeApplyEffect(input);
+        if (card.checkInput(input)) card.unsafeApplyEffect(input);
     }
 
     @Test(expected = InputValidationException.class)
@@ -47,13 +47,14 @@ public class Card03Test {
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         Island island = new Island(13);
         input.setTargetIsland(island);
-        if(card.checkInput(input)) card.unsafeApplyEffect(input);
+        if (card.checkInput(input)) card.unsafeApplyEffect(input);
     }
+
     @Test(expected = InputValidationException.class)
-    public void checkIslandNotInField() throws Exception{
+    public void checkIslandNotInField() throws Exception {
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         Island island = new Island(8);
         input.setTargetIsland(island);
-        if(card.checkInput(input)) card.unsafeApplyEffect(input);
+        if (card.checkInput(input)) card.unsafeApplyEffect(input);
     }
 }

@@ -47,7 +47,7 @@ public class MoveMotherNatureTest {
     }
 
     @Test(expected = InputValidationException.class)
-    public void playerCantMoveMoreThanAllowed() throws Exception{
+    public void playerCantMoveMoreThanAllowed() throws Exception {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getContext();
@@ -79,7 +79,7 @@ public class MoveMotherNatureTest {
     }
 
     @Test(expected = InputValidationException.class)
-    public void NoAssistantCardException() throws Exception{
+    public void NoAssistantCardException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getContext();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
@@ -91,14 +91,14 @@ public class MoveMotherNatureTest {
     }
 
     @Test(expected = InputValidationException.class)
-    public void exceedingMovementExceptionWithCard4Active() throws Exception{
+    public void exceedingMovementExceptionWithCard4Active() throws Exception {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getContext();
         Card04 card04 = new Card04(gameBoard);
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCardInput input = new CharacterCardInput(player);
-        if(card04.checkInput(input)) card04.unsafeUseCard(input);
+        if (card04.checkInput(input)) card04.unsafeUseCard(input);
         AssistantCard card = Utils.random((player.getMutableAssistantCards()));
         gameBoard.getMutableTurnOrder().setSelectedCard(player, card);
         int invalidMovement = card.getMaxMovement() + 3;

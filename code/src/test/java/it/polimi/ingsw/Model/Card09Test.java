@@ -18,7 +18,7 @@ public class Card09Test {
         PawnColour p = PawnColour.BLUE;
         input.setTargetPawn(p);
 
-        if(card09.checkInput(input)) card09.unsafeApplyEffect(input);
+        if (card09.checkInput(input)) card09.unsafeApplyEffect(input);
 
         assertTrue(gb.getMutableEffects().getDeniedPawnColour().get().equals(p));
     }
@@ -26,6 +26,6 @@ public class Card09Test {
     @Test(expected = InputValidationException.class)
     public void checkInvalidInput() throws Exception {
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
-        if(card09.checkInput(input)) card09.unsafeApplyEffect(input);
+        if (card09.checkInput(input)) card09.unsafeApplyEffect(input);
     }
 }

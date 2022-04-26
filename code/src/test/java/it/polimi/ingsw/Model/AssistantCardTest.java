@@ -14,6 +14,6 @@ public class AssistantCardTest {
         int actual = assistantCard.getMaxMovement();
 
         // assert
-        assertTrue( actual == 3);
+        assertTrue(actual == 3);
     }
 }

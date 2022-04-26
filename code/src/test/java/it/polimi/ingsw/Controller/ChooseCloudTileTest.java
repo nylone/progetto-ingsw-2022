@@ -8,7 +8,7 @@ import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class ChooseCloudTileTest {
 

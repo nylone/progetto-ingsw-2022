@@ -18,8 +18,7 @@ public class CloudTest {
         try {
             cloud.extractContents();
             fail("Extracting from empty cloud");
-        }
-        catch(EmptyContainerException e) {
+        } catch (EmptyContainerException e) {
             assertEquals("An error occurred on: Cloud\nThe error was: Cloud was found empty.", e.getMessage());
         }
     }
@@ -81,8 +80,7 @@ public class CloudTest {
         try {
             cloud.fill(colours);
             fail("Cloud already filled");
-        }
-        catch (FullContainerException e) {
+        } catch (FullContainerException e) {
             assertEquals("An error occurred on: Cloud\nThe error was: Cloud was found full.", e.getMessage());
         }
     }

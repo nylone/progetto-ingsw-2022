@@ -11,7 +11,7 @@ public class Card02Test {
     @Test
     public void checkEffectCard02IsWorking() throws Exception {
         // arrange
-        GameBoard gb = new GameBoard(GameMode.ADVANCED,"ale", "teo");
+        GameBoard gb = new GameBoard(GameMode.ADVANCED, "ale", "teo");
         gb.getMutablePlayerBoardById(1).addStudentToDiningRoom(PawnColour.BLUE);
         gb.getMutablePlayerBoardById(2).addStudentToDiningRoom(PawnColour.BLUE);
         gb.setTeacher(PawnColour.BLUE, gb.getMutablePlayerBoardByNickname("teo"));

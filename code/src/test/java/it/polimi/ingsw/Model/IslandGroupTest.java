@@ -54,6 +54,6 @@ public class IslandGroupTest {
         // assert
         assertEquals(expected, actual);
         assertTrue(actual.size() == 3);
-        assertTrue(islandGroup1.getStudentCount().get(PawnColour.BLUE)==1);
+        assertTrue(islandGroup1.getStudentCount().get(PawnColour.BLUE) == 1);
     }
 }

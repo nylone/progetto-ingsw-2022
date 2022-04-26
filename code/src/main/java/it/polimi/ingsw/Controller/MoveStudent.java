@@ -9,7 +9,6 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static it.polimi.ingsw.Constants.CONTAINER_NAME_DININGROOM;
@@ -42,33 +41,33 @@ public class MoveStudent extends PlayerAction {
         } catch (InvalidContainerIndexException e) {
             throw new InvalidElementException("Target Entrance Position");
         }
-        if(!(this.selectedEntrancePosition>=0 && this.selectedEntrancePosition < entranceSize )){
+        if (!(this.selectedEntrancePosition >= 0 && this.selectedEntrancePosition < entranceSize)) {
             throw new InvalidElementException("Index Target Entrance Position");
         }
-        if(!(countDuplicateActions(history) <= maxCount)){
-            throw new GenericInputValidationException("Action", "this action can't be executed more than "+maxCount+ " times");
+        if (!(countDuplicateActions(history) <= maxCount)) {
+            throw new GenericInputValidationException("Action", "this action can't be executed more than " + maxCount + " times");
         }
-        if(caller.getEntranceStudents().get(this.selectedEntrancePosition) == null){ // todo implement optionals in getentrance
+        if (caller.getEntranceStudents().get(this.selectedEntrancePosition) == null) { // todo implement optionals in getentrance
             throw new InvalidElementException("Target Entrance Position");
         }
 
-        if(!isCorrectTurn(ctx)){
+        if (!isCorrectTurn(ctx)) {
             throw new GenericInputValidationException("Action", "the action can only be executed by the current player");
         }
-        if(this.destination.getDestinationType() == DestinationType.ISLAND){
+        if (this.destination.getDestinationType() == DestinationType.ISLAND) {
             int islandId;
             try {
                 islandId = this.destination.getIslandID();
             } catch (Exception e) {
                 throw new InvalidElementException("DestinationType not compatible with request");
             }
-            if(islandId < 0 && islandId > 12){
+            if (islandId < 0 && islandId > 12) {
                 throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti out of bounds for id
             }
         }
         // validate size of dining room
-        if(this.destination.getDestinationType() == DestinationType.DININGROOM){
-            if(caller.isDiningRoomFull(List.of(caller.getEntranceStudents().get(this.selectedEntrancePosition)))){
+        if (this.destination.getDestinationType() == DestinationType.DININGROOM) {
+            if (caller.isDiningRoomFull(List.of(caller.getEntranceStudents().get(this.selectedEntrancePosition)))) {
                 throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
                         CONTAINER_NAME_DININGROOM + "can't contain the pawn without overflowing on the lane.");
             }

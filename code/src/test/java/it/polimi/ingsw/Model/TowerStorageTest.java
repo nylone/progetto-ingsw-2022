@@ -33,9 +33,9 @@ public class TowerStorageTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void checkTowerCreationException(){
+    public void checkTowerCreationException() {
         Tower t = new Tower(3, TowerColour.BLACK, ts);
-       // Tower t2 = new Tower(3, TowerColour.BLACK, ts);
+        // Tower t2 = new Tower(3, TowerColour.BLACK, ts);
         Tower t3 = new Tower(5, TowerColour.WHITE, ts);
     }
 

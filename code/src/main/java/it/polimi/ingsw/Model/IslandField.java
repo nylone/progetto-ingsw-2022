@@ -9,7 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.polimi.ingsw.Constants.*;
+import static it.polimi.ingsw.Constants.CONTAINER_NAME_ISLANDFIELD_ISLANDGROUPS;
+import static it.polimi.ingsw.Constants.CONTAINER_NAME_ISLANDFIELD_ISLANDS;
 
 public class IslandField implements Serializable {
     @Serial
@@ -51,10 +52,6 @@ public class IslandField implements Serializable {
         return List.copyOf(this.islands);
     }
 
-    public IslandGroup getMutableMotherNaturePosition() {
-        return motherNaturePosition;
-    }
-
     public IslandGroup getMutableIslandGroupById(int id) throws InvalidContainerIndexException {
         return groups.stream()
                 .filter(g -> g.getId() == id)
@@ -69,24 +66,8 @@ public class IslandField implements Serializable {
                 .orElseThrow(() -> new InvalidContainerIndexException(CONTAINER_NAME_ISLANDFIELD_ISLANDS));
     }
 
-
     protected void moveMotherNature(int moves) {
         motherNaturePosition = groups.get((groups.indexOf(motherNaturePosition) + moves) % groups.size());
-    }
-
-    private IslandGroup prevGroup(IslandGroup curr) {
-        int groupSize = this.groups.size();
-        int currIndex = this.groups.indexOf(curr);
-        return groups.get(
-                (currIndex + groupSize - 1) % groupSize
-        );
-    }
-
-    private IslandGroup nextGroup(IslandGroup curr) {
-        int groupSize = this.groups.size();
-        return groups.get(
-                (curr.getId() + groupSize + 1) % groupSize
-        );
     }
 
     public boolean joinGroups() {
@@ -115,6 +96,25 @@ public class IslandField implements Serializable {
             e.printStackTrace();
         }
         return didJoin;
+    }
+
+    public IslandGroup getMutableMotherNaturePosition() {
+        return motherNaturePosition;
+    }
+
+    private IslandGroup nextGroup(IslandGroup curr) {
+        int groupSize = this.groups.size();
+        return groups.get(
+                (curr.getId() + groupSize + 1) % groupSize
+        );
+    }
+
+    private IslandGroup prevGroup(IslandGroup curr) {
+        int groupSize = this.groups.size();
+        int currIndex = this.groups.indexOf(curr);
+        return groups.get(
+                (currIndex + groupSize - 1) % groupSize
+        );
     }
 
     //test-purpose only

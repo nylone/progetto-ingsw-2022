@@ -8,12 +8,6 @@ public class Utils {
         Collections.shuffle(coll, new Random(System.currentTimeMillis()));
     }
 
-    public static <T> T random(List<T> list) {
-        Random random = new Random();
-        int randomNumber = random.nextInt(list.size());
-        return list.get(randomNumber);
-    }
-
     public static <T> List<T> random(List<T> list, int size) {
         Random r = new Random();
         List<T> sublist = new ArrayList<>(size);
@@ -21,6 +15,12 @@ public class Utils {
             sublist.add(random(list));
         }
         return sublist;
+    }
+
+    public static <T> T random(List<T> list) {
+        Random random = new Random();
+        int randomNumber = random.nextInt(list.size());
+        return list.get(randomNumber);
     }
 
     public static <T> T modularSelection(T startingElement, List<T> group, int movement) {

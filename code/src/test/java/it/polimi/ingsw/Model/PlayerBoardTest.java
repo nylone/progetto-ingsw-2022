@@ -32,8 +32,7 @@ public class PlayerBoardTest {
         try {
             playerBoard.addStudentToDiningRoom(PawnColour.YELLOW);
             fail();
-        }
-        catch (FullContainerException e) {
+        } catch (FullContainerException e) {
             assertEquals("An error occurred on: DiningRoom\nThe error was: DiningRoom was found full.", e.getMessage());
         }
     }
@@ -50,21 +49,24 @@ public class PlayerBoardTest {
         // assert
         assertTrue(playerBoard.getDiningRoomCount(PawnColour.BLUE) == expected - 2);
     }
+
     @Test(expected = EmptyContainerException.class)
     public void removeStudentException() throws EmptyContainerException {
         PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
-        playerBoard.removeStudentsFromDiningRoom(PawnColour.RED,1);
+        playerBoard.removeStudentsFromDiningRoom(PawnColour.RED, 1);
     }
+
     @Test(expected = FullContainerException.class)
     public void addStudentException() throws FullContainerException {
         PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
-        for(int i=0; i<10; i++){
+        for (int i = 0; i < 10; i++) {
             playerBoard.addStudentToDiningRoom(PawnColour.RED);
         }
 
         //adding an eleventh pawn
         playerBoard.addStudentToDiningRoom(PawnColour.RED);
     }
+
     @Test
     public void sizeIncreasedAfterAddingStudentToEntrance() {
         // arrange
@@ -76,8 +78,7 @@ public class PlayerBoardTest {
         try {
             playerBoard.addStudentsToEntrance(expected);
             fail();
-        }
-        catch(FullContainerException e) {
+        } catch (FullContainerException e) {
             // assert
             assertEquals("An error occurred on: Entrance\n" +
                     "The error was: Entrance was found full.", e.getMessage());

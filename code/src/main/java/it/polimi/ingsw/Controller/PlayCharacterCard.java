@@ -37,23 +37,6 @@ public class PlayCharacterCard extends PlayerAction {
         this.optTargetPawnPairs = optTargetPawnPairs;
     }
 
-    @Override
-    protected void unsafeExecute(GameBoard ctx) {
-        PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
-        CharacterCard characterCard = ctx.getCharacterCards().get(this.selectedCard);
-        caller.payCharacterEffect(characterCard.getCost());
-        if (characterCard.getTimeUsed() > 0) {
-            ctx.addToCoinReserve(characterCard.getCost());
-        } else {
-            ctx.addToCoinReserve(characterCard.getCost() - 1); //the first time, one coin has to be placed on the card and not in the coin reserve
-        }
-        try {
-            characterCard.unsafeUseCard(generateCharacterCardInput(caller, ctx));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
 
@@ -78,6 +61,23 @@ public class PlayCharacterCard extends PlayerAction {
         }
 
         return selectedCard.checkInput(cardInput);
+    }
+
+    @Override
+    protected void unsafeExecute(GameBoard ctx) {
+        PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
+        CharacterCard characterCard = ctx.getCharacterCards().get(this.selectedCard);
+        caller.payCharacterEffect(characterCard.getCost());
+        if (characterCard.getTimeUsed() > 0) {
+            ctx.addToCoinReserve(characterCard.getCost());
+        } else {
+            ctx.addToCoinReserve(characterCard.getCost() - 1); //the first time, one coin has to be placed on the card and not in the coin reserve
+        }
+        try {
+            characterCard.unsafeUseCard(generateCharacterCardInput(caller, ctx));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private CharacterCardInput generateCharacterCardInput(PlayerBoard caller, GameBoard ctx) throws InvalidContainerIndexException {

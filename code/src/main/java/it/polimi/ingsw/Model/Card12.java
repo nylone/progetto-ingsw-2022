@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+
 import java.io.Serial;
 
 import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_COLOUR;

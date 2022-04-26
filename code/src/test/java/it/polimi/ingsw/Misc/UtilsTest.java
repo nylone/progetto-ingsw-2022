@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Misc;
 
-import it.polimi.ingsw.Misc.Utils;
 import org.junit.Test;
 
 import java.util.ArrayList;

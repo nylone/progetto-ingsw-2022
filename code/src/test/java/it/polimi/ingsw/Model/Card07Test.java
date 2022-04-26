@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
-import static org.junit.Assert.*;
-
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Misc.Pair;
@@ -13,6 +11,8 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 public class Card07Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
@@ -32,12 +32,12 @@ public class Card07Test {
         CharacterCardInput input = new CharacterCardInput(pb);
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
         pairs.add(new Pair<>(pb.getEntranceStudents().get(0), (PawnColour) card.getState().get(0)));
-        pairs.add(new Pair<>( pb.getEntranceStudents().get(1), (PawnColour) card.getState().get(1)));
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(1), (PawnColour) card.getState().get(1)));
         Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
         input.setTargetPawnPairs(pairs.toArray(pairsArray));
         pairs.stream().forEach(p -> System.out.println(p.toString()));
 
-        if(card.checkInput(input)) card.unsafeUseCard(input);
+        if (card.checkInput(input)) card.unsafeUseCard(input);
         assertTrue(card.getState().containsAll(pairs.stream().map(p -> p.getFirst()).toList()));
         assertTrue(pb.getEntranceStudents().containsAll(pairs.stream().map(p -> p.getSecond()).toList()));
     }
@@ -46,7 +46,7 @@ public class Card07Test {
     public void checkExceptionUse() throws InvalidContainerIndexException, InputValidationException {
         PlayerBoard pb = gb.getMutablePlayerBoardByNickname("ari");
         CharacterCardInput input = new CharacterCardInput(pb);
-        if(card.checkInput(input)) card.unsafeUseCard(input);
+        if (card.checkInput(input)) card.unsafeUseCard(input);
     }
 
     @Test(expected = InputValidationException.class)
@@ -62,6 +62,6 @@ public class Card07Test {
         pb.removeStudentFromEntrance(0);
         Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
         input.setTargetPawnPairs(pairs.toArray(pairsArray));
-        if(card.checkInput(input)) card.unsafeUseCard(input);
+        if (card.checkInput(input)) card.unsafeUseCard(input);
     }
 }

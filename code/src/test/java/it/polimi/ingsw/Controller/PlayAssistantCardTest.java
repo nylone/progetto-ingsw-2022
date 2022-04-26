@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 public class PlayAssistantCardTest {
 
     @Test
-    public void cardShouldBeAssociatedToPlayer() throws Exception{
+    public void cardShouldBeAssociatedToPlayer() throws Exception {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getContext();
@@ -28,7 +28,7 @@ public class PlayAssistantCardTest {
     }
 
     @Test(expected = InputValidationException.class)
-    public void SelectedAlreadyUsedCardException() throws Exception{
+    public void SelectedAlreadyUsedCardException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getContext();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
@@ -40,7 +40,7 @@ public class PlayAssistantCardTest {
     }
 
     @Test(expected = InputValidationException.class)
-    public void OutOfTurnAccessException() throws Exception{
+    public void OutOfTurnAccessException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getContext();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
@@ -50,7 +50,7 @@ public class PlayAssistantCardTest {
     }
 
     @Test(expected = InputValidationException.class)
-    public void AssistantCardIndexOutOfBound() throws Exception{
+    public void AssistantCardIndexOutOfBound() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getContext();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();

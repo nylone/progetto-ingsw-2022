@@ -16,15 +16,15 @@ public class EndTurnOfActionPhase extends PlayerAction {
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         int MovementCount = ctx.getMutablePlayerBoards().size() == 3 ? 4 : 3;
         //check the amount of moved pawns
-        if(
+        if (
                 !(history.stream()
                         .filter(playerAction -> playerAction.getClass() == MoveStudent.class)
                         .count() == MovementCount)
-        ){
-            throw new GenericInputValidationException("History", "There are less than "+MovementCount+" MoveStudent actions in history");
+        ) {
+            throw new GenericInputValidationException("History", "There are less than " + MovementCount + " MoveStudent actions in history");
         }
 
-        if(!super.validate(history,ctx)){
+        if (!super.validate(history, ctx)) {
             throw new GenericInputValidationException("Action", "this action can't be executed more than once or be executed by other player than the current");
         }
         return true;
@@ -39,8 +39,6 @@ public class EndTurnOfActionPhase extends PlayerAction {
             ctx.refillClouds();
         }
     }
-
-
 
 
 }

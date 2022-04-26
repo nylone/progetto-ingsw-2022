@@ -50,27 +50,31 @@ public class PlayerBoard implements Serializable {
     public List<AssistantCard> getMutableAssistantCards() {
         return Arrays.stream(assistantCards).toList();
     }
+
     public int getCoinBalance() {
         return coinBalance;
     }
+
     public Map<PawnColour, Integer> getDiningRoom() {
         return Map.copyOf(diningRoom);
     }
+
     public int getEntranceSpaceLeft() {
         return entranceSize - entrance.size();
     }
-    public int getDiningRoomCount(PawnColour colour) {
-        return diningRoom.get(colour);
-    }
+
     public int getEntranceSize() {
         return entranceSize;
     }
+
     public List<PawnColour> getEntranceStudents() {
         return List.copyOf(entrance);
     }
+
     public int getId() {
         return id;
     }
+
     public String getNickname() {
         return nickname;
     }
@@ -95,6 +99,10 @@ public class PlayerBoard implements Serializable {
                 this.diningRoom.merge(colour, -amount, Integer::sum);
             }
         }
+    }
+
+    public int getDiningRoomCount(PawnColour colour) {
+        return diningRoom.get(colour);
     }
 
     public boolean isDiningRoomFull(List<PawnColour> students) {

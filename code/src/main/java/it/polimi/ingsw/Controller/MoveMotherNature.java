@@ -22,11 +22,6 @@ public class MoveMotherNature extends PlayerAction {
     }
 
     @Override
-    protected void unsafeExecute(GameBoard ctx) {
-        ctx.moveAndActMotherNature(distanceToMove);
-    }
-
-    @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         Optional<AssistantCard> optionalAssistantCard = ctx.getMutableTurnOrder()
@@ -46,6 +41,11 @@ public class MoveMotherNature extends PlayerAction {
             throw new InvalidElementException("DistanceToMove");
         }
         return true;
+    }
+
+    @Override
+    protected void unsafeExecute(GameBoard ctx) {
+        ctx.moveAndActMotherNature(distanceToMove);
     }
 
 }

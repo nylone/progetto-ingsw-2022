@@ -23,22 +23,22 @@ public class ChooseCloudTile extends PlayerAction {
 
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
-        if(!(this.selectedTile >= 0 && selectedTile <= ctx.getClouds().size() - 1)){
+        if (!(this.selectedTile >= 0 && selectedTile <= ctx.getClouds().size() - 1)) {
             throw new InvalidElementException(INPUT_NAME_CLOUD);
         }
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         Cloud selectedCloud = ctx.getClouds().get(selectedTile);
 
-        if(!(caller.getEntranceSpaceLeft() >= selectedCloud.getContents().size())){
+        if (!(caller.getEntranceSpaceLeft() >= selectedCloud.getContents().size())) {
             throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
                     CONTAINER_NAME_ENTRANCE + "can't contain " + selectedCloud.getContents().size()
                             + " element's without overflowing.");
         }
-        if(selectedCloud.getContents().size()==0){
+        if (selectedCloud.getContents().size() == 0) {
             throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
                     CONTAINER_NAME_ENTRANCE + "has already been emptied");
         }
-        if(!super.validate(history,ctx)){
+        if (!super.validate(history, ctx)) {
             throw new GenericInputValidationException("Action", "this action can't be executed more than once or be executed by other player than the current");
         }
         return true;

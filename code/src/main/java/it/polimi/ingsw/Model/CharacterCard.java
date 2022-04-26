@@ -37,10 +37,6 @@ public abstract class CharacterCard implements Serializable {
         return this.timeUsed;
     }
 
-    private void addUse() {
-        this.timeUsed++;
-    }
-
     /**
      * This function checks whether the correct input has been provided. It should always be called BEFORE calling an
      * unsafeApplyEffect. Keep in mind this function does not alterate the gamestate.
@@ -68,8 +64,6 @@ public abstract class CharacterCard implements Serializable {
      */
     protected abstract boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException;
 
-    protected abstract void unsafeApplyEffect(CharacterCardInput input) throws Exception;
-
     public final void unsafeUseCard(CharacterCardInput input) {
         try { // we should never get an exception now, if we do we crash
             unsafeApplyEffect(input);
@@ -77,5 +71,11 @@ public abstract class CharacterCard implements Serializable {
             e.printStackTrace();
         }
         addUse();
+    }
+
+    protected abstract void unsafeApplyEffect(CharacterCardInput input) throws Exception;
+
+    private void addUse() {
+        this.timeUsed++;
     }
 }

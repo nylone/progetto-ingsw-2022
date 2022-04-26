@@ -35,15 +35,15 @@ public class TeamMapper implements Serializable {
                 .toList();
     }
 
-    public TeamID getTeamID(PlayerBoard pb) {
-        return playerTeamMap.get(pb);
-    }
-
     public TowerStorage getMutableTowerStorage(PlayerBoard pb) {
         return this.getMutableTowerStorage(this.getTeamID(pb));
     }
 
     public TowerStorage getMutableTowerStorage(TeamID tID) {
         return towerStorageMap.get(tID);
+    }
+
+    public TeamID getTeamID(PlayerBoard pb) {
+        return playerTeamMap.get(pb);
     }
 }
