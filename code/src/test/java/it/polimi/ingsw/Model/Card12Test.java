@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
@@ -24,10 +25,10 @@ public class Card12Test {
         assertTrue(pb2.getDiningRoomCount(PawnColour.RED)==0);
     }
 
-    @Test(expected = EmptyContainerException.class)
+    @Test(expected = InputValidationException.class)
     public void checkEmptyInput() throws Exception {
         PlayerBoard pb2 = gb.getMutablePlayerBoardByNickname("rouge");
         CharacterCardInput input = new CharacterCardInput(pb2);
-        card.unsafeApplyEffect(input);
+        if(card.checkInput(input)) card.unsafeApplyEffect(input);
     }
 }

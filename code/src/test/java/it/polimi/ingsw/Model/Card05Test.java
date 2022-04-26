@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import org.junit.Test;
@@ -13,6 +14,12 @@ public class Card05Test {
 
     @Test
     public void checkUse() throws Exception {
+        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(0));
+        gb.getMutableTurnOrder().stepToNextPlayer();
+        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(6));
+        gb.getMutableTurnOrder().commitTurnOrder();
+        PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
+
         CharacterCardInput input = new CharacterCardInput(pb);
         IslandField field = gb.getMutableIslandField();
         input.setTargetIsland(field.getMutableIslandById(1));
@@ -27,9 +34,9 @@ public class Card05Test {
         assertTrue(card05.getState().size() == 4); // 4 tiles left after the return of the NoEntryTile
     }
 
-    @Test(expected = FailedOperationException.class)
+    @Test(expected = InputValidationException.class)
     public void checkInputException() throws Exception {
         CharacterCardInput input = new CharacterCardInput(pb);
-        card05.unsafeApplyEffect(input);
+        if(card05.checkInput(input)) card05.unsafeApplyEffect(input);
     }
 }
