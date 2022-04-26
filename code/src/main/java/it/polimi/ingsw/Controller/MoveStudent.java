@@ -91,7 +91,7 @@ public class MoveStudent extends PlayerAction {
                         .addStudent(toMove);
             }
             case DININGROOM -> {
-                pb.addStudentToDiningRoom(toMove);
+                ctx.addStudentToDiningRoom(toMove, pb);
             }
         }
     }

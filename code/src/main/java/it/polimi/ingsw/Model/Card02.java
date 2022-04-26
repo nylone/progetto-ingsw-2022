@@ -29,8 +29,9 @@ public class Card02 extends StatelessEffect {
         Map<PawnColour, PlayerBoard> teachers = this.context.getTeachers();
         PlayerBoard me = input.getCaller();
 
+        this.context.getMutableEffects().enableAlternativeTeacherAssignment();
         teachers.forEach((teacherColour, teacherOwner) -> {
-            if (teacherOwner.getDiningRoomCount(teacherColour) <= me.getDiningRoomCount(teacherColour))
+            if (teacherOwner.getDiningRoomCount(teacherColour) == me.getDiningRoomCount(teacherColour))
                 this.context.setTeacher(teacherColour, me);
         });
     }

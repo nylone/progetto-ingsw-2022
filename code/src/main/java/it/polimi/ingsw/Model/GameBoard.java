@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.FullContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
+import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TeamID;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.Constants.CONTAINER_NAME_DININGROOM;
 import static it.polimi.ingsw.Constants.CONTAINER_NAME_PLAYERBOARDS;
 
 public class GameBoard implements Serializable {
@@ -77,7 +79,7 @@ public class GameBoard implements Serializable {
     }
 
     public Map<PawnColour, PlayerBoard> getTeachers() {
-        return Map.copyOf(teachers);
+        return Map.copyOf(this.teachers);
     }
 
     public List<PawnColour> getOwnTeachers(PlayerBoard p) {
@@ -203,6 +205,19 @@ public class GameBoard implements Serializable {
             this.islandField.joinGroups();
         } else {
             mnp.resetNoEntry();
+        }
+    }
+
+    public void addStudentToDiningRoom(PawnColour colour, PlayerBoard me) throws FullContainerException {
+        me.addStudentToDiningRoom(colour);
+        // trigger calculation of new teacher placements
+        PlayerBoard owner = this.teachers.get(colour);
+        if (owner == null ||
+                owner.getDiningRoomCount(colour) < me.getDiningRoomCount(colour) ||
+                (this.effects.isAlternativeTeacherAssignmentEnabled() &&
+                        owner.getDiningRoomCount(colour) == me.getDiningRoomCount(colour))
+        ) {
+            this.setTeacher(colour, me);
         }
     }
 }

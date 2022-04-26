@@ -76,7 +76,7 @@ public class PlayerBoard implements Serializable {
     }
 
     // SETTERS AND THE LIKE //
-    public void addStudentToDiningRoom(PawnColour colour) throws FullContainerException {
+    protected void addStudentToDiningRoom(PawnColour colour) throws FullContainerException {
         if (this.diningRoom.get(colour) == 10) {
             throw new FullContainerException(CONTAINER_NAME_DININGROOM);
         } else {

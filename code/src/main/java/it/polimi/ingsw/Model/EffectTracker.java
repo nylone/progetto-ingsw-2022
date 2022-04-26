@@ -13,6 +13,7 @@ public class EffectTracker implements Serializable {
     private boolean denyTowerInfluence;
     private boolean increasedInfluence;
     private boolean increasedMotherNatureMovement;
+    private boolean alternativeTeacherAssignmente;
 
     public EffectTracker() {
         this.reset();
@@ -30,6 +31,10 @@ public class EffectTracker implements Serializable {
         this.increasedMotherNatureMovement = true;
     }
 
+    public void enableAlternativeTeacherAssignment() {
+        this.alternativeTeacherAssignmente = true;
+    }
+
     public boolean isInfluenceIncreased() {
         return increasedInfluence;
     }
@@ -39,6 +44,10 @@ public class EffectTracker implements Serializable {
     }
 
     public boolean isMotherNatureMovementIncreased() {
+        return increasedMotherNatureMovement;
+    }
+
+    public boolean isAlternativeTeacherAssignmentEnabled() {
         return increasedMotherNatureMovement;
     }
 
@@ -59,5 +68,6 @@ public class EffectTracker implements Serializable {
         this.denyTowerInfluence = false;
         this.increasedInfluence = false;
         this.increasedMotherNatureMovement = false;
+        this.alternativeTeacherAssignmente = false;
     }
 }
