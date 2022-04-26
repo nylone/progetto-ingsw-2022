@@ -35,17 +35,4 @@ public class Tower implements Serializable {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Tower tower = (Tower) o;
-        return this.id == tower.id && this.colour == tower.colour && this.storage.equals(tower.storage);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, colour, storage);
-    }
 }
