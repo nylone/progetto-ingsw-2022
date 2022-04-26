@@ -36,6 +36,18 @@ public class MoveStudent extends PlayerAction {
         int maxCount = ctx.getMutablePlayerBoards().size() == 3 ? 4 : 3;
         int entranceSize = ctx.getMutablePlayerBoards().size() == 3 ? 9 : 7;
         PlayerBoard caller;
+        if(history.size()>0){
+            if(!(history.get(history.size()-1).getClass()==MoveStudent.class || history.get(history.size()-1).getClass()==PlayCharacterCard.class)){
+                throw new GenericInputValidationException("History", "MoveStudent can only be preceded by a PlayCharacterCard action or MoveStudent action");
+            }
+        }
+        if(
+                history.stream().filter(playerAction -> playerAction.getClass()==PlayCharacterCard.class).count()==0 &&
+                        !(history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count()<maxCount)
+        ){
+            throw new GenericInputValidationException("History", "only "+maxCount+ " pawns can be moved from entrance without playing CharacterCards");
+        }
+
         try {
             caller = ctx.getMutablePlayerBoardById(this.getPlayerBoardId());
         } catch (InvalidContainerIndexException e) {

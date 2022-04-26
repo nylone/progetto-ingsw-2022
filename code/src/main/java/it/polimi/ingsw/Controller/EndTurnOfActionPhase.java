@@ -14,14 +14,15 @@ public class EndTurnOfActionPhase extends PlayerAction {
 
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
-        int MovementCount = ctx.getMutablePlayerBoards().size() == 3 ? 4 : 3;
-        //check the amount of moved pawns
-        if (
-                !(history.stream()
-                        .filter(playerAction -> playerAction.getClass() == MoveStudent.class)
-                        .count() == MovementCount)
-        ) {
-            throw new GenericInputValidationException("History", "There are less than " + MovementCount + " MoveStudent actions in history");
+        if(
+                !(history.stream().
+                        filter(playerAction -> playerAction.getClass() == ChooseCloudTile.class)
+                        .count()==1)
+        ){
+            throw new GenericInputValidationException("History", "ChooseCloudTile action has not been executed");
+        }
+        if(!(history.get(history.size()-1).getClass() == PlayCharacterCard.class || history.get(history.size()-1).getClass() == ChooseCloudTile.class)){
+            throw new GenericInputValidationException("History", "his action can only be executed after a ChooseCloudTile action or PlayCharacterCard action");
         }
 
         if (!super.validate(history, ctx)) {

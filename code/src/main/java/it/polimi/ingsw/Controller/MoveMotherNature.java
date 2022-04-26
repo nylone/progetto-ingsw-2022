@@ -24,6 +24,7 @@ public class MoveMotherNature extends PlayerAction {
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
+        int maxCount = ctx.getMutablePlayerBoards().size() == 3 ? 4 : 3;
         Optional<AssistantCard> optionalAssistantCard = ctx.getMutableTurnOrder()
                 .getMutableSelectedCard(currentPlayer);
 
@@ -32,6 +33,16 @@ public class MoveMotherNature extends PlayerAction {
         }
         if (optionalAssistantCard.isEmpty()) {
             throw new InvalidElementException(INPUT_NAME_ASSISTANT_CARD);
+        }
+        if(!(history.get(history.size()-1).getClass() == MoveStudent.class || (history.get(history.size()-1).getClass() == PlayCharacterCard.class))){
+            throw new GenericInputValidationException("History", "This action can only be executed after a MoveStudent action or PlayCharacterCard action");
+        }
+        if(
+                (history.stream().filter(playerAction -> playerAction.getClass()==PlayCharacterCard.class).count()==0 &&
+                        !(history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count()==maxCount)) ||
+                        history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count() < maxCount
+        ){
+            throw new GenericInputValidationException("History", "MotherNature can't be moved before having placed all "+maxCount+" pawns");
         }
         int maxMovement = optionalAssistantCard.get().getMaxMovement();
         if (!(distanceToMove >= 1 &&
