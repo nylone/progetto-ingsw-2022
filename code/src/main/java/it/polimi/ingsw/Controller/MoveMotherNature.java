@@ -38,7 +38,11 @@ public class MoveMotherNature extends PlayerAction {
         if(optionalAssistantCard.isEmpty()){
             throw new InvalidElementException(INPUT_NAME_ASSISTANT_CARD);
         }
-        if(!(distanceToMove >= 1 && distanceToMove <= optionalAssistantCard.get().getMaxMovement())){
+        int maxMovement = optionalAssistantCard.get().getMaxMovement();
+        if(!(distanceToMove >= 1 &&
+                distanceToMove <= ( ctx.getMutableEffects().isMotherNatureMovementIncreased() ?
+                        maxMovement + 2 : maxMovement)
+        )){
             throw new InvalidElementException("DistanceToMove");
         }
         return true;
