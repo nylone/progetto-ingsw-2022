@@ -1,7 +1,12 @@
 package it.polimi.ingsw.Model.Enums;
 
-public enum TeamID {
+import java.io.Serial;
+import java.io.Serializable;
+
+public enum TeamID implements Serializable {
     ONE(0), TWO(1), THREE(2);
+    @Serial
+    private static final long serialVersionUID = 137L; // convention: 1 for model, (01 -> 99) for objects
     private final int teamID;
 
     TeamID(int teamID) {
