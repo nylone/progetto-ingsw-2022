@@ -1,6 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Misc;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -69,5 +70,15 @@ public class Optional<T> implements Serializable {
         return new Optional<>();
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Optional<?> optional)) return false;
+        return Objects.equals(value, optional.value);
+    }
 }
