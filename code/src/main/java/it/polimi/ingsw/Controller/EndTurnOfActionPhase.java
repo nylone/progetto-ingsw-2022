@@ -15,10 +15,6 @@ public class EndTurnOfActionPhase extends PlayerAction {
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         int MovementCount = ctx.getMutablePlayerBoards().size() == 3 ? 4 : 3;
-        //turn must start by selecting an assistant card
-        if(!(history.get(0).getClass() ==  PlayAssistantCard.class)){
-            throw new GenericInputValidationException("History", "first PlayerAction must be playAssistantCard");
-        }
         //check the amount of moved pawns
         if(
                 !(history.stream()
