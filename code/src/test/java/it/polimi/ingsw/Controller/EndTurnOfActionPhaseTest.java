@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Model.CharacterCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -9,11 +11,25 @@ import org.junit.Test;
 public class EndTurnOfActionPhaseTest {
 
     @Test
-    public void testExecute(){
+    public void testExecute() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getContext();
         PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        
+        MoveDestination moveIsland = MoveDestination.toIsland(0);
+        MoveDestination moveEntrance = MoveDestination.toDiningRoom();
+        MoveStudent firstMove = new MoveStudent(currentPlayer.getId(), 0, moveIsland);
+        MoveStudent secondMove = new MoveStudent(currentPlayer.getId(),0, moveEntrance);
+        MoveStudent thirdMove = firstMove;
+
+        firstMove.safeExecute(gh.getHistory(), gameBoard);
+        secondMove.safeExecute(gh.getHistory(), gameBoard);
+        thirdMove.safeExecute(gh.getHistory(), gameBoard);
+
+        ChooseCloudTile chooseCloudTile = new ChooseCloudTile(currentPlayer.getId(), 0);
+        chooseCloudTile.safeExecute(gh.getHistory(), gameBoard);
+
+        EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(currentPlayer.getId());
+        endTurnOfActionPhase.safeExecute(gh.getHistory(), gameBoard);
 
     }
     @Test(expected = InputValidationException.class)
