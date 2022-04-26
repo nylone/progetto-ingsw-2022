@@ -79,7 +79,8 @@ public class PlayerBoardTest {
         }
         catch(FullContainerException e) {
             // assert
-            assertEquals("No more space in entrance", e.getMessage());
+            assertEquals("An error occurred on: Entrance\n" +
+                    "The error was: Entrance was found full.", e.getMessage());
         }
     }
 }

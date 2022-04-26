@@ -6,7 +6,6 @@ import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.TeamID;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -51,7 +50,7 @@ public class IslandFieldTest {
             fail("An exception was thrown");
         } catch (InvalidContainerIndexException e) {
             // assert
-            assertEquals("An error occured on: IslandField.groups\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
+            assertEquals("An error occurred on: IslandField.groups\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
         }
     }
 
@@ -71,7 +70,7 @@ public class IslandFieldTest {
             fail("Exception was thrown");
         } catch (InvalidContainerIndexException e) {
             // assert
-            assertEquals("An error occured on: IslandField.islands\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
+            assertEquals("An error occurred on: IslandField.islands\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
         }
     }
 
