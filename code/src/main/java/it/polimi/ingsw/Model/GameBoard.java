@@ -28,7 +28,7 @@ public class GameBoard implements Serializable {
     private final TurnOrder turnOrder;
     private final EffectTracker effects;
     private final List<Cloud> clouds;
-    private List<CharacterCard> characterCards;
+    private final List<CharacterCard> characterCards;
     private int coinReserve;
 
 
@@ -49,6 +49,8 @@ public class GameBoard implements Serializable {
         if (this.gameMode.equals(GameMode.ADVANCED)) {
             this.characterCards = CharacterDeckGenerator.generateCardSet(this);
             this.coinReserve = 20 - nop;
+        } else {
+            this.characterCards = null;
         }
         this.effects = new EffectTracker();
         this.clouds = new ArrayList<>(nop);
