@@ -8,6 +8,7 @@ import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
+import it.polimi.ingsw.Model.Enums.StateType;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class Card07Test {
     @Test
     public void checkUse() throws InvalidContainerIndexException, InputValidationException, OperationException {
         assertTrue(card.getState().size() == 6);
+        assertTrue(card.getStateType() == StateType.PAWNCOLOUR);
 
         gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(0));
         gb.getMutableTurnOrder().stepToNextPlayer();

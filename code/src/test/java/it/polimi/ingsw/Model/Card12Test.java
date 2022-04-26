@@ -13,22 +13,24 @@ public class Card12Test {
     Card12 card = new Card12(gb);
     @Test
     public void checkUse() throws Exception {
-        PlayerBoard pb = gb.getMutablePlayerBoardByNickname("marianna");
-        PlayerBoard pb2 = gb.getMutablePlayerBoardByNickname("rouge");
-        CharacterCardInput input = new CharacterCardInput(pb2);
+        PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
+        CharacterCardInput input = new CharacterCardInput(pb);
+
         for(int i=0; i<=4;i++) pb.addStudentToDiningRoom(PawnColour.RED);
-        pb2.addStudentToDiningRoom(PawnColour.RED);
         input.setTargetPawn(PawnColour.RED);
-        card.unsafeApplyEffect(input);
+        if(card.checkInput(input)) card.unsafeApplyEffect(input);
 
         assertTrue(pb.getDiningRoomCount(PawnColour.RED)==2);
-        assertTrue(pb2.getDiningRoomCount(PawnColour.RED)==0);
     }
 
     @Test(expected = InputValidationException.class)
     public void checkEmptyInput() throws Exception {
-        PlayerBoard pb2 = gb.getMutablePlayerBoardByNickname("rouge");
-        CharacterCardInput input = new CharacterCardInput(pb2);
+        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(0));
+        gb.getMutableTurnOrder().stepToNextPlayer();
+        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(6));
+        gb.getMutableTurnOrder().commitTurnOrder();
+        PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
+        CharacterCardInput input = new CharacterCardInput(pb);
         if(card.checkInput(input)) card.unsafeApplyEffect(input);
     }
 }

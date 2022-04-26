@@ -13,8 +13,8 @@ public class Card06And08Test{
     PlayerBoard pb = new PlayerBoard(1, 2, "ari", gb.getMutableStudentBag());
     @Test
     public void checkUse06() throws Exception {
-        CharacterCardInput input = new CharacterCardInput(pb);
-        card06.unsafeApplyEffect(input);
+        CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
+        if(card06.checkInput(input))card06.unsafeApplyEffect(input);
 
         assertTrue(gb.getMutableEffects().isTowerInfluenceDenied());
     }
@@ -34,7 +34,7 @@ public class Card06And08Test{
         turnOrder.stepToNextPlayer();
 
         CharacterCardInput input = new CharacterCardInput(turnOrder.getMutableCurrentPlayer());
-        card08.unsafeApplyEffect(input);
+        if(card08.checkInput(input)) card08.unsafeApplyEffect(input);
 
         assertTrue(gb.getInfluencerOf(islandGroup).get().equals(gb.getTeamMap().getTeamID(turnOrder.getMutableCurrentPlayer())));
         /*in this test, adding 2 points due to card8's effect will always give the influence to the caller; in fact:

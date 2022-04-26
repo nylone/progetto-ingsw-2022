@@ -28,9 +28,9 @@ public class Card03Test {
         gb.setTeacher(PawnColour.BLUE, pb1);
         gb.setTeacher(PawnColour.YELLOW, pb2);
 
-        CharacterCardInput input = new CharacterCardInput(pb1);
+        CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         input.setTargetIsland(island);
-        card.unsafeApplyEffect(input);
+        if(card.checkInput(input)) card.unsafeApplyEffect(input);
 
         assertTrue(ig.getTowerColour().get().equals(gb.getTeamMap().getMutableTowerStorage(pb1).getColour()));
         assertEquals(expectedMotherNaturePosition, gb.getMutableIslandField().getMutableMotherNaturePosition());
@@ -39,6 +39,21 @@ public class Card03Test {
     @Test(expected = InputValidationException.class)
     public void checkInvalidInput() throws Exception {
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
+        if(card.checkInput(input)) card.unsafeApplyEffect(input);
+    }
+
+    @Test(expected = InputValidationException.class)
+    public void checkInvalidIslandInput() throws Exception {
+        CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
+        Island island = new Island(13);
+        input.setTargetIsland(island);
+        if(card.checkInput(input)) card.unsafeApplyEffect(input);
+    }
+    @Test(expected = InputValidationException.class)
+    public void checkIslandNotInField() throws Exception{
+        CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
+        Island island = new Island(8);
+        input.setTargetIsland(island);
         if(card.checkInput(input)) card.unsafeApplyEffect(input);
     }
 }

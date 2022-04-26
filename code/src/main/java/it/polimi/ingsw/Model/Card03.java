@@ -28,7 +28,7 @@ public class Card03 extends StatelessEffect {
             throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not set
         }
         Island ti = input.getTargetIsland().get();
-        if (ti.getId() < 0 && ti.getId() >= 12) {
+        if (ti.getId() < 0 || ti.getId() >= 12) {
             throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti out of bounds for id
         }
         if (!this.context.getMutableIslandField().getMutableIslands().contains(ti)) {

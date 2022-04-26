@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.io.Serial;
 
@@ -44,8 +45,8 @@ public class Card12 extends StatelessEffect {
     }
 
     //test purpose only
-    @Override
-    public String toString() {
+    @VisibleForTesting
+    public String toDebugString() {
         return "Card12{" +
                 "id=" + id +
                 ", cost=" + cost +

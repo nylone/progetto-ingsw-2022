@@ -2,8 +2,10 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
+import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
+import it.polimi.ingsw.Model.Enums.StateType;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -16,17 +18,29 @@ public class Card11Test {
     @Test
     public void checkUse() throws Exception {
         assertTrue(card11.getState().size()==4);
+        assertTrue(card11.getStateType() == StateType.PAWNCOLOUR);
+
+        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(0));
+        gb.getMutableTurnOrder().stepToNextPlayer();
+        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(6));
+        gb.getMutableTurnOrder().commitTurnOrder();
+        PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
 
         CharacterCardInput input = new CharacterCardInput(pb);
         input.setTargetPawn((PawnColour) card11.getState().get(2));
         PawnColour toAdd = input.getTargetPawn().get();
         assertTrue(card11.getState().size()==4);
-        card11.unsafeApplyEffect(input);
+        if(card11.checkInput(input)) card11.unsafeApplyEffect(input);
         assertTrue(pb.getDiningRoomCount(toAdd)==1);
         assertTrue(card11.getState().size()==4);
     }
     @Test(expected = InputValidationException.class)
     public void checkExceptionInput() throws Exception {
+        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(0));
+        gb.getMutableTurnOrder().stepToNextPlayer();
+        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(6));
+        gb.getMutableTurnOrder().commitTurnOrder();
+        PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCardInput input = new CharacterCardInput(pb);
         if(card11.checkInput(input)) card11.unsafeApplyEffect(input);
     }

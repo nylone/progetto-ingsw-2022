@@ -5,6 +5,7 @@ import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
+import it.polimi.ingsw.Model.Enums.StateType;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -21,6 +22,7 @@ public class Card01Test {
         assertTrue(card.getState().size() == 4);
         if(card.checkInput(input)) card.unsafeApplyEffect(input);
         assertTrue(card.getState().size() == 4);
+        assertTrue(card.getStateType() == StateType.PAWNCOLOUR);
     }
 
     @Test
