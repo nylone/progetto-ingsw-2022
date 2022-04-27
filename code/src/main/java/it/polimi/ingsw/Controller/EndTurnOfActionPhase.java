@@ -14,14 +14,14 @@ public class EndTurnOfActionPhase extends PlayerAction {
 
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
-        if(
+        if (
                 !(history.stream().
                         filter(playerAction -> playerAction.getClass() == ChooseCloudTile.class)
-                        .count()==1)
-        ){
+                        .count() == 1)
+        ) {
             throw new GenericInputValidationException("History", "ChooseCloudTile action has not been executed");
         }
-        if(!(history.get(history.size()-1).getClass() == PlayCharacterCard.class || history.get(history.size()-1).getClass() == ChooseCloudTile.class)){
+        if (!(history.get(history.size() - 1).getClass() == PlayCharacterCard.class || history.get(history.size() - 1).getClass() == ChooseCloudTile.class)) {
             throw new GenericInputValidationException("History", "his action can only be executed after a ChooseCloudTile action or PlayCharacterCard action");
         }
 

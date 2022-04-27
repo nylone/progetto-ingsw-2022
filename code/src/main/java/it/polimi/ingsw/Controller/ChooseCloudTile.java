@@ -23,15 +23,15 @@ public class ChooseCloudTile extends PlayerAction {
 
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
-        if(
+        if (
                 !(history.stream().
                         filter(playerAction -> playerAction.getClass() == MoveMotherNature.class)
-                        .count()==1)
-        ){
+                        .count() == 1)
+        ) {
             throw new GenericInputValidationException("History", "MoveMotherNature action has not been executed");
         }
 
-        if(!(history.get(history.size()-1).getClass() == MoveMotherNature.class || (history.get(history.size()-1).getClass() == PlayCharacterCard.class))){
+        if (!(history.get(history.size() - 1).getClass() == MoveMotherNature.class || (history.get(history.size() - 1).getClass() == PlayCharacterCard.class))) {
             throw new GenericInputValidationException("History", "This action can only be executed after a MoveMotherNature action or PlayCharacterCard action");
         }
         if (!(this.selectedTile >= 0 && selectedTile <= ctx.getClouds().size() - 1)) {

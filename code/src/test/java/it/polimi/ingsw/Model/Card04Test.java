@@ -15,7 +15,8 @@ import static org.junit.Assert.assertEquals;
 
 public class Card04Test {
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void mnCanMove2AdditionalPositions() throws Exception {
         // arrange & act
         GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");

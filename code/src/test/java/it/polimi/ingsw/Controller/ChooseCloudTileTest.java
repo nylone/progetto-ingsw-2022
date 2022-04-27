@@ -9,7 +9,6 @@ import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ChooseCloudTileTest {
@@ -50,7 +49,7 @@ public class ChooseCloudTileTest {
     }
 
     @Test(expected = InputValidationException.class)
-    public void EntranceFullException() throws Exception{
+    public void EntranceFullException() throws Exception {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getContext();
@@ -58,12 +57,12 @@ public class ChooseCloudTileTest {
         ChooseCloudTile action = new ChooseCloudTile(currentPlayer.getId(), 0);
         currentPlayer.removeStudentFromEntrance(6);
         // act
-        action.safeExecute(gh.getHistory(),gameBoard);
+        action.safeExecute(gh.getHistory(), gameBoard);
         // assert
     }
 
     @Test(expected = GenericInputValidationException.class)
-    public void duplicateChooseCloudTileException() throws Exception{
+    public void duplicateChooseCloudTileException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getContext();
         PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
@@ -86,7 +85,7 @@ public class ChooseCloudTileTest {
     }
 
     @Test(expected = InputValidationException.class)
-    public void CloudIndexOutOfBound() throws Exception{
+    public void CloudIndexOutOfBound() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getContext();
         PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
@@ -99,7 +98,7 @@ public class ChooseCloudTileTest {
     }
 
     @Test(expected = InputValidationException.class)
-    public void CloudEmptyException() throws Exception{
+    public void CloudEmptyException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getContext();
         PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
