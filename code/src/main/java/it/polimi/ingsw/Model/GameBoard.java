@@ -31,6 +31,29 @@ public class GameBoard implements Serializable {
     private final List<CharacterCard> characterCards;
     private int coinReserve;
 
+    public GameBoard(
+            IslandField islandField,
+            GameMode gameMode,
+            StudentBag studentBag,
+            List<PlayerBoard> playerBoards,
+            Map<PawnColour, PlayerBoard> teachers,
+            TeamMapper teamMap,
+            TurnOrder turnOrder,
+            EffectTracker effects,
+            List<Cloud> clouds,
+            List<CharacterCard> characterCards
+    ) {
+        this.islandField = islandField;
+        this.gameMode = gameMode;
+        this.studentBag = studentBag;
+        this.playerBoards = playerBoards;
+        this.teachers = teachers;
+        this.teamMap = teamMap;
+        this.turnOrder = turnOrder;
+        this.effects = effects;
+        this.clouds = clouds;
+        this.characterCards = characterCards;
+    }
 
     public GameBoard(GameMode gameMode, String... playerNicknames) {
         final int nop = playerNicknames.length;

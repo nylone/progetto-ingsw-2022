@@ -57,7 +57,7 @@ public class PlayCharacterCard extends PlayerAction {
         CharacterCard selectedCard = ctx.getCharacterCards().get(this.selectedCard);
         if (caller.getCoinBalance() < selectedCard.getCost()) {
             throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD,
-                    INPUT_NAME_CHARACTER_CARD + " can't be played due to low coins balance");
+                    INPUT_NAME_CHARACTER_CARD + " can't be played due to insufficient coin balance");
         }
 
         return selectedCard.checkInput(cardInput);
