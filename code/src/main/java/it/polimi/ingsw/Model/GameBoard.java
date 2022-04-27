@@ -53,6 +53,7 @@ public class GameBoard implements Serializable {
         this.effects = effects;
         this.clouds = clouds;
         this.characterCards = characterCards;
+        this.coinReserve = 20 - playerBoards.size(); // hp: we assume 20 as amount of available coins just like the real game.
     }
 
     public GameBoard(GameMode gameMode, String... playerNicknames) {
@@ -157,11 +158,6 @@ public class GameBoard implements Serializable {
         return turnOrder;
     }
 
-    //add coins to balance
-    public void addToCoinReserve(int coins) {
-        this.coinReserve += coins;
-    }
-
     public void moveAndActMotherNature(int steps) {
         this.islandField.moveMotherNature(steps);
         actMotherNaturePower(this.islandField.getMutableMotherNaturePosition());
@@ -234,7 +230,11 @@ public class GameBoard implements Serializable {
     }
 
     public void addStudentToDiningRoom(PawnColour colour, PlayerBoard me) throws FullContainerException {
-        me.addStudentToDiningRoom(colour);
+        boolean shouldGiveCoin = me.addStudentToDiningRoom(colour);
+        if (shouldGiveCoin && this.coinReserve > 0) {
+            this.coinReserve -= 1;
+            me.addCoin();
+        }
         // trigger calculation of new teacher placements
         PlayerBoard owner = this.teachers.get(colour);
         if (owner == null ||

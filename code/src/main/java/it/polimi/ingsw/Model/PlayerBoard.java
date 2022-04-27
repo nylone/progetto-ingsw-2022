@@ -80,15 +80,12 @@ public class PlayerBoard implements Serializable {
     }
 
     // SETTERS AND THE LIKE //
-    protected void addStudentToDiningRoom(PawnColour colour) throws FullContainerException {
+    protected boolean addStudentToDiningRoom(PawnColour colour) throws FullContainerException {
         if (this.diningRoom.get(colour) == 10) {
             throw new FullContainerException(CONTAINER_NAME_DININGROOM);
-        } else {
-            this.diningRoom.merge(colour, 1, Integer::sum);
-            if (this.diningRoom.get(colour) % 3 == 0) {
-                this.coinBalance++;
-            }
         }
+        this.diningRoom.merge(colour, 1, Integer::sum);
+        return this.diningRoom.get(colour) % 3 == 0; // returns true when a coin should be added
     }
 
     public void removeStudentsFromDiningRoom(PawnColour colour, int amount) throws EmptyContainerException {
@@ -147,6 +144,9 @@ public class PlayerBoard implements Serializable {
         throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
     }
 
+    protected void addCoin() {
+        this.coinBalance += 1;
+    }
 
     public void payCharacterEffect(int cost) { //this method checks if the CharacterCard can be activated, true --> gameBoard activates the CharacterCard / false--> GameBoard doesn't activate the CharacterCard
         if (this.coinBalance >= cost) {
