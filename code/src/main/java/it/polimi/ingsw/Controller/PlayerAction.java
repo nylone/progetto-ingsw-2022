@@ -13,14 +13,13 @@ public abstract class PlayerAction {
         this.playerBoardId = playerBoardId;
     }
 
-    protected void safeExecute(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    protected final void safeExecute(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         if (validate(history, ctx)) {
             try {
                 unsafeExecute(ctx);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            history.add(this);
         }
     }
 
