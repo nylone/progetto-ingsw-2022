@@ -75,7 +75,7 @@ public class IslandFieldTest {
     }
 
     @Test
-    public void testingJoiningMotherNatureWithPreviousGroup() {
+    public void testingJoiningMotherNatureWithPreviousGroup() throws Exception{
         // arrange
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
         IslandGroup motherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
@@ -95,7 +95,7 @@ public class IslandFieldTest {
     }
 
     @Test
-    public void testingJoiningMotherNatureWithNextGroup() {
+    public void testingJoiningMotherNatureWithNextGroup() throws Exception{
         // arrange
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
         IslandGroup motherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
@@ -115,7 +115,7 @@ public class IslandFieldTest {
     }
 
     @Test
-    public void testingJoiningThreeIslands() {
+    public void testingJoiningThreeIslands() throws Exception{
         // arrange
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
         IslandGroup motherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();

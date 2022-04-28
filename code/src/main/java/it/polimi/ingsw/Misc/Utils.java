@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Misc;
 
+import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.*;
 
 public class Utils {
@@ -23,8 +26,11 @@ public class Utils {
         return list.get(randomNumber);
     }
 
-    public static <T> T modularSelection(T startingElement, List<T> group, int movement) {
+    public static <T> T modularSelection(T startingElement, List<T> group, int movement) throws InvalidElementException {
         int index = group.indexOf(startingElement);
+        if(index == -1){
+            throw new InvalidElementException("starting element");
+        }
         // todo add exception for element not in list
         return group.get((index + group.size() + movement) % group.size());
     }

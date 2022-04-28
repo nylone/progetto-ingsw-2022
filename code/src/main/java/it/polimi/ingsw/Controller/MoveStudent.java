@@ -11,8 +11,7 @@ import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.util.List;
 
-import static it.polimi.ingsw.Constants.CONTAINER_NAME_DININGROOM;
-import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_ISLAND;
+import static it.polimi.ingsw.Constants.*;
 
 
 public class MoveStudent extends PlayerAction {
@@ -34,17 +33,20 @@ public class MoveStudent extends PlayerAction {
 
         int maxCount = ctx.getMutablePlayerBoards().size() == 3 ? 4 : 3;
         int entranceSize = ctx.getMutablePlayerBoards().size() == 3 ? 9 : 7;
-        PlayerBoard caller;
+        PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
+        if(ctx.getMutableTurnOrder().getMutableSelectedCard(caller).isEmpty()){
+            throw new GenericInputValidationException(HISTORY, "No PlayAssistantCard has been played");
+        }
         if (history.size() > 0) {
             if (!(history.get(history.size() - 1).getClass() == MoveStudent.class || history.get(history.size() - 1).getClass() == PlayCharacterCard.class)) {
-                throw new GenericInputValidationException("History", "MoveStudent can only be preceded by a PlayCharacterCard action or MoveStudent action");
+                throw new GenericInputValidationException(HISTORY, "MoveStudent can only be preceded by a PlayCharacterCard action or MoveStudent action");
             }
         }
-        if (
+       if (
                 history.stream().filter(playerAction -> playerAction.getClass() == PlayCharacterCard.class).count() == 0 &&
                         !(history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count() < maxCount)
         ) {
-            throw new GenericInputValidationException("History", "only " + maxCount + " pawns can be moved from entrance without playing CharacterCards");
+            throw new GenericInputValidationException(HISTORY, "only " + maxCount + " pawns can be moved from entrance without playing CharacterCards");
         }
 
         try {
@@ -55,9 +57,6 @@ public class MoveStudent extends PlayerAction {
         if (!(this.selectedEntrancePosition >= 0 && this.selectedEntrancePosition < entranceSize)) {
             throw new InvalidElementException("Index Target Entrance Position");
         }
-        if (!(countDuplicateActions(history) <= maxCount)) {
-            throw new GenericInputValidationException("Action", "this action can't be executed more than " + maxCount + " times");
-        }
         if (caller.getEntranceStudents().get(this.selectedEntrancePosition).isEmpty()) {
             throw new InvalidElementException("Target Entrance Position");
         }
@@ -66,14 +65,18 @@ public class MoveStudent extends PlayerAction {
             throw new GenericInputValidationException("Action", "the action can only be executed by the current player");
         }
         if (this.destination.getDestinationType() == DestinationType.ISLAND) {
+            try {
+                if (destination.getIslandID() < 0 || destination.getIslandID() > 12) {
+                    throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti out of bounds for id
+                }
+            } catch (Exception e) {
+                throw new InvalidElementException("DestinationType not compatible with request");
+            }
             int islandId;
             try {
                 islandId = this.destination.getIslandID();
             } catch (Exception e) {
                 throw new InvalidElementException("DestinationType not compatible with request");
-            }
-            if (islandId < 0 && islandId > 12) {
-                throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti out of bounds for id
             }
         }
         // validate size of dining room

@@ -17,7 +17,7 @@ public class ChooseCloudTileTest {
     public void playerCanTakeStudentsFromCloud() throws Exception {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         int selectedCloud = Utils.random(gameBoard.getClouds()).getId();
         ChooseCloudTile action = new ChooseCloudTile(currentPlayer.getId(), selectedCloud);
@@ -25,7 +25,7 @@ public class ChooseCloudTileTest {
         currentPlayer.removeStudentFromEntrance(5);
         currentPlayer.removeStudentFromEntrance(4);
         // act
-        action.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(action);
         // assert
         assertTrue(gameBoard.getClouds().get(selectedCloud).getContents().size() == 0);
         assertTrue(currentPlayer.getEntranceStudents().size() == 7);
@@ -35,7 +35,7 @@ public class ChooseCloudTileTest {
     public void fullEntranceShouldPreventActionExecution() throws InputValidationException, InvalidContainerIndexException {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         int selectedCloud = Utils.random(gameBoard.getClouds()).getId();
         ChooseCloudTile action = new ChooseCloudTile(currentPlayer.getId(), selectedCloud);
@@ -43,7 +43,7 @@ public class ChooseCloudTileTest {
         currentPlayer.removeStudentFromEntrance(currentPlayer.getEntranceSize() - 2);
         currentPlayer.removeStudentFromEntrance(currentPlayer.getEntranceSize() - 3);
         // act
-        action.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(action);
         // assert
         assertTrue(currentPlayer.getEntranceStudents().size() == 7);
     }
@@ -52,19 +52,19 @@ public class ChooseCloudTileTest {
     public void EntranceFullException() throws Exception {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         ChooseCloudTile action = new ChooseCloudTile(currentPlayer.getId(), 0);
         currentPlayer.removeStudentFromEntrance(6);
         // act
-        action.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(action);
         // assert
     }
 
     @Test(expected = GenericInputValidationException.class)
     public void duplicateChooseCloudTileException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         int selectedCloud = gameBoard.getClouds().get(0).getId();
         ChooseCloudTile action = new ChooseCloudTile(currentPlayer.getId(), selectedCloud);
@@ -72,7 +72,7 @@ public class ChooseCloudTileTest {
         currentPlayer.removeStudentFromEntrance(5);
         currentPlayer.removeStudentFromEntrance(4);
         // act
-        action.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(action);
 
         currentPlayer.removeStudentFromEntrance(6);
         currentPlayer.removeStudentFromEntrance(5);
@@ -81,38 +81,38 @@ public class ChooseCloudTileTest {
         selectedCloud = gameBoard.getClouds().get(1).getId();
         action = new ChooseCloudTile(currentPlayer.getId(), selectedCloud);
 
-        action.safeExecute(gh.getHistory(), gameBoard); //exception
+        gh.executeAction(action);
     }
 
     @Test(expected = InputValidationException.class)
     public void CloudIndexOutOfBound() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         ChooseCloudTile action = new ChooseCloudTile(currentPlayer.getId(), 10);
         currentPlayer.removeStudentFromEntrance(6);
         currentPlayer.removeStudentFromEntrance(5);
         currentPlayer.removeStudentFromEntrance(4);
         // act
-        action.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(action);
     }
 
     @Test(expected = InputValidationException.class)
     public void CloudEmptyException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         ChooseCloudTile action = new ChooseCloudTile(currentPlayer.getId(), 0);
         currentPlayer.removeStudentFromEntrance(6);
         currentPlayer.removeStudentFromEntrance(5);
         currentPlayer.removeStudentFromEntrance(4);
         // act
-        action.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(action);
 
         currentPlayer.removeStudentFromEntrance(6);
         currentPlayer.removeStudentFromEntrance(5);
         currentPlayer.removeStudentFromEntrance(4);
         // act
-        action.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(action);
     }
 }

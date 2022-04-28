@@ -69,9 +69,9 @@ public class PlayCharacterCard extends PlayerAction {
         CharacterCard characterCard = ctx.getCharacterCards().get(this.selectedCard);
         caller.payCharacterEffect(characterCard.getCost());
         if (characterCard.getTimeUsed() > 0) {
-            ctx.addToCoinReserve(characterCard.getCost());
+           // ctx.addToCoinReserve(characterCard.getCost());
         } else {
-            ctx.addToCoinReserve(characterCard.getCost() - 1); //the first time, one coin has to be placed on the card and not in the coin reserve
+           // ctx.addToCoinReserve(characterCard.getCost() - 1); //the first time, one coin has to be placed on the card and not in the coin reserve
         }
         try {
             characterCard.unsafeUseCard(generateCharacterCardInput(caller, ctx));

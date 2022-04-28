@@ -14,7 +14,7 @@ public class PlayCharacterCardTest {
     @Ignore
     public void checkUse() {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         //PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 0);
 
@@ -23,9 +23,9 @@ public class PlayCharacterCardTest {
     @Test(expected = InputValidationException.class)
     public void CharacterCardIndexOutOfBound() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, Optional.empty(), Optional.empty(), Optional.empty());
-        playAction.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(playAction);
     }
 }

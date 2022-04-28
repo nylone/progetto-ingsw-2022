@@ -23,10 +23,10 @@ public class Card10Test {
         pb.addStudentToDiningRoom(PawnColour.RED);
         pb.addStudentToDiningRoom(PawnColour.YELLOW);
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
-        pairs.add(new Pair<>(pb.getEntranceStudents().get(0), PawnColour.RED));
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.RED));
         pb.removeStudentFromEntrance(0);
         pb.removeStudentsFromDiningRoom(PawnColour.RED, 1);
-        pairs.add(new Pair<>(pb.getEntranceStudents().get(0), PawnColour.YELLOW));
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(1).get(), PawnColour.YELLOW));
         pb.removeStudentFromEntrance(0);
         pb.removeStudentsFromDiningRoom(PawnColour.YELLOW, 1);
         Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
@@ -53,7 +53,7 @@ public class Card10Test {
         pb.addStudentToDiningRoom(PawnColour.YELLOW);
 
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
-        pairs.add(new Pair<>(pb.getEntranceStudents().get(0), PawnColour.RED));
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.RED));
         pb.removeStudentFromEntrance(0);
         pb.removeStudentsFromDiningRoom(PawnColour.RED, 1);
         pairs.add(new Pair<>(null, PawnColour.YELLOW));
@@ -68,7 +68,7 @@ public class Card10Test {
         pb.addStudentToDiningRoom(PawnColour.RED);
         pb.addStudentToDiningRoom(PawnColour.YELLOW);
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
-        pairs.add(new Pair<>(pb.getEntranceStudents().get(0), PawnColour.RED));
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.RED));
         pb.removeStudentsFromDiningRoom(PawnColour.RED, 1);
         Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
         input.setTargetPawnPairs(pairs.toArray(pairsArray));
@@ -81,10 +81,10 @@ public class Card10Test {
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         pb.addStudentToDiningRoom(PawnColour.RED);
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
-        pairs.add(new Pair<>(pb.getEntranceStudents().get(0), PawnColour.RED));
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.RED));
         pb.removeStudentsFromDiningRoom(PawnColour.RED, 1);
         for (int i = 0; i < 10; i++)
-            pb.addStudentToDiningRoom(pb.getEntranceStudents().get(0));
+            pb.addStudentToDiningRoom(pb.getEntranceStudents().get(0).get());
         pb.removeStudentFromEntrance(0);
         Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
         input.setTargetPawnPairs(pairs.toArray(pairsArray));

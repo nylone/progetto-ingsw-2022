@@ -246,6 +246,10 @@ public class GameBoard implements Serializable {
         }
     }
 
+    public void addCoinToReserve(int amount)  {
+        this.coinReserve += amount;
+    }
+
     public void setTeacher(PawnColour teacher, PlayerBoard player) {
         teachers.put(teacher, player);
     }

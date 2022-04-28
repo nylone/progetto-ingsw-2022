@@ -14,12 +14,14 @@ public class PlayAssistantCardTest {
     public void cardShouldBeAssociatedToPlayer() throws Exception {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayAssistantCard action = new PlayAssistantCard(player.getId(), 3);
         // act
-        action.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(action);
         // assert
+        gameBoard = gh.getModelCopy();
+        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertTrue(player.getMutableAssistantCards().get(2).getUsed());
         for (int i = 0; i < player.getMutableAssistantCards().size(); i++) {
             if (i != 2) assertTrue(!player.getMutableAssistantCards().get(i).getUsed());
@@ -30,32 +32,32 @@ public class PlayAssistantCardTest {
     @Test(expected = InputValidationException.class)
     public void SelectedAlreadyUsedCardException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayAssistantCard action = new PlayAssistantCard(player.getId(), 3);
         // act
-        action.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(action);
 
-        action.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(action);
     }
 
     @Test(expected = InputValidationException.class)
     public void OutOfTurnAccessException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayAssistantCard action = new PlayAssistantCard(3, 3);
         // act
-        action.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(action);
     }
 
     @Test(expected = InputValidationException.class)
     public void AssistantCardIndexOutOfBound() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayAssistantCard action = new PlayAssistantCard(3, 13);
         // act
-        action.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(action);
     }
 }

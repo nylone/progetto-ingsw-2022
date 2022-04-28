@@ -31,8 +31,8 @@ public class Card07Test {
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCardInput input = new CharacterCardInput(pb);
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
-        pairs.add(new Pair<>(pb.getEntranceStudents().get(0), (PawnColour) card.getState().get(0)));
-        pairs.add(new Pair<>(pb.getEntranceStudents().get(1), (PawnColour) card.getState().get(1)));
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), (PawnColour) card.getState().get(0)));
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(1).get(), (PawnColour) card.getState().get(1)));
         Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
         input.setTargetPawnPairs(pairs.toArray(pairsArray));
         pairs.stream().forEach(p -> System.out.println(p.toString()));
@@ -54,11 +54,11 @@ public class Card07Test {
         PlayerBoard pb = gb.getMutablePlayerBoardByNickname("ari");
         CharacterCardInput input = new CharacterCardInput(pb);
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
-        pairs.add(new Pair<>(pb.getEntranceStudents().get(0), (PawnColour) card.getState().get(0)));
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), (PawnColour) card.getState().get(0)));
         pb.removeStudentFromEntrance(0);
-        pairs.add(new Pair<>(pb.getEntranceStudents().get(0), (PawnColour) card.getState().get(1)));
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), (PawnColour) card.getState().get(1)));
         pb.removeStudentFromEntrance(0);
-        pairs.add(new Pair<>(pb.getEntranceStudents().get(0), null));
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), null));
         pb.removeStudentFromEntrance(0);
         Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
         input.setTargetPawnPairs(pairs.toArray(pairsArray));

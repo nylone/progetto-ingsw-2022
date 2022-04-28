@@ -97,7 +97,7 @@ public class GameBoardTest {
     }
 
     @Test
-    public void testingInfluenceOnEmptyIsland() {
+    public void testingInfluenceOnEmptyIsland() throws Exception{
         // arrange
         IslandGroup empty = Utils.modularSelection(gb_sim_2.getMutableIslandField().getMutableMotherNaturePosition(),
                 gb_sim_2.getMutableIslandField().getMutableGroups(), 6);

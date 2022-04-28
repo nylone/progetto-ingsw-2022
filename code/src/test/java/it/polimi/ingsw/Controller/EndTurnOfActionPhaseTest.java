@@ -11,39 +11,38 @@ public class EndTurnOfActionPhaseTest {
     @Test
     public void testExecute() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination moveIsland = MoveDestination.toIsland(0);
         MoveDestination moveEntrance = MoveDestination.toDiningRoom();
         MoveStudent firstMove = new MoveStudent(currentPlayer.getId(), 0, moveIsland);
         MoveStudent secondMove = new MoveStudent(currentPlayer.getId(), 0, moveEntrance);
         MoveStudent thirdMove = firstMove;
-
-        firstMove.safeExecute(gh.getHistory(), gameBoard);
-        secondMove.safeExecute(gh.getHistory(), gameBoard);
-        thirdMove.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(firstMove);
+        gh.executeAction(secondMove);
+        gh.executeAction(thirdMove);
 
         ChooseCloudTile chooseCloudTile = new ChooseCloudTile(currentPlayer.getId(), 0);
-        chooseCloudTile.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(chooseCloudTile);
 
         EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(currentPlayer.getId());
-        endTurnOfActionPhase.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(endTurnOfActionPhase);
 
     }
 
     @Test(expected = InputValidationException.class)
     public void LessThan3MoveStudentException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         EndTurnOfActionPhase endPhase = new EndTurnOfActionPhase(currentPlayer.getId());
-        endPhase.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(endPhase);
     }
 
     @Test//(expected = GenericInputValidationException.class)
     public void OutOfTurnAction() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getContext();
+        GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard currentPlayer = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination moveIsland = MoveDestination.toIsland(0);
         MoveDestination moveEntrance = MoveDestination.toDiningRoom();
@@ -52,14 +51,14 @@ public class EndTurnOfActionPhaseTest {
         MoveStudent thirdMove = firstMove;
 
         ChooseCloudTile chooseCloudTile = new ChooseCloudTile(currentPlayer.getId(), 0);
-        chooseCloudTile.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(chooseCloudTile);
 
-        firstMove.safeExecute(gh.getHistory(), gameBoard);
-        secondMove.safeExecute(gh.getHistory(), gameBoard);
-        thirdMove.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(firstMove);
+        gh.executeAction(secondMove);
+        gh.executeAction(thirdMove);
 
 
         EndTurnOfActionPhase endPhase = new EndTurnOfActionPhase(new PlayerBoard(3, 2, "thief", gameBoard.getMutableStudentBag()).getId());
-        endPhase.safeExecute(gh.getHistory(), gameBoard);
+        gh.executeAction(endPhase);
     }
 }
