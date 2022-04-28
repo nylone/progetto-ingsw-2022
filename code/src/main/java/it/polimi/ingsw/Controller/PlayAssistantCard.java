@@ -41,5 +41,6 @@ public class PlayAssistantCard extends PlayerAction {
         PlayerBoard pb = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard sa = pb.getMutableAssistantCards().get(selectedAssistant);
         ctx.getMutableTurnOrder().setSelectedCard(pb, sa);
+        ctx.getMutableTurnOrder().stepToNextPlayer();
     }
 }
