@@ -31,9 +31,6 @@ public class MoveMotherNature extends PlayerAction {
         if (!super.validate(history, ctx)) {
             throw new GenericInputValidationException("Action", "this action can't be executed more than once or be executed by other player than the current");
         }
-        if (optionalAssistantCard.isEmpty()) {
-            throw new InvalidElementException(INPUT_NAME_ASSISTANT_CARD);
-        }
         if (
                 (history.stream().filter(playerAction -> playerAction.getClass() == PlayCharacterCard.class).count() == 0 &&
                         !(history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count() == maxCount)) ||

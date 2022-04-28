@@ -68,7 +68,6 @@ public class IslandField implements Serializable {
 
     protected void moveMotherNature(int moves) {
         motherNaturePosition = groups.get((groups.indexOf(motherNaturePosition) + moves) % groups.size());
-        System.out.println(motherNaturePosition);
     }
 
     public boolean joinGroups() {

@@ -8,6 +8,7 @@ import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.CharacterCard;
 import it.polimi.ingsw.Model.CharacterCardInput;
+import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -38,6 +39,9 @@ public class PlayCharacterCard extends PlayerAction {
     }
 
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+        if(ctx.getGameMode()== GameMode.SIMPLE){
+            throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD, INPUT_NAME_CHARACTER_CARD + "can't be played in simple mode");
+        }
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
 
         // generate the input object before validation

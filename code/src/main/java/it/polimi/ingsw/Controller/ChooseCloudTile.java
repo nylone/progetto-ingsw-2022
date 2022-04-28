@@ -9,8 +9,7 @@ import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.util.List;
 
-import static it.polimi.ingsw.Constants.CONTAINER_NAME_ENTRANCE;
-import static it.polimi.ingsw.Constants.INPUT_NAME_CLOUD;
+import static it.polimi.ingsw.Constants.*;
 
 public class ChooseCloudTile extends PlayerAction {
 
@@ -46,8 +45,8 @@ public class ChooseCloudTile extends PlayerAction {
                             + " element's without overflowing.");
         }
         if (selectedCloud.getContents().size() == 0) {
-            throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
-                    CONTAINER_NAME_ENTRANCE + "has already been emptied");
+            throw new GenericInputValidationException(CONTAINER_NAME_CLOUD,
+                    CONTAINER_NAME_CLOUD + " has already been emptied");
         }
         if (!super.validate(history, ctx)) {
             throw new GenericInputValidationException("Action", "this action can't be executed more than once or be executed by other player than the current");
