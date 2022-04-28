@@ -26,7 +26,6 @@ public class MoveStudent extends PlayerAction {
         this.destination = destination;
     }
 
-
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         // super.validate(history, ctx)
@@ -59,7 +58,7 @@ public class MoveStudent extends PlayerAction {
         if (!(countDuplicateActions(history) <= maxCount)) {
             throw new GenericInputValidationException("Action", "this action can't be executed more than " + maxCount + " times");
         }
-        if (caller.getEntranceStudents().get(this.selectedEntrancePosition) == null) { // todo implement optionals in getentrance
+        if (caller.getEntranceStudents().get(this.selectedEntrancePosition).isEmpty()) {
             throw new InvalidElementException("Target Entrance Position");
         }
 
@@ -79,7 +78,7 @@ public class MoveStudent extends PlayerAction {
         }
         // validate size of dining room
         if (this.destination.getDestinationType() == DestinationType.DININGROOM) {
-            if (caller.isDiningRoomFull(List.of(caller.getEntranceStudents().get(this.selectedEntrancePosition)))) {
+            if (caller.isDiningRoomFull(List.of(caller.getEntranceStudents().get(this.selectedEntrancePosition).get()))) {
                 throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
                         CONTAINER_NAME_DININGROOM + "can't contain the pawn without overflowing on the lane.");
             }
@@ -91,7 +90,7 @@ public class MoveStudent extends PlayerAction {
     @Override
     protected void unsafeExecute(GameBoard ctx) throws Exception {
         PawnColour toMove = ctx.getMutablePlayerBoardById(this.getPlayerBoardId())
-                .getEntranceStudents().get(this.selectedEntrancePosition);
+                .getEntranceStudents().get(this.selectedEntrancePosition).get();
         PlayerBoard pb = ctx.getMutablePlayerBoardById(this.getPlayerBoardId());
         // set entrance position to null
         pb.removeStudentFromEntrance(selectedEntrancePosition);
@@ -101,9 +100,7 @@ public class MoveStudent extends PlayerAction {
                 ctx.getMutableIslandField().getMutableIslandById(id)
                         .addStudent(toMove);
             }
-            case DININGROOM -> {
-                ctx.addStudentToDiningRoom(toMove, pb);
-            }
+            case DININGROOM -> ctx.addStudentToDiningRoom(toMove, pb);
         }
     }
 }

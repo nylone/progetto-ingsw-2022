@@ -70,7 +70,10 @@ public class Card07 extends StatefulEffect {
         // get user entrance counts per colour
         PlayerBoard me = input.getCaller();
         Map<PawnColour, Integer> entranceMap = new EnumMap<>(PawnColour.class); // counts user entrance total colours
-        for (PawnColour pawn : me.getEntranceStudents()) {
+        for (PawnColour pawn : me.getEntranceStudents().stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList()) {
             entranceMap.merge(pawn, 1, Integer::sum);
         }
         // make sure the elements coming from user (first) are also mapped to entrance

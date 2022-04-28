@@ -4,6 +4,7 @@ import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.FullContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
@@ -18,8 +19,7 @@ public class PlayerBoard implements Serializable {
     private final String nickname;
     private final AssistantCard[] assistantCards;
     private final Map<PawnColour, Integer> diningRoom;
-    private final ArrayList<PawnColour> entrance;
-    private final int entranceSize;
+    private final List<Optional<PawnColour>> entrance;
     private final int id;
     private int coinBalance;
 
@@ -35,11 +35,10 @@ public class PlayerBoard implements Serializable {
         for (PawnColour p : PawnColour.values()) {
             diningRoom.put(p, 0);
         }
-        this.entranceSize = numOfPlayers == 3 ? 9 : 7;
-        this.entrance = new ArrayList<>(entranceSize);
+        this.entrance = new ArrayList<>(numOfPlayers == 3 ? 9 : 7);
         if (numOfPlayers >= 2 && numOfPlayers <= 4) {
-            for (int i = 0; i < entranceSize; i++) {
-                entrance.add(studentBag.extract());
+            for (int i = 0; i < (numOfPlayers == 3 ? 9 : 7) ; i++) {
+                entrance.add(Optional.of(studentBag.extract()));
             }
         } else {
             throw new RuntimeException("Inconsistent number of players");
@@ -60,14 +59,16 @@ public class PlayerBoard implements Serializable {
     }
 
     public int getEntranceSpaceLeft() {
-        return entranceSize - entrance.size();
+        return (int) entrance.stream()
+                .filter(Optional::isEmpty)
+                .count();
     }
 
     public int getEntranceSize() {
-        return entranceSize;
+        return entrance.size();
     }
 
-    public List<PawnColour> getEntranceStudents() {
+    public List<Optional<PawnColour>> getEntranceStudents() {
         return List.copyOf(entrance);
     }
 
@@ -112,32 +113,39 @@ public class PlayerBoard implements Serializable {
     }
 
     public void addStudentsToEntrance(List<PawnColour> students) throws FullContainerException {
-        if (this.entrance.size() + students.size() > entranceSize) {
+        if (this.getEntranceSpaceLeft() + students.size() > getEntranceSize()) {
             // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
             throw new FullContainerException(CONTAINER_NAME_ENTRANCE);
         }
-        this.entrance.addAll(students);
+        for (PawnColour s: students) {
+            this.addStudentToEntrance(s);
+        }
     }
 
     public void addStudentToEntrance(PawnColour student) throws FullContainerException {
-        if (this.entrance.size() + 1 > entranceSize) {
+        if (this.getEntranceSpaceLeft() + 1 > this.getEntranceSize()) {
             // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
             throw new FullContainerException(CONTAINER_NAME_ENTRANCE);
         }
-        this.entrance.add(student);
+        for (int i = 0; i < this.getEntranceSize(); i++) {
+            if (this.entrance.get(i).isEmpty()) {
+                this.entrance.set(i, Optional.of(student));
+                return;
+            }
+        }
     }
 
     public void removeStudentFromEntrance(int pos) throws InvalidContainerIndexException {
-        if (pos < 0 && pos >= this.entranceSize && this.entrance.get(pos) == null) {
+        if (pos < 0 || pos >= this.getEntranceSize() || this.entrance.get(pos).isEmpty()) {
             throw new InvalidContainerIndexException(CONTAINER_NAME_ENTRANCE);
         }
-        this.entrance.remove(pos);
+        this.entrance.set(pos, Optional.empty());
     }
 
     public void removeStudentFromEntrance(PawnColour colour) throws InvalidElementException {
-        for (int i = 0; i < entranceSize; i++) {
-            if (entrance.get(i) == colour) {
-                entrance.remove(i);
+        for (int i = 0; i < this.getEntranceSize(); i++) {
+            if (entrance.get(i).equals(Optional.of(colour))) {
+                entrance.set(i, Optional.empty());
                 return;
             }
         }
