@@ -62,10 +62,6 @@ public class GameHandler {
         history.add(action);
     }
 
-    public void addCoinToBalance(int amount){
-        model.addCoinToReserve(amount);
-    }
-
 
     /**
      * @return an immutable copy of the list of player actions.<br>

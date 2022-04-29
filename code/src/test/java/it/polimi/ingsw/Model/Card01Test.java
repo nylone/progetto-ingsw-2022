@@ -38,6 +38,7 @@ public class Card01Test {
         if (card.checkInput(input)) card.unsafeApplyEffect(input);
         // assert
         assertTrue(island.getStudents().size() == expected + 1);
+        assertTrue(island.getStudents().contains(input.getTargetPawn().get()));
     }
 
     @Test(expected = InputValidationException.class)

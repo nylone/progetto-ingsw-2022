@@ -162,8 +162,16 @@ public class PlayerBoard implements Serializable {
         }
     }
 
+
     //test-purspose only
 
+    /**
+     * this method should only be called by a test
+     * @param balance
+     */
+    public void setCoinBalance(int balance){
+        this.coinBalance = balance;
+    }
     @Override
     public String toString() {
         return "PlayerBoard{" +

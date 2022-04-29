@@ -41,7 +41,9 @@ public class GameBoard implements Serializable {
             TurnOrder turnOrder,
             EffectTracker effects,
             List<Cloud> clouds,
-            List<CharacterCard> characterCards
+            List<CharacterCard> characterCards,
+            int coinReserve,
+            int coinPerPlayerBoard
     ) {
         this.islandField = islandField;
         this.gameMode = gameMode;
@@ -53,7 +55,7 @@ public class GameBoard implements Serializable {
         this.effects = effects;
         this.clouds = clouds;
         this.characterCards = characterCards;
-        this.coinReserve = 20 - playerBoards.size(); // hp: we assume 20 as amount of available coins just like the real game.
+        this.coinReserve = coinReserve - coinPerPlayerBoard*playerBoards.size();
     }
 
     public GameBoard(GameMode gameMode, String... playerNicknames) {
@@ -93,6 +95,9 @@ public class GameBoard implements Serializable {
                 System.out.println(e.getMessage());
             }
         }
+    }
+    public int getCoinReserve() {
+        return coinReserve;
     }
 
     // IMMUTABLE GETTERS //
@@ -228,6 +233,8 @@ public class GameBoard implements Serializable {
             }
         }
     }
+
+
 
     public void addStudentToDiningRoom(PawnColour colour, PlayerBoard me) throws FullContainerException {
         boolean shouldGiveCoin = me.addStudentToDiningRoom(colour);

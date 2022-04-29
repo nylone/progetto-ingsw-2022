@@ -15,8 +15,7 @@ import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.util.List;
 
-import static it.polimi.ingsw.Constants.INPUT_NAME_CHARACTER_CARD;
-import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_ISLAND;
+import static it.polimi.ingsw.Constants.*;
 
 public class PlayCharacterCard extends PlayerAction {
 
@@ -43,6 +42,9 @@ public class PlayCharacterCard extends PlayerAction {
             throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD, INPUT_NAME_CHARACTER_CARD + "can't be played in simple mode");
         }
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
+        if(ctx.getMutableTurnOrder().getMutableSelectedCard(caller).isEmpty()){
+            throw new GenericInputValidationException(HISTORY, "No PlayAssistantCard has been played");
+        }
 
         // generate the input object before validation
         CharacterCardInput cardInput;
@@ -73,9 +75,9 @@ public class PlayCharacterCard extends PlayerAction {
         CharacterCard characterCard = ctx.getCharacterCards().get(this.selectedCard);
         caller.payCharacterEffect(characterCard.getCost());
         if (characterCard.getTimeUsed() > 0) {
-           // ctx.addToCoinReserve(characterCard.getCost());
+           ctx.addCoinToReserve(characterCard.getCost());
         } else {
-           // ctx.addToCoinReserve(characterCard.getCost() - 1); //the first time, one coin has to be placed on the card and not in the coin reserve
+           ctx.addCoinToReserve(characterCard.getCost() - 1); //the first time, one coin has to be placed on the card and not in the coin reserve
         }
         try {
             characterCard.unsafeUseCard(generateCharacterCardInput(caller, ctx));

@@ -171,7 +171,7 @@ public class ChooseCloudTileTest {
         List<CharacterCard> characterCards = new ArrayList<>();
         GameBoard gameBoard = new GameBoard(new IslandField(),GameMode.ADVANCED,studentBag, players, new EnumMap<>(PawnColour.class),
                                             new TeamMapper(players), new TurnOrder(players.toArray(new PlayerBoard[0])),new EffectTracker(), clouds,
-                                            characterCards );
+                                            characterCards,20,1 );
         gameBoard.refillClouds();
         characterCards.add(new Card04(gameBoard));
         characterCards.add(new Card09(gameBoard));
@@ -243,7 +243,7 @@ public class ChooseCloudTileTest {
         List<CharacterCard> characterCards = new ArrayList<>();
         GameBoard gameBoard = new GameBoard(new IslandField(),GameMode.SIMPLE,studentBag, players, new EnumMap<>(PawnColour.class),
                 new TeamMapper(players), new TurnOrder(players.toArray(new PlayerBoard[0])),new EffectTracker(), clouds,
-                characterCards );
+                characterCards,20,1);
         GameHandler gh = new GameHandler(gameBoard,new ArrayList<>());
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());

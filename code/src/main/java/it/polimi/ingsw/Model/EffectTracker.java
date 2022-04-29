@@ -56,7 +56,7 @@ public class EffectTracker implements Serializable {
     }
 
     public boolean isAlternativeTeacherAssignmentEnabled() {
-        return increasedMotherNatureMovement;
+        return alternativeTeacherAssignmente;
     }
 
     public boolean isPawnColourDenied() {
