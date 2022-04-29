@@ -10,7 +10,6 @@ public class Card06And08Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
     Card06 card06 = new Card06(gb);
     Card08 card08 = new Card08(gb);
-    PlayerBoard pb = new PlayerBoard(1, 2, "ari", gb.getMutableStudentBag());
 
     @Test
     public void checkUse06() throws Exception {

@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.FullContainerException;
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
@@ -56,19 +57,9 @@ public class PlayerBoardTest {
         playerBoard.removeStudentsFromDiningRoom(PawnColour.RED, 1);
     }
 
-    @Test(expected = FullContainerException.class)
-    public void addStudentException() throws FullContainerException {
-        PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
-        for (int i = 0; i < 10; i++) {
-            playerBoard.addStudentToDiningRoom(PawnColour.RED);
-        }
-
-        //adding an eleventh pawn
-        playerBoard.addStudentToDiningRoom(PawnColour.RED);
-    }
 
     @Test
-    public void sizeIncreasedAfterAddingStudentToEntrance() {
+    public void FullEntranceException() {
         // arrange
         PlayerBoard playerBoard = new PlayerBoard(2, 4, "teo", new StudentBag(50));
         ArrayList<PawnColour> expected = new ArrayList<>();
@@ -77,11 +68,22 @@ public class PlayerBoardTest {
         // act
         try {
             playerBoard.addStudentsToEntrance(expected);
-            fail();
         } catch (FullContainerException e) {
             // assert
             assertEquals("An error occurred on: Entrance\n" +
                     "The error was: Entrance was found full.", e.getMessage());
+        }
+    }
+
+    @Test
+    public void InvalidEntrancePositionException() throws Exception{
+        PlayerBoard playerBoard = new PlayerBoard(2, 4, "teo", new StudentBag(24));
+        playerBoard.removeStudentFromEntrance(0);
+        try {
+            playerBoard.removeStudentFromEntrance(0);
+        }catch (InvalidContainerIndexException exception){
+            assertEquals("An error occurred on: Entrance\n" +
+                    "The error was: provided index is out of bounds or no valid value could be retrieved.", exception.getMessage());
         }
     }
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.ContainerException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -27,7 +28,7 @@ public class Card10Test {
         pb.removeStudentFromEntrance(0);
         pb.removeStudentsFromDiningRoom(PawnColour.RED, 1);
         pairs.add(new Pair<>(pb.getEntranceStudents().get(1).get(), PawnColour.YELLOW));
-        pb.removeStudentFromEntrance(0);
+        pb.removeStudentFromEntrance(1);
         pb.removeStudentsFromDiningRoom(PawnColour.YELLOW, 1);
         Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
         input.setTargetPawnPairs(pairs.toArray(pairsArray));
@@ -35,7 +36,7 @@ public class Card10Test {
 
         assertTrue(pb.getDiningRoomCount(pairs.get(0).getFirst()) == 1 || pb.getDiningRoomCount(pairs.get(0).getFirst()) == 2); //equals 2 if students taken from entrance have the same colour
         assertTrue(pb.getDiningRoomCount(pairs.get(1).getFirst()) == 1 || pb.getDiningRoomCount(pairs.get(1).getFirst()) == 2);
-        assertTrue(pb.getEntranceStudents().containsAll(pairs.stream().map(p -> p.getSecond()).toList()));
+        assertTrue(pb.getEntranceStudents().containsAll(pairs.stream().map(p -> Optional.of(p.getSecond())).toList()));
     }
 
     @Test(expected = InputValidationException.class)

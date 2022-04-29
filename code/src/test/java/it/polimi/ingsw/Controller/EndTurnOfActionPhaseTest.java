@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Exceptions.Input.DuplicateElementException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
-import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -66,9 +64,6 @@ public class EndTurnOfActionPhaseTest {
         EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(player.getId());
         gh.executeAction(endTurnOfActionPhase);
         gameBoard = gh.getModelCopy();
-        PlayerBoard player2 = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        System.out.println("CURRENT:"+player2);
-        List<PlayerBoard> playerBoardList = gameBoard.getMutableTurnOrder().getCurrentTurnOrder();
         //asserts
         assertTrue(gameBoard.getClouds().stream().filter(cloud -> cloud.getContents().size()==3).count() == gameBoard.getClouds().size()-1);
         //assertTrue();

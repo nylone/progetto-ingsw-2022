@@ -44,7 +44,8 @@ public class Card12 extends StatelessEffect {
     }
 
     //test purpose only
-    public String toDebugString() {
+    @Override
+    public String toString() {
         return "Card12{" +
                 "id=" + id +
                 ", cost=" + cost +

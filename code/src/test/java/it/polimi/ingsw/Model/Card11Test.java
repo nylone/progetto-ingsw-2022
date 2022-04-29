@@ -11,17 +11,12 @@ import static org.junit.Assert.*;
 public class Card11Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
     Card11 card11 = new Card11(gb);
-    PlayerBoard pb = new PlayerBoard(1, 2, "ari", gb.getMutableStudentBag());
 
     @Test
     public void checkUse() throws Exception {
         assertTrue(card11.getState().size() == 4);
         assertTrue(card11.getStateType() == StateType.PAWNCOLOUR);
 
-        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(0));
-        gb.getMutableTurnOrder().stepToNextPlayer();
-        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(6));
-        gb.getMutableTurnOrder().commitTurnOrder();
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
 
         CharacterCardInput input = new CharacterCardInput(pb);
@@ -35,10 +30,6 @@ public class Card11Test {
 
     @Test(expected = InputValidationException.class)
     public void checkExceptionInput() throws Exception {
-        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(0));
-        gb.getMutableTurnOrder().stepToNextPlayer();
-        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(6));
-        gb.getMutableTurnOrder().commitTurnOrder();
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCardInput input = new CharacterCardInput(pb);
         if (card11.checkInput(input)) card11.unsafeApplyEffect(input);
@@ -46,10 +37,6 @@ public class Card11Test {
 
     @Test
     public void checkFullDiningRoom() throws Exception {
-        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(0));
-        gb.getMutableTurnOrder().stepToNextPlayer();
-        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(6));
-        gb.getMutableTurnOrder().commitTurnOrder();
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
 
         CharacterCardInput input = new CharacterCardInput(pb);

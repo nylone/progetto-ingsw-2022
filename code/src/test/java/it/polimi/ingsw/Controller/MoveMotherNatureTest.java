@@ -262,12 +262,10 @@ public class MoveMotherNatureTest {
 
         int randomMovement = new Random().nextInt(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement());
         randomMovement = randomMovement == 0 ? 1 : randomMovement;
-        IslandGroup initialPosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
         PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
         // act
         List<IslandGroup> groups = gameBoard.getMutableIslandField().getMutableGroups();
         gh.executeAction(action);
-        gameBoard = gh.getModelCopy();
         try {
             gh.executeAction(action);
         }catch (GenericInputValidationException exception){
