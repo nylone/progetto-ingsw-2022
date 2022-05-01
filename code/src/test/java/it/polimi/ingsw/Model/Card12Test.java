@@ -25,10 +25,6 @@ public class Card12Test {
 
     @Test(expected = InputValidationException.class)
     public void checkEmptyInput() throws Exception {
-        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(0));
-        gb.getMutableTurnOrder().stepToNextPlayer();
-        gb.getMutableTurnOrder().setSelectedCard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb.getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards().get(6));
-        gb.getMutableTurnOrder().commitTurnOrder();
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCardInput input = new CharacterCardInput(pb);
         if (card.checkInput(input)) card.unsafeApplyEffect(input);

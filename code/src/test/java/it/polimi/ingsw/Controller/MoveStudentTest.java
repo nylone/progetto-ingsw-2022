@@ -108,15 +108,12 @@ public class MoveStudentTest {
         MoveDestination destination = MoveDestination.toDiningRoom();
         MoveStudent moveStudent = new MoveStudent(player.getId(), 0, destination);
         gh.executeAction(moveStudent);
-        gameBoard = gh.getModelCopy();
         destination = MoveDestination.toDiningRoom();
         moveStudent = new MoveStudent(player.getId(), 1, destination);
         gh.executeAction(moveStudent);
-        gameBoard = gh.getModelCopy();
         destination = MoveDestination.toDiningRoom();
         moveStudent = new MoveStudent(player.getId(), 2, destination);
         gh.executeAction(moveStudent);
-        gameBoard = gh.getModelCopy();
         destination = MoveDestination.toDiningRoom();
         moveStudent = new MoveStudent(player.getId(), 3 , destination);
         try {

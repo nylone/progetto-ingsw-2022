@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Misc.Optional;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 
+import static it.polimi.ingsw.Constants.CONTAINER_NAME_ENTRANCE;
 import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_PAIRS;
 import static it.polimi.ingsw.Misc.Utils.canCollectionFit;
 
@@ -45,7 +47,7 @@ public class Card07 extends StatefulEffect {
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from card
         Optional<Pair<PawnColour, PawnColour>[]> optionalPawnPair = input.getTargetPawnPairs();
-
+        PlayerBoard playerBoard = input.getCaller();
         // make sure the pair is formatted properly
         if (
                 optionalPawnPair.isEmpty() || // target pawn pairs was set as parameter
@@ -56,6 +58,7 @@ public class Card07 extends StatefulEffect {
             // in case throw exception for invalid element in input
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
         }
+
 
         // explode pawnpairs into respective arrays of elements
         Pair<PawnColour, PawnColour>[] pawnPairs = optionalPawnPair.get();
@@ -89,6 +92,11 @@ public class Card07 extends StatefulEffect {
         // make sure the elements coming from card (second) are also mapped to the card state
         if (!canCollectionFit(cardMap, secondMap)) {
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
+        }
+        if (playerBoard.getEntranceSpaceLeft()+pawnPairs.length >= input.getCaller().getEntranceSize()) {
+            throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
+                    CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.length
+                            + "pawns");
         }
 
         return true;

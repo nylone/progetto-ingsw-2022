@@ -117,8 +117,14 @@ public class PlayerBoard implements Serializable {
             // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
             throw new FullContainerException(CONTAINER_NAME_ENTRANCE);
         }
-        for (PawnColour s: students) {
-            this.addStudentToEntrance(s);
+        int cont=0;
+        for(int i=0; i<this.getEntranceSize(); i++){
+            if(this.entrance.get(i).isEmpty()){
+                this.entrance.set(i,Optional.of(students.get(cont)));
+                if(cont==students.size()-1){
+                    break;
+                }else{cont++;}
+            }
         }
     }
 

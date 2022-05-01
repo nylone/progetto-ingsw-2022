@@ -19,6 +19,7 @@ public class Card09Test {
 
         if (card09.checkInput(input)) card09.unsafeApplyEffect(input);
 
+        assertTrue(gb.getMutableEffects().isPawnColourDenied());
         assertTrue(gb.getMutableEffects().getDeniedPawnColour().get().equals(p));
     }
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.ContainerException;
+import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Pair;
@@ -25,11 +26,7 @@ public class Card10Test {
         pb.addStudentToDiningRoom(PawnColour.YELLOW);
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
         pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.RED));
-        pb.removeStudentFromEntrance(0);
-        pb.removeStudentsFromDiningRoom(PawnColour.RED, 1);
         pairs.add(new Pair<>(pb.getEntranceStudents().get(1).get(), PawnColour.YELLOW));
-        pb.removeStudentFromEntrance(1);
-        pb.removeStudentsFromDiningRoom(PawnColour.YELLOW, 1);
         Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
         input.setTargetPawnPairs(pairs.toArray(pairsArray));
         if (card10.checkInput(input)) card10.unsafeUseCard(input);
@@ -55,10 +52,7 @@ public class Card10Test {
 
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
         pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.RED));
-        pb.removeStudentFromEntrance(0);
-        pb.removeStudentsFromDiningRoom(PawnColour.RED, 1);
         pairs.add(new Pair<>(null, PawnColour.YELLOW));
-        pb.removeStudentsFromDiningRoom(PawnColour.YELLOW, 1);
         if (card10.checkInput(input)) card10.unsafeApplyEffect(input);
     }
 
@@ -68,25 +62,29 @@ public class Card10Test {
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         pb.addStudentToDiningRoom(PawnColour.RED);
         pb.addStudentToDiningRoom(PawnColour.YELLOW);
+        for(int i=1; i<pb.getEntranceSize(); i++){
+            pb.removeStudentFromEntrance(i);
+        }
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
         pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.RED));
-        pb.removeStudentsFromDiningRoom(PawnColour.RED, 1);
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.YELLOW));
         Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
         input.setTargetPawnPairs(pairs.toArray(pairsArray));
         if (card10.checkInput(input)) card10.unsafeUseCard(input);
     }
 
-    @Test(expected = InputValidationException.class)
+    @Test(expected = GenericInputValidationException.class)
     public void checkInvalidDiningRoomSize() throws Exception {
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         pb.addStudentToDiningRoom(PawnColour.RED);
-        List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
-        pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.RED));
-        pb.removeStudentsFromDiningRoom(PawnColour.RED, 1);
-        for (int i = 0; i < 10; i++)
-            pb.addStudentToDiningRoom(pb.getEntranceStudents().get(0).get());
+        pb.addStudentToDiningRoom(PawnColour.BLUE);
         pb.removeStudentFromEntrance(0);
+        pb.addStudentsToEntrance(List.of(PawnColour.RED));
+        List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
+        pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.BLUE));
+        for (int i = 0; i < 9; i++)
+            pb.addStudentToDiningRoom(pb.getEntranceStudents().get(0).get());
         Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
         input.setTargetPawnPairs(pairs.toArray(pairsArray));
         if (card10.checkInput(input)) card10.unsafeUseCard(input);
