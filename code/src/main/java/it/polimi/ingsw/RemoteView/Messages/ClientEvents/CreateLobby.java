@@ -1,6 +1,8 @@
-package it.polimi.ingsw.Server.Messages.ClientMessages;
+package it.polimi.ingsw.RemoteView.Messages.ClientEvents;
 
-public class CreateLobby extends Request {
+import it.polimi.ingsw.RemoteView.Messages.PayloadType;
+
+public class CreateLobby extends Event {
     private final boolean isPublic;
     private final byte maxPlayers;
 
@@ -15,5 +17,10 @@ public class CreateLobby extends Request {
 
     public byte getMaxPlayers() {
         return maxPlayers;
+    }
+
+    @Override
+    public PayloadType getPayloadType() {
+        return PayloadType.REQUEST_CREATE_LOBBY;
     }
 }

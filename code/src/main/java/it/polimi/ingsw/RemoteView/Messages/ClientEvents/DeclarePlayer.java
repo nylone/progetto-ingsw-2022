@@ -1,6 +1,8 @@
-package it.polimi.ingsw.Server.Messages.ClientMessages;
+package it.polimi.ingsw.RemoteView.Messages.ClientEvents;
 
-public class DeclarePlayer extends Request {
+import it.polimi.ingsw.RemoteView.Messages.PayloadType;
+
+public class DeclarePlayer extends Event {
     private final String nickname;
     private final String password;
 
@@ -15,5 +17,10 @@ public class DeclarePlayer extends Request {
 
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public PayloadType getPayloadType() {
+        return PayloadType.REQUEST_DECLARE_PLAYER;
     }
 }

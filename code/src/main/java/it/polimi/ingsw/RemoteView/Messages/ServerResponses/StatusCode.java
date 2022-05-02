@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Server.Messages.Enums;
+package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
 /**
  * StatusCode represents the a status.
