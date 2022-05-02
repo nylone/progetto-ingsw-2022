@@ -1,17 +1,12 @@
-package it.polimi.ingsw.Server.Messages.Enums;
+package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
 /**
  * StatusCode represents the a status.
  * A status can be:
- * {@link #Query}<br>
  * {@link #Success}<br>
  * {@link #Fail}
  */
 public enum StatusCode {
-    /**
-     * Status: waiting for an answer
-     */
-    Query,
     /**
      * Status: positive outcome
      */

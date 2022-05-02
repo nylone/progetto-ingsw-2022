@@ -12,7 +12,6 @@ public class Utils {
     }
 
     public static <T> List<T> random(List<T> list, int size) {
-        Random r = new Random();
         List<T> sublist = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             sublist.add(random(list));
