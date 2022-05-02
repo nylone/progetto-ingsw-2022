@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.Server.Messages.Enums.StatusCode;
+import it.polimi.ingsw.Server.Messages.ServerMessages.WelcomeServerAccept;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -35,9 +38,11 @@ public class WelcomeServer implements Runnable {
             while (true) {
                 System.out.println("Listening for connections...");
                 Socket connection = this.socket.accept();
-                System.out.println("New connection detected from:" +
-                        connection.getInetAddress() + connection.getPort());
-                this.lobbyServer.handle(connection);
+                System.out.println("New connection detected from: " +
+                        connection.getInetAddress() + ":" + connection.getPort());
+                SocketWrapper sw = new SocketWrapper(connection);
+                sw.sendResponse(new WelcomeServerAccept(StatusCode.Success));
+                this.lobbyServer.asyncHandle(sw);
             }
         } catch (IOException e) {
             e.printStackTrace();

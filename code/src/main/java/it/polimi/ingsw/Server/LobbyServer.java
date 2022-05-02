@@ -1,39 +1,74 @@
 package it.polimi.ingsw.Server;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.Controller.GameHandler;
+import it.polimi.ingsw.Server.Messages.ClientMessages.ConnectLobby;
+import it.polimi.ingsw.Server.Messages.ClientMessages.CreateLobby;
+import it.polimi.ingsw.Server.Messages.ClientMessages.DeclarePlayer;
+import it.polimi.ingsw.Server.Messages.ClientMessages.Request;
 import it.polimi.ingsw.Server.Messages.Enums.StatusCode;
-import it.polimi.ingsw.Server.Messages.Message;
-import it.polimi.ingsw.Server.Messages.ServerMessages.ConnectionResult;
+import it.polimi.ingsw.Server.Messages.ServerMessages.LobbyServerAccept;
 
-import java.io.*;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class LobbyServer {
-    private final Map<Integer, Integer> lobbies;
-    private final Map<Integer, GameHandler> games;
+    private final Set<Integer> availableLobbies;
+
+    private final Map<String, String> registeredNicknames; // maps username to password
+    private final Map<SocketWrapper, String> socketToName;
+    private final Map<SocketWrapper, Integer> socketToGameID;
+    private final Map<Integer, GameHandler> gameIDToGameHandler;
 
     public LobbyServer() {
-        this.lobbies = new HashMap<>();
-        this.games = new HashMap<>();
+        this.availableLobbies = new HashSet<>();
+        this.registeredNicknames = new HashMap<>();
+        this.socketToName = new HashMap<>();
+        this.socketToGameID = new HashMap<>();
+        this.gameIDToGameHandler = new HashMap<>();
     }
 
-    protected void handle(Socket connection) {
+    protected void asyncHandle(SocketWrapper sw) {
         new Thread(() -> {
             try {
-                // get the input stream
-                InputStream inputStream = connection.getInputStream();
-                BufferedReader input = new BufferedReader(new InputStreamReader(inputStream));
-                // get the output stream
-                OutputStream outputStream = connection.getOutputStream();
-                // get serializer/deserializer
-                Gson gson = new GsonBuilder().create();
-                outputStream.write(gson.toJson(new ConnectionResult(StatusCode.Success)).getBytes(StandardCharsets.UTF_8));
-                System.out.println(gson.fromJson(input, Message.class).getHumanMeaning());
+                // accept phase: wait for valid nickname
+                while (true) {
+                    DeclarePlayer message = sw.awaitRequest(DeclarePlayer.class);
+                    String nickname = message.getNickname();
+                    String password = message.getPassword();
+                    if (this.registeredNicknames.get(nickname) == null) {
+                        sw.sendResponse(new LobbyServerAccept(StatusCode.Fail));
+                    } else {
+                        this.registeredNicknames.put(nickname, password);
+                        this.socketToName.put(sw, nickname);
+                        sw.sendResponse(new LobbyServerAccept(StatusCode.Success));
+                        break;
+                    }
+                }
+                // redirect phase: wait for valid lobby action
+                // either:
+                // - create
+                // - join
+                // - join started game (todo)
+                while (true) {
+                    Request request = sw.awaitRequest(Request.class);
+                    switch (request) {
+                        case ConnectLobby connectLobby: {
+                        }
+                        case CreateLobby createLobby: {
+                        }
+                    }
+                    if (this.registeredNicknames.contains(nickname)) {
+                        sw.sendResponse(new LobbyServerAccept(StatusCode.Fail));
+                    } else {
+                        this.registeredNicknames.add(nickname);
+                        this.socketToName.put(sw, nickname);
+                        sw.sendResponse(new LobbyServerAccept(StatusCode.Success));
+                        break;
+                    }
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
