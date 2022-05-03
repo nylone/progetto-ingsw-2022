@@ -32,11 +32,21 @@ public class Lobby {
 
     public boolean addPlayer(String nick, ClientEventHandler playerChannel) {
         synchronized (this.waitingPlayers) {
-            if (this.maxPlayers > this.waitingPlayers.size()) {
+            // in case of reconnection
+            if (this.waitingPlayers.contains(nick)) {
+                if (!this.playerEventSources.containsKey(nick)) {
+                    this.playerEventSources.put(nick, playerChannel);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else if (this.maxPlayers > this.waitingPlayers.size()) {
                 this.waitingPlayers.add(nick);
                 this.playerEventSources.put(nick, playerChannel);
                 return true;
-            } else return false;
+            } else {
+                return false;
+            }
         }
     }
 
