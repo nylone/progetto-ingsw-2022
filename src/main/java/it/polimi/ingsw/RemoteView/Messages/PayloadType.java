@@ -62,4 +62,5 @@ public enum PayloadType {
      * {@link it.polimi.ingsw.RemoteView.Messages.ServerResponses.GameStart} response.
      */
     REQUEST_CONNECT_LOBBY,
+    REQUEST_START_GAME,
 }

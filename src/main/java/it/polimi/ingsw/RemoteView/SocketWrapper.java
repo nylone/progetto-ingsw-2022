@@ -9,6 +9,7 @@ import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -77,5 +78,9 @@ public class SocketWrapper {
 
     public boolean isClosed() {
         return this.sock.isClosed();
+    }
+
+    public InetAddress getInetAddress() {
+        return sock.getInetAddress();
     }
 }

@@ -1,18 +1,21 @@
 package it.polimi.ingsw.RemoteView;
 
+import it.polimi.ingsw.Model.Enums.GameMode;
+import it.polimi.ingsw.RemoteView.Messages.ClientEvents.GameStarted;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Lobby {
+public class WaitingLobby {
     private final String admin;
     private final boolean isPublic;
     private final int maxPlayers;
     private final List<String> waitingPlayers;
     private final Map<String, ClientEventHandler> playerEventSources;
 
-    public Lobby(boolean isPublic, int maxPlayers, String admin, ClientEventHandler adminChannel) {
+    protected WaitingLobby(boolean isPublic, int maxPlayers, String admin, ClientEventHandler adminChannel) {
         this.admin = admin;
         this.isPublic = isPublic;
         this.maxPlayers = maxPlayers;
@@ -22,15 +25,15 @@ public class Lobby {
         this.playerEventSources.put(admin, adminChannel);
     }
 
-    public String getAdmin() {
+    protected String getAdmin() {
         return admin;
     }
 
-    public boolean isPublic() {
+    protected boolean isPublic() {
         return isPublic;
     }
 
-    public boolean addPlayer(String nick, ClientEventHandler playerChannel) {
+    protected boolean addPlayer(String nick, ClientEventHandler playerChannel) {
         synchronized (this.waitingPlayers) {
             // in case of reconnection
             if (this.waitingPlayers.contains(nick)) {
@@ -50,10 +53,14 @@ public class Lobby {
         }
     }
 
-    public ClientEventHandler removePlayerHandler(String nick) {
+    protected void removePlayerHandler(String nick) {
         synchronized (this.waitingPlayers) {
-            return this.playerEventSources.remove(nick);
+            this.playerEventSources.remove(nick);
         }
+    }
+
+    protected GameLobby getGameLobby(GameMode gameMode) {
+        return new GameLobby(gameMode, this.waitingPlayers, this.playerEventSources);
     }
 
 }

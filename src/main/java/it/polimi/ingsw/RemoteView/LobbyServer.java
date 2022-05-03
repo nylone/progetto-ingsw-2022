@@ -10,15 +10,18 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 public class LobbyServer implements ClientEventListener {
     private static final Map<String, String> nickToPass = new ConcurrentHashMap<>(); // maps username to password
-    private static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
+    private static final Map<UUID, WaitingLobby> waitingLobbyMap = new ConcurrentHashMap<>();
+    private static final Map<UUID, GameLobby> gameLobbyMap = new ConcurrentHashMap<>();
 
     private final SocketWrapper sw;
     private ClientEventHandler eventHandler;
     private String nickname;
-    private Lobby currentLobby;
+    private WaitingLobby currentLobby;
+    private UUID currentLobbyID;
     private State state;
 
     private LobbyServer(SocketWrapper sw) {
@@ -34,17 +37,24 @@ public class LobbyServer implements ClientEventListener {
 
     @Override
     public synchronized void receive(ClientEvent event) {
+        Logger log = Logger.getLogger(this.getClass().getName());
+        log.info("Lobby server received a new Event: " + event.getClass());
         // if a client has disconnected reset the lobby
         if (event.getClass() == ClientDisconnect.class) {
             this.currentLobby.removePlayerHandler(this.nickname);
             this.eventHandler = null;
-            System.out.println("Lobby server was closed for player: " + nickname);
+            log.info("Lobby server was closed for player: " +
+                    nickname +
+                    " on address " +
+                    this.sw.getInetAddress());
+            return;
         }
 
         try {
             switch (this.state) {
                 case Accepting -> acceptPhase(event);
                 case Redirecting -> redirectPhase(event);
+                case Waiting -> waitPhase(event);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,38 +82,55 @@ public class LobbyServer implements ClientEventListener {
         // either:
         // - create
         // - join
-        // - join started game (todo)
+        // TODO - join started game
         switch (clientEvent) {
             case CreateLobby castedEvent -> {
                 if (castedEvent.getMaxPlayers() < 1 || castedEvent.getMaxPlayers() > 4) {
                     sw.sendMessage(LobbyServerRedirect.fail());
                     break;
                 }
-                this.currentLobby = new Lobby(
+                this.currentLobby = new WaitingLobby(
                         castedEvent.isPublic(),
                         castedEvent.getMaxPlayers(),
                         nickname,
                         this.getEventHandler()
                 );
-                // get a new lobby id
-                // put if absent adds the mapping to the object only if it's not yet been mapped.
-                // in case the action is run positively the return value will be null.
-                // so we cycle until we get a null, generating new ids along the way.
-                UUID id = UUID.randomUUID();
-                for (; lobbyMap.putIfAbsent(id, this.currentLobby) != null; id = UUID.randomUUID()) ;
-                sw.sendMessage(LobbyServerRedirect.success(id));
+
+                this.currentLobbyID = generateUUID();
                 this.state = State.Waiting;
+                sw.sendMessage(LobbyServerRedirect.success(this.currentLobbyID));
             }
                 case ConnectLobby castedEvent -> {
                     UUID id = castedEvent.getCode();
-                    if (!lobbyMap.containsKey(id) || !lobbyMap.get(id).addPlayer(nickname, this.getEventHandler())) {
+                    if (!waitingLobbyMap.containsKey(id) || !waitingLobbyMap.get(id).addPlayer(nickname, this.getEventHandler())) {
                         sw.sendMessage(LobbyServerRedirect.fail());
                         break;
                     }
-                    this.currentLobby = lobbyMap.get(id);
+                    this.currentLobby = waitingLobbyMap.get(id);
                     sw.sendMessage(LobbyServerRedirect.success(id));
                     this.state = State.Waiting;
                 }
+            case default -> sw.sendMessage(new InvalidRequest());
+        }
+    }
+
+    private void waitPhase(ClientEvent clientEvent) throws IOException {
+        // wait phase: wait for valid lobby action
+        // either:
+        // - start (only from admin)
+        // - start (as admin event reaction)
+        switch (clientEvent) {
+            case StartGame castedEvent -> {
+                GameLobby gameLobby = this.currentLobby.getGameLobby(castedEvent.getGameMode());
+                waitingLobbyMap.remove(this.currentLobbyID);
+                gameLobbyMap.put(this.currentLobbyID, gameLobby);
+                gameLobby.startGame();
+                // todo send message saying server is starting
+            }
+            case GameStarted castedEvent -> {
+                // todo create a new GameServer and change listener on the handler to that
+                // todo send message to client saying server has started
+            }
             case default -> sw.sendMessage(new InvalidRequest());
         }
     }
@@ -116,5 +143,13 @@ public class LobbyServer implements ClientEventListener {
         Accepting,
         Redirecting,
         Waiting,
+    }
+
+    private static UUID generateUUID() {
+        UUID id = UUID.randomUUID();
+        while (waitingLobbyMap.containsKey(id) || gameLobbyMap.containsKey(id)) {
+            id = UUID.randomUUID();
+        }
+        return id;
     }
 }

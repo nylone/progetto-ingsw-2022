@@ -9,13 +9,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Logger;
 
 public class ClientProber {
     public static void main(String... args) throws IOException {
+        Logger log = Logger.getLogger(ClientProber.class.getName());
         Socket connection = new Socket("127.0.0.1", 8080);
         BufferedOutputStream outputStream = new BufferedOutputStream(connection.getOutputStream());
         BufferedReader inputStream = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        System.out.println(inputStream.readLine());
+        log.info(inputStream.readLine());
         System.in.read();
 
         DeclarePlayer dp = new DeclarePlayer("pablo", "pablito");

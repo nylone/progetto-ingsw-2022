@@ -7,14 +7,14 @@ import java.util.concurrent.BlockingQueue;
 
 public class ClientEventHandler {
     private final BlockingQueue<ClientEvent> queue;
-    private final ClientEventListener eventListener;
+    private ClientEventListener eventListener;
 
-    public ClientEventHandler(ClientEventListener eventListener) {
-        this.queue = new ArrayBlockingQueue<>(2);
+    protected ClientEventHandler(ClientEventListener eventListener) {
+        this.queue = new ArrayBlockingQueue<>(10);
         this.eventListener = eventListener;
     }
 
-    public void enqueue(ClientEvent event) throws InterruptedException {
+    protected void enqueue(ClientEvent event) throws InterruptedException {
         this.queue.put(event);
         new Thread(() -> {
             try {
@@ -24,5 +24,9 @@ public class ClientEventHandler {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    protected void changeListener(ClientEventListener eventListener) {
+        this.eventListener = eventListener;
     }
 }
