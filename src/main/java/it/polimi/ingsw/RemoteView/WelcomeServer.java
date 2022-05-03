@@ -33,10 +33,7 @@ public class WelcomeServer implements Runnable {
     public void run() {
         while (true) {
             try {
-                Socket connection = this.socket.accept();
-                System.out.println("New connection detected from: " +
-                        connection.getInetAddress() + ":" + connection.getPort());
-                SocketWrapper sw = new SocketWrapper(connection);
+                SocketWrapper sw = new SocketWrapper(this.socket);
                 sw.sendMessage(new WelcomeServerAccept(StatusCode.Success));
                 LobbyServer.spawn(sw);
             } catch (IOException e) {

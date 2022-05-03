@@ -9,6 +9,7 @@ import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
@@ -23,6 +24,17 @@ public class SocketWrapper {
 
         // get the input reader
         this.input = new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8);
+        this.jsonReader = new JsonReader(this.input);
+
+        // get output writer
+        this.output = new BufferedOutputStream(this.sock.getOutputStream());
+    }
+
+    public SocketWrapper(ServerSocket serverSocket) throws IOException {
+        this.sock = serverSocket.accept();
+
+        // get the input reader
+        this.input = new InputStreamReader(this.sock.getInputStream(), StandardCharsets.UTF_8);
         this.jsonReader = new JsonReader(this.input);
 
         // get output writer
