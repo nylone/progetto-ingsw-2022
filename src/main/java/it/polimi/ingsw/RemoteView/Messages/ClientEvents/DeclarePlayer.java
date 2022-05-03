@@ -1,8 +1,9 @@
 package it.polimi.ingsw.RemoteView.Messages.ClientEvents;
 
+import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 
-public class DeclarePlayer extends Event {
+public class DeclarePlayer extends ClientEvent implements MessageBuilder {
     private final String nickname;
     private final String password;
 

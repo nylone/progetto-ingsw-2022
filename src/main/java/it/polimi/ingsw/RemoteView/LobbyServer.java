@@ -1,102 +1,120 @@
 package it.polimi.ingsw.RemoteView;
 
 import it.polimi.ingsw.RemoteView.Messages.ClientEvents.*;
-import it.polimi.ingsw.RemoteView.Messages.ClientEvents.Event;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyServerRedirect;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.StatusCode;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.InvalidRequest;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyServerAccept;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyServerRedirect;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.StatusCode;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.BlockingQueue;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.SynchronousQueue;
 
-public class LobbyServer {
+public class LobbyServer implements ClientEventListener {
     private static final Map<String, String> nickToPass = new ConcurrentHashMap<>(); // maps username to password
     private static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
 
     private final SocketWrapper sw;
-    private final BlockingQueue<Event> eventQueue;
+    private ClientEventHandler eventHandler;
     private String nickname;
+    private Lobby currentLobby;
+    private State state;
 
-    public LobbyServer(SocketWrapper sw) {
+    private LobbyServer(SocketWrapper sw) {
         this.sw = sw;
-        this.eventQueue = new SynchronousQueue<>();
-        SocketListener.listenAndEcho(sw, this.eventQueue); // start a listener and link it to the channel
+        this.eventHandler = new ClientEventHandler(this);
+        this.state = State.Accepting;
     }
 
-    protected void asyncHandle() {
-        new Thread(() -> {
-            try {
-                acceptPhase();
-                redirectPhase();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
+    public static void spawn(SocketWrapper socketWrapper) {
+        LobbyServer lobbyServer = new LobbyServer(socketWrapper);
+        SocketListener.subscribe(socketWrapper, lobbyServer.getEventHandler());
     }
 
-    private void acceptPhase() throws InterruptedException, IOException {
-        for (boolean again = true; again; ) {
-            Event event = eventQueue.take();
-            if (event instanceof DeclarePlayer castedEvent) {
-                this.nickname = castedEvent.getNickname();
-                String password = castedEvent.getPassword();
-                if (nickToPass.get(this.nickname) != null && !nickToPass.get(this.nickname).equals(password)) {
-                    sw.sendMessage(new LobbyServerAccept(StatusCode.Fail));
-                } else {
-                    nickToPass.put(this.nickname, password);
-                    sw.sendMessage(new LobbyServerAccept(StatusCode.Success));
-                    again = false;
-                }
-            } else {
-                sw.sendMessage(new InvalidRequest());
+    @Override
+    public synchronized void receive(ClientEvent event) {
+        // if a client has disconnected reset the lobby
+        if (event.getClass() == ClientDisconnect.class) {
+            this.currentLobby.removePlayerHandler(this.nickname);
+            this.eventHandler = null;
+            System.out.println("Lobby server was closed for player: " + nickname);
+        }
+
+        try {
+            switch (this.state) {
+                case Accepting -> acceptPhase(event);
+                case Redirecting -> redirectPhase(event);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private void redirectPhase() throws InterruptedException, IOException {
+    private void acceptPhase(ClientEvent clientEvent) throws IOException {
+        if (clientEvent instanceof DeclarePlayer castedEvent) {
+            this.nickname = castedEvent.getNickname();
+            String password = castedEvent.getPassword();
+            if (nickToPass.get(this.nickname) != null && !nickToPass.get(this.nickname).equals(password)) {
+                sw.sendMessage(new LobbyServerAccept(StatusCode.Fail));
+            } else {
+                nickToPass.put(this.nickname, password);
+                sw.sendMessage(new LobbyServerAccept(StatusCode.Success));
+                this.state = State.Redirecting;
+            }
+        } else {
+                sw.sendMessage(new InvalidRequest());
+            }
+    }
+
+    private void redirectPhase(ClientEvent clientEvent) throws IOException {
         // redirect phase: wait for valid lobby action
         // either:
         // - create
         // - join
         // - join started game (todo)
-        for (boolean again = true; again;) {
-            Event event = eventQueue.take();
-            switch (event) {
-                case CreateLobby castedEvent -> {
-                    if (castedEvent.getMaxPlayers() < 1 || castedEvent.getMaxPlayers() > 4) {
-                        sw.sendMessage(new InvalidRequest());
-                        break;
-                    }
-                    Lobby lobby = new Lobby(
-                            castedEvent.isPublic(),
-                            castedEvent.getMaxPlayers(),
-                            nickname,
-                            eventQueue
-                    );
-                    // get a new lobby id
-                    // put if absent adds the mapping to the object only if it's not yet been mapped.
-                    // in case the action is run positively the return value will be null.
-                    // so we cycle until we get a null, generating new ids along the way.
-                    UUID id = UUID.randomUUID();
-                    for (; lobbyMap.putIfAbsent(id, lobby) != null; id = UUID.randomUUID());
-                    sw.sendMessage(new LobbyServerRedirect(StatusCode.Success, id));
-                    again = false;
+        switch (clientEvent) {
+            case CreateLobby castedEvent -> {
+                if (castedEvent.getMaxPlayers() < 1 || castedEvent.getMaxPlayers() > 4) {
+                    sw.sendMessage(LobbyServerRedirect.fail());
+                    break;
                 }
+                this.currentLobby = new Lobby(
+                        castedEvent.isPublic(),
+                        castedEvent.getMaxPlayers(),
+                        nickname,
+                        this.getEventHandler()
+                );
+                // get a new lobby id
+                // put if absent adds the mapping to the object only if it's not yet been mapped.
+                // in case the action is run positively the return value will be null.
+                // so we cycle until we get a null, generating new ids along the way.
+                UUID id = UUID.randomUUID();
+                for (; lobbyMap.putIfAbsent(id, this.currentLobby) != null; id = UUID.randomUUID()) ;
+                sw.sendMessage(LobbyServerRedirect.success(id));
+                this.state = State.Waiting;
+            }
                 case ConnectLobby castedEvent -> {
                     UUID id = castedEvent.getCode();
-                    if (!lobbyMap.containsKey(id) || !lobbyMap.get(id).addPlayer(nickname, eventQueue)) {
-                        sw.sendMessage(new InvalidRequest());
+                    if (!lobbyMap.containsKey(id) || !lobbyMap.get(id).addPlayer(nickname, this.getEventHandler())) {
+                        sw.sendMessage(LobbyServerRedirect.fail());
                         break;
                     }
-                    sw.sendMessage(new LobbyServerRedirect(StatusCode.Success, id));
-                    again = false;
+                    this.currentLobby = lobbyMap.get(id);
+                    sw.sendMessage(LobbyServerRedirect.success(id));
+                    this.state = State.Waiting;
                 }
-                case default -> sw.sendMessage(new InvalidRequest());
-            }
+            case default -> sw.sendMessage(new InvalidRequest());
         }
+    }
+
+    private ClientEventHandler getEventHandler() {
+        return this.eventHandler;
+    }
+
+    private enum State {
+        Accepting,
+        Redirecting,
+        Waiting,
     }
 }

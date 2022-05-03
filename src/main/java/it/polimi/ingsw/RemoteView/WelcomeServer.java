@@ -31,18 +31,16 @@ public class WelcomeServer implements Runnable {
 
     @Override
     public void run() {
-        try {
-            while (true) {
-                System.out.println("Listening for connections...");
-                Socket connection = this.socket.accept();
+        while (true) {
+            try (Socket connection = this.socket.accept()) {
                 System.out.println("New connection detected from: " +
                         connection.getInetAddress() + ":" + connection.getPort());
                 SocketWrapper sw = new SocketWrapper(connection);
                 sw.sendMessage(new WelcomeServerAccept(StatusCode.Success));
-                new LobbyServer(sw).asyncHandle();
+                LobbyServer.spawn(sw);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

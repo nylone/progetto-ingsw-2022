@@ -6,7 +6,9 @@ import com.google.gson.stream.JsonReader;
 import it.polimi.ingsw.RemoteView.Messages.Message;
 import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
@@ -33,8 +35,9 @@ public class SocketWrapper {
         } catch (JsonSyntaxException e) {
             System.out.println("caught invalid syntax: " + e.getMessage());
             if (this.input.read() == -1) {
-                System.out.println("client socket disconnected. Closing socket...");
+                System.out.println("client socket disconnected: closing socket");
                 this.sock.close();
+                System.out.println("closing SocketWrapper");
             }
             return null;
         }
@@ -51,10 +54,12 @@ public class SocketWrapper {
     }
 
     public void close() {
-        try {
-            this.sock.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!isClosed()) {
+            try {
+                this.sock.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

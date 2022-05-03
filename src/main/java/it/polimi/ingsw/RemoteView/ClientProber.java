@@ -1,8 +1,12 @@
 package it.polimi.ingsw.RemoteView;
 
+import it.polimi.ingsw.RemoteView.Messages.ClientEvents.CreateLobby;
 import it.polimi.ingsw.RemoteView.Messages.ClientEvents.DeclarePlayer;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
@@ -11,13 +15,21 @@ public class ClientProber {
         Socket connection = new Socket("127.0.0.1", 8080);
         BufferedOutputStream outputStream = new BufferedOutputStream(connection.getOutputStream());
         BufferedReader inputStream = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        System.out.println("started");
-        while (true) {
-            System.out.println(inputStream.readLine());
-            DeclarePlayer dp = new DeclarePlayer("pablo", "pablito");
-            outputStream.write(dp.build().toJson().getBytes(StandardCharsets.UTF_8));
-            outputStream.flush();
-            System.out.println(inputStream.readLine());
-        }
+        System.out.println(inputStream.readLine());
+
+        DeclarePlayer dp = new DeclarePlayer("pablo", "pablito");
+        outputStream.write(dp.build().toJson().getBytes(StandardCharsets.UTF_8));
+        outputStream.flush();
+        System.out.println(inputStream.readLine());
+
+        CreateLobby clFail = new CreateLobby(true, 5);
+        outputStream.write(clFail.build().toJson().getBytes(StandardCharsets.UTF_8));
+        outputStream.flush();
+        System.out.println(inputStream.readLine());
+
+        CreateLobby clSuccess = new CreateLobby(true, 4);
+        outputStream.write(clSuccess.build().toJson().getBytes(StandardCharsets.UTF_8));
+        outputStream.flush();
+        System.out.println(inputStream.readLine());
     }
 }
