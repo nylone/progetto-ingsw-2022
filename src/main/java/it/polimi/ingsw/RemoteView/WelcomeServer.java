@@ -32,7 +32,8 @@ public class WelcomeServer implements Runnable {
     @Override
     public void run() {
         while (true) {
-            try (Socket connection = this.socket.accept()) {
+            try {
+                Socket connection = this.socket.accept();
                 System.out.println("New connection detected from: " +
                         connection.getInetAddress() + ":" + connection.getPort());
                 SocketWrapper sw = new SocketWrapper(connection);

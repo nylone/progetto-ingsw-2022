@@ -16,20 +16,24 @@ public class ClientProber {
         BufferedOutputStream outputStream = new BufferedOutputStream(connection.getOutputStream());
         BufferedReader inputStream = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         System.out.println(inputStream.readLine());
+        System.in.read();
 
         DeclarePlayer dp = new DeclarePlayer("pablo", "pablito");
         outputStream.write(dp.build().toJson().getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         System.out.println(inputStream.readLine());
+        System.in.read();
 
         CreateLobby clFail = new CreateLobby(true, 5);
         outputStream.write(clFail.build().toJson().getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         System.out.println(inputStream.readLine());
+        System.in.read();
 
         CreateLobby clSuccess = new CreateLobby(true, 4);
         outputStream.write(clSuccess.build().toJson().getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         System.out.println(inputStream.readLine());
+        System.in.read();
     }
 }
