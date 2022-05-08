@@ -24,6 +24,10 @@ public class StudentBag implements Serializable {
         Utils.shuffle(this.studentBag);
     }
 
+    public int getSize() {
+        return studentBag.size();
+    }
+
     public List<PawnColour> multipleExtraction(int extractions) {
         List<PawnColour> extracted = new ArrayList<>();
         for (int i = 0; i < extractions; i++) extracted.add(this.extract());

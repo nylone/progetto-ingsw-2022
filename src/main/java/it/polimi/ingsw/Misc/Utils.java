@@ -2,7 +2,6 @@ package it.polimi.ingsw.Misc;
 
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.*;
 
 public class Utils {

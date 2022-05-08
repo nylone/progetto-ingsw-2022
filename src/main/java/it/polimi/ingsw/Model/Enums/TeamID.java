@@ -20,7 +20,7 @@ public enum TeamID implements Serializable {
         return null; // add exception if team id is not found
     }
 
-    private int getTeamID() {
+    public int getTeamID() {
         return teamID;
     }
 
