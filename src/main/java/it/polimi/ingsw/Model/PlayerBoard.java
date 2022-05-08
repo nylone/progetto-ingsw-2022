@@ -113,7 +113,7 @@ public class PlayerBoard implements Serializable {
     }
 
     public void addStudentsToEntrance(List<PawnColour> students) throws FullContainerException {
-        if (this.getEntranceSpaceLeft() + students.size() > getEntranceSize()) {
+        if (students.size() > this.getEntranceSpaceLeft()) {
             // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
             throw new FullContainerException(CONTAINER_NAME_ENTRANCE);
         }
