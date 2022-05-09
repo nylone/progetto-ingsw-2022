@@ -32,9 +32,7 @@ public class MoveMotherNature extends PlayerAction {
             throw new GenericInputValidationException("Action", "this action can't be executed more than once or be executed by other player than the current");
         }
         if (
-                (history.stream().filter(playerAction -> playerAction.getClass() == PlayCharacterCard.class).count() == 0 &&
-                        !(history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count() == maxCount)) ||
-                        history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count() < maxCount
+                (       !(history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count() == maxCount))
         ) {
             throw new GenericInputValidationException("History", "MotherNature can't be moved before having placed all " + maxCount + " pawns");
         }

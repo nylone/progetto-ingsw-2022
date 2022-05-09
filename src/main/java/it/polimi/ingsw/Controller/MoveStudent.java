@@ -43,10 +43,9 @@ public class MoveStudent extends PlayerAction {
             }
         }
        if (
-                history.stream().filter(playerAction -> playerAction.getClass() == PlayCharacterCard.class).count() == 0 &&
                         !(history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count() < maxCount)
         ) {
-            throw new GenericInputValidationException(HISTORY, "only " + maxCount + " pawns can be moved from entrance without playing CharacterCards");
+            throw new GenericInputValidationException(HISTORY, "only " + maxCount + " pawns can be moved from entrance");
         }
 
         try {
@@ -65,16 +64,16 @@ public class MoveStudent extends PlayerAction {
             throw new GenericInputValidationException("Action", "the action can only be executed by the current player");
         }
         if (this.destination.getDestinationType() == DestinationType.ISLAND) {
-            try {
-                if (destination.getIslandID() < 0 || destination.getIslandID() > 12) {
-                    throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti out of bounds for id
-                }
-            } catch (Exception e) {
-                throw new InvalidElementException("DestinationType not compatible with request");
-            }
             int islandId;
             try {
                 islandId = this.destination.getIslandID();
+            } catch (Exception e) {
+                throw new InvalidElementException("DestinationType not compatible with request");
+            }
+            try {
+                if (islandId < 0 || islandId > 12) {
+                    throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti out of bounds for id
+                }
             } catch (Exception e) {
                 throw new InvalidElementException("DestinationType not compatible with request");
             }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.AssistantCard;
@@ -8,6 +9,7 @@ import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class PlayAssistantCardTest {
@@ -54,6 +56,29 @@ public class PlayAssistantCardTest {
         gh.executeAction(action);
 
         gh.executeAction(action);
+    }
+
+    @Test
+    public void SelectedSamePriorityCardException() throws InputValidationException {
+        GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
+        GameBoard gameBoard = gh.getModelCopy();
+        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        PlayAssistantCard action = new PlayAssistantCard(player.getId(), 3);
+        // act
+        gh.executeAction(action);
+
+        gameBoard = gh.getModelCopy();
+        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        action = new PlayAssistantCard(player.getId(), 3);
+        try {
+            gh.executeAction(action);
+        }catch (GenericInputValidationException exception){
+            assertEquals("An error occurred while validating: Assitant Card\n" +
+                    "The error was: Assitant Card has an already selected priority", exception.getMessage());
+        }
+
+
+
     }
 
     @Test(expected = InputValidationException.class)

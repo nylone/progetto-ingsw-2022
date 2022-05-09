@@ -120,7 +120,7 @@ public class MoveStudentTest {
             gh.executeAction(moveStudent); //exception
         }catch (InputValidationException exception){
             assertEquals("An error occurred while validating: History\n" +
-                    "The error was: only 3 pawns can be moved from entrance without playing CharacterCards", exception.getMessage());
+                    "The error was: only 3 pawns can be moved from entrance", exception.getMessage());
         }
 
     }

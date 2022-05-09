@@ -7,6 +7,7 @@ import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
+import it.polimi.ingsw.Model.TurnOrder;
 
 import java.util.List;
 
@@ -25,8 +26,15 @@ public class PlayAssistantCard extends PlayerAction {
     @Override
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
+        TurnOrder turnOrder = ctx.getMutableTurnOrder();
         if (!(this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getMutableAssistantCards().size() - 1)) {
             throw new InvalidElementException(INPUT_NAME_ASSISTANT_CARD);
+        }
+        //assure that the player is not playing an assistant card with a priority 
+        for(PlayerBoard pb : turnOrder.getCurrentTurnOrder()){
+            if(turnOrder.getMutableSelectedCard(pb).isPresent() && turnOrder.getMutableSelectedCard(pb).get().getPriority() == currentPlayer.getMutableAssistantCards().get(selectedAssistant).getPriority()){
+                throw new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " has an already selected priority");
+            }
         }
         if (currentPlayer.getMutableAssistantCards().get(selectedAssistant).getUsed()) {
             throw new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + "can only be used once");
