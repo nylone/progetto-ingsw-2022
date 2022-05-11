@@ -37,7 +37,7 @@ public class EndTurnOfActionPhase extends PlayerAction {
         ctx.getMutableEffects().reset();
         ctx.getMutableTurnOrder().stepToNextPlayer();
         if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.ACTION) {
-            if(ctx.getMutableStudentBag().getSize() > 0)
+            if (ctx.getMutableStudentBag().getSize() > 0)
                 ctx.refillClouds();
         }
     }

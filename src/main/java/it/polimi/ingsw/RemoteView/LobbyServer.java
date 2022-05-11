@@ -1,7 +1,7 @@
 package it.polimi.ingsw.RemoteView;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
-import it.polimi.ingsw.RemoteView.Messages.ClientEvents.*;
+import it.polimi.ingsw.RemoteView.Messages.Events.*;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
 
 import java.io.IOException;
@@ -12,13 +12,11 @@ import java.util.logging.Logger;
 
 public class LobbyServer implements ClientEventListener {
     private static final Map<String, String> nickToPass = new ConcurrentHashMap<>(); // maps username to password
-    private static final Map<UUID, WaitingLobby> waitingLobbyMap = new ConcurrentHashMap<>();
-    private static final Map<UUID, GameLobby> gameLobbyMap = new ConcurrentHashMap<>();
-
+    private static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
     private final SocketWrapper sw;
     private ClientEventHandler eventHandler;
     private String nickname;
-    private WaitingLobby currentLobby;
+    private Lobby currentLobby;
     private UUID currentLobbyID;
     private State state;
 
@@ -41,22 +39,29 @@ public class LobbyServer implements ClientEventListener {
     public synchronized void receive(ClientEvent event) {
         Logger log = Logger.getLogger(this.getClass().getName());
         log.info("Lobby server received a new Event: " + event.getClass());
-        // if a client has disconnected reset the lobby
-        if (event.getClass() == ClientDisconnect.class) {
-            this.currentLobby.removePlayerHandler(this.nickname);
-            this.eventHandler = null;
-            log.info("Lobby server was closed for player: " +
-                    nickname +
-                    " on address " +
-                    this.sw.getInetAddress());
-            return;
-        }
-
         try {
-            switch (this.state) {
-                case ACCEPT_PHASE -> acceptPhase(event);
-                case REDIRECT_PHASE -> redirectPhase(event);
-                case GAME_START_PHASE -> gameStartPhase(event);
+            switch (event) {
+                case SocketClosed ignored -> {
+                    this.currentLobby.removePlayerHandler(this.nickname);
+                    this.eventHandler = null;
+                    log.info("Lobby server was closed for player: " +
+                            nickname +
+                            " on address " +
+                            this.sw.getInetAddress());
+                }
+                case ClientConnected clientConnected -> {
+                    sw.sendMessage(clientConnected);
+                }
+                case ClientDisconnected clientDisconnected -> {
+                    sw.sendMessage(clientDisconnected);
+                }
+                default -> {
+                    switch (this.state) {
+                        case ACCEPT_PHASE -> acceptPhase(event);
+                        case REDIRECT_PHASE -> redirectPhase(event);
+                        case GAME_START_PHASE -> gameStartPhase(event);
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,24 +96,24 @@ public class LobbyServer implements ClientEventListener {
                     sw.sendMessage(LobbyRedirect.fail());
                     break;
                 }
-                this.currentLobby = new WaitingLobby(
+                this.currentLobby = new Lobby(
                         castedEvent.isPublic(),
                         castedEvent.getMaxPlayers(),
                         nickname,
                         this.getEventHandler()
                 );
                 this.currentLobbyID = generateUUID();
-                waitingLobbyMap.put(this.currentLobbyID, this.currentLobby);
+                lobbyMap.put(this.currentLobbyID, this.currentLobby);
                 this.state = State.GAME_START_PHASE;
                 sw.sendMessage(LobbyRedirect.success(this.currentLobbyID));
             }
             case ConnectLobby castedEvent -> {
                 UUID id = castedEvent.getCode();
-                if (!waitingLobbyMap.containsKey(id) || !waitingLobbyMap.get(id).addPlayer(nickname, this.getEventHandler())) {
+                if (!lobbyMap.containsKey(id) || !lobbyMap.get(id).addPlayer(nickname, this.getEventHandler())) {
                     sw.sendMessage(LobbyRedirect.fail());
                     break;
                 }
-                this.currentLobby = waitingLobbyMap.get(id);
+                this.currentLobby = lobbyMap.get(id);
                 sw.sendMessage(LobbyRedirect.success(id));
                 this.state = State.GAME_START_PHASE;
             }
@@ -127,22 +132,18 @@ public class LobbyServer implements ClientEventListener {
                     sw.sendMessage(GameInit.fail("Only the admin of the lobby can start the game."));
                     return;
                 }
-                GameLobby gameLobby;
                 try {
-                    gameLobby = this.currentLobby.getGameLobby(castedEvent.getGameMode());
+                    this.currentLobby.startGame(castedEvent.getGameMode());
                 } catch (InputValidationException e) {
                     sw.sendMessage(GameInit.fail(e.getMessage()));
                     return;
                 }
                 // code executes only when a gameLobby was created
-                waitingLobbyMap.remove(this.currentLobbyID);
-                gameLobbyMap.put(this.currentLobbyID, gameLobby);
                 sw.sendMessage(GameInit.success());
-                gameLobby.notifyGameStarted();
             }
-            case GameStarted castedEvent -> {
-                // todo create a new GameServer and change listener on the handler to that
-                // todo send message to client saying server has started
+            case GameStart castedEvent -> {
+                // todo add safe model for client
+                sw.sendMessage(new GameStarted());
             }
             case default -> sw.sendMessage(new InvalidRequest());
         }
@@ -150,7 +151,7 @@ public class LobbyServer implements ClientEventListener {
 
     private static UUID generateUUID() {
         UUID id = UUID.randomUUID();
-        while (waitingLobbyMap.containsKey(id) || gameLobbyMap.containsKey(id)) {
+        while (lobbyMap.containsKey(id)) {
             id = UUID.randomUUID();
         }
         return id;

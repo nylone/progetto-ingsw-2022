@@ -2,8 +2,6 @@ package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 
-import java.util.UUID;
-
 public class GameInit extends Response {
     private final String errorMessage;
 

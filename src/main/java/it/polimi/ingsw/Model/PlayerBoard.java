@@ -37,7 +37,7 @@ public class PlayerBoard implements Serializable {
         }
         this.entrance = new ArrayList<>(numOfPlayers == 3 ? 9 : 7);
         if (numOfPlayers >= 2 && numOfPlayers <= 4) {
-            for (int i = 0; i < (numOfPlayers == 3 ? 9 : 7) ; i++) {
+            for (int i = 0; i < (numOfPlayers == 3 ? 9 : 7); i++) {
                 entrance.add(Optional.of(studentBag.extract()));
             }
         } else {
@@ -54,18 +54,17 @@ public class PlayerBoard implements Serializable {
         return coinBalance;
     }
 
+    /**
+     * this method should only be called by a test
+     *
+     * @param balance
+     */
+    public void setCoinBalance(int balance) {
+        this.coinBalance = balance;
+    }
+
     public Map<PawnColour, Integer> getDiningRoom() {
         return Map.copyOf(diningRoom);
-    }
-
-    public int getEntranceSpaceLeft() {
-        return (int) entrance.stream()
-                .filter(Optional::isEmpty)
-                .count();
-    }
-
-    public int getEntranceSize() {
-        return entrance.size();
     }
 
     public List<Optional<PawnColour>> getEntranceStudents() {
@@ -117,15 +116,27 @@ public class PlayerBoard implements Serializable {
             // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
             throw new FullContainerException(CONTAINER_NAME_ENTRANCE);
         }
-        int cont=0;
-        for(int i=0; i<this.getEntranceSize(); i++){
-            if(this.entrance.get(i).isEmpty()){
-                this.entrance.set(i,Optional.of(students.get(cont)));
-                if(cont==students.size()-1){
+        int cont = 0;
+        for (int i = 0; i < this.getEntranceSize(); i++) {
+            if (this.entrance.get(i).isEmpty()) {
+                this.entrance.set(i, Optional.of(students.get(cont)));
+                if (cont == students.size() - 1) {
                     break;
-                }else{cont++;}
+                } else {
+                    cont++;
+                }
             }
         }
+    }
+
+    public int getEntranceSpaceLeft() {
+        return (int) entrance.stream()
+                .filter(Optional::isEmpty)
+                .count();
+    }
+
+    public int getEntranceSize() {
+        return entrance.size();
     }
 
     public void addStudentToEntrance(PawnColour student) throws FullContainerException {
@@ -162,22 +173,15 @@ public class PlayerBoard implements Serializable {
         this.coinBalance += 1;
     }
 
+
+    //test-purspose only
+
     public void payCharacterEffect(int cost) { //this method checks if the CharacterCard can be activated, true --> gameBoard activates the CharacterCard / false--> GameBoard doesn't activate the CharacterCard
         if (this.coinBalance >= cost) {
             this.coinBalance -= cost;
         }
     }
 
-
-    //test-purspose only
-
-    /**
-     * this method should only be called by a test
-     * @param balance
-     */
-    public void setCoinBalance(int balance){
-        this.coinBalance = balance;
-    }
     @Override
     public String toString() {
         return "PlayerBoard{" +

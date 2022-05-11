@@ -31,8 +31,8 @@ public class PlayAssistantCard extends PlayerAction {
             throw new InvalidElementException(INPUT_NAME_ASSISTANT_CARD);
         }
         //assure that the player is not playing an assistant card with a priority 
-        for(PlayerBoard pb : turnOrder.getCurrentTurnOrder()){
-            if(turnOrder.getMutableSelectedCard(pb).isPresent() && turnOrder.getMutableSelectedCard(pb).get().getPriority() == currentPlayer.getMutableAssistantCards().get(selectedAssistant).getPriority()){
+        for (PlayerBoard pb : turnOrder.getCurrentTurnOrder()) {
+            if (turnOrder.getMutableSelectedCard(pb).isPresent() && turnOrder.getMutableSelectedCard(pb).get().getPriority() == currentPlayer.getMutableAssistantCards().get(selectedAssistant).getPriority()) {
                 throw new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " has an already selected priority");
             }
         }

@@ -26,7 +26,7 @@ public class Utils {
 
     public static <T> T modularSelection(T startingElement, List<T> group, int movement) throws InvalidElementException {
         int index = group.indexOf(startingElement);
-        if(index == -1){
+        if (index == -1) {
             throw new InvalidElementException("starting element");
         }
         // todo add exception for element not in list

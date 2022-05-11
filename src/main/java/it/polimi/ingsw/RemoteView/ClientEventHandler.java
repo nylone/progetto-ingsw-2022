@@ -1,6 +1,6 @@
 package it.polimi.ingsw.RemoteView;
 
-import it.polimi.ingsw.RemoteView.Messages.ClientEvents.ClientEvent;
+import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;

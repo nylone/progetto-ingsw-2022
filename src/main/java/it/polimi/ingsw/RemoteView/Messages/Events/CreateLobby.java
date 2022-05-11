@@ -1,4 +1,4 @@
-package it.polimi.ingsw.RemoteView.Messages.ClientEvents;
+package it.polimi.ingsw.RemoteView.Messages.Events;
 
 import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;

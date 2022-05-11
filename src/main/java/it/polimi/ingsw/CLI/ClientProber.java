@@ -1,7 +1,7 @@
 package it.polimi.ingsw.CLI;
 
-import it.polimi.ingsw.RemoteView.Messages.ClientEvents.CreateLobby;
-import it.polimi.ingsw.RemoteView.Messages.ClientEvents.DeclarePlayer;
+import it.polimi.ingsw.RemoteView.Messages.Events.CreateLobby;
+import it.polimi.ingsw.RemoteView.Messages.Events.DeclarePlayer;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;

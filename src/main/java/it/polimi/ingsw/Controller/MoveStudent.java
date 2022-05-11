@@ -34,7 +34,7 @@ public class MoveStudent extends PlayerAction {
         int maxCount = ctx.getMutablePlayerBoards().size() == 3 ? 4 : 3;
         int entranceSize = ctx.getMutablePlayerBoards().size() == 3 ? 9 : 7;
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
-        if(ctx.getMutableTurnOrder().getMutableSelectedCard(caller).isEmpty()){
+        if (ctx.getMutableTurnOrder().getMutableSelectedCard(caller).isEmpty()) {
             throw new GenericInputValidationException(HISTORY, "No PlayAssistantCard has been played");
         }
         if (history.size() > 0) {
@@ -42,8 +42,8 @@ public class MoveStudent extends PlayerAction {
                 throw new GenericInputValidationException(HISTORY, "MoveStudent can only be preceded by a PlayCharacterCard action or MoveStudent action");
             }
         }
-       if (
-                        !(history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count() < maxCount)
+        if (
+                !(history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count() < maxCount)
         ) {
             throw new GenericInputValidationException(HISTORY, "only " + maxCount + " pawns can be moved from entrance");
         }

@@ -75,18 +75,24 @@ public class GameHandler {
         history.add(action);
     }
 
-    private void setWinner(PlayerAction action) {
-        PlayerBoard currentPlayer = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        int currentTeam = model.getTeamMap().getTeamID(currentPlayer).getTeamID();
-        if (action.getClass() == MoveMotherNature.class) {
-            if (checkNoTowerLeft() || check3IslandsLeft()) {
-                winner = Optional.of(currentTeam);
-            }
-        }
-        else if (isEndOfRound(action)) {
-            if (checkUsedAllCards() || checkEmptyBag()) {
-                winner = Optional.of(calculateWinner());
-            }
+    /**
+     * @return an immutable copy of the list of player actions.<br>
+     * <b>Note:</b> the single actions are immutable by default, so do not get cloned
+     */
+    private List<PlayerAction> getHistory() {
+        return List.copyOf(history);
+    }
+
+    /**
+     * Commits the current game state as the backup state for the controller. Useful when handling disconnections.
+     */
+    private void commitGameState() {
+        try {
+            this.backup.reset();
+            ObjectOutputStream serModel = new ObjectOutputStream(this.backup);
+            serModel.writeObject(model);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -99,8 +105,11 @@ public class GameHandler {
         return model.getMutableIslandField().getMutableGroups().size() == 3;
     }
 
-    private boolean checkEmptyBag() {
-        return model.getMutableStudentBag().getSize() == 0;
+    private boolean isEndOfRound(PlayerAction action) {
+        int currentPlayer = action.getPlayerBoardId();
+        int lastPlayer = model.getMutableTurnOrder().getCurrentTurnOrder()
+                .get(model.getMutablePlayerBoards().size() - 1).getId();
+        return action.getClass() == EndTurnOfActionPhase.class && currentPlayer == lastPlayer;
     }
 
     private boolean checkUsedAllCards() {
@@ -109,18 +118,16 @@ public class GameHandler {
                 .allMatch(card -> card.getUsed());
     }
 
-    private boolean isEndOfRound(PlayerAction action) {
-        int currentPlayer = action.getPlayerBoardId();
-        int lastPlayer = model.getMutableTurnOrder().getCurrentTurnOrder()
-                .get(model.getMutablePlayerBoards().size() - 1).getId();
-        return action.getClass() == EndTurnOfActionPhase.class && currentPlayer == lastPlayer;
+    private boolean checkEmptyBag() {
+        return model.getMutableStudentBag().getSize() == 0;
     }
 
     /**
      * This method calculates the winner based on the least amount of towers left in the tower storage or
      * alternatively based on the greatest number of teachers controlled.
      * If a winner is not found, a random player is selected.
-     *@returnthe winning team.
+     *
+     * @returnthe winning team.
      */
     private int calculateWinner() {
         Map<TeamID, Integer> towersLeft = new HashMap<>();
@@ -130,7 +137,7 @@ public class GameHandler {
         List<Map.Entry<TeamID, Integer>> topTeams = towersLeft.entrySet().stream()
                 .sorted(Comparator.comparingInt(Map.Entry::getValue))
                 .collect(Collectors.toCollection(ArrayList::new))
-                .subList(0,2);
+                .subList(0, 2);
         if (topTeams.get(0).getValue() == topTeams.get(1).getValue()) { // same number of towers
             // verify number of teachers
             Map<TeamID, Integer> teachersByTeam = new HashMap<>();
@@ -167,25 +174,17 @@ public class GameHandler {
         return winner;
     }
 
-
-    /**
-     * @return an immutable copy of the list of player actions.<br>
-     * <b>Note:</b> the single actions are immutable by default, so do not get cloned
-     */
-    private List<PlayerAction> getHistory() {
-        return List.copyOf(history);
-    }
-
-    /**
-     * Commits the current game state as the backup state for the controller. Useful when handling disconnections.
-     */
-    private void commitGameState() {
-        try {
-            this.backup.reset();
-            ObjectOutputStream serModel = new ObjectOutputStream(this.backup);
-            serModel.writeObject(model);
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void setWinner(PlayerAction action) {
+        PlayerBoard currentPlayer = model.getMutableTurnOrder().getMutableCurrentPlayer();
+        int currentTeam = model.getTeamMap().getTeamID(currentPlayer).getTeamID();
+        if (action.getClass() == MoveMotherNature.class) {
+            if (checkNoTowerLeft() || check3IslandsLeft()) {
+                winner = Optional.of(currentTeam);
+            }
+        } else if (isEndOfRound(action)) {
+            if (checkUsedAllCards() || checkEmptyBag()) {
+                winner = Optional.of(calculateWinner());
+            }
         }
     }
 

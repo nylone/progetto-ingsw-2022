@@ -10,8 +10,6 @@ import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.util.List;
 
-import static it.polimi.ingsw.Constants.INPUT_NAME_ASSISTANT_CARD;
-
 public class MoveMotherNature extends PlayerAction {
 
     private final int distanceToMove;
@@ -32,7 +30,7 @@ public class MoveMotherNature extends PlayerAction {
             throw new GenericInputValidationException("Action", "this action can't be executed more than once or be executed by other player than the current");
         }
         if (
-                (       !(history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count() == maxCount))
+                (!(history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count() == maxCount))
         ) {
             throw new GenericInputValidationException("History", "MotherNature can't be moved before having placed all " + maxCount + " pawns");
         }

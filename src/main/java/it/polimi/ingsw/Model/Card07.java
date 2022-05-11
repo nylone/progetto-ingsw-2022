@@ -93,7 +93,7 @@ public class Card07 extends StatefulEffect {
         if (!canCollectionFit(cardMap, secondMap)) {
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
         }
-        if (playerBoard.getEntranceSpaceLeft()+pawnPairs.length >= input.getCaller().getEntranceSize()) {
+        if (playerBoard.getEntranceSpaceLeft() + pawnPairs.length >= input.getCaller().getEntranceSize()) {
             throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
                     CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.length
                             + "pawns");

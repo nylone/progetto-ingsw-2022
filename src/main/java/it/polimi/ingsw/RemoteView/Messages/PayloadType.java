@@ -13,7 +13,7 @@ public enum PayloadType {
      * Sent on accept of the welcome server. <br>
      * Once sent, carries an empty body object.
      * This response only means the client is being handled by the lobby server, which is now waiting for a
-     * {@link it.polimi.ingsw.RemoteView.Messages.ClientEvents.DeclarePlayer} request.
+     * {@link it.polimi.ingsw.RemoteView.Messages.Events.DeclarePlayer} request.
      */
     RESPONSE_WELCOME,
     /**
@@ -21,8 +21,8 @@ public enum PayloadType {
      * Once sent, carries an empty body object.
      * This response means the client is now registered on the lobby server, and should select whether to
      * join a game or create one. <br>
-     * To join a game use {@link it.polimi.ingsw.RemoteView.Messages.ClientEvents.JoinGame} <br>
-     * To create a game use {@link it.polimi.ingsw.RemoteView.Messages.ClientEvents.CreateGame}
+     * To join a game use {@link it.polimi.ingsw.RemoteView.Messages.Events.JoinGame} <br>
+     * To create a game use {@link it.polimi.ingsw.RemoteView.Messages.Events.CreateGame}
      */
     RESPONSE_LOBBY_ACCEPT,
     /**
@@ -35,14 +35,16 @@ public enum PayloadType {
      */
     RESPONSE_LOBBY_REDIRECT,
     RESPONSE_GAME_INIT,
-
+    RESPONSE_GAME_STARTED,
+    RESPONSE_CLIENT_CONNECTED,
+    RESPONSE_CLIENT_DISCONNECTED,
 
     // REQUESTS
     /**
      * Sent on accept of the welcome server. <br>
      * Once sent, carries an empty body object.
      * This response only means the client is being handled by the lobby server, which is now waiting for a
-     * {@link it.polimi.ingsw.RemoteView.Messages.ClientEvents.DeclarePlayer} request.
+     * {@link it.polimi.ingsw.RemoteView.Messages.Events.DeclarePlayer} request.
      */
     REQUEST_DECLARE_PLAYER,
     /**
@@ -50,8 +52,8 @@ public enum PayloadType {
      * Once sent, carries an empty body object.
      * This response means the client is now registered on the lobby server, and should select whether to
      * join a game or create one. <br>
-     * To join a game use {@link it.polimi.ingsw.RemoteView.Messages.ClientEvents.JoinGame} <br>
-     * To create a game use {@link it.polimi.ingsw.RemoteView.Messages.ClientEvents.CreateGame}
+     * To join a game use {@link it.polimi.ingsw.RemoteView.Messages.Events.JoinGame} <br>
+     * To create a game use {@link it.polimi.ingsw.RemoteView.Messages.Events.CreateGame}
      */
     REQUEST_CREATE_LOBBY,
     /**

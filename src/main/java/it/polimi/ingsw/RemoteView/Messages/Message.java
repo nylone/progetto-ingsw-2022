@@ -11,6 +11,10 @@ public class Message {
         this.data = data;
     }
 
+    public static <T extends MessageBuilder> Message build(T request) {
+        return new Message(request.getPayloadType(), request.toJson());
+    }
+
     public PayloadType getType() {
         return type;
     }
@@ -21,9 +25,5 @@ public class Message {
 
     public String toJson() {
         return new Gson().toJson(this);
-    }
-
-    public static <T extends MessageBuilder> Message build(T request) {
-        return new Message(request.getPayloadType(), request.toJson());
     }
 }

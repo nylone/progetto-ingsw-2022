@@ -1,4 +1,4 @@
-package it.polimi.ingsw.RemoteView.Messages.ClientEvents;
+package it.polimi.ingsw.RemoteView.Messages.Events;
 
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;

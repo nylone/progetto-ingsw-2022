@@ -55,7 +55,7 @@ public class GameBoard implements Serializable {
         this.effects = effects;
         this.clouds = clouds;
         this.characterCards = characterCards;
-        this.coinReserve = coinReserve - coinPerPlayerBoard*playerBoards.size();
+        this.coinReserve = coinReserve - coinPerPlayerBoard * playerBoards.size();
     }
 
     public GameBoard(GameMode gameMode, String... playerNicknames) {
@@ -96,6 +96,7 @@ public class GameBoard implements Serializable {
             }
         }
     }
+
     public int getCoinReserve() {
         return coinReserve;
     }
@@ -235,7 +236,6 @@ public class GameBoard implements Serializable {
     }
 
 
-
     public void addStudentToDiningRoom(PawnColour colour, PlayerBoard me) throws FullContainerException {
         boolean shouldGiveCoin = me.addStudentToDiningRoom(colour);
         if (shouldGiveCoin && this.coinReserve > 0) {
@@ -253,11 +253,11 @@ public class GameBoard implements Serializable {
         }
     }
 
-    public void addCoinToReserve(int amount)  {
-        this.coinReserve += amount;
-    }
-
     public void setTeacher(PawnColour teacher, PlayerBoard player) {
         teachers.put(teacher, player);
+    }
+
+    public void addCoinToReserve(int amount) {
+        this.coinReserve += amount;
     }
 }

@@ -38,11 +38,11 @@ public class PlayCharacterCard extends PlayerAction {
     }
 
     protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
-        if(ctx.getGameMode()== GameMode.SIMPLE){
+        if (ctx.getGameMode() == GameMode.SIMPLE) {
             throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD, INPUT_NAME_CHARACTER_CARD + "can't be played in simple mode");
         }
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
-        if(ctx.getMutableTurnOrder().getMutableSelectedCard(caller).isEmpty()){
+        if (ctx.getMutableTurnOrder().getMutableSelectedCard(caller).isEmpty()) {
             throw new GenericInputValidationException(HISTORY, "No PlayAssistantCard has been played");
         }
 
@@ -75,9 +75,9 @@ public class PlayCharacterCard extends PlayerAction {
         CharacterCard characterCard = ctx.getCharacterCards().get(this.selectedCard);
         caller.payCharacterEffect(characterCard.getCost());
         if (characterCard.getTimeUsed() > 0) {
-           ctx.addCoinToReserve(characterCard.getCost());
+            ctx.addCoinToReserve(characterCard.getCost());
         } else {
-           ctx.addCoinToReserve(characterCard.getCost() - 1); //the first time, one coin has to be placed on the card and not in the coin reserve
+            ctx.addCoinToReserve(characterCard.getCost() - 1); //the first time, one coin has to be placed on the card and not in the coin reserve
         }
         try {
             characterCard.unsafeUseCard(generateCharacterCardInput(caller, ctx));
