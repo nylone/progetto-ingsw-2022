@@ -1,12 +1,11 @@
 package it.polimi.ingsw.RemoteView;
 
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.StatusCode;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.WelcomeServerAccept;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.Welcome;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.logging.Logger;
 
 /**
@@ -36,7 +35,7 @@ public class WelcomeServer implements Runnable {
         while (true) {
             try {
                 SocketWrapper sw = new SocketWrapper(this.socket);
-                sw.sendMessage(new WelcomeServerAccept(StatusCode.Success));
+                sw.sendMessage(new Welcome(StatusCode.Success));
                 log.info("Accepted a new connection from " + sw.getInetAddress());
                 LobbyServer.spawn(sw);
                 log.info("Spawned a new lobby server for: " + sw.getInetAddress());

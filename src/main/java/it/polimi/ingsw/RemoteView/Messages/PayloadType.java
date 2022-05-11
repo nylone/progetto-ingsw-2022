@@ -15,7 +15,7 @@ public enum PayloadType {
      * This response only means the client is being handled by the lobby server, which is now waiting for a
      * {@link it.polimi.ingsw.RemoteView.Messages.ClientEvents.DeclarePlayer} request.
      */
-    RESPONSE_WELCOME_SERVER_ACCEPT,
+    RESPONSE_WELCOME,
     /**
      * Sent on accept of the lobby server. <br>
      * Once sent, carries an empty body object.
@@ -24,7 +24,7 @@ public enum PayloadType {
      * To join a game use {@link it.polimi.ingsw.RemoteView.Messages.ClientEvents.JoinGame} <br>
      * To create a game use {@link it.polimi.ingsw.RemoteView.Messages.ClientEvents.CreateGame}
      */
-    RESPONSE_LOBBY_SERVER_ACCEPT,
+    RESPONSE_LOBBY_ACCEPT,
     /**
      * Sent on redirect of the lobby server. <br>
      * Once sent, carries an empty body object. // todo
@@ -33,7 +33,8 @@ public enum PayloadType {
      * If the lobby was ever on hold, the client should wait for a
      * {@link it.polimi.ingsw.RemoteView.Messages.ServerResponses.GameStart} response.
      */
-    RESPONSE_LOBBY_SERVER_REDIRECT,
+    RESPONSE_LOBBY_REDIRECT,
+    RESPONSE_GAME_INIT,
 
 
     // REQUESTS

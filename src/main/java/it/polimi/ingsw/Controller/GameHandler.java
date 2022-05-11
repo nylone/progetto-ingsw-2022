@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Utils;
@@ -17,7 +18,6 @@ import java.util.stream.Collectors;
  * The Controller should be the only entity able to modify the model.
  */
 public class GameHandler {
-
     private final List<PlayerAction> history;
     private final ByteArrayOutputStream backup;
     private GameBoard model;
@@ -29,11 +29,16 @@ public class GameHandler {
      * @param gameMode the game mode the players are going to use
      * @param players  a list of maximum 4, minimum 2 strings containing the nicknames of the players
      */
-    public GameHandler(GameMode gameMode, String... players) {
-        this.history = new ArrayList<>(6);
-        this.backup = new ByteArrayOutputStream();
-        this.model = new GameBoard(gameMode, players);
-        this.winner = Optional.empty();
+    public GameHandler(GameMode gameMode, String... players) throws InputValidationException {
+        if (players.length > 1 && players.length <= 4) {
+            this.history = new ArrayList<>(6);
+            this.backup = new ByteArrayOutputStream();
+            this.model = new GameBoard(gameMode, players);
+            this.winner = Optional.empty();
+        } else {
+            throw new GenericInputValidationException("Players", "The number of players must be 2, 3 or 4.\n" +
+                    "Players received: " + players.length);
+        }
     }
 
     /**
