@@ -49,11 +49,11 @@ public class LobbyServer implements ClientEventListener {
                             " on address " +
                             this.sw.getInetAddress());
                 }
-                case ClientConnected clientConnected -> {
-                    sw.sendMessage(clientConnected);
+                case ClientConnect clientConnected -> {
+                    sw.sendMessage(new ClientConnected(clientConnected.getNickname()));
                 }
-                case ClientDisconnected clientDisconnected -> {
-                    sw.sendMessage(clientDisconnected);
+                case ClientDisconnect clientDisconnected -> {
+                    sw.sendMessage(new ClientDisconnected(clientDisconnected.getNickname()));
                 }
                 default -> {
                     switch (this.state) {

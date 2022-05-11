@@ -3,10 +3,10 @@ package it.polimi.ingsw.RemoteView.Messages.Events;
 import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 
-public class ClientConnected extends ClientEvent implements MessageBuilder {
+public class ClientConnect extends ClientEvent implements MessageBuilder {
     private final String nickname;
 
-    public ClientConnected(String nickname) {
+    public ClientConnect(String nickname) {
         this.nickname = nickname;
     }
 
