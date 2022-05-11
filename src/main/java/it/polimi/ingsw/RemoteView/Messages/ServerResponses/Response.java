@@ -8,4 +8,8 @@ public abstract class Response implements MessageBuilder {
     public Response(StatusCode statusCode) {
         this.statusCode = statusCode;
     }
+
+    public StatusCode getStatusCode() {
+        return statusCode;
+    }
 }

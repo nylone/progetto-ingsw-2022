@@ -20,6 +20,10 @@ public class LobbyServerRedirect extends Response {
         return new LobbyServerRedirect(StatusCode.Success, lobbyID);
     }
 
+    public UUID getLobbyID() {
+        return lobbyID;
+    }
+
     @Override
     public PayloadType getPayloadType() {
         return PayloadType.RESPONSE_LOBBY_SERVER_REDIRECT;
