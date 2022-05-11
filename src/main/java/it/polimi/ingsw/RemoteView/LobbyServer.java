@@ -123,6 +123,10 @@ public class LobbyServer implements ClientEventListener {
         // - start (as admin event reaction)
         switch (clientEvent) {
             case StartGame castedEvent -> {
+                if (!this.currentLobby.getAdmin().equals(this.nickname)) {
+                    sw.sendMessage(GameInit.fail("Only the admin of the lobby can start the game."));
+                    return;
+                }
                 GameLobby gameLobby;
                 try {
                     gameLobby = this.currentLobby.getGameLobby(castedEvent.getGameMode());
