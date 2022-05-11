@@ -97,8 +97,8 @@ public class LobbyServer implements ClientEventListener {
                         nickname,
                         this.getEventHandler()
                 );
-
                 this.currentLobbyID = generateUUID();
+                waitingLobbyMap.put(this.currentLobbyID, this.currentLobby);
                 this.state = State.GAME_START_PHASE;
                 sw.sendMessage(LobbyRedirect.success(this.currentLobbyID));
             }
