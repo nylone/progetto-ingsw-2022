@@ -1,14 +1,17 @@
 package it.polimi.ingsw.RemoteView;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.RemoteView.Messages.Events.*;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class LobbyServer implements ClientEventListener {
     private static final Map<String, String> nickToPass = new ConcurrentHashMap<>(); // maps username to password
@@ -73,10 +76,14 @@ public class LobbyServer implements ClientEventListener {
             this.nickname = castedEvent.getNickname();
             String password = castedEvent.getPassword();
             if (nickToPass.get(this.nickname) != null && !nickToPass.get(this.nickname).equals(password)) {
-                sw.sendMessage(new LobbyAccept(StatusCode.Fail));
+                sw.sendMessage(new LobbyAccept(StatusCode.Fail, null));
             } else {
                 nickToPass.put(this.nickname, password);
-                sw.sendMessage(new LobbyAccept(StatusCode.Success));
+                List<Pair<UUID, String>> openLobbies = lobbyMap.entrySet().stream()
+                        .filter(e -> e.getValue().isPublic())
+                        .map(e -> new Pair<>(e.getKey(), e.getValue().getAdmin()))
+                        .toList();
+                sw.sendMessage(new LobbyAccept(StatusCode.Success, openLobbies));
                 this.state = State.REDIRECT_PHASE;
             }
         } else {
