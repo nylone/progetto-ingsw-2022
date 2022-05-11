@@ -2,9 +2,9 @@ package it.polimi.ingsw.Client.CLI;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.Client.ClientView;
-import it.polimi.ingsw.RemoteView.Messages.ClientEvents.ConnectLobby;
-import it.polimi.ingsw.RemoteView.Messages.ClientEvents.CreateLobby;
-import it.polimi.ingsw.RemoteView.Messages.ClientEvents.DeclarePlayer;
+import it.polimi.ingsw.RemoteView.Messages.Events.ConnectLobby;
+import it.polimi.ingsw.RemoteView.Messages.Events.CreateLobby;
+import it.polimi.ingsw.RemoteView.Messages.Events.DeclarePlayer;
 import it.polimi.ingsw.RemoteView.SocketWrapper;
 
 import java.io.BufferedReader;
@@ -46,9 +46,7 @@ public class CliWriter implements Runnable{
 
             DeclarePlayer dp = new DeclarePlayer(nickname, password);
             socketWrapper.sendMessage(dp);
-            System.out.println("Available commands:\n");
-            System.out.println("-- createLobby:\n");
-            System.out.println("-- joinLobby");
+
             String input;
             while(true){
                 input = stdIn.readLine();

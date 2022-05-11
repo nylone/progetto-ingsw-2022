@@ -56,7 +56,12 @@ public class ClientReader implements Runnable{
 
     private void AnalyzeResponse(Message serverResponse){
         switch (serverResponse.getType()){
-            case RESPONSE_LOBBY_ACCEPT -> System.out.println("User accepted");
+            case RESPONSE_LOBBY_ACCEPT -> {
+                System.out.println("User accepted\n");
+                System.out.println("Available commands:\n");
+                System.out.println("-- createLobby:\n");
+                System.out.println("-- joinLobby");
+            }
             case RESPONSE_LOBBY_REDIRECT -> {
                 Response response = new Gson().fromJson(serverResponse.getData(), LobbyRedirect.class);
                 UUID id = ((LobbyRedirect) response).getLobbyID();
