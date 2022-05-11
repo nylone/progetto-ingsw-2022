@@ -1,4 +1,4 @@
-package it.polimi.ingsw.CLI;
+package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.RemoteView.Messages.Events.CreateLobby;
 import it.polimi.ingsw.RemoteView.Messages.Events.DeclarePlayer;
