@@ -35,6 +35,10 @@ public class Lobby {
         return admin;
     }
 
+    protected GameHandler getGameHandler(){
+        return this.gameHandler;
+    }
+
     protected boolean isPublic() {
         return isPublic;
     }
@@ -42,6 +46,7 @@ public class Lobby {
     protected boolean isLobbyFull(){
         return this.players.size() == maxPlayers;
     }
+
 
     protected boolean addPlayer(String nick, ClientEventHandler playerChannel) {
         synchronized (this.players) {

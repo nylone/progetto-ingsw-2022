@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.CLI;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
 import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.RemoteView.Messages.Events.*;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.RemoteView.SocketWrapper;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.UUID;
 
 public class CliWriter implements Runnable{
@@ -38,27 +40,37 @@ public class CliWriter implements Runnable{
                     "Welcome Player\n"
             );
             String nickname, password;
+            while(true) {
                 System.out.println("Insert Username:");
                 nickname = stdIn.readLine();
                 System.out.println("Insert Password");
                 password = stdIn.readLine();
-
-            DeclarePlayer dp = new DeclarePlayer(nickname, password);
-            socketWrapper.sendMessage(dp);
-
+                if(nickname.equals("") || password.equals("")){
+                    System.out.println("Username or password not well formatted");
+                }else {
+                    DeclarePlayer dp = new DeclarePlayer(nickname, password);
+                    socketWrapper.sendMessage(dp);
+                    Thread.sleep(1000);
+                    if (this.clientView.isLogged()) {
+                        break;
+                    }
+                }
+            }
+            this.clientView.setNickname(nickname);
             String input;
             while(true){
                 input = stdIn.readLine();
                 elaborateInput(input);
 
             }
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             System.out.println("IO exception when reading from stdIn.");
         }
     }
 
     private void elaborateInput(String userInput) throws IOException {
         switch(userInput){
+            case "showActions" -> printActions();
             case "createLobby" -> createLobby();
             case "joinLobby" -> joinLobby();
             case "startGame" -> startGame();
@@ -147,5 +159,22 @@ public class CliWriter implements Runnable{
         }
         startGame = new StartGame(gameMode);
         socketWrapper.sendMessage(startGame);
+    }
+
+    private void printActions(){
+        if(!this.clientView.isInLobby()){
+            System.out.println("Available commands:\n");
+            System.out.println("-- createLobby");
+            System.out.println("-- joinLobby");
+            return;
+        }
+        if(!this.clientView.getGameStarted()){
+            if(this.clientView.getNickname().equals(this.clientView.getAdmin())){
+                System.out.println("Available commands:\n");
+                System.out.println("-- StartGame");
+            }else{
+                System.out.println("No actions available, wait for the admin to start the game");
+            }
+        }
     }
 }

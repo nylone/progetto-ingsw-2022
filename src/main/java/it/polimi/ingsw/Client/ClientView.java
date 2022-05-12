@@ -6,23 +6,39 @@ import java.util.UUID;
 
 public class ClientView {
 
-
+    private boolean isLogged = false;
     private boolean isInLobby = false;
+    private boolean gameStarted = false;
 
-
-
+    private String admin;
+    private String Nickname;
     GameBoard gameBoard;
-
     private UUID lobbyID;
 
-    public boolean isInLobby() {
-        return isInLobby;
+    public String getAdmin() {
+        return admin;
+    }
+
+
+    public GameBoard getGameBoard() {
+        return this.gameBoard;
+    }
+
+    public boolean getGameStarted() {
+        return this.gameStarted;
     }
 
     public UUID getLobbyID() {
         return lobbyID;
     }
 
+    public String getNickname() {
+        return Nickname;
+    }
+
+    public void setAdmin(String admin) {
+        this.admin = admin;
+    }
     public void setLobbyID(UUID lobbyID) {
         this.lobbyID = lobbyID;
         setIsInLobby(true);
@@ -30,6 +46,25 @@ public class ClientView {
 
     public void setIsInLobby(boolean inLobby) {
         this.isInLobby = inLobby;
+    }
+
+    public void setGameStarted(boolean started) {
+        this.gameStarted = started;
+    }
+
+    public void setLogged(boolean logged) {
+        isLogged = logged;
+    }
+    public void setNickname(String nickname) {
+        Nickname = nickname;
+    }
+
+    public boolean isInLobby() {
+        return this.isInLobby;
+    }
+
+    public boolean isLogged() {
+        return isLogged;
     }
 
 }

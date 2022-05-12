@@ -113,7 +113,7 @@ public class LobbyServer implements ClientEventListener {
                 this.currentLobbyID = generateUUID();
                 lobbyMap.put(this.currentLobbyID, this.currentLobby);
                 this.state = State.GAME_START_PHASE;
-                sw.sendMessage(LobbyRedirect.success(this.currentLobbyID));
+                sw.sendMessage(LobbyRedirect.success(this.currentLobbyID, this.currentLobby.getAdmin()));
             }
             case ConnectLobby castedEvent -> {
                 UUID id = castedEvent.getCode();
@@ -122,7 +122,7 @@ public class LobbyServer implements ClientEventListener {
                     break;
                 }
                 this.currentLobby = lobbyMap.get(id);
-                sw.sendMessage(LobbyRedirect.success(id));
+                sw.sendMessage(LobbyRedirect.success(id, this.currentLobby.getAdmin()));
                 this.state = State.GAME_START_PHASE;
             }
             case default -> sw.sendMessage(new InvalidRequest());
@@ -142,6 +142,10 @@ public class LobbyServer implements ClientEventListener {
                 }
                 if(!currentLobby.isLobbyFull()){
                     sw.sendMessage(GameInit.fail("The lobby has not been filled"));
+                    return;
+                }
+                if(currentLobby.getGameHandler() != null){
+                    sw.sendMessage(GameInit.fail("The game has already started"));
                     return;
                 }
                 try {

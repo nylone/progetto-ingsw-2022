@@ -57,21 +57,21 @@ public class ClientReader implements Runnable{
             case RESPONSE_LOBBY_ACCEPT -> {
                 LobbyAccept response = new Gson().fromJson(serverResponse.getData(), LobbyAccept.class);
                 if(response.getStatusCode() == StatusCode.Success) {
+                    this.clientView.setLogged(true);
                     System.out.println("User accepted\n");
                     System.out.println("Available open lobbies:");
                     response.getOpenLobbies().stream().forEach(uuidStringPair -> System.out.println("ID: "+uuidStringPair.getFirst()+ " admin: "+uuidStringPair.getSecond()));
-                    System.out.println("Available commands:\n");
-                    System.out.println("-- createLobby:\n");
-                    System.out.println("-- joinLobby");
+                    System.out.println("type 'showActions' for a list of available actions during all the game");
                 }else{
-                    System.out.println("Something gone wrong, user not accepted");
+                    System.out.println("Password wrong for this username, try again or change Username");
                 }
             }
             case RESPONSE_LOBBY_REDIRECT -> {
                 LobbyRedirect response = new Gson().fromJson(serverResponse.getData(), LobbyRedirect.class);
                 UUID id = response.getLobbyID();
                 if(response.getStatusCode() == StatusCode.Success){
-                    System.out.println("Joined to lobby, id: "+ id);
+                    System.out.println("Joined to lobby, id: "+ id+" admin:"+ response.getAdmin());
+                    clientView.setAdmin(response.getAdmin());
                     clientView.setLobbyID(id);
                 }else{
                     System.out.println("Something gone wrong, lobby not joined");
@@ -93,7 +93,7 @@ public class ClientReader implements Runnable{
                 }
             }
             case RESPONSE_GAME_STARTED ->  {
-
+                clientView.setGameStarted(true);
             }
 
         }
