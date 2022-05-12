@@ -3,9 +3,7 @@ package it.polimi.ingsw.Client;
 import com.google.gson.Gson;
 import it.polimi.ingsw.Client.CLI.CliWriter;
 import it.polimi.ingsw.RemoteView.Messages.Message;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyRedirect;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.Response;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.StatusCode;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
 import it.polimi.ingsw.RemoteView.SocketWrapper;
 
 import java.io.IOException;
@@ -57,14 +55,21 @@ public class ClientReader implements Runnable{
     private void AnalyzeResponse(Message serverResponse){
         switch (serverResponse.getType()){
             case RESPONSE_LOBBY_ACCEPT -> {
-                System.out.println("User accepted\n");
-                System.out.println("Available commands:\n");
-                System.out.println("-- createLobby:\n");
-                System.out.println("-- joinLobby");
+                LobbyAccept response = new Gson().fromJson(serverResponse.getData(), LobbyAccept.class);
+                if(response.getStatusCode() == StatusCode.Success) {
+                    System.out.println("User accepted\n");
+                    System.out.println("Available open lobbies:");
+                    response.getOpenLobbies().stream().forEach(uuidStringPair -> System.out.println("ID: "+uuidStringPair.getFirst()+ " admin: "+uuidStringPair.getSecond()));
+                    System.out.println("Available commands:\n");
+                    System.out.println("-- createLobby:\n");
+                    System.out.println("-- joinLobby");
+                }else{
+                    System.out.println("Something gone wrong, user not accepted");
+                }
             }
             case RESPONSE_LOBBY_REDIRECT -> {
-                Response response = new Gson().fromJson(serverResponse.getData(), LobbyRedirect.class);
-                UUID id = ((LobbyRedirect) response).getLobbyID();
+                LobbyRedirect response = new Gson().fromJson(serverResponse.getData(), LobbyRedirect.class);
+                UUID id = response.getLobbyID();
                 if(response.getStatusCode() == StatusCode.Success){
                     System.out.println("Joined to lobby, id: "+ id);
                     clientView.setLobbyID(id);
@@ -72,10 +77,25 @@ public class ClientReader implements Runnable{
                     System.out.println("Something gone wrong, lobby not joined");
                 }
             }
+            case RESPONSE_CLIENT_CONNECTED -> {
+                ClientConnected response = new Gson().fromJson(serverResponse.getData(), ClientConnected.class);
+                if(response.getStatusCode() == StatusCode.Success){
+                    System.out.println("player "+response.getNickname()+" has connected");
+                    System.out.println("players connected :"+response.getPlayersConnected());
+                }
+            }
+            case RESPONSE_GAME_INIT -> {
+                GameInit response = new Gson().fromJson(serverResponse.getData(), GameInit.class);
+                if(response.getStatusCode() == StatusCode.Fail){
+                    System.out.println(response.getErrorMessage());
+                }else {
+                    System.out.println("Game is starting...");
+                }
+            }
+            case RESPONSE_GAME_STARTED ->  {
 
+            }
 
         }
-
-
     }
 }

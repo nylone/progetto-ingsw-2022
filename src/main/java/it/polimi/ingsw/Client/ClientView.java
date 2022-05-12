@@ -1,11 +1,17 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Model.GameBoard;
+
 import java.util.UUID;
 
 public class ClientView {
 
 
     private boolean isInLobby = false;
+
+
+
+    GameBoard gameBoard;
 
     private UUID lobbyID;
 

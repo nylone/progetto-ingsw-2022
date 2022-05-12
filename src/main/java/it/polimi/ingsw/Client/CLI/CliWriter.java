@@ -2,9 +2,8 @@ package it.polimi.ingsw.Client.CLI;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.Client.ClientView;
-import it.polimi.ingsw.RemoteView.Messages.Events.ConnectLobby;
-import it.polimi.ingsw.RemoteView.Messages.Events.CreateLobby;
-import it.polimi.ingsw.RemoteView.Messages.Events.DeclarePlayer;
+import it.polimi.ingsw.Model.Enums.GameMode;
+import it.polimi.ingsw.RemoteView.Messages.Events.*;
 import it.polimi.ingsw.RemoteView.SocketWrapper;
 
 import java.io.BufferedReader;
@@ -62,7 +61,8 @@ public class CliWriter implements Runnable{
         switch(userInput){
             case "createLobby" -> createLobby();
             case "joinLobby" -> joinLobby();
-           // case "start game"
+            case "startGame" -> startGame();
+            default -> System.out.println("Command not valid");
         }
     }
     private void createLobby() throws IOException {
@@ -118,5 +118,34 @@ public class CliWriter implements Runnable{
         }else {
             System.out.println("You are already in a lobby");
         }
+    }
+
+    private void startGame() throws IOException {
+        System.out.println("Select the game mode:");
+        System.out.println("S: simple");
+        System.out.println("A: advanced");
+        GameMode gameMode;
+        String input;
+        StartGame startGame;
+        loop:
+        while(true){
+            input = stdIn.readLine().toUpperCase();
+            switch (input){
+                case "S" ->{
+                    gameMode = GameMode.SIMPLE;
+                    break loop;
+                }
+                case "A" ->{
+                    gameMode = GameMode.ADVANCED;
+                    break loop;
+                }
+                case default -> {
+                    System.out.println("input not correct, please try again");
+                    break;
+                }
+            }
+        }
+        startGame = new StartGame(gameMode);
+        socketWrapper.sendMessage(startGame);
     }
 }

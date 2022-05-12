@@ -39,13 +39,17 @@ public class Lobby {
         return isPublic;
     }
 
+    protected boolean isLobbyFull(){
+        return this.players.size() == maxPlayers ?  true :  false;
+    }
+
     protected boolean addPlayer(String nick, ClientEventHandler playerChannel) {
         synchronized (this.players) {
             // in case of reconnection
             if (this.players.contains(nick)) {
                 // prevents player hijacking
                 if (!this.playerEventSources.containsKey(nick)) {
-                    notifyPlayers(new ClientConnect(nick));
+                    notifyPlayers(new ClientConnect(nick, players.size()));
                     this.playerEventSources.put(nick, playerChannel);
                     return true;
                 } else {
@@ -54,7 +58,7 @@ public class Lobby {
                 // in case of new connection check for max players and check that the game has not yet started
             } else if (this.gameHandler == null && this.maxPlayers > this.players.size()) {
                 this.players.add(nick);
-                notifyPlayers(new ClientConnect(nick));
+                notifyPlayers(new ClientConnect(nick, players.size()));
                 this.playerEventSources.put(nick, playerChannel);
                 return true;
             } else {

@@ -7,13 +7,20 @@ import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 public class ClientConnected extends Response {
     private final String nickname;
 
-    public ClientConnected(String nickname) {
+    private final int playersConnected;
+
+    public ClientConnected(String nickname, int playersConnected) {
         super(StatusCode.Success);
         this.nickname = nickname;
+        this.playersConnected = playersConnected;
     }
 
     public String getNickname() {
         return nickname;
+    }
+
+    public int getPlayersConnected() {
+        return playersConnected;
     }
 
     @Override

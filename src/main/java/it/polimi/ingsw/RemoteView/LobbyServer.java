@@ -42,6 +42,7 @@ public class LobbyServer implements ClientEventListener {
     public synchronized void receive(ClientEvent event) {
         Logger log = Logger.getLogger(this.getClass().getName());
         log.info("Lobby server received a new Event: " + event.getClass());
+        System.out.println("SONO QUI");
         try {
             switch (event) {
                 case SocketClosed ignored -> {
@@ -53,7 +54,7 @@ public class LobbyServer implements ClientEventListener {
                             this.sw.getInetAddress());
                 }
                 case ClientConnect clientConnected -> {
-                    sw.sendMessage(new ClientConnected(clientConnected.getNickname()));
+                    sw.sendMessage(new ClientConnected(clientConnected.getNickname(), clientConnected.getNumberOfPlayersConnected()));
                 }
                 case ClientDisconnect clientDisconnected -> {
                     sw.sendMessage(new ClientDisconnected(clientDisconnected.getNickname()));
@@ -137,6 +138,10 @@ public class LobbyServer implements ClientEventListener {
             case StartGame castedEvent -> {
                 if (!this.currentLobby.getAdmin().equals(this.nickname)) {
                     sw.sendMessage(GameInit.fail("Only the admin of the lobby can start the game."));
+                    return;
+                }
+                if(!currentLobby.isLobbyFull()){
+                    sw.sendMessage(GameInit.fail("The lobby has not been filled"));
                     return;
                 }
                 try {
