@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Misc;
 
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.util.*;
 
@@ -42,5 +43,21 @@ public class Utils {
             }
         }
         return true;
+    }
+
+    public static <T> ArrayList<T> sortByFrequency(List<T> array) {
+        Map<T, ArrayList<T>> frequencyMap = new HashMap<>();
+        for (T current : array) {
+            ArrayList<T> list = frequencyMap.getOrDefault(current, new ArrayList<>());
+            list.add(current);
+            frequencyMap.put(current, list);
+        }
+        ArrayList<T> sorted = new ArrayList<>();
+        frequencyMap.entrySet().stream()
+                .sorted(Comparator.comparingInt(o -> o.getValue().size()))
+                .map(Map.Entry::getValue)
+                .forEach(element -> sorted.addAll(element));
+        Collections.reverse(sorted);
+        return sorted;
     }
 }
