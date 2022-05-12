@@ -15,11 +15,10 @@ import static org.junit.Assert.assertEquals;
 
 public class MoveMotherNatureTest {
 
-    GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-    GameBoard gameBoard = gh.getModelCopy();
-    PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+
     @Test
     public void motherNatureShouldBeMoved() throws Exception {
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -64,6 +63,7 @@ public class MoveMotherNatureTest {
 
     @Test
     public void playerCantMoveMoreThanAllowed() throws Exception {
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -103,6 +103,7 @@ public class MoveMotherNatureTest {
 
     @Test(expected = InputValidationException.class)
     public void duplicateMoveMotherNatureException() throws Exception {
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -117,6 +118,7 @@ public class MoveMotherNatureTest {
 
     @Test(expected = InputValidationException.class)
     public void NoAssistantCardException() throws Exception {
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -144,6 +146,7 @@ public class MoveMotherNatureTest {
 
     @Test
     public void exceedingMovementExceptionWithCard4Active() throws Exception {
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -188,6 +191,7 @@ public class MoveMotherNatureTest {
 
     @Test
     public void MoveMotherNatureWithoutPlacingEnoughPawns() throws Exception{
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -232,6 +236,7 @@ public class MoveMotherNatureTest {
 
     @Test
     public void DuplicateActionException() throws Exception{
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());

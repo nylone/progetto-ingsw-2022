@@ -8,17 +8,17 @@ import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
 import org.junit.Test;
 
-import java.util.List;
 import java.util.Random;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
 public class EndTurnOfActionPhaseTest {
 
-    GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
     @Test
     public void testExecute() throws Exception {
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -72,6 +72,7 @@ public class EndTurnOfActionPhaseTest {
 
     @Test
     public void NoChooseCloudTileTest() throws Exception {
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -117,6 +118,7 @@ public class EndTurnOfActionPhaseTest {
 
     @Test
     public void OutOfTurnAction() throws Exception {
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());

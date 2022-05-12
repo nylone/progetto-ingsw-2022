@@ -16,12 +16,10 @@ import static org.junit.Assert.assertTrue;
 
 public class MoveStudentTest {
 
-    GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-    GameBoard gameBoard = gh.getModelCopy();
-    PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
 
     @Test
     public void testSingleMovementToIsland() throws Exception{
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -55,6 +53,7 @@ public class MoveStudentTest {
 
     @Test
     public void testSingleMovementToDiningRoom() throws Exception{
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -86,6 +85,7 @@ public class MoveStudentTest {
 
     @Test
     public void Max3MovementsWithoutCharacterCardTest() throws Exception{
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -127,6 +127,9 @@ public class MoveStudentTest {
 
     @Test
     public void testMovementWithoutAssistantCard() throws Exception{
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
+        GameBoard gameBoard = gh.getModelCopy();
+        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination moveDestination = MoveDestination.toIsland(0);
         MoveStudent moveStudent = new MoveStudent(player.getId(), 1, moveDestination);
         try {
@@ -139,6 +142,7 @@ public class MoveStudentTest {
 
     @Test(expected = InvalidElementException.class)
     public void InvalidPlayerBoardIndexException() throws Exception{
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -164,6 +168,7 @@ public class MoveStudentTest {
 
     @Test(expected = InvalidElementException.class)
     public void InvalidEntranceIndexException() throws Exception{
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -189,6 +194,7 @@ public class MoveStudentTest {
 
     @Test(expected = InvalidElementException.class)
     public void InvalidIslandIdException() throws Exception{
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -215,6 +221,7 @@ public class MoveStudentTest {
 
     @Test
     public void SelectedEntrancePositionEmpty() throws Exception{
+        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());

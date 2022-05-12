@@ -17,11 +17,11 @@ import static org.junit.Assert.assertTrue;
 
 public class ChooseCloudTileTest {
 
-    GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
 
     @Test
     public void playerCanTakeStudentsFromCloud() throws Exception {
         // arrange
+        GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -90,6 +90,7 @@ public class ChooseCloudTileTest {
     @Test
     public void PreviousActionNotValid() throws Exception {
         playerCanTakeStudentsFromCloud();
+        GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
 
@@ -100,12 +101,13 @@ public class ChooseCloudTileTest {
             gh.executeAction(chooseCloudTile);
         }catch(GenericInputValidationException exception){
             assertEquals("An error occurred while validating: History\n" +
-                    "The error was: This action can only be executed after a MoveMotherNature action or PlayCharacterCard action", exception.getMessage());
+                    "The error was: MoveMotherNature action has not been executed", exception.getMessage());
         }
     }
     
     @Test
     public void CloudIndexOutOfBound() throws Exception {
+        GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
@@ -290,6 +292,7 @@ public class ChooseCloudTileTest {
 
     @Test
     public void outOfTurnException() throws Exception{
+        GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
