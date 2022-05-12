@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 public class SocketListener implements Runnable {
+    private static final Logger log = Logger.getLogger(SocketListener.class.getName());
+
     private final SocketWrapper socket;
     private final ClientEventHandler queue;
 
@@ -44,7 +46,7 @@ public class SocketListener implements Runnable {
                     case REQUEST_START_GAME ->
                             clientEvent = new Gson().fromJson(message.getData(), StartGame.class);
                     case default -> {
-                        Logger.getLogger(this.getClass().getName()).severe(
+                        log.severe(
                                 "Received unhandled " + PayloadType.class.getName() + ".\n" +
                                         "Received: " + message.getType());
                         return;
@@ -55,7 +57,7 @@ public class SocketListener implements Runnable {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {
-            System.out.println("closing SocketListener");
+            log.info("closing SocketListener");
             this.socket.close();
         }
     }

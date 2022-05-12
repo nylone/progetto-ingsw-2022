@@ -40,7 +40,7 @@ public class Lobby {
     }
 
     protected boolean isLobbyFull(){
-        return this.players.size() == maxPlayers ?  true :  false;
+        return this.players.size() == maxPlayers;
     }
 
     protected boolean addPlayer(String nick, ClientEventHandler playerChannel) {

@@ -14,6 +14,8 @@ import java.util.logging.Logger;
  * sockets to the LobbyServer.
  */
 public class WelcomeServer implements Runnable {
+    private static final Logger log = Logger.getLogger(WelcomeServer.class.getName());
+
     private final ServerSocket socket;
 
     public WelcomeServer() throws IOException {
@@ -30,7 +32,6 @@ public class WelcomeServer implements Runnable {
 
     @Override
     public void run() {
-        Logger log = Logger.getLogger(this.getClass().getName());
         log.info("Server initialized and listening for new connections");
         while (true) {
             try {

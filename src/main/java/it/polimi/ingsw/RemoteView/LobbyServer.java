@@ -14,6 +14,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class LobbyServer implements ClientEventListener {
+    private static final Logger log = Logger.getLogger(LobbyServer.class.getName());
+
     private static final Map<String, String> nickToPass = new ConcurrentHashMap<>(); // maps username to password
     private static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
     private final SocketWrapper sw;
@@ -40,7 +42,6 @@ public class LobbyServer implements ClientEventListener {
 
     @Override
     public synchronized void receive(ClientEvent event) {
-        Logger log = Logger.getLogger(this.getClass().getName());
         log.info("Lobby server received a new Event: " + event.getClass());
         try {
             switch (event) {

@@ -13,8 +13,11 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Logger;
 
 public class SocketWrapper {
+    private static final Logger log = Logger.getLogger(SocketWrapper.class.getName());
+
     private final Socket sock;
     private final InputStreamReader input;
     private final JsonReader jsonReader;
@@ -46,11 +49,11 @@ public class SocketWrapper {
         try {
             return new Gson().fromJson(this.jsonReader, Message.class);
         } catch (JsonSyntaxException e) {
-            System.out.println("caught invalid syntax: " + e.getMessage());
+            log.severe("caught invalid syntax on: " + e.getMessage());
             if (this.input.read() == -1) {
-                System.out.println("client socket disconnected: closing socket");
+                log.info("client socket disconnected: closing socket");
                 this.sock.close();
-                System.out.println("closing SocketWrapper");
+                log.info("closed SocketWrapper");
             }
             return null;
         }
