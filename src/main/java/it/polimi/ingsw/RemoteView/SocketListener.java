@@ -3,8 +3,10 @@ package it.polimi.ingsw.RemoteView;
 import com.google.gson.Gson;
 import it.polimi.ingsw.RemoteView.Messages.Events.*;
 import it.polimi.ingsw.RemoteView.Messages.Message;
+import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class SocketListener implements Runnable {
     private final SocketWrapper socket;
@@ -39,7 +41,12 @@ public class SocketListener implements Runnable {
                             clientEvent = new Gson().fromJson(message.getData(), ConnectLobby.class);
                     case REQUEST_CREATE_LOBBY ->
                             clientEvent = new Gson().fromJson(message.getData(), CreateLobby.class);
+                    case REQUEST_START_GAME ->
+                            clientEvent = new Gson().fromJson(message.getData(), StartGame.class);
                     case default -> {
+                        Logger.getLogger(this.getClass().getName()).severe(
+                                "Received unhandled " + PayloadType.class.getName() + ".\n" +
+                                        "Received: " + message.getType());
                         return;
                     }
                 }

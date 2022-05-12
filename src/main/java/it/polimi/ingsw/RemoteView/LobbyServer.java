@@ -42,7 +42,6 @@ public class LobbyServer implements ClientEventListener {
     public synchronized void receive(ClientEvent event) {
         Logger log = Logger.getLogger(this.getClass().getName());
         log.info("Lobby server received a new Event: " + event.getClass());
-        System.out.println("SONO QUI");
         try {
             switch (event) {
                 case SocketClosed ignored -> {
