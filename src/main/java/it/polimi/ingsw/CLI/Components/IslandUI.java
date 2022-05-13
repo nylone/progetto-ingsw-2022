@@ -21,15 +21,17 @@ public class IslandUI {
         String students = "";
         ArrayList<PawnColour> sortedStudents = Utils.sortByFrequency(i.getStudents());
         for (PawnColour p : sortedStudents) {
-            switch (p) {
-                case BLUE -> students = students + Colours.colour("■ ", Colours.BLUE);
-                case GREEN -> students = students + Colours.colour("■ ", Colours.GREEN);
-                case PINK -> students = students + Colours.colour("■ ", Colours.PINK);
-                case RED -> students = students + Colours.colour("■ ", Colours.RED);
-                case YELLOW -> students = students + Colours.colour("■ ", Colours.YELLOW);
-            }
+            students = students + Colours.colorizeStudent(p, "■ ");
         }
 
+        int maxStudents = 0;
+        for (IslandGroup ig : ctx.getMutableIslandField().getMutableGroups()) {
+            maxStudents = Math.max(maxStudents, ig.getStudents().size());
+        }
+
+        if (i.getStudents().size() < maxStudents) {
+            students = students + "  ".repeat(maxStudents - i.getStudents().size());
+        }
         String tower = "";
         if (i.getTowerColour().isPresent()) {
             switch (i.getTowerColour().get()) {
