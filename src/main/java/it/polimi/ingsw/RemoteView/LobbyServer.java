@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 public class LobbyServer {
+    private static final Logger log = Logger.getLogger(LobbyServer.class.getName());
     private static final Map<String, String> nickToPass = new ConcurrentHashMap<>(); // maps username to password
     private static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
     private final SocketWrapper sw;
@@ -49,12 +50,8 @@ public class LobbyServer {
                             " on address " +
                             this.sw.getInetAddress());
                 }
-                case ClientConnect clientConnected -> {
-                    sw.sendMessage(new ClientConnected(clientConnected.getNickname(), clientConnected.getNumberOfPlayersConnected()));
-                }
-                case ClientDisconnect clientDisconnected -> {
-                    sw.sendMessage(new ClientDisconnected(clientDisconnected.getNickname()));
-                }
+                case ClientConnect clientConnected -> sw.sendMessage(new ClientConnected(clientConnected.getNickname(), clientConnected.getNumberOfPlayersConnected()));
+                case ClientDisconnect clientDisconnected -> sw.sendMessage(new ClientDisconnected(clientDisconnected.getNickname()));
                 default -> {
                     switch (this.state) {
                         case ACCEPT_PHASE -> acceptPhase(event);
@@ -171,9 +168,15 @@ public class LobbyServer {
                 GameBoard model = modelUpdate.getModel();
                 sw.sendMessage(new ModelUpdated(model));
             }
-            case GameStart ignored -> {
-                this.state = State.GAME_IN_PROGRESS_PHASE;
-                sw.sendMessage(new GameStarted());
+            case PlayerAction playerAction -> {
+                try {
+                    this.currentLobby.getGameHandler().executeAction(playerAction.getAction());
+                } catch (InputValidationException e) {
+                    sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
+                } catch (ClassNotFoundException e) {
+                    sw.sendMessage(PlayerActionFeedback.fail("The action that was sent could not be deserialized."));
+                }
+                sw.sendMessage(PlayerActionFeedback.success());
             }
             case default -> sw.sendMessage(new InvalidRequest());
         }

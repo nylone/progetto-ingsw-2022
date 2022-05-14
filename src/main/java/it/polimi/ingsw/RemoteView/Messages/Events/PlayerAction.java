@@ -15,10 +15,10 @@ public class PlayerAction extends ClientEvent implements MessageBuilder {
         this.payload = out.toByteArray();
     }
 
-    public PlayerAction getAction() throws IOException, ClassNotFoundException {
+    public it.polimi.ingsw.Controller.PlayerAction getAction() throws IOException, ClassNotFoundException {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(this.payload);
         ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-        return (PlayerAction) objectInputStream.readObject();    }
+        return (it.polimi.ingsw.Controller.PlayerAction) objectInputStream.readObject();    }
 
     @Override
     public PayloadType getPayloadType() {

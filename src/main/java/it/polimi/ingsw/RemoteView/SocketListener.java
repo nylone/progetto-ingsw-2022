@@ -45,7 +45,9 @@ public class SocketListener implements Runnable {
                             clientEvent = new Gson().fromJson(message.getData(), CreateLobby.class);
                     case REQUEST_START_GAME ->
                             clientEvent = new Gson().fromJson(message.getData(), StartGame.class);
-                    case default -> {
+                    case REQUEST_PLAYER_ACTION ->
+                            clientEvent = new Gson().fromJson(message.getData(), PlayerAction.class);
+                        case default -> {
                         log.severe(
                                 "Received unhandled " + PayloadType.class.getName() + ".\n" +
                                         "Received: " + message.getType());
