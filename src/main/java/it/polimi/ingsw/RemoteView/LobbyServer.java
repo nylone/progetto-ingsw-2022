@@ -2,6 +2,7 @@ package it.polimi.ingsw.RemoteView;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Pair;
+import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.RemoteView.Messages.Events.*;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
 
@@ -11,15 +12,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
-public class LobbyServer implements ClientEventListener {
-    private static final Logger log = Logger.getLogger(LobbyServer.class.getName());
-
+public class LobbyServer {
     private static final Map<String, String> nickToPass = new ConcurrentHashMap<>(); // maps username to password
     private static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
     private final SocketWrapper sw;
-    private ClientEventHandler eventHandler;
+    private final ClientEventHandler eventHandler;
     private String nickname;
     private Lobby currentLobby;
     private UUID currentLobbyID;
@@ -40,14 +38,12 @@ public class LobbyServer implements ClientEventListener {
         return this.eventHandler;
     }
 
-    @Override
     public synchronized void receive(ClientEvent event) {
         log.info("Lobby server received a new Event: " + event.getClass());
         try {
             switch (event) {
                 case SocketClosed ignored -> {
                     this.currentLobby.removePlayerHandler(this.nickname);
-                    this.eventHandler = null;
                     log.info("Lobby server was closed for player: " +
                             nickname +
                             " on address " +
@@ -64,6 +60,7 @@ public class LobbyServer implements ClientEventListener {
                         case ACCEPT_PHASE -> acceptPhase(event);
                         case REDIRECT_PHASE -> redirectPhase(event);
                         case GAME_START_PHASE -> gameStartPhase(event);
+                        case GAME_IN_PROGRESS_PHASE -> gameInProgressPhase(event);
                     }
                 }
             }
@@ -157,8 +154,25 @@ public class LobbyServer implements ClientEventListener {
                 // code executes only when a gameLobby was created
                 sw.sendMessage(GameInit.success());
             }
-            case GameStart castedEvent -> {
-                // todo add safe model for client
+            case GameStart ignored -> {
+                this.state = State.GAME_IN_PROGRESS_PHASE;
+                sw.sendMessage(new GameStarted());
+            }
+            case default -> sw.sendMessage(new InvalidRequest());
+        }
+    }
+    private void gameInProgressPhase(ClientEvent clientEvent) throws IOException {
+        // wait phase: wait for valid lobby action
+        // either:
+        // - start (only from admin)
+        // - start (as admin event reaction)
+        switch (clientEvent) {
+            case ModelUpdate modelUpdate -> {
+                GameBoard model = modelUpdate.getModel();
+                sw.sendMessage(new ModelUpdated(model));
+            }
+            case GameStart ignored -> {
+                this.state = State.GAME_IN_PROGRESS_PHASE;
                 sw.sendMessage(new GameStarted());
             }
             case default -> sw.sendMessage(new InvalidRequest());
@@ -177,5 +191,6 @@ public class LobbyServer implements ClientEventListener {
         ACCEPT_PHASE,
         REDIRECT_PHASE,
         GAME_START_PHASE,
+        GAME_IN_PROGRESS_PHASE,
     }
 }

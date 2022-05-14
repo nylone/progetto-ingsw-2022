@@ -72,12 +72,14 @@ public class Lobby {
         }
     }
 
-    private void notifyPlayers(ClientEvent event) {
-        for (ClientEventHandler ceh : this.playerEventSources.values()) {
-            try {
-                ceh.enqueue(event);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    public void notifyPlayers(ClientEvent event) {
+        synchronized (this.players) {
+            for (ClientEventHandler ceh : this.playerEventSources.values()) {
+                try {
+                    ceh.enqueue(event);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -91,7 +93,7 @@ public class Lobby {
 
     protected void startGame(GameMode gameMode) throws InputValidationException {
         synchronized (this.players) {
-            this.gameHandler = new GameHandler(gameMode, this.players.toArray(new String[0]));
+            this.gameHandler = new GameHandler(this, gameMode, this.players.toArray(new String[0]));
             notifyPlayers(new GameStart());
         }
     }

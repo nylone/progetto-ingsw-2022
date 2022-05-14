@@ -7,9 +7,10 @@ import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TeamID;
 import it.polimi.ingsw.Model.Enums.TowerColour;
+import it.polimi.ingsw.RemoteView.Lobby;
+import it.polimi.ingsw.RemoteView.Messages.Events.ModelUpdate;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,7 @@ public class GameBoard implements Serializable {
     private final EffectTracker effects;
     private final List<Cloud> clouds;
     private final List<CharacterCard> characterCards;
+    private transient Lobby eventListeners;
     private int coinReserve;
 
     public GameBoard(
@@ -95,6 +97,70 @@ public class GameBoard implements Serializable {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    public void notifyLobby() {
+        this.eventListeners.notifyPlayers(new ModelUpdate(this.getModelCopy().getUserModel()));
+    }
+
+    /**
+     * Sanitizes the object removing any information leaks for the user.
+     *
+     * @return a sanitized instance of the GameBoard object. <br>
+     * <b>Note:</b> once called, all changes to the original GameBoard object will be reflected in the instance returned
+     * by this method
+     */
+    public GameBoard getUserModel() {
+        return new GameBoard(
+                this.islandField,
+                this.gameMode,
+                null, // studentbag is removed
+                this.playerBoards,
+                this.teachers,
+                this.teamMap,
+                this.turnOrder,
+                this.effects,
+                this.clouds,
+                this.characterCards,
+                this.coinReserve,
+                0 // coins per playerboard is not to be used right now
+        );
+    }
+
+    /**
+     * Serializes the game model to a new object.
+     *
+     * @return a copy of the GameBoard object. <br>
+     * <b>Note:</b> once called, all changes to the original GameBoard object won't be reflected in the instance returned
+     * by this method
+     */
+    public GameBoard getModelCopy() {
+        try {
+            ByteArrayInputStream stream = new ByteArrayInputStream(getSerializedModel());
+            ObjectInputStream reader = new ObjectInputStream(stream);
+            return (GameBoard) reader.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null; // never executed
+    }
+
+    /**
+     * Serializes the game model to a new de-serializable byte array.
+     *
+     * @return a copy of the GameBoard object. <br>
+     * <b>Note:</b> once called, all changes to the original GameBoard object won't be reflected in the instance returned
+     * by this method
+     */
+    public byte[] getSerializedModel() throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ObjectOutputStream writer = new ObjectOutputStream(out);
+        writer.writeObject(this);
+        return out.toByteArray();
+    }
+
+    public void subscribeLobby(Lobby lobby) {
+        this.eventListeners = lobby;
     }
 
     public int getCoinReserve() {

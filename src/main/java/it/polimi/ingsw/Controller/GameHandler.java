@@ -8,6 +8,7 @@ import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.TeamID;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
+import it.polimi.ingsw.RemoteView.Lobby;
 
 import java.io.*;
 import java.util.*;
@@ -19,22 +20,23 @@ import java.util.stream.Collectors;
  */
 public class GameHandler {
     private final List<PlayerAction> history;
-    private final ByteArrayOutputStream backup;
     private GameBoard model;
     private Optional<Integer> winner;
 
     /**
      * Generates a new instance of Game. This is the default method to call to create a game.
      *
+     * @param lobby the remote view object responsible of handling event dispatch to listeners
      * @param gameMode the game mode the players are going to use
      * @param players  a list of maximum 4, minimum 2 strings containing the nicknames of the players
      */
-    public GameHandler(GameMode gameMode, String... players) throws InputValidationException {
+    public GameHandler(Lobby lobby, GameMode gameMode, String... players) throws InputValidationException {
         if (players.length > 1 && players.length <= 4) {
             this.history = new ArrayList<>(6);
-            this.backup = new ByteArrayOutputStream();
             this.model = new GameBoard(gameMode, players);
+            this.model.subscribeLobby(lobby);
             this.winner = Optional.empty();
+            this.model.notifyLobby();
         } else {
             throw new GenericInputValidationException("Players", "The number of players must be 2, 3 or 4.\n" +
                     "Players received: " + players.length);
@@ -51,7 +53,6 @@ public class GameHandler {
      */
     GameHandler(GameBoard game, List<PlayerAction> history) {
         this.history = history;
-        this.backup = new ByteArrayOutputStream();
         this.model = game;
         this.winner = Optional.empty();
     }
@@ -66,9 +67,10 @@ public class GameHandler {
      */
     public synchronized void executeAction(PlayerAction action) throws InputValidationException {
         action.safeExecute(getHistory(), model);
-        setWinner(action);
+        setWinner(action); // todo seems wrong
+        this.model.notifyLobby();
+
         if (action.getClass() == EndTurnOfActionPhase.class || action.getClass() == PlayAssistantCard.class) {
-            commitGameState();
             this.history.clear();
             return;
         }
@@ -81,19 +83,6 @@ public class GameHandler {
      */
     private List<PlayerAction> getHistory() {
         return List.copyOf(history);
-    }
-
-    /**
-     * Commits the current game state as the backup state for the controller. Useful when handling disconnections.
-     */
-    private void commitGameState() {
-        try {
-            this.backup.reset();
-            ObjectOutputStream serModel = new ObjectOutputStream(this.backup);
-            serModel.writeObject(model);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private boolean checkNoTowerLeft() {
@@ -127,7 +116,7 @@ public class GameHandler {
      * alternatively based on the greatest number of teachers controlled.
      * If a winner is not found, a random player is selected.
      *
-     * @returnthe winning team.
+     * @return the winning team.
      */
     private int calculateWinner() {
         Map<TeamID, Integer> towersLeft = new HashMap<>();
@@ -196,44 +185,6 @@ public class GameHandler {
      * by this method
      */
     public GameBoard getModelCopy() {
-        try {
-            ByteArrayInputStream stream = new ByteArrayInputStream(getSerializedModel());
-            ObjectInputStream reader = new ObjectInputStream(stream);
-            return (GameBoard) reader.readObject();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null; // never executed
+        return model.getModelCopy(); // never executed
     }
-
-    /**
-     * Serializes the game model to a new de-serializable byte array.
-     *
-     * @return a copy of the GameBoard object. <br>
-     * <b>Note:</b> once called, all changes to the original GameBoard object won't be reflected in the instance returned
-     * by this method
-     */
-    public byte[] getSerializedModel() throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream writer = new ObjectOutputStream(out);
-        writer.writeObject(model);
-        return out.toByteArray();
-    }
-
-    /**
-     * When called, signals the GameHandler that a player has disconnected.
-     * This event is not treated as an action since the game state might have to be fetched from a backup.
-     *
-     * @param nickname the nickname of the disconnected player
-     */
-    protected void handleDisconnection(String nickname) {
-        try {
-            ByteArrayInputStream stream = new ByteArrayInputStream(this.backup.toByteArray());
-            ObjectInputStream serModel = new ObjectInputStream(stream);
-            this.model = (GameBoard) serModel.readObject();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 }

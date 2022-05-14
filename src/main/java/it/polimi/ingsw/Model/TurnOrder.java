@@ -22,7 +22,6 @@ public class TurnOrder implements Serializable {
     private final Map<PlayerBoard, Optional<AssistantCard>> selectedCards; // used to generate the new turn order
     // if a playerboard is associated with an empty optional then their card has not yet been chosen for the turn
     // or said player is currently being skipped
-    private final Map<PlayerBoard, Boolean> skippedPlayers; // players that need to be skipped in any turn are set to true
     private int currentTurnPosition; // selects the current player from currentTurnOrder
     private List<PlayerBoard> currentTurnOrder; // represents the order for the turn in play
     private GamePhase gamePhase;
@@ -31,11 +30,9 @@ public class TurnOrder implements Serializable {
         if (playerBoards.length >= 2 && playerBoards.length <= 4) {
             // add all players to their cards map and set them to not skipped
             this.selectedCards = new HashMap<>(playerBoards.length);
-            this.skippedPlayers = new HashMap<>(playerBoards.length);
             for (PlayerBoard pb :
                     playerBoards) {
                 this.selectedCards.put(pb, Optional.empty());
-                this.skippedPlayers.put(pb, false);
             }
             // create turn order
             this.currentTurnOrder = Arrays.stream(playerBoards).collect(Collectors.toList());
@@ -54,13 +51,6 @@ public class TurnOrder implements Serializable {
         return List.copyOf(currentTurnOrder);
     }
 
-    public List<PlayerBoard> getSkippedPlayers() {
-        return this.skippedPlayers.entrySet().stream()
-                .filter(Map.Entry::getValue) // filter to only contain the skipped players
-                .map(Map.Entry::getKey)
-                .toList(); // returns unmodifiable List
-    }
-
     public Optional<AssistantCard> getMutableSelectedCard(PlayerBoard pb) {
         return this.selectedCards.get(pb);
     }
@@ -76,27 +66,6 @@ public class TurnOrder implements Serializable {
             cleanSelectedCards();
             gamePhase = GamePhase.SETUP;
         }
-    }
-
-    public void addPlayerToSkip(PlayerBoard pb) {
-        if (isPlayerSubscribed(pb)) {
-            this.skippedPlayers.put(pb, true);
-        }
-    }
-
-    // this function verifies if the playerboard passed to the obj is valid
-    private boolean isPlayerSubscribed(PlayerBoard pb) {
-        return skippedPlayers.containsKey(pb);
-    }
-
-    public void removePlayerToSkip(PlayerBoard pb) {
-        if (isPlayerSubscribed(pb)) {
-            this.skippedPlayers.put(pb, false);
-        }
-    }
-
-    public boolean isPlayerSkipped(PlayerBoard pb) {
-        return skippedPlayers.get(pb);
     }
 
     private void cleanSelectedCards() {
@@ -161,9 +130,6 @@ public class TurnOrder implements Serializable {
             currentTurnPosition = 0;
             stepNextGamePhase();
         }
-        // if the new player in turn is to be skipped, recursively call the step function
-        if (isPlayerSkipped(getMutableCurrentPlayer()))
-            stepToNextPlayer();
     }
 
     public void commitTurnOrder() {

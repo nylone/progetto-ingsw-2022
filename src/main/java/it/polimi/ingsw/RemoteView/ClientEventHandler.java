@@ -7,9 +7,9 @@ import java.util.concurrent.BlockingQueue;
 
 public class ClientEventHandler {
     private final BlockingQueue<ClientEvent> queue;
-    private ClientEventListener eventListener;
+    private final LobbyServer eventListener;
 
-    protected ClientEventHandler(ClientEventListener eventListener) {
+    protected ClientEventHandler(LobbyServer eventListener) {
         this.queue = new ArrayBlockingQueue<>(10);
         this.eventListener = eventListener;
     }
@@ -26,7 +26,4 @@ public class ClientEventHandler {
         }).start();
     }
 
-    protected void changeListener(ClientEventListener eventListener) {
-        this.eventListener = eventListener;
-    }
 }
