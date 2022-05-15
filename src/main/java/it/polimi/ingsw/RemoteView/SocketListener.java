@@ -2,6 +2,8 @@ package it.polimi.ingsw.RemoteView;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.RemoteView.Messages.Events.*;
+import it.polimi.ingsw.RemoteView.Messages.Events.Internal.SocketClosedEvent;
+import it.polimi.ingsw.RemoteView.Messages.Events.Requests.*;
 import it.polimi.ingsw.RemoteView.Messages.Message;
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 
@@ -30,7 +32,7 @@ public class SocketListener implements Runnable {
                 Message message = socket.awaitMessage();
                 if (message == null) { // the message can be null from invalid json or closed socket
                     if (socket.isClosed()) {
-                        queue.enqueue(new SocketClosed());
+                        queue.enqueue(new SocketClosedEvent());
                         return;
                     }
                     continue;
@@ -38,15 +40,15 @@ public class SocketListener implements Runnable {
                 ClientEvent clientEvent;
                 switch (message.getType()) {
                     case REQUEST_DECLARE_PLAYER ->
-                            clientEvent = new Gson().fromJson(message.getData(), DeclarePlayer.class);
+                            clientEvent = new Gson().fromJson(message.getData(), DeclarePlayerRequest.class);
                     case REQUEST_CONNECT_LOBBY ->
-                            clientEvent = new Gson().fromJson(message.getData(), ConnectLobby.class);
+                            clientEvent = new Gson().fromJson(message.getData(), ConnectLobbyRequest.class);
                     case REQUEST_CREATE_LOBBY ->
-                            clientEvent = new Gson().fromJson(message.getData(), CreateLobby.class);
+                            clientEvent = new Gson().fromJson(message.getData(), CreateLobbyRequest.class);
                     case REQUEST_START_GAME ->
-                            clientEvent = new Gson().fromJson(message.getData(), StartGame.class);
+                            clientEvent = new Gson().fromJson(message.getData(), StartGameRequest.class);
                     case REQUEST_PLAYER_ACTION ->
-                            clientEvent = new Gson().fromJson(message.getData(), PlayerAction.class);
+                            clientEvent = new Gson().fromJson(message.getData(), PlayerActionRequest.class);
                         case default -> {
                         log.severe(
                                 "Received unhandled " + PayloadType.class.getName() + ".\n" +

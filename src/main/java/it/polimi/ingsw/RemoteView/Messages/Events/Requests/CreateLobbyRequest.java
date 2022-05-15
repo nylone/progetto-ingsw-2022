@@ -1,13 +1,14 @@
-package it.polimi.ingsw.RemoteView.Messages.Events;
+package it.polimi.ingsw.RemoteView.Messages.Events.Requests;
 
+import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 
-public class CreateLobby extends ClientEvent implements MessageBuilder {
+public class CreateLobbyRequest extends ClientEvent implements MessageBuilder {
     private final boolean isPublic;
     private final int maxPlayers;
 
-    public CreateLobby(boolean isPublic, int maxPlayers) {
+    public CreateLobbyRequest(boolean isPublic, int maxPlayers) {
         this.isPublic = isPublic;
         this.maxPlayers = maxPlayers;
     }

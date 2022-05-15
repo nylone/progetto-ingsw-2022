@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Controller;
+package it.polimi.ingsw.Controller.Actions;
 
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
@@ -9,12 +9,16 @@ import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Model.TurnOrder;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
 import static it.polimi.ingsw.Constants.INPUT_NAME_ASSISTANT_CARD;
 
 
 public class PlayAssistantCard extends PlayerAction {
+    @Serial
+    private static final long serialVersionUID = 206L; // convention: 2 for controller, (01 -> 99) for objects
 
     private final int selectedAssistant;
 

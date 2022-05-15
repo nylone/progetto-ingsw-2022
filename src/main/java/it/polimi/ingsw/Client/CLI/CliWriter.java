@@ -7,10 +7,12 @@ import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.PlayerBoard;
-import it.polimi.ingsw.RemoteView.Messages.Events.*;
+import it.polimi.ingsw.RemoteView.Messages.Events.Requests.ConnectLobbyRequest;
+import it.polimi.ingsw.RemoteView.Messages.Events.Requests.CreateLobbyRequest;
+import it.polimi.ingsw.RemoteView.Messages.Events.Requests.DeclarePlayerRequest;
+import it.polimi.ingsw.RemoteView.Messages.Events.Requests.StartGameRequest;
 import it.polimi.ingsw.RemoteView.SocketWrapper;
 
-import javax.swing.text.html.Option;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -56,7 +58,7 @@ public class CliWriter implements Runnable{
                 if(nickname.equals("") || password.equals("")){
                     System.out.println("Username or password not well formatted");
                 }else {
-                    DeclarePlayer dp = new DeclarePlayer(nickname, password);
+                    DeclarePlayerRequest dp = new DeclarePlayerRequest(nickname, password);
                     socketWrapper.sendMessage(dp);
                     Thread.sleep(1000);
                     if (this.clientView.isLogged()) {
@@ -92,7 +94,7 @@ public class CliWriter implements Runnable{
 
     private void createLobby() throws IOException {
         if(!clientView.isInLobby()){
-            CreateLobby createLobby;
+            CreateLobbyRequest createLobbyRequest;
             System.out.println("Do you want to create an open or private lobby?");
             System.out.println("O : open");
             System.out.println("P : private");
@@ -122,8 +124,8 @@ public class CliWriter implements Runnable{
                 }
                 System.out.println("Amount of players not valid");
             }
-            createLobby = new CreateLobby(isPublic, players);
-            socketWrapper.sendMessage(createLobby);
+            createLobbyRequest = new CreateLobbyRequest(isPublic, players);
+            socketWrapper.sendMessage(createLobbyRequest);
         }else {
             System.out.println("You are already in a lobby");
         }
@@ -131,11 +133,11 @@ public class CliWriter implements Runnable{
 
     private void joinLobby() throws IOException {
         if(!clientView.isInLobby()){
-            ConnectLobby connectLobby;
+            ConnectLobbyRequest connectLobbyRequest;
             System.out.println("Insert lobby's UUID");
             UUID id = UUID.fromString(stdIn.readLine());
-            connectLobby = new ConnectLobby(id);
-            socketWrapper.sendMessage(connectLobby);
+            connectLobbyRequest = new ConnectLobbyRequest(id);
+            socketWrapper.sendMessage(connectLobbyRequest);
 
         }else {
             System.out.println("You are already in a lobby");
@@ -148,7 +150,7 @@ public class CliWriter implements Runnable{
         System.out.println("A: advanced");
         GameMode gameMode;
         String input;
-        StartGame startGame;
+        StartGameRequest startGameRequest;
         loop:
         while(true){
             input = stdIn.readLine().toUpperCase();
@@ -164,8 +166,8 @@ public class CliWriter implements Runnable{
                 case default -> System.out.println("input not correct, please try again");
             }
         }
-        startGame = new StartGame(gameMode);
-        socketWrapper.sendMessage(startGame);
+        startGameRequest = new StartGameRequest(gameMode);
+        socketWrapper.sendMessage(startGameRequest);
     }
 
     private void printActions() {

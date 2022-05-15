@@ -1,9 +1,13 @@
-package it.polimi.ingsw.Controller;
+package it.polimi.ingsw.Controller.Enums;
 
-import it.polimi.ingsw.Controller.Enums.DestinationType;
 import org.jetbrains.annotations.NotNull;
 
-public class MoveDestination {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class MoveDestination implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 203L; // convention: 2 for controller, (01 -> 99) for objects
     private final DestinationType destinationType;
     private final Integer islandID;
 

@@ -8,7 +8,7 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TeamID;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 import it.polimi.ingsw.RemoteView.Lobby;
-import it.polimi.ingsw.RemoteView.Messages.Events.ModelUpdate;
+import it.polimi.ingsw.RemoteView.Messages.Events.Internal.ModelUpdateEvent;
 
 import java.io.*;
 import java.util.*;
@@ -100,7 +100,7 @@ public class GameBoard implements Serializable {
     }
 
     public void notifyLobby() {
-        this.eventListeners.notifyPlayers(new ModelUpdate(this.getModelCopy().getUserModel()));
+        this.eventListeners.notifyPlayers(new ModelUpdateEvent(this.getModelCopy().getUserModel()));
     }
 
     /**

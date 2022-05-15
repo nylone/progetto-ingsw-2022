@@ -1,13 +1,14 @@
-package it.polimi.ingsw.RemoteView.Messages.Events;
+package it.polimi.ingsw.RemoteView.Messages.Events.Requests;
 
 import it.polimi.ingsw.Model.Enums.GameMode;
+import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 
-public class StartGame extends ClientEvent implements MessageBuilder {
+public class StartGameRequest extends ClientEvent implements MessageBuilder {
     private final GameMode gameMode;
 
-    public StartGame(GameMode gameMode) {
+    public StartGameRequest(GameMode gameMode) {
         this.gameMode = gameMode;
     }
 

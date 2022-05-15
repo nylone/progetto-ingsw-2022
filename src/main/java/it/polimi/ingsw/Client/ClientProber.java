@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.RemoteView.Messages.Events.CreateLobby;
-import it.polimi.ingsw.RemoteView.Messages.Events.DeclarePlayer;
+import it.polimi.ingsw.RemoteView.Messages.Events.Requests.CreateLobbyRequest;
+import it.polimi.ingsw.RemoteView.Messages.Events.Requests.DeclarePlayerRequest;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -20,19 +20,19 @@ public class ClientProber {
         log.info(inputStream.readLine());
         System.in.read();
 
-        DeclarePlayer dp = new DeclarePlayer("pablo", "pablito");
+        DeclarePlayerRequest dp = new DeclarePlayerRequest("pablo", "pablito");
         outputStream.write(dp.build().toJson().getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         System.out.println(inputStream.readLine());
         System.in.read();
 
-        CreateLobby clFail = new CreateLobby(true, 5);
+        CreateLobbyRequest clFail = new CreateLobbyRequest(true, 5);
         outputStream.write(clFail.build().toJson().getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         System.out.println(inputStream.readLine());
         System.in.read();
 
-        CreateLobby clSuccess = new CreateLobby(true, 4);
+        CreateLobbyRequest clSuccess = new CreateLobbyRequest(true, 4);
         outputStream.write(clSuccess.build().toJson().getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         System.out.println(inputStream.readLine());

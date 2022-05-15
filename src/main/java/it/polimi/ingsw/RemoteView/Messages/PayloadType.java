@@ -1,5 +1,7 @@
 package it.polimi.ingsw.RemoteView.Messages;
 
+import it.polimi.ingsw.RemoteView.Messages.Events.Requests.DeclarePlayerRequest;
+
 public enum PayloadType {
     // RESPONSES
     /**
@@ -13,7 +15,7 @@ public enum PayloadType {
      * Sent on accept of the welcome server. <br>
      * Once sent, carries an empty body object.
      * This response only means the client is being handled by the lobby server, which is now waiting for a
-     * {@link it.polimi.ingsw.RemoteView.Messages.Events.DeclarePlayer} request.
+     * {@link DeclarePlayerRequest} request.
      */
     RESPONSE_WELCOME,
     /**
@@ -47,7 +49,7 @@ public enum PayloadType {
      * Sent on accept of the welcome server. <br>
      * Once sent, carries an empty body object.
      * This response only means the client is being handled by the lobby server, which is now waiting for a
-     * {@link it.polimi.ingsw.RemoteView.Messages.Events.DeclarePlayer} request.
+     * {@link DeclarePlayerRequest} request.
      */
     REQUEST_DECLARE_PLAYER,
     /**

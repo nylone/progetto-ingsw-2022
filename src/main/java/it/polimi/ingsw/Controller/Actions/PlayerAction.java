@@ -1,11 +1,15 @@
-package it.polimi.ingsw.Controller;
+package it.polimi.ingsw.Controller.Actions;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Model.GameBoard;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class PlayerAction {
+public abstract class PlayerAction implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 200L; // convention: 2 for controller, (01 -> 99) for objects
 
     private final int playerBoardId;
 
@@ -13,7 +17,7 @@ public abstract class PlayerAction {
         this.playerBoardId = playerBoardId;
     }
 
-    protected final void safeExecute(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    public final void safeExecute(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         if (validate(history, ctx)) {
             try {
                 unsafeExecute(ctx);
