@@ -30,7 +30,7 @@ public class GameBoard implements Serializable {
     private final EffectTracker effects;
     private final List<Cloud> clouds;
     private final List<CharacterCard> characterCards;
-    private transient Lobby eventListeners;
+    private transient Optional<Lobby> subscribedListener;
     private int coinReserve;
 
     public GameBoard(
@@ -100,7 +100,7 @@ public class GameBoard implements Serializable {
     }
 
     public void notifyLobby() {
-        this.eventListeners.notifyPlayers(new ModelUpdateEvent(this.getModelCopy().getUserModel()));
+        this.subscribedListener.ifPresent(e -> e.notifyPlayers(new ModelUpdateEvent(this.getModelCopy().getUserModel())));
     }
 
     /**
@@ -160,7 +160,7 @@ public class GameBoard implements Serializable {
     }
 
     public void subscribeLobby(Lobby lobby) {
-        this.eventListeners = lobby;
+        this.subscribedListener = Optional.of(lobby);
     }
 
     public int getCoinReserve() {

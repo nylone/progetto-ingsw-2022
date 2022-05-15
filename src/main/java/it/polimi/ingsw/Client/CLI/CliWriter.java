@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class CliWriter implements Runnable{
+public class CliWriter implements Runnable {
 
 
     private final SocketWrapper socketWrapper;
@@ -50,14 +50,14 @@ public class CliWriter implements Runnable{
                             """
             );
             String nickname, password;
-            while(true) {
+            while (true) {
                 System.out.println("Insert Username:");
                 nickname = stdIn.readLine();
                 System.out.println("Insert Password");
                 password = stdIn.readLine();
-                if(nickname.equals("") || password.equals("")){
+                if (nickname.equals("") || password.equals("")) {
                     System.out.println("Username or password not well formatted");
-                }else {
+                } else {
                     DeclarePlayerRequest dp = new DeclarePlayerRequest(nickname, password);
                     socketWrapper.sendMessage(dp);
                     Thread.sleep(1000);
@@ -68,7 +68,7 @@ public class CliWriter implements Runnable{
             }
             this.clientView.setNickname(nickname);
             String input;
-            while(true){
+            while (true) {
                 input = stdIn.readLine();
                 elaborateInput(input);
 
@@ -79,7 +79,7 @@ public class CliWriter implements Runnable{
     }
 
     private void elaborateInput(String userInput) throws IOException, InvalidContainerIndexException {
-        switch(userInput){
+        switch (userInput) {
             case "showActions" -> printActions();
             case "createLobby" -> createLobby();
             case "joinLobby" -> joinLobby();
@@ -89,85 +89,6 @@ public class CliWriter implements Runnable{
             case "moveMotherNature" -> moveMotherNature();
             default -> System.out.println("Command not valid");
         }
-    }
-
-
-    private void createLobby() throws IOException {
-        if(!clientView.isInLobby()){
-            CreateLobbyRequest createLobbyRequest;
-            System.out.println("Do you want to create an open or private lobby?");
-            System.out.println("O : open");
-            System.out.println("P : private");
-            boolean isPublic;
-            String input;
-            loop:
-            while(true){
-                input = stdIn.readLine().toUpperCase();
-                switch (input){
-                    case "O" ->{
-                        isPublic = true;
-                        break loop;
-                    }
-                    case "P" ->{
-                        isPublic = false;
-                        break loop;
-                    }
-                    case default -> System.out.println("input not correct, please try again");
-                }
-            }
-            System.out.println("how many player will the lobby contain?");
-            int players;
-            while(true) {
-                players = Integer.parseInt(stdIn.readLine());
-                if(players>=2 && players<=4){
-                    break;
-                }
-                System.out.println("Amount of players not valid");
-            }
-            createLobbyRequest = new CreateLobbyRequest(isPublic, players);
-            socketWrapper.sendMessage(createLobbyRequest);
-        }else {
-            System.out.println("You are already in a lobby");
-        }
-    }
-
-    private void joinLobby() throws IOException {
-        if(!clientView.isInLobby()){
-            ConnectLobbyRequest connectLobbyRequest;
-            System.out.println("Insert lobby's UUID");
-            UUID id = UUID.fromString(stdIn.readLine());
-            connectLobbyRequest = new ConnectLobbyRequest(id);
-            socketWrapper.sendMessage(connectLobbyRequest);
-
-        }else {
-            System.out.println("You are already in a lobby");
-        }
-    }
-
-    private void startGame() throws IOException {
-        System.out.println("Select the game mode:");
-        System.out.println("S: simple");
-        System.out.println("A: advanced");
-        GameMode gameMode;
-        String input;
-        StartGameRequest startGameRequest;
-        loop:
-        while(true){
-            input = stdIn.readLine().toUpperCase();
-            switch (input){
-                case "S" ->{
-                    gameMode = GameMode.SIMPLE;
-                    break loop;
-                }
-                case "A" ->{
-                    gameMode = GameMode.ADVANCED;
-                    break loop;
-                }
-                case default -> System.out.println("input not correct, please try again");
-            }
-        }
-        startGameRequest = new StartGameRequest(gameMode);
-        socketWrapper.sendMessage(startGameRequest);
     }
 
     private void printActions() {
@@ -189,27 +110,83 @@ public class CliWriter implements Runnable{
         printGameActions();
     }
 
-    private void printGameActions(){
-        if(!this.clientView.getNickname().equals(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getNickname())){
-            System.out.println("No actions are allowed out of turn");
-            return;
-        }
-            GamePhase gamePhase = this.clientView.getGameBoard().getMutableTurnOrder().getGamePhase();
-            System.out.println("during the "+gamePhase+" phase these are the available commands:");
-            switch(gamePhase){
-                case SETUP -> {
-                    System.out.println("--playAssistantCard (play the assistant card to establish the turn order)");
-                }
-                case ACTION -> {
-                    System.out.println("--moveStudent (move one student from entrance to dining room or one island)");
-                    if(this.clientView.getGameBoard().getGameMode() == GameMode.ADVANCED){
-                        System.out.println("--playCharacterCard (activate the powerful effect of the character card)");
+    private void createLobby() throws IOException {
+        if (!clientView.isInLobby()) {
+            CreateLobbyRequest createLobbyRequest;
+            System.out.println("Do you want to create an open or private lobby?");
+            System.out.println("O : open");
+            System.out.println("P : private");
+            boolean isPublic;
+            String input;
+            loop:
+            while (true) {
+                input = stdIn.readLine().toUpperCase();
+                switch (input) {
+                    case "O" -> {
+                        isPublic = true;
+                        break loop;
                     }
-                    System.out.println("--moveMotherNature (move mother nature and calculate the influence");
+                    case "P" -> {
+                        isPublic = false;
+                        break loop;
+                    }
+                    case default -> System.out.println("input not correct, please try again");
                 }
-                default -> System.out.println("Gamephase is not valid");
+            }
+            System.out.println("how many player will the lobby contain?");
+            int players;
+            while (true) {
+                players = Integer.parseInt(stdIn.readLine());
+                if (players >= 2 && players <= 4) {
+                    break;
+                }
+                System.out.println("Amount of players not valid");
+            }
+            createLobbyRequest = new CreateLobbyRequest(isPublic, players);
+            socketWrapper.sendMessage(createLobbyRequest);
+        } else {
+            System.out.println("You are already in a lobby");
+        }
+    }
+
+    private void joinLobby() throws IOException {
+        if (!clientView.isInLobby()) {
+            ConnectLobbyRequest connectLobbyRequest;
+            System.out.println("Insert lobby's UUID");
+            UUID id = UUID.fromString(stdIn.readLine());
+            connectLobbyRequest = new ConnectLobbyRequest(id);
+            socketWrapper.sendMessage(connectLobbyRequest);
+
+        } else {
+            System.out.println("You are already in a lobby");
+        }
+    }
+
+    private void startGame() throws IOException {
+        System.out.println("Select the game mode:");
+        System.out.println("S: simple");
+        System.out.println("A: advanced");
+        GameMode gameMode;
+        String input;
+        StartGameRequest startGameRequest;
+        loop:
+        while (true) {
+            input = stdIn.readLine().toUpperCase();
+            switch (input) {
+                case "S" -> {
+                    gameMode = GameMode.SIMPLE;
+                    break loop;
+                }
+                case "A" -> {
+                    gameMode = GameMode.ADVANCED;
+                    break loop;
+                }
+                case default -> System.out.println("input not correct, please try again");
             }
         }
+        startGameRequest = new StartGameRequest(gameMode);
+        socketWrapper.sendMessage(startGameRequest);
+    }
 
     private void playAssistantCard() throws InvalidContainerIndexException, IOException {
         System.out.println("select one of these available assistant card");
@@ -229,26 +206,26 @@ public class CliWriter implements Runnable{
         //get the selected card
         do {
             int selected = getInt();
-            if(!cardNumbers.contains(selected)){
+            if (!cardNumbers.contains(selected)) {
                 System.out.println("Card not available");
             } else {
                 break;
             }
-        }while(true);
+        } while (true);
 
         //todo create message to send to the server
     }
 
     private void moveStudent() throws IOException {
         int entranceSize = this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getEntranceSize() - 1;
-        System.out.println("Insert the number of entrance's position between 0 and "+ entranceSize);
+        System.out.println("Insert the number of entrance's position between 0 and " + entranceSize);
         int selected = getInt();
 
         System.out.println("Type the island id to move the selected student there or press 'Enter' to send it to the dining room");
         Optional<Integer> choice = getInt(stdIn.readLine());
-        if(choice.isEmpty()){
+        if (choice.isEmpty()) {
             //todo moveDestination is diningroom
-        }else{
+        } else {
             //todo moveDestination is an island
         }
 
@@ -259,10 +236,32 @@ public class CliWriter implements Runnable{
     private void moveMotherNature() throws IOException {
         System.out.println("How many steps do you want mother nature to take?");
         int steps = getInt();
-        
+
     }
 
-    private int getInt() throws IOException{
+    private void printGameActions() {
+        if (!this.clientView.getNickname().equals(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {
+            System.out.println("No actions are allowed out of turn");
+            return;
+        }
+        GamePhase gamePhase = this.clientView.getGameBoard().getMutableTurnOrder().getGamePhase();
+        System.out.println("during the " + gamePhase + " phase these are the available commands:");
+        switch (gamePhase) {
+            case SETUP -> {
+                System.out.println("--playAssistantCard (play the assistant card to establish the turn order)");
+            }
+            case ACTION -> {
+                System.out.println("--moveStudent (move one student from entrance to dining room or one island)");
+                if (this.clientView.getGameBoard().getGameMode() == GameMode.ADVANCED) {
+                    System.out.println("--playCharacterCard (activate the powerful effect of the character card)");
+                }
+                System.out.println("--moveMotherNature (move mother nature and calculate the influence");
+            }
+            default -> System.out.println("Gamephase is not valid");
+        }
+    }
+
+    private int getInt() throws IOException {
         int result;
         while (true) {
             try {

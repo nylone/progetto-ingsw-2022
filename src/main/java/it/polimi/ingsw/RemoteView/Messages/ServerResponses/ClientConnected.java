@@ -1,7 +1,5 @@
 package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
-import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
-import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 
 public class ClientConnected extends Response {

@@ -20,7 +20,8 @@ public class PlayerActionRequest extends ClientEvent implements MessageBuilder {
     public PlayerAction getAction() throws IOException, ClassNotFoundException {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(this.payload);
         ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-        return (PlayerAction) objectInputStream.readObject();    }
+        return (PlayerAction) objectInputStream.readObject();
+    }
 
     @Override
     public PayloadType getPayloadType() {

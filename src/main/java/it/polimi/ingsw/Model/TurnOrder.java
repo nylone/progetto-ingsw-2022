@@ -55,23 +55,6 @@ public class TurnOrder implements Serializable {
         return this.selectedCards.get(pb);
     }
 
-    // cycles game-phases
-    private void stepNextGamePhase() {
-        // if stepping from setup to action
-        // there is a need to commit the new turn order
-        if (getGamePhase() == GamePhase.SETUP) {
-            commitTurnOrder();
-            gamePhase = GamePhase.ACTION;
-        } else { // when coming back to the setup phase the selected cards map must be reset
-            cleanSelectedCards();
-            gamePhase = GamePhase.SETUP;
-        }
-    }
-
-    private void cleanSelectedCards() {
-        selectedCards.replaceAll((k, v) -> Optional.empty());
-    }
-
     public void setSelectedCard(PlayerBoard pb, AssistantCard ac) throws OperationException, InputValidationException {
         if (pb == null) { // not null contract
             throw new InvalidElementException("PlayerBoard pb");
@@ -132,6 +115,19 @@ public class TurnOrder implements Serializable {
         }
     }
 
+    // cycles game-phases
+    private void stepNextGamePhase() {
+        // if stepping from setup to action
+        // there is a need to commit the new turn order
+        if (getGamePhase() == GamePhase.SETUP) {
+            commitTurnOrder();
+            gamePhase = GamePhase.ACTION;
+        } else { // when coming back to the setup phase the selected cards map must be reset
+            cleanSelectedCards();
+            gamePhase = GamePhase.SETUP;
+        }
+    }
+
     public void commitTurnOrder() {
         // the starting elements of playersInOrder are players that have not been skipped
         // the last elements of playersInOrder are all the players that have been skipped
@@ -143,5 +139,9 @@ public class TurnOrder implements Serializable {
                                 .orElse(100))) // otherwise use a priority level that is higher than any other card
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
+    }
+
+    private void cleanSelectedCards() {
+        selectedCards.replaceAll((k, v) -> Optional.empty());
     }
 }

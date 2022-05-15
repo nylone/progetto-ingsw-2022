@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  */
 public class GameHandler {
     private final List<PlayerAction> history;
-    private GameBoard model;
+    private final GameBoard model;
     private Optional<Integer> winner;
 
     /**

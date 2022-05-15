@@ -1,7 +1,7 @@
 package it.polimi.ingsw.RemoteView;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.RemoteView.Messages.Events.*;
+import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.SocketClosedEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.*;
 import it.polimi.ingsw.RemoteView.Messages.Message;
@@ -49,7 +49,7 @@ public class SocketListener implements Runnable {
                             clientEvent = new Gson().fromJson(message.getData(), StartGameRequest.class);
                     case REQUEST_PLAYER_ACTION ->
                             clientEvent = new Gson().fromJson(message.getData(), PlayerActionRequest.class);
-                        case default -> {
+                    case default -> {
                         log.severe(
                                 "Received unhandled " + PayloadType.class.getName() + ".\n" +
                                         "Received: " + message.getType());

@@ -27,7 +27,9 @@ public class LobbyRedirect extends Response {
         return lobbyID;
     }
 
-    public String getAdmin() { return admin; }
+    public String getAdmin() {
+        return admin;
+    }
 
     @Override
     public PayloadType getPayloadType() {

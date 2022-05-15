@@ -10,10 +10,6 @@ public class Colours {
     public static String YELLOW = "\u001b[33m";
     public static String RESET = "\u001b[00m";
 
-    public static String colour(String s, String colour) {
-        return colour + s + Colours.RESET;
-    }
-
     public static String colorizeStudent(PawnColour p, String message) {
         String student = "";
         switch (p) {
@@ -24,5 +20,9 @@ public class Colours {
             case YELLOW -> student = student + Colours.colour(message, Colours.YELLOW);
         }
         return student;
+    }
+
+    public static String colour(String s, String colour) {
+        return colour + s + Colours.RESET;
     }
 }

@@ -9,7 +9,7 @@ import it.polimi.ingsw.RemoteView.SocketWrapper;
 import java.io.IOException;
 import java.util.UUID;
 
-public class ClientReader implements Runnable{
+public class ClientReader implements Runnable {
     /**
      * The socketWrapper used to receive messages from the server
      */
@@ -34,7 +34,7 @@ public class ClientReader implements Runnable{
     public void run() {
 
         Message response;
-        while(true) {
+        while (true) {
             try {
                 response = socketWrapper.awaitMessage();
             } catch (IOException ex) {
@@ -52,47 +52,47 @@ public class ClientReader implements Runnable{
 
     }
 
-    private void AnalyzeResponse(Message serverResponse){
-        switch (serverResponse.getType()){
+    private void AnalyzeResponse(Message serverResponse) {
+        switch (serverResponse.getType()) {
             case RESPONSE_LOBBY_ACCEPT -> {
                 LobbyAccept response = new Gson().fromJson(serverResponse.getData(), LobbyAccept.class);
-                if(response.getStatusCode() == StatusCode.Success) {
+                if (response.getStatusCode() == StatusCode.Success) {
                     this.clientView.setLogged(true);
                     System.out.println("User accepted\n");
                     System.out.println("Available open lobbies:");
-                    response.getOpenLobbies().stream().forEach(uuidStringPair -> System.out.println("ID: "+uuidStringPair.getFirst()+ " admin: "+uuidStringPair.getSecond()));
+                    response.getOpenLobbies().stream().forEach(uuidStringPair -> System.out.println("ID: " + uuidStringPair.getFirst() + " admin: " + uuidStringPair.getSecond()));
                     System.out.println("type 'showActions' for a list of available actions during all the game");
-                }else{
+                } else {
                     System.out.println("Password wrong for this username, try again or change Username");
                 }
             }
             case RESPONSE_LOBBY_REDIRECT -> {
                 LobbyRedirect response = new Gson().fromJson(serverResponse.getData(), LobbyRedirect.class);
                 UUID id = response.getLobbyID();
-                if(response.getStatusCode() == StatusCode.Success){
-                    System.out.println("Joined to lobby, id: "+ id+" admin:"+ response.getAdmin());
+                if (response.getStatusCode() == StatusCode.Success) {
+                    System.out.println("Joined to lobby, id: " + id + " admin:" + response.getAdmin());
                     clientView.setAdmin(response.getAdmin());
                     clientView.setLobbyID(id);
-                }else{
+                } else {
                     System.out.println("Something gone wrong, lobby not joined");
                 }
             }
             case RESPONSE_CLIENT_CONNECTED -> {
                 ClientConnected response = new Gson().fromJson(serverResponse.getData(), ClientConnected.class);
-                if(response.getStatusCode() == StatusCode.Success){
-                    System.out.println("player "+response.getNickname()+" has connected");
-                    System.out.println("players connected :"+response.getPlayersConnected());
+                if (response.getStatusCode() == StatusCode.Success) {
+                    System.out.println("player " + response.getNickname() + " has connected");
+                    System.out.println("players connected :" + response.getPlayersConnected());
                 }
             }
             case RESPONSE_GAME_INIT -> {
                 GameInit response = new Gson().fromJson(serverResponse.getData(), GameInit.class);
-                if(response.getStatusCode() == StatusCode.Fail){
+                if (response.getStatusCode() == StatusCode.Fail) {
                     System.out.println(response.getErrorMessage());
-                }else {
+                } else {
                     System.out.println("Game is starting...");
                 }
             }
-            case RESPONSE_GAME_STARTED ->  {
+            case RESPONSE_GAME_STARTED -> {
                 clientView.setGameStarted(true);
             }
 

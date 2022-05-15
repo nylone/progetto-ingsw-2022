@@ -18,7 +18,9 @@ public class PlayerActionFeedback extends Response {
         return new PlayerActionFeedback(StatusCode.Success, "Action executed successfully");
     }
 
-    public String getReport() { return report;}
+    public String getReport() {
+        return report;
+    }
 
     @Override
     public PayloadType getPayloadType() {

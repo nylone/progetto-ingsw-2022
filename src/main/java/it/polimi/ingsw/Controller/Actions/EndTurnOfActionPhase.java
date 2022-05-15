@@ -6,12 +6,12 @@ import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.GameBoard;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 
 public class EndTurnOfActionPhase extends PlayerAction {
     @Serial
     private static final long serialVersionUID = 202L; // convention: 2 for controller, (01 -> 99) for objects
+
     public EndTurnOfActionPhase(int playerBoardId) {
         super(playerBoardId);
     }

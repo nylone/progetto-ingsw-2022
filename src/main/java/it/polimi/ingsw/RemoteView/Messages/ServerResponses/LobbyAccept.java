@@ -8,7 +8,8 @@ import java.util.UUID;
 
 public class LobbyAccept extends Response {
 
-    private List<Pair<UUID, String>> openLobbies;
+    private final List<Pair<UUID, String>> openLobbies;
+
     public LobbyAccept(StatusCode statusCode, List<Pair<UUID, String>> openLobbies) {
         super(statusCode);
         this.openLobbies = openLobbies;

@@ -3,7 +3,7 @@ package it.polimi.ingsw.RemoteView;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.GameBoard;
-import it.polimi.ingsw.RemoteView.Messages.Events.*;
+import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.*;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.*;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
@@ -59,15 +59,6 @@ public class LobbyServer {
                 }
             }
         }).start();
-    }
-
-    public static void spawn(SocketWrapper socketWrapper) {
-        LobbyServer lobbyServer = new LobbyServer(socketWrapper);
-        SocketListener.subscribe(socketWrapper, lobbyServer.getEventHandler());
-    }
-
-    private ClientEventHandler getEventHandler() {
-        return this.eventHandler;
     }
 
     private void acceptPhase(ClientEvent clientEvent) throws IOException {
@@ -133,18 +124,20 @@ public class LobbyServer {
         // - start (only from admin)
         // - start (as admin event reaction)
         switch (clientEvent) {
-            case ClientConnectEvent clientConnectedEvent -> sw.sendMessage(new ClientConnected(clientConnectedEvent.getNickname(), clientConnectedEvent.getNumberOfPlayersConnected()));
-            case ClientDisconnectEvent clientDisconnectedEvent -> sw.sendMessage(new ClientDisconnected(clientDisconnectedEvent.getNickname()));
+            case ClientConnectEvent clientConnectedEvent ->
+                    sw.sendMessage(new ClientConnected(clientConnectedEvent.getNickname(), clientConnectedEvent.getNumberOfPlayersConnected()));
+            case ClientDisconnectEvent clientDisconnectedEvent ->
+                    sw.sendMessage(new ClientDisconnected(clientDisconnectedEvent.getNickname()));
             case StartGameRequest castedEvent -> {
                 if (!this.currentLobby.getAdmin().equals(this.nickname)) {
                     sw.sendMessage(GameInit.fail("Only the admin of the lobby can start the game."));
                     return;
                 }
-                if(!currentLobby.isLobbyFull()){
+                if (!currentLobby.isLobbyFull()) {
                     sw.sendMessage(GameInit.fail("The lobby has not been filled"));
                     return;
                 }
-                if(currentLobby.getGameHandler() != null){
+                if (currentLobby.getGameHandler() != null) {
                     sw.sendMessage(GameInit.fail("The game has already started"));
                     return;
                 }
@@ -164,6 +157,7 @@ public class LobbyServer {
             case default -> sw.sendMessage(new InvalidRequest());
         }
     }
+
     private void gameInProgressPhase(ClientEvent clientEvent) throws IOException {
         // wait phase: wait for valid lobby action
         // either:
@@ -188,12 +182,21 @@ public class LobbyServer {
         }
     }
 
+    private ClientEventHandler getEventHandler() {
+        return this.eventHandler;
+    }
+
     private static UUID generateUUID() {
         UUID id = UUID.randomUUID();
         while (lobbyMap.containsKey(id)) {
             id = UUID.randomUUID();
         }
         return id;
+    }
+
+    public static void spawn(SocketWrapper socketWrapper) {
+        LobbyServer lobbyServer = new LobbyServer(socketWrapper);
+        SocketListener.subscribe(socketWrapper, lobbyServer.getEventHandler());
     }
 
     private enum State {

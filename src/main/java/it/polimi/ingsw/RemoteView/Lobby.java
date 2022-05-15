@@ -3,9 +3,9 @@ package it.polimi.ingsw.RemoteView;
 import it.polimi.ingsw.Controller.GameHandler;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
+import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.ClientConnectEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.ClientDisconnectEvent;
-import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.GameStartEvent;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class Lobby {
         return admin;
     }
 
-    protected GameHandler getGameHandler(){
+    protected GameHandler getGameHandler() {
         return this.gameHandler;
     }
 
@@ -43,7 +43,7 @@ public class Lobby {
         return isPublic;
     }
 
-    protected boolean isLobbyFull(){
+    protected boolean isLobbyFull() {
         return this.players.size() == maxPlayers;
     }
 

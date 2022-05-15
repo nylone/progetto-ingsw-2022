@@ -8,7 +8,6 @@ import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 
 import static it.polimi.ingsw.Constants.*;

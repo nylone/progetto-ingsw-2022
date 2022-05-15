@@ -9,7 +9,6 @@ import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 
 public class MoveMotherNature extends PlayerAction {

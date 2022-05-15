@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Misc;
 
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
-import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.util.*;
 

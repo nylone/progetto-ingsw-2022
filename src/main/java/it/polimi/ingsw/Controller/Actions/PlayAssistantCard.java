@@ -10,7 +10,6 @@ import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Model.TurnOrder;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 
 import static it.polimi.ingsw.Constants.INPUT_NAME_ASSISTANT_CARD;
