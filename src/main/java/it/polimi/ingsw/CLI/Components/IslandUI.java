@@ -1,6 +1,6 @@
 package it.polimi.ingsw.CLI.Components;
 
-import it.polimi.ingsw.Misc.Colours;
+import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.GameBoard;
@@ -21,7 +21,7 @@ public class IslandUI {
         String students = "";
         ArrayList<PawnColour> sortedStudents = Utils.sortByFrequency(i.getStudents());
         for (PawnColour p : sortedStudents) {
-            students = students + Colours.colorizeStudent(p, "■ ");
+            students = students + Symbols.colorizeStudent(p, Symbols.PAWN + " ");
         }
 
         int maxStudents = 0;
@@ -35,11 +35,16 @@ public class IslandUI {
         String tower = "";
         if (i.getTowerColour().isPresent()) {
             switch (i.getTowerColour().get()) {
-                case BLACK -> tower = tower + "\tB(" + i.getTowerCount() + ")";
-                case WHITE -> tower = tower + "\tW(" + i.getTowerCount() + ")";
-                case GRAY -> tower = tower + "\tG(" + i.getTowerCount() + ")";
+                case BLACK -> tower = tower + "\t" + Symbols.colour(Symbols.TOWER + " ", Symbols.BLACK)
+                        + i.getTowerCount();
+                case GRAY -> tower = tower + "\t" + Symbols.colour(Symbols.TOWER + " ", Symbols.GRAY)
+                        + i.getTowerCount();
+                case WHITE -> tower = tower + "\t" + Symbols.colour(Symbols.TOWER + " ", Symbols.WHITE)
+                        + i.getTowerCount();
+
             }
         }
+        else tower = "\t" + " ".repeat(4);
         return mn + " Isola " + i.getId() + ":\t" + students + tower;
     }
 }

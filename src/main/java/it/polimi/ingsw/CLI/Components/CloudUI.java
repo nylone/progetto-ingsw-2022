@@ -1,6 +1,6 @@
 package it.polimi.ingsw.CLI.Components;
 
-import it.polimi.ingsw.Misc.Colours;
+import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Model.Cloud;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.GameBoard;
@@ -16,7 +16,7 @@ public class CloudUI {
                     String students = "";
 
                     for (PawnColour p : c.getContents()) {
-                        students = students + Colours.colorizeStudent(p, "\t■");
+                        students = students + Symbols.colorizeStudent(p, "\t" + Symbols.PAWN);
                         students = students + "\t\n";
                     }
                     if (students == "") {
@@ -36,20 +36,21 @@ public class CloudUI {
                 for (int i = 0; i < 3; i++) {
                     threeClouds = threeClouds +
                             (ctx.getClouds().get(0).getContents().size() > 0 ?
-                                    Colours.colorizeStudent(ctx.getClouds().get(0).getContents().get(i), "\t■\t") :
-                                    "\t\t");
+                                    Symbols.colorizeStudent(ctx.getClouds().get(0).getContents().get(i), "\t" +
+                                            Symbols.PAWN + "\t") : "\t\t");
                     threeClouds = threeClouds +
                             (ctx.getClouds().get(1).getContents().size() > 0 ?
-                                    Colours.colorizeStudent(ctx.getClouds().get(1).getContents().get(i), "\t■") + "\n" :
-                                    "\t\t\n");
+                                    Symbols.colorizeStudent(ctx.getClouds().get(1).getContents().get(i), "\t" +
+                                            Symbols.PAWN) + "\n" : "\t\t\n");
                 }
                 threeClouds = threeClouds + "Nuvola " + ctx.getClouds().get(2).getId() + "\n";
 
                 for (int i = 0; i < 3; i++) {
                     threeClouds = threeClouds +
                             (ctx.getClouds().get(2).getContents().size() > 0 ?
-                                    Colours.colorizeStudent(ctx.getClouds().get(2).getContents().get(i), "\t■") + "\n" :
-                                    "\t\t");
+                                    Symbols.colorizeStudent(ctx.getClouds().get(2).getContents().get(i), "\t"
+                                    + Symbols.PAWN) + "\n" :
+                                    "\t\t\n");
                 }
                 clouds = threeClouds + "\n\n\n";
             }
@@ -61,23 +62,24 @@ public class CloudUI {
                 for (int i = 0; i < 3; i++) {
                     fourClouds = fourClouds +
                             (ctx.getClouds().get(0).getContents().size() > 0 ?
-                                    Colours.colorizeStudent(ctx.getClouds().get(0).getContents().get(i), "\t■\t") :
-                                    "\t\t");
+                                    Symbols.colorizeStudent(ctx.getClouds().get(0).getContents().get(i), "\t"
+                                            + Symbols.PAWN + "\t") : "\t\t");
                     fourClouds = fourClouds +
                             (ctx.getClouds().get(1).getContents().size() > 0 ?
-                                    Colours.colorizeStudent(ctx.getClouds().get(1).getContents().get(i), "\t■") + "\n" :
-                                    "\t\t\n");
+                                    Symbols.colorizeStudent(ctx.getClouds().get(1).getContents().get(i), "\t"
+                                    + Symbols.PAWN) + "\n" : "\t\t\n");
                 }
                 fourClouds = fourClouds + "Nuvola " + ctx.getClouds().get(2).getId() + "\t"
                         + "Nuvola " + ctx.getClouds().get(3).getId() + "\n";
                 for (int i = 0; i < 3; i++) {
                     fourClouds = fourClouds +
                             (ctx.getClouds().get(2).getContents().size() > 0 ?
-                                    Colours.colorizeStudent(ctx.getClouds().get(2).getContents().get(i), "\t■\t") :
-                                    "\t\t");
+                                    Symbols.colorizeStudent(ctx.getClouds().get(2).getContents().get(i), "\t"
+                                            + Symbols.PAWN + "\t") : "\t\t");
                     fourClouds = fourClouds +
                             (ctx.getClouds().get(3).getContents().size() > 0 ?
-                                    Colours.colorizeStudent(ctx.getClouds().get(3).getContents().get(i), "\t■") + "\n" :
+                                    Symbols.colorizeStudent(ctx.getClouds().get(3).getContents().get(i), "\t"
+                                    + Symbols.PAWN) + "\n" :
                                     "\t\t\n");
                 }
                 clouds = fourClouds + "\n\n\n";
