@@ -43,8 +43,6 @@ public enum PayloadType {
     RESPONSE_MODEL_UPDATED,
     RESPONSE_PLAYER_ACTION,
 
-    RESPONSE_PLAYER_ACTION_FEEDBACK,
-
 
     // REQUESTS
     /**

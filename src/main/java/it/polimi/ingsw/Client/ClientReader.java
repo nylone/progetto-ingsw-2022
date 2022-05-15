@@ -59,16 +59,18 @@ public class ClientReader implements Runnable {
     }
 
     private void AnalyzeResponse(Message serverResponse) throws IOException, ClassNotFoundException {
-        System.out.println(serverResponse.getType());
-        System.out.println("---------");
         switch (serverResponse.getType()){
             case RESPONSE_LOBBY_ACCEPT -> {
                 LobbyAccept response = new Gson().fromJson(serverResponse.getData(), LobbyAccept.class);
                 if (response.getStatusCode() == StatusCode.Success) {
                     this.clientView.setLogged(true);
                     System.out.println("User accepted\n");
-                    System.out.println("Available open lobbies:");
-                    response.getOpenLobbies().stream().forEach(uuidStringPair -> System.out.println("ID: " + uuidStringPair.getFirst() + " admin: " + uuidStringPair.getSecond()));
+                    if(response.getOpenLobbies().size()==0){
+                        System.out.println("No open lobbies available");
+                    }else {
+                        System.out.println("Available open lobbies:");
+                        response.getOpenLobbies().stream().forEach(uuidStringPair -> System.out.println("ID: " + uuidStringPair.getFirst() + " admin: " + uuidStringPair.getSecond()));
+                    }
                     System.out.println("type 'showActions' for a list of available actions during all the game");
                 } else {
                     System.out.println("Password wrong for this username, try again or change Username");
@@ -107,10 +109,9 @@ public class ClientReader implements Runnable {
             case RESPONSE_MODEL_UPDATED -> {
                 ModelUpdated modelUpdated = new Gson().fromJson(serverResponse.getData(), ModelUpdated.class);
                 this.clientView.setGame(modelUpdated.getModel());
-                System.out.println("MODEL UPDATED");
             }
 
-            case RESPONSE_PLAYER_ACTION_FEEDBACK -> {
+            case RESPONSE_PLAYER_ACTION -> {
                 PlayerActionFeedback response = new Gson().fromJson(serverResponse.getData(), PlayerActionFeedback.class);
                 System.out.println(response.getReport());
             }

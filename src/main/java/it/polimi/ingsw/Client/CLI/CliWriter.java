@@ -2,10 +2,7 @@ package it.polimi.ingsw.Client.CLI;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.Client.ClientView;
-import it.polimi.ingsw.Controller.Actions.ChooseCloudTile;
-import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
-import it.polimi.ingsw.Controller.Actions.MoveStudent;
-import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
+import it.polimi.ingsw.Controller.Actions.*;
 import it.polimi.ingsw.Controller.Enums.MoveDestination;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -127,7 +124,7 @@ public class CliWriter implements Runnable{
      * @throws IOException if an I/O error occurs
      */
     private void chooseCloud() throws IOException {
-        System.out.println("Select one of the "+this.clientView.getGameBoard().getClouds().size()+" clouds");
+        System.out.println("Select one cloud from 0 to "+(this.clientView.getGameBoard().getClouds().size()-1));
         int selectedCloud = getInt();
 
         ChooseCloudTile chooseCloudTile = new ChooseCloudTile(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selectedCloud);
@@ -181,7 +178,10 @@ public class CliWriter implements Runnable{
     /**
      * Executes the endTurn command
      */
-    private void endTurn() {
+    private void endTurn() throws IOException {
+        EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId());
+        PlayerActionRequest playerActionRequest = new PlayerActionRequest(endTurnOfActionPhase);
+        socketWrapper.sendMessage(playerActionRequest);
     }
 
     /**
@@ -250,6 +250,7 @@ public class CliWriter implements Runnable{
                     }
                     System.out.println("--moveMotherNature (move mother nature and calculate the influence");
                     System.out.println("--chooseCloud (fill your entrance after moving three students)");
+                    System.out.println("--endTurn (end your turn)");
                 }
                 default -> System.out.println("Gamephase is not valid");
             }
