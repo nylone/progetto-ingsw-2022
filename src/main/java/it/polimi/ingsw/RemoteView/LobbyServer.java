@@ -163,6 +163,7 @@ public class LobbyServer {
         // either:
         // - start (only from admin)
         // - start (as admin event reaction)
+        System.out.println(clientEvent.getClass());
         switch (clientEvent) {
             case ModelUpdateEvent modelUpdateEvent -> {
                 GameBoard model = modelUpdateEvent.getModel();

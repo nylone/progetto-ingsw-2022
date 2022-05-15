@@ -1,7 +1,12 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.IslandField;
+import it.polimi.ingsw.Model.IslandGroup;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class ClientView {
@@ -47,6 +52,10 @@ public class ClientView {
         this.isInLobby = inLobby;
     }
 
+    public void setGame(GameBoard game) {
+        this.gameBoard = game;
+    }
+
     public String getNickname() {
         return Nickname;
     }
@@ -63,8 +72,22 @@ public class ClientView {
         return isLogged;
     }
 
+    private void printIslandField() {
+        ArrayList<IslandGroup> islandGroups = (ArrayList<IslandGroup>) gameBoard.getMutableIslandField().getMutableGroups();
+
+    }
+
+    private void drawIsland() {
+        System.out.println("𝑰𝒔𝒍𝒂𝒏𝒅𝒔");
+        List<IslandGroup> islandGroups = gameBoard.getMutableIslandField().getMutableGroups();
+        for (IslandGroup ig : islandGroups) {
+
+        }
+    }
+
     public void setLogged(boolean logged) {
         isLogged = logged;
     }
-
 }
+
+

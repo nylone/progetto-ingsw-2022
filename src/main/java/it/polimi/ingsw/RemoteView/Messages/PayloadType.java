@@ -23,17 +23,17 @@ public enum PayloadType {
      * Once sent, carries an empty body object.
      * This response means the client is now registered on the lobby server, and should select whether to
      * join a game or create one. <br>
-     * To join a game use {@link it.polimi.ingsw.RemoteView.Messages.Events.JoinGame} <br>
-     * To create a game use {@link it.polimi.ingsw.RemoteView.Messages.Events.CreateGame}
+     * To join a game use {@link it.polimi.ingsw.RemoteView.Messages.Events.Requests.ConnectLobbyRequest} <br>
+     * To create a game use {@link it.polimi.ingsw.RemoteView.Messages.Events.Requests.CreateLobbyRequest}
      */
     RESPONSE_LOBBY_ACCEPT,
     /**
      * Sent on redirect of the lobby server. <br>
      * Once sent, carries an empty body object. // todo
-     * This response means the client has now entered a lobby. Depending on the {@link it.polimi.ingsw.RemoteView.Messages.ServerResponses.ResponseBody}
+     * This response means the client has now entered a lobby. Depending on the {@link it.polimi.ingsw.RemoteView.Messages.ServerResponses.Response}
      * the lobby may be on hold or the game may have already started. <br>
      * If the lobby was ever on hold, the client should wait for a
-     * {@link it.polimi.ingsw.RemoteView.Messages.ServerResponses.GameStart} response.
+     * {@link it.polimi.ingsw.RemoteView.Messages.ServerResponses.GameStarted} response.
      */
     RESPONSE_LOBBY_REDIRECT,
     RESPONSE_GAME_INIT,
@@ -42,6 +42,8 @@ public enum PayloadType {
     RESPONSE_CLIENT_DISCONNECTED,
     RESPONSE_MODEL_UPDATED,
     RESPONSE_PLAYER_ACTION,
+
+    RESPONSE_PLAYER_ACTION_FEEDBACK,
 
 
     // REQUESTS
@@ -57,17 +59,17 @@ public enum PayloadType {
      * Once sent, carries an empty body object.
      * This response means the client is now registered on the lobby server, and should select whether to
      * join a game or create one. <br>
-     * To join a game use {@link it.polimi.ingsw.RemoteView.Messages.Events.JoinGame} <br>
-     * To create a game use {@link it.polimi.ingsw.RemoteView.Messages.Events.CreateGame}
+     * To join a game use {@link it.polimi.ingsw.RemoteView.Messages.Events.Requests.ConnectLobbyRequest} <br>
+     * To create a game use {@link it.polimi.ingsw.RemoteView.Messages.Events.Requests.CreateLobbyRequest}
      */
     REQUEST_CREATE_LOBBY,
     /**
      * Sent on redirect of the lobby server. <br>
      * Once sent, carries an ??? body object. //TODO
-     * This response means the client has now entered a lobby. Depending on the {@link it.polimi.ingsw.RemoteView.Messages.ServerResponses.ResponseBody}
+     * This response means the client has now entered a lobby. Depending on the {@link it.polimi.ingsw.RemoteView.Messages.ServerResponses.Response}
      * the lobby may be on hold or the game may have already started. <br>
      * If the lobby was ever on hold, the client should wait for a
-     * {@link it.polimi.ingsw.RemoteView.Messages.ServerResponses.GameStart} response.
+     * {@link it.polimi.ingsw.RemoteView.Messages.ServerResponses.GameStarted} response.
      */
     REQUEST_CONNECT_LOBBY,
     REQUEST_START_GAME,

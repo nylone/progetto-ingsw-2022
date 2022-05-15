@@ -47,13 +47,21 @@ public class ClientReader implements Runnable {
             }
 
             //Elaborate the message from the server
-            AnalyzeResponse(response);
+            try {
+                AnalyzeResponse(response);
+            } catch (IOException e) {
+                System.out.println("Error related to I/O ");
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
 
-    private void AnalyzeResponse(Message serverResponse) {
-        switch (serverResponse.getType()) {
+    private void AnalyzeResponse(Message serverResponse) throws IOException, ClassNotFoundException {
+        System.out.println(serverResponse.getType());
+        System.out.println("---------");
+        switch (serverResponse.getType()){
             case RESPONSE_LOBBY_ACCEPT -> {
                 LobbyAccept response = new Gson().fromJson(serverResponse.getData(), LobbyAccept.class);
                 if (response.getStatusCode() == StatusCode.Success) {
@@ -96,6 +104,37 @@ public class ClientReader implements Runnable {
                 clientView.setGameStarted(true);
             }
 
+            case RESPONSE_MODEL_UPDATED -> {
+                ModelUpdated modelUpdated = new Gson().fromJson(serverResponse.getData(), ModelUpdated.class);
+                this.clientView.setGame(modelUpdated.getModel());
+                System.out.println("MODEL UPDATED");
+            }
+
+            case RESPONSE_PLAYER_ACTION_FEEDBACK -> {
+                PlayerActionFeedback response = new Gson().fromJson(serverResponse.getData(), PlayerActionFeedback.class);
+                System.out.println(response.getReport());
+            }
+
         }
+    }
+
+    /**
+     * This method clears Client's console to reprint it after an update
+     *
+     */
+    private void UpdateView(){
+        try {
+            final String operatingSystem = System.getProperty("os.name");
+
+            if (operatingSystem.contains("Windows")) {
+                Runtime.getRuntime().exec("cls");
+            } else {
+                Runtime.getRuntime().exec("clear");
+            }
+        }catch (Exception e){
+            System.out.println("Clear operation failed");
+        }
+
+        System.out.println(this.clientView);
     }
 }
