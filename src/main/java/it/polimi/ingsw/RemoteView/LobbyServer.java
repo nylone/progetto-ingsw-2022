@@ -173,8 +173,10 @@ public class LobbyServer {
                     this.currentLobby.getGameHandler().executeAction(playerActionRequest.getAction());
                 } catch (InputValidationException e) {
                     sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
+                    return;
                 } catch (ClassNotFoundException e) {
                     sw.sendMessage(PlayerActionFeedback.fail("The action that was sent could not be deserialized."));
+                    return;
                 }
                 sw.sendMessage(PlayerActionFeedback.success());
             }
