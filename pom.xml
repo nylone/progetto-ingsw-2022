@@ -15,6 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
+        <exec.mainClass>it.polimi.ingsw.Main</exec.mainClass>
     </properties>
 
     <dependencies>
@@ -103,15 +104,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>server</id>
-            <properties><exec.mainClass>it.polimi.ingsw.RemoteView.WelcomeServer</exec.mainClass></properties>
-        </profile>
-        <profile>
-            <id>cli</id>
-            <properties><exec.mainClass>it.polimi.ingsw.Client.CLI.CLI</exec.mainClass></properties>
-        </profile>
-    </profiles>
 </project>

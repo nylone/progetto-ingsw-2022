@@ -26,10 +26,6 @@ public class WelcomeServer implements Runnable {
         this.socket = new ServerSocket(port, 50, address);
     }
 
-    public static void main(String... args) throws IOException {
-        new Thread(new WelcomeServer()).start();
-    }
-
     @Override
     public void run() {
         log.info("Server initialized and listening for new connections");
