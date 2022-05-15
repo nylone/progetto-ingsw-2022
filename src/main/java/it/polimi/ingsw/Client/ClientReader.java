@@ -51,14 +51,14 @@ public class ClientReader implements Runnable {
                 AnalyzeResponse(response);
             } catch (IOException e) {
                 System.out.println("Error related to I/O ");
-            } catch (ClassNotFoundException e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
 
     }
 
-    private void AnalyzeResponse(Message serverResponse) throws IOException, ClassNotFoundException {
+    private void AnalyzeResponse(Message serverResponse) throws Exception {
         switch (serverResponse.getType()){
             case RESPONSE_LOBBY_ACCEPT -> {
                 LobbyAccept response = new Gson().fromJson(serverResponse.getData(), LobbyAccept.class);
@@ -103,12 +103,15 @@ public class ClientReader implements Runnable {
                 }
             }
             case RESPONSE_GAME_STARTED -> {
+                System.out.println("The game has started");
                 clientView.setGameStarted(true);
             }
 
             case RESPONSE_MODEL_UPDATED -> {
                 ModelUpdated modelUpdated = new Gson().fromJson(serverResponse.getData(), ModelUpdated.class);
                 this.clientView.setGame(modelUpdated.getModel());
+                UpdateView();
+
             }
 
             case RESPONSE_PLAYER_ACTION -> {
@@ -123,19 +126,18 @@ public class ClientReader implements Runnable {
      * This method clears Client's console to reprint it after an update
      *
      */
-    private void UpdateView(){
+    private void UpdateView() throws Exception{
         try {
             final String operatingSystem = System.getProperty("os.name");
-
+            System.out.println("OS:"+operatingSystem);
             if (operatingSystem.contains("Windows")) {
-                Runtime.getRuntime().exec("cls");
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             } else {
-                Runtime.getRuntime().exec("clear");
+                System.out.print("\033\143");
             }
         }catch (Exception e){
             System.out.println("Clear operation failed");
         }
-
-        System.out.println(this.clientView);
+        this.clientView.printView();
     }
 }
