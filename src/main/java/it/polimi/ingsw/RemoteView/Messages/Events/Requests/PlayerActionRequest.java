@@ -25,6 +25,6 @@ public class PlayerActionRequest extends ClientEvent implements MessageBuilder {
 
     @Override
     public PayloadType getPayloadType() {
-        return PayloadType.REQUEST_START_GAME;
+        return PayloadType.REQUEST_PLAYER_ACTION;
     }
 }
