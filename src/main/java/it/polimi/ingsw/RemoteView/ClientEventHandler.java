@@ -7,23 +7,17 @@ import java.util.concurrent.BlockingQueue;
 
 public class ClientEventHandler {
     private final BlockingQueue<ClientEvent> queue;
-    private final LobbyServer eventListener;
 
-    protected ClientEventHandler(LobbyServer eventListener) {
+    protected ClientEventHandler() {
         this.queue = new ArrayBlockingQueue<>(10);
-        this.eventListener = eventListener;
     }
 
     protected void enqueue(ClientEvent event) throws InterruptedException {
         this.queue.put(event);
-        new Thread(() -> {
-            try {
-                ClientEvent clientEvent = queue.take();
-                eventListener.receive(clientEvent);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+    }
+
+    protected ClientEvent dequeue() throws InterruptedException {
+        return this.queue.take();
     }
 
 }

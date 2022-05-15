@@ -7,6 +7,7 @@ import it.polimi.ingsw.RemoteView.Messages.Events.*;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
 
 import java.io.IOException;
+import java.rmi.server.ExportException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -14,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 public class LobbyServer {
-    private static final Logger log = Logger.getLogger(LobbyServer.class.getName());
+    private static final Logger log = Logger.getAnonymousLogger();
     private static final Map<String, String> nickToPass = new ConcurrentHashMap<>(); // maps username to password
     private static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
     private final SocketWrapper sw;
@@ -26,8 +27,37 @@ public class LobbyServer {
 
     private LobbyServer(SocketWrapper sw) {
         this.sw = sw;
-        this.eventHandler = new ClientEventHandler(this);
+        this.eventHandler = new ClientEventHandler();
         this.state = State.ACCEPT_PHASE;
+        new Thread(() -> {
+            while (true) {
+                try {
+                    ClientEvent event = this.eventHandler.dequeue();
+                    log.info("Lobby server received a new Event: " + event.getClass());
+                    switch (event) {
+                        case SocketClosed ignored -> {
+                            this.currentLobby.removePlayerHandler(this.nickname);
+                            log.info("Lobby server was closed for player: " +
+                                    nickname +
+                                    " on address " +
+                                    this.sw.getInetAddress());
+                            return;
+                        }
+                        default -> {
+                            switch (this.state) {
+                                case ACCEPT_PHASE -> acceptPhase(event);
+                                case REDIRECT_PHASE -> redirectPhase(event);
+                                case GAME_START_PHASE -> gameStartPhase(event);
+                                case GAME_IN_PROGRESS_PHASE -> gameInProgressPhase(event);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    log.severe(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public static void spawn(SocketWrapper socketWrapper) {
@@ -37,33 +67,6 @@ public class LobbyServer {
 
     private ClientEventHandler getEventHandler() {
         return this.eventHandler;
-    }
-
-    public synchronized void receive(ClientEvent event) {
-        log.info("Lobby server received a new Event: " + event.getClass());
-        try {
-            switch (event) {
-                case SocketClosed ignored -> {
-                    this.currentLobby.removePlayerHandler(this.nickname);
-                    log.info("Lobby server was closed for player: " +
-                            nickname +
-                            " on address " +
-                            this.sw.getInetAddress());
-                }
-                case ClientConnect clientConnected -> sw.sendMessage(new ClientConnected(clientConnected.getNickname(), clientConnected.getNumberOfPlayersConnected()));
-                case ClientDisconnect clientDisconnected -> sw.sendMessage(new ClientDisconnected(clientDisconnected.getNickname()));
-                default -> {
-                    switch (this.state) {
-                        case ACCEPT_PHASE -> acceptPhase(event);
-                        case REDIRECT_PHASE -> redirectPhase(event);
-                        case GAME_START_PHASE -> gameStartPhase(event);
-                        case GAME_IN_PROGRESS_PHASE -> gameInProgressPhase(event);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void acceptPhase(ClientEvent clientEvent) throws IOException {
@@ -129,6 +132,8 @@ public class LobbyServer {
         // - start (only from admin)
         // - start (as admin event reaction)
         switch (clientEvent) {
+            case ClientConnect clientConnected -> sw.sendMessage(new ClientConnected(clientConnected.getNickname(), clientConnected.getNumberOfPlayersConnected()));
+            case ClientDisconnect clientDisconnected -> sw.sendMessage(new ClientDisconnected(clientDisconnected.getNickname()));
             case StartGame castedEvent -> {
                 if (!this.currentLobby.getAdmin().equals(this.nickname)) {
                     sw.sendMessage(GameInit.fail("Only the admin of the lobby can start the game."));

@@ -26,17 +26,14 @@ public class GameHandler {
     /**
      * Generates a new instance of Game. This is the default method to call to create a game.
      *
-     * @param lobby the remote view object responsible of handling event dispatch to listeners
      * @param gameMode the game mode the players are going to use
      * @param players  a list of maximum 4, minimum 2 strings containing the nicknames of the players
      */
-    public GameHandler(Lobby lobby, GameMode gameMode, String... players) throws InputValidationException {
+    public GameHandler(GameMode gameMode, String... players) throws InputValidationException {
         if (players.length > 1 && players.length <= 4) {
             this.history = new ArrayList<>(6);
             this.model = new GameBoard(gameMode, players);
-            this.model.subscribeLobby(lobby);
             this.winner = Optional.empty();
-            this.model.notifyLobby();
         } else {
             throw new GenericInputValidationException("Players", "The number of players must be 2, 3 or 4.\n" +
                     "Players received: " + players.length);
@@ -55,6 +52,11 @@ public class GameHandler {
         this.history = history;
         this.model = game;
         this.winner = Optional.empty();
+    }
+
+    public void subscribeLobby(Lobby lobby) {
+        this.model.subscribeLobby(lobby);
+        this.model.notifyLobby();
     }
 
     /**
