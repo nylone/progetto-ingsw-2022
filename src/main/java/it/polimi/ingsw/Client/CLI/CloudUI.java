@@ -1,4 +1,4 @@
-package it.polimi.ingsw.CLI.Components;
+package it.polimi.ingsw.Client.CLI;
 
 import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Model.Cloud;

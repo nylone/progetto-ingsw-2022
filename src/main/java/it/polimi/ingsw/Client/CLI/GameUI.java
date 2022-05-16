@@ -1,8 +1,5 @@
-package it.polimi.ingsw.CLI;
+package it.polimi.ingsw.Client.CLI;
 
-import it.polimi.ingsw.CLI.Components.CloudUI;
-import it.polimi.ingsw.CLI.Components.IslandUI;
-import it.polimi.ingsw.CLI.Components.PlayerBoardUI;
 import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Model.Enums.PawnColour;

@@ -1,5 +1,6 @@
-package it.polimi.ingsw.CLI.Components;
+package it.polimi.ingsw.Client.CLI.Components;
 
+import it.polimi.ingsw.Client.CLI.CloudUI;
 import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;

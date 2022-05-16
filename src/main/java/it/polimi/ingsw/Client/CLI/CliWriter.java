@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Client.CLI;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.Client.ClientView;
 import it.polimi.ingsw.Controller.Actions.*;
 import it.polimi.ingsw.Controller.Enums.MoveDestination;
 import it.polimi.ingsw.Model.AssistantCard;

@@ -1,5 +1,6 @@
-package it.polimi.ingsw.CLI.Components;
+package it.polimi.ingsw.Client.CLI.Components;
 
+import it.polimi.ingsw.Client.CLI.IslandUI;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Misc.Utils;

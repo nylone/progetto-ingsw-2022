@@ -1,5 +1,6 @@
-package it.polimi.ingsw.CLI.Components;
+package it.polimi.ingsw.Client.CLI.Components;
 
+import it.polimi.ingsw.Client.CLI.PlayerBoardUI;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;
 import org.junit.Test;

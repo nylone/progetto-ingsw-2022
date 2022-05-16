@@ -1,7 +1,6 @@
-package it.polimi.ingsw.Client;
+package it.polimi.ingsw.Client.CLI;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.Client.CLI.CliWriter;
 import it.polimi.ingsw.RemoteView.Messages.Message;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
 import it.polimi.ingsw.RemoteView.SocketWrapper;

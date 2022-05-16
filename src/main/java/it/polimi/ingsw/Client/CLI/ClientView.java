@@ -1,6 +1,6 @@
-package it.polimi.ingsw.Client;
+package it.polimi.ingsw.Client.CLI;
 
-import it.polimi.ingsw.CLI.GameUI;
+import it.polimi.ingsw.Client.CLI.GameUI;
 import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Model.Enums.GameMode;
