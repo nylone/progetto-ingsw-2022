@@ -1,5 +1,6 @@
 package it.polimi.ingsw.RemoteView;
 
+import it.polimi.ingsw.Misc.SocketWrapper;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.StatusCode;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.Welcome;
 

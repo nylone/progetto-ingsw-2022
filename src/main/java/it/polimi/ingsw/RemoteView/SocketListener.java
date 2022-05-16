@@ -1,6 +1,7 @@
 package it.polimi.ingsw.RemoteView;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.Misc.SocketWrapper;
 import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.SocketClosedEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.*;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.RemoteView;
+package it.polimi.ingsw.Misc;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 public class SocketWrapper {
-    private static final Logger log = Logger.getLogger(SocketWrapper.class.getName());
+    private static final Logger log = Logger.getAnonymousLogger();
 
     private final Socket sock;
     private final InputStreamReader input;
@@ -46,17 +46,20 @@ public class SocketWrapper {
     }
 
     public Message awaitMessage() throws IOException {
+        Message read = null;
         try {
-            return new Gson().fromJson(this.jsonReader, Message.class);
+            read = new Gson().fromJson(this.jsonReader, Message.class);
+            if (read == null) throw new JsonSyntaxException("null message received");
+            log.info("received valid message: " + read.getType() + "\n" + read.getData());
         } catch (JsonSyntaxException e) {
-            log.severe("caught invalid syntax on: " + e.getMessage());
+            log.severe("received invalid syntax on: " + e.getMessage());
             if (this.input.read() == -1) {
-                log.info("client socket disconnected: closing socket");
+                log.info("socket disconnected: closing socket");
                 this.sock.close();
                 log.info("closed SocketWrapper");
             }
-            return null;
         }
+        return read;
     }
 
     public <T extends MessageBuilder> void sendMessage(T messageToBuild) throws IOException {

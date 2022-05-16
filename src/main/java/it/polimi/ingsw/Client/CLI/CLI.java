@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.CLI;
 
 
-import it.polimi.ingsw.RemoteView.SocketWrapper;
+import it.polimi.ingsw.Misc.SocketWrapper;
 
 import java.net.Socket;
 

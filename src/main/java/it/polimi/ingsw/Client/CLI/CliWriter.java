@@ -8,7 +8,7 @@ import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.*;
-import it.polimi.ingsw.RemoteView.SocketWrapper;
+import it.polimi.ingsw.Misc.SocketWrapper;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -2,6 +2,7 @@ package it.polimi.ingsw.RemoteView;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Pair;
+import it.polimi.ingsw.Misc.SocketWrapper;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.*;
@@ -37,7 +38,9 @@ public class LobbyServer {
                     log.info("Lobby server received a new Event: " + event.getClass());
                     switch (event) {
                         case SocketClosedEvent ignored -> {
-                            this.currentLobby.removePlayerHandler(this.nickname);
+                            if (this.currentLobby != null) {
+                                this.currentLobby.removePlayerHandler(this.nickname);
+                            }
                             log.info("Lobby server was closed for player: " +
                                     nickname +
                                     " on address " +
