@@ -31,12 +31,13 @@ public class CloudUI {
 
             case 3 -> {
                 String threeClouds = "";
+                threeClouds = threeClouds + "Cloud " + (ctx.getClouds().get(0).getId() + 1) + "\t\t"
                         + "Cloud " + (ctx.getClouds().get(1).getId() + 1) + "\n";
                 for (int i = 0; i < 3; i++) {
                     threeClouds = threeClouds +
                             (ctx.getClouds().get(0).getContents().size() > 0 ?
                                     Symbols.colorizeStudent(ctx.getClouds().get(0).getContents().get(i), "\t" +
-                                            Symbols.PAWN + "\t") : "\t\t");
+                                            Symbols.PAWN + "\t\t") : "\t\t\t");
                     threeClouds = threeClouds +
                             (ctx.getClouds().get(1).getContents().size() > 0 ?
                                     Symbols.colorizeStudent(ctx.getClouds().get(1).getContents().get(i), "\t" +
@@ -56,23 +57,25 @@ public class CloudUI {
 
             case 4 -> {
                 String fourClouds = "";
+                fourClouds = fourClouds + "Cloud " + (ctx.getClouds().get(0).getId() + 1) + "\t\t"
                         + "Cloud " + (ctx.getClouds().get(1).getId() + 1) + "\n";
                 for (int i = 0; i < 3; i++) {
                     fourClouds = fourClouds +
                             (ctx.getClouds().get(0).getContents().size() > 0 ?
                                     Symbols.colorizeStudent(ctx.getClouds().get(0).getContents().get(i), "\t"
-                                            + Symbols.PAWN + "\t") : "\t\t");
+                                            + Symbols.PAWN + "\t\t") : "\t\t\t");
                     fourClouds = fourClouds +
                             (ctx.getClouds().get(1).getContents().size() > 0 ?
                                     Symbols.colorizeStudent(ctx.getClouds().get(1).getContents().get(i), "\t"
                                             + Symbols.PAWN) + "\n" : "\t\t\n");
                 }
+                fourClouds = fourClouds + "Cloud " + (ctx.getClouds().get(2).getId() + 1) + "\t\t"
                         + "Cloud " + (ctx.getClouds().get(3).getId() + 1) + "\n";
                 for (int i = 0; i < 3; i++) {
                     fourClouds = fourClouds +
                             (ctx.getClouds().get(2).getContents().size() > 0 ?
                                     Symbols.colorizeStudent(ctx.getClouds().get(2).getContents().get(i), "\t"
-                                            + Symbols.PAWN + "\t") : "\t\t");
+                                            + Symbols.PAWN + "\t\t") : "\t\t\t");
                     fourClouds = fourClouds +
                             (ctx.getClouds().get(3).getContents().size() > 0 ?
                                     Symbols.colorizeStudent(ctx.getClouds().get(3).getContents().get(i), "\t"
