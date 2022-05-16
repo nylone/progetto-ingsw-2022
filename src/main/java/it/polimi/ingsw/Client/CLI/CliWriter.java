@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * This class takes Client's commands from terminal, provide support to the user and send the command to the Server by using the SocketWrapper
  */
-public class CliWriter implements Runnable{
+public class CliWriter implements Runnable {
 
 
     private final SocketWrapper socketWrapper;
@@ -82,6 +82,7 @@ public class CliWriter implements Runnable{
 
     /**
      * This method, given a String, executes the proper method according to User's request
+     *
      * @param userInput: text containing the command
      * @throws IOException the integer read from command line
      */
@@ -120,20 +121,8 @@ public class CliWriter implements Runnable{
     }
 
     /**
-     * Executes the chooseCloud command
-     * @throws IOException if an I/O error occurs
-     */
-    private void chooseCloud() throws IOException {
-        System.out.println("Select one cloud from 0 to "+(this.clientView.getGameBoard().getClouds().size()-1));
-        int selectedCloud = getInt();
-
-        ChooseCloudTile chooseCloudTile = new ChooseCloudTile(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selectedCloud);
-        PlayerActionRequest clientPlayerAction = new PlayerActionRequest(chooseCloudTile);
-        socketWrapper.sendMessage(clientPlayerAction);
-    }
-
-    /**
-     *Executes the createLobby command,
+     * Executes the createLobby command,
+     *
      * @throws IOException if an I/O error occurs
      */
     private void createLobby() throws IOException {
@@ -176,16 +165,8 @@ public class CliWriter implements Runnable{
     }
 
     /**
-     * Executes the endTurn command
-     */
-    private void endTurn() throws IOException {
-        EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId());
-        PlayerActionRequest playerActionRequest = new PlayerActionRequest(endTurnOfActionPhase);
-        socketWrapper.sendMessage(playerActionRequest);
-    }
-
-    /**
      * Executes the joinLobby command by knowing lobby's UUID
+     *
      * @throws IOException if an I/O error occurs
      */
     private void joinLobby() throws IOException {
@@ -203,6 +184,7 @@ public class CliWriter implements Runnable{
 
     /**
      * Executes the startGame command, it can be executed only by lobby's admin and whether the lobby is full
+     *
      * @throws IOException if an I/O error occurs
      */
     private void startGame() throws IOException {
@@ -232,37 +214,12 @@ public class CliWriter implements Runnable{
     }
 
     /**
-     * print all the available actions basing on current game phase
-     */
-    private void printGameActions(){
-        if(!this.clientView.getNickname().equals(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getNickname())){
-            System.out.println("No actions are allowed out of turn");
-            return;
-        }
-            GamePhase gamePhase = this.clientView.getGameBoard().getMutableTurnOrder().getGamePhase();
-            System.out.println("during the "+gamePhase+" phase these are the available commands:");
-            switch(gamePhase){
-                case SETUP -> System.out.println("--playAssistantCard (play the assistant card to establish the turn order)");
-                case ACTION -> {
-                    System.out.println("--moveStudent (move one student from entrance to dining room or one island)");
-                    if(this.clientView.getGameBoard().getGameMode() == GameMode.ADVANCED){
-                        System.out.println("--playCharacterCard (activate the powerful effect of the character card)");
-                    }
-                    System.out.println("--moveMotherNature (move mother nature and calculate the influence");
-                    System.out.println("--chooseCloud (fill your entrance after moving three students)");
-                    System.out.println("--endTurn (end your turn)");
-                }
-                default -> System.out.println("Gamephase is not valid");
-            }
-        }
-
-    /**
      * Executes the playAssistantCard command
-     *The method shows the available assistantCard at that moment
+     * The method shows the available assistantCard at that moment
      *
      * @throws IOException if an I/O error occurs
      */
-    private void playAssistantCard()throws IOException {
+    private void playAssistantCard() throws IOException {
         System.out.println("select one of these available assistant card");
         //get the unused cards
         ArrayList<AssistantCard> availableAssistants = this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards()
@@ -281,14 +238,14 @@ public class CliWriter implements Runnable{
         int selected;
         do {
             selected = getInt();
-            if(!cardNumbers.contains(selected)){
+            if (!cardNumbers.contains(selected)) {
                 System.out.println("Card not available");
             } else {
                 break;
             }
-        }while(true);
-        System.out.println("SELECTED:"+selected);
-        System.out.println("ID:"+this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId());
+        } while (true);
+        System.out.println("SELECTED:" + selected);
+        System.out.println("ID:" + this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected);
         PlayerActionRequest playerAction = new PlayerActionRequest(playAssistantCard);
         System.out.println(playerAction.getPayloadType());
@@ -298,6 +255,7 @@ public class CliWriter implements Runnable{
 
     /**
      * Executes the moveStudent command
+     *
      * @throws IOException if an I/O error occurs
      */
     private void moveStudent() throws IOException {
@@ -308,9 +266,9 @@ public class CliWriter implements Runnable{
         System.out.println("Type the island id to move the selected student there or press 'Enter' to send it to the dining room");
         Optional<Integer> choice = getInt(stdIn.readLine());
         MoveStudent moveStudent;
-        if(choice.isEmpty()){
-            moveStudent = new MoveStudent(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId(),selected, MoveDestination.toDiningRoom());
-        }else{
+        if (choice.isEmpty()) {
+            moveStudent = new MoveStudent(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected, MoveDestination.toDiningRoom());
+        } else {
             moveStudent = new MoveStudent(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected, MoveDestination.toIsland(choice.get()));
         }
 
@@ -322,6 +280,7 @@ public class CliWriter implements Runnable{
 
     /**
      * Executes the moveMotherNature command
+     *
      * @throws IOException if an I/O error occurs
      */
     private void moveMotherNature() throws IOException {
@@ -334,12 +293,61 @@ public class CliWriter implements Runnable{
     }
 
     /**
+     * Executes the chooseCloud command
+     *
+     * @throws IOException if an I/O error occurs
+     */
+    private void chooseCloud() throws IOException {
+        System.out.println("Select one cloud from 0 to " + (this.clientView.getGameBoard().getClouds().size() - 1));
+        int selectedCloud = getInt();
+
+        ChooseCloudTile chooseCloudTile = new ChooseCloudTile(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selectedCloud);
+        PlayerActionRequest clientPlayerAction = new PlayerActionRequest(chooseCloudTile);
+        socketWrapper.sendMessage(clientPlayerAction);
+    }
+
+    /**
+     * Executes the endTurn command
+     */
+    private void endTurn() throws IOException {
+        EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId());
+        PlayerActionRequest playerActionRequest = new PlayerActionRequest(endTurnOfActionPhase);
+        socketWrapper.sendMessage(playerActionRequest);
+    }
+
+    /**
+     * print all the available actions basing on current game phase
+     */
+    private void printGameActions() {
+        if (!this.clientView.getNickname().equals(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {
+            System.out.println("No actions are allowed out of turn");
+            return;
+        }
+        GamePhase gamePhase = this.clientView.getGameBoard().getMutableTurnOrder().getGamePhase();
+        System.out.println("during the " + gamePhase + " phase these are the available commands:");
+        switch (gamePhase) {
+            case SETUP ->
+                    System.out.println("--playAssistantCard (play the assistant card to establish the turn order)");
+            case ACTION -> {
+                System.out.println("--moveStudent (move one student from entrance to dining room or one island)");
+                if (this.clientView.getGameBoard().getGameMode() == GameMode.ADVANCED) {
+                    System.out.println("--playCharacterCard (activate the powerful effect of the character card)");
+                }
+                System.out.println("--moveMotherNature (move mother nature and calculate the influence");
+                System.out.println("--chooseCloud (fill your entrance after moving three students)");
+                System.out.println("--endTurn (end your turn)");
+            }
+            default -> System.out.println("Gamephase is not valid");
+        }
+    }
+
+    /**
      * Support method to read an integer from command line
      *
      * @return the integer read from command line
      * @throws IOException if an I/O error occurs
      */
-    private int getInt() throws IOException{
+    private int getInt() throws IOException {
         int result;
         while (true) {
             try {
@@ -356,7 +364,6 @@ public class CliWriter implements Runnable{
     }
 
     /**
-     *
      * @param input: text to convert in integer
      * @return the integer read from command line or Empty if the user pressed "Enter"
      * @throws IOException if an I/O error occurs

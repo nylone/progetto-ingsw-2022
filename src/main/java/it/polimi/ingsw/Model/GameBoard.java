@@ -22,7 +22,7 @@ public class GameBoard implements Serializable {
     private static final long serialVersionUID = 101L; // convention: 1 for model, (01 -> 99) for objects
     private final IslandField islandField;
     private final GameMode gameMode;
-    private final StudentBag studentBag;
+    private final transient StudentBag studentBag;
     private final List<PlayerBoard> playerBoards;
     private final Map<PawnColour, PlayerBoard> teachers;
     private final TeamMapper teamMap;
@@ -30,7 +30,7 @@ public class GameBoard implements Serializable {
     private final EffectTracker effects;
     private final List<Cloud> clouds;
     private final List<CharacterCard> characterCards;
-    private transient Optional<Lobby> subscribedListener;
+    private transient Lobby subscribedListener;
     private int coinReserve;
 
     public GameBoard(
@@ -58,7 +58,7 @@ public class GameBoard implements Serializable {
         this.clouds = clouds;
         this.characterCards = characterCards;
         this.coinReserve = coinReserve - coinPerPlayerBoard * playerBoards.size();
-        this.subscribedListener = Optional.empty();
+        this.subscribedListener = null;
     }
 
     public GameBoard(GameMode gameMode, String... playerNicknames) {
@@ -88,7 +88,7 @@ public class GameBoard implements Serializable {
             clouds.add(new Cloud(i));
         }
         refillClouds();
-        subscribedListener = Optional.empty();
+        subscribedListener = null;
     }
 
     public void refillClouds() {
@@ -102,31 +102,9 @@ public class GameBoard implements Serializable {
     }
 
     public void notifyLobby() {
-        this.subscribedListener.ifPresent(e -> e.notifyPlayers(new ModelUpdateEvent(this.getModelCopy().getUserModel())));
-    }
-
-    /**
-     * Sanitizes the object removing any information leaks for the user.
-     *
-     * @return a sanitized instance of the GameBoard object. <br>
-     * <b>Note:</b> once called, all changes to the original GameBoard object will be reflected in the instance returned
-     * by this method
-     */
-    public GameBoard getUserModel() {
-        return new GameBoard(
-                this.islandField,
-                this.gameMode,
-                null, // studentbag is removed
-                this.playerBoards,
-                this.teachers,
-                this.teamMap,
-                this.turnOrder,
-                this.effects,
-                this.clouds,
-                this.characterCards,
-                this.coinReserve,
-                0 // coins per playerboard is not to be used right now
-        );
+        if (this.subscribedListener != null) {
+            this.subscribedListener.notifyPlayers(new ModelUpdateEvent(this.getModelCopy()));
+        }
     }
 
     /**
@@ -162,7 +140,7 @@ public class GameBoard implements Serializable {
     }
 
     public void subscribeLobby(Lobby lobby) {
-        this.subscribedListener = Optional.of(lobby);
+        this.subscribedListener = lobby;
     }
 
     public int getCoinReserve() {

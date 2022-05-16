@@ -59,15 +59,15 @@ public class ClientReader implements Runnable {
     }
 
     private void AnalyzeResponse(Message serverResponse) throws Exception {
-        switch (serverResponse.getType()){
+        switch (serverResponse.getType()) {
             case RESPONSE_LOBBY_ACCEPT -> {
                 LobbyAccept response = new Gson().fromJson(serverResponse.getData(), LobbyAccept.class);
                 if (response.getStatusCode() == StatusCode.Success) {
                     this.clientView.setLogged(true);
                     System.out.println("User accepted\n");
-                    if(response.getOpenLobbies().size()==0){
+                    if (response.getOpenLobbies().size() == 0) {
                         System.out.println("No open lobbies available");
-                    }else {
+                    } else {
                         System.out.println("Available open lobbies:");
                         response.getOpenLobbies().stream().forEach(uuidStringPair -> System.out.println("ID: " + uuidStringPair.getFirst() + " admin: " + uuidStringPair.getSecond()));
                     }
@@ -124,18 +124,17 @@ public class ClientReader implements Runnable {
 
     /**
      * This method clears Client's console to reprint it after an update
-     *
      */
-    private void UpdateView() throws Exception{
+    private void UpdateView() throws Exception {
         try {
             final String operatingSystem = System.getProperty("os.name");
-            System.out.println("OS:"+operatingSystem);
+            System.out.println("OS:" + operatingSystem);
             if (operatingSystem.contains("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             } else {
                 System.out.print("\033\143");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Clear operation failed");
         }
         this.clientView.printView();

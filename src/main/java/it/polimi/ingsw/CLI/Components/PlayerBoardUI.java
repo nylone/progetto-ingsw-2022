@@ -1,7 +1,7 @@
 package it.polimi.ingsw.CLI.Components;
 
-import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -37,10 +37,9 @@ public class PlayerBoardUI {
     }
 
     public static String drawTeacher(PawnColour teacher, PlayerBoard p, GameBoard gb) {
-            if (gb.getOwnTeachers(p).contains(teacher)) {
-                return Symbols.colorizeStudent(teacher, Symbols.PAWN + " ");
-            }
-            else return "  ";
+        if (gb.getOwnTeachers(p).contains(teacher)) {
+            return Symbols.colorizeStudent(teacher, Symbols.PAWN + " ");
+        } else return "  ";
     }
 
     public static String drawTowers(PlayerBoard p, GameBoard gb) {
@@ -54,8 +53,7 @@ public class PlayerBoardUI {
         for (int i = 0; i < 8; i++) {
             if (i < gb.getTeamMap().getMutableTowerStorage(p).getTowerCount()) {
                 towers = towers + Symbols.colour(Symbols.TOWER, towerColour) + " ";
-            }
-            else towers = towers + "  ";
+            } else towers = towers + "  ";
 
             if (Symbols.stripFromANSICodes(towers).length() % 4 == 0) {
                 towers = towers.substring(0, towers.length() - 1); // remove space after tower in the II column

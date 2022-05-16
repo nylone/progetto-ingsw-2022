@@ -10,8 +10,6 @@ import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.IslandGroup;
 import it.polimi.ingsw.Model.PlayerBoard;
 
-import java.util.List;
-
 public class GameUI {
 
     public static String draw(GameBoard ctx) throws InvalidContainerIndexException, EmptyContainerException {
@@ -31,8 +29,8 @@ public class GameUI {
         return screen;
     }
 
-    public static String drawPlayerBoard(PlayerBoard playerBoard, GameBoard ctx){
-        String screen="";
+    public static String drawPlayerBoard(PlayerBoard playerBoard, GameBoard ctx) {
+        String screen = "";
         // Playerboard sections' titles. Change the argument of repeat() to further separate islands from playerboards
         screen = screen + "\n".repeat(3) + "Entrance:\t" + "Dining Room:\t" + "Teachers:\t" + "Towers:\t" + "\n";
 

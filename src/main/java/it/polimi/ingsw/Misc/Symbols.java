@@ -17,7 +17,6 @@ public class Symbols {
     public static String TOWER = "≡";
 
 
-
     public static String colorizeStudent(PawnColour p, String message) {
         String student = "";
         switch (p) {

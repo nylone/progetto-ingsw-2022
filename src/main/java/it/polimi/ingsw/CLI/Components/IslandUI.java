@@ -43,8 +43,7 @@ public class IslandUI {
                         + i.getTowerCount();
 
             }
-        }
-        else tower = "\t" + " ".repeat(4);
+        } else tower = "\t" + " ".repeat(4);
         return mn + " Isola " + i.getId() + ":\t" + students + tower;
     }
 }

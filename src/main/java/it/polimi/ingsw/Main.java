@@ -15,17 +15,18 @@ public class Main {
                 [S]\tstart server
                 [c]\tstart CLI client
                 [g]\tstart GUI client
-                
+                                
                 [q]\tquit this tool
                 """);
+
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(System.in));
         boolean again = true;
         do {
             // read user input
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(System.in));
-            String input = reader.readLine();
+            String input = reader.readLine().trim().toLowerCase();
             // handle input
-            switch (input.trim().substring(0,1).toLowerCase()) {
+            switch (input.substring(0, input.length() > 0 ? 1 : 0)) {
                 case "s", "" -> {
                     System.out.println("Starting Server...");
                     new Thread(new WelcomeServer()).start();
@@ -45,8 +46,7 @@ public class Main {
                     System.out.println("Quitting Startup tool...");
                     again = false;
                 }
-                case default ->
-                    System.out.println("Wrong input, please try again.");
+                case default -> System.out.println("Wrong input, please try again.");
             }
         } while (again);
     }

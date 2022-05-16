@@ -24,15 +24,15 @@ public class CloudUI {
                             students = students + "\t\t\n";
                         }
                     }
-                    twoClouds = twoClouds + "Nuvola " + (c.getId()+1) + "\n" + students;
+                    twoClouds = twoClouds + "Nuvola " + (c.getId() + 1) + "\n" + students;
                 }
                 clouds = twoClouds + "\n\n\n";
             }
 
             case 3 -> {
                 String threeClouds = "";
-                threeClouds = threeClouds + "Nuvola " + (ctx.getClouds().get(0).getId()+1) + "\t"
-                        + "Nuvola " + (ctx.getClouds().get(1).getId()+1) + "\n";
+                threeClouds = threeClouds + "Nuvola " + (ctx.getClouds().get(0).getId() + 1) + "\t"
+                        + "Nuvola " + (ctx.getClouds().get(1).getId() + 1) + "\n";
                 for (int i = 0; i < 3; i++) {
                     threeClouds = threeClouds +
                             (ctx.getClouds().get(0).getContents().size() > 0 ?
@@ -43,13 +43,13 @@ public class CloudUI {
                                     Symbols.colorizeStudent(ctx.getClouds().get(1).getContents().get(i), "\t" +
                                             Symbols.PAWN) + "\n" : "\t\t\n");
                 }
-                threeClouds = threeClouds + "Nuvola " + (ctx.getClouds().get(2).getId()+1) + "\n";
+                threeClouds = threeClouds + "Nuvola " + (ctx.getClouds().get(2).getId() + 1) + "\n";
 
                 for (int i = 0; i < 3; i++) {
                     threeClouds = threeClouds +
                             (ctx.getClouds().get(2).getContents().size() > 0 ?
                                     Symbols.colorizeStudent(ctx.getClouds().get(2).getContents().get(i), "\t"
-                                    + Symbols.PAWN) + "\n" :
+                                            + Symbols.PAWN) + "\n" :
                                     "\t\t\n");
                 }
                 clouds = threeClouds + "\n\n\n";
@@ -57,8 +57,8 @@ public class CloudUI {
 
             case 4 -> {
                 String fourClouds = "";
-                fourClouds = fourClouds + "Nuvola " + (ctx.getClouds().get(0).getId()+1) + "\t"
-                        + "Nuvola " + (ctx.getClouds().get(1).getId()+1) + "\n";
+                fourClouds = fourClouds + "Nuvola " + (ctx.getClouds().get(0).getId() + 1) + "\t"
+                        + "Nuvola " + (ctx.getClouds().get(1).getId() + 1) + "\n";
                 for (int i = 0; i < 3; i++) {
                     fourClouds = fourClouds +
                             (ctx.getClouds().get(0).getContents().size() > 0 ?
@@ -67,10 +67,10 @@ public class CloudUI {
                     fourClouds = fourClouds +
                             (ctx.getClouds().get(1).getContents().size() > 0 ?
                                     Symbols.colorizeStudent(ctx.getClouds().get(1).getContents().get(i), "\t"
-                                    + Symbols.PAWN) + "\n" : "\t\t\n");
+                                            + Symbols.PAWN) + "\n" : "\t\t\n");
                 }
-                fourClouds = fourClouds + "Nuvola " + (ctx.getClouds().get(2).getId()+1) + "\t"
-                        + "Nuvola " + (ctx.getClouds().get(3).getId()+1) + "\n";
+                fourClouds = fourClouds + "Nuvola " + (ctx.getClouds().get(2).getId() + 1) + "\t"
+                        + "Nuvola " + (ctx.getClouds().get(3).getId() + 1) + "\n";
                 for (int i = 0; i < 3; i++) {
                     fourClouds = fourClouds +
                             (ctx.getClouds().get(2).getContents().size() > 0 ?
@@ -79,7 +79,7 @@ public class CloudUI {
                     fourClouds = fourClouds +
                             (ctx.getClouds().get(3).getContents().size() > 0 ?
                                     Symbols.colorizeStudent(ctx.getClouds().get(3).getContents().get(i), "\t"
-                                    + Symbols.PAWN) + "\n" :
+                                            + Symbols.PAWN) + "\n" :
                                     "\t\t\n");
                 }
                 clouds = fourClouds + "\n\n\n";
