@@ -18,4 +18,10 @@ public class PlayerBoardUITest {
         GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo");
         System.out.println(PlayerBoardUI.drawTowers(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb));
     }
+
+    @Test
+    public void shouldDrawPlayerBoard() {
+        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo");
+        System.out.println(PlayerBoardUI.drawPlayerBoard(gb.getMutableTurnOrder().getMutableCurrentPlayer(), gb));
+    }
 }
