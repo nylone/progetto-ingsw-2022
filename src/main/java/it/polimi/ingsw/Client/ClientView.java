@@ -1,9 +1,12 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Model.Enums.GamePhase;
+import it.polimi.ingsw.CLI.GameUI;
+import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
+import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;
-import it.polimi.ingsw.Model.IslandField;
 import it.polimi.ingsw.Model.IslandGroup;
+import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,21 +75,41 @@ public class ClientView {
         return isLogged;
     }
 
-    private void printIslandField() {
-        ArrayList<IslandGroup> islandGroups = (ArrayList<IslandGroup>) gameBoard.getMutableIslandField().getMutableGroups();
-
-    }
-
-    private void drawIsland() {
-        System.out.println("𝑰𝒔𝒍𝒂𝒏𝒅𝒔");
-        List<IslandGroup> islandGroups = gameBoard.getMutableIslandField().getMutableGroups();
-        for (IslandGroup ig : islandGroups) {
-
+    private void printGameBoards(){
+        System.out.println("PLAYERBOARDS");
+        for(PlayerBoard pb : this.gameBoard.getMutablePlayerBoards()){
+            if(this.getNickname().equals(pb.getNickname())){
+                System.out.println("Your's Playerboard:");
+            }else{
+                System.out.println(pb.getNickname()+"'s Playerboard");
+            }
+            System.out.println(GameUI.drawPlayerBoard(pb,this.gameBoard));
+            System.out.println("\n");
         }
     }
 
+    /**
+     * This method prints the islandField (islands and clouds)
+     */
+    private void printIslandField() throws InvalidContainerIndexException, EmptyContainerException {
+        System.out.println(GameUI.draw(this.gameBoard));
+    }
+
+    private void drawCharacterCard(){
+        if(this.gameBoard.getGameMode()== GameMode.SIMPLE) return;
+
+    }
     public void setLogged(boolean logged) {
         isLogged = logged;
+    }
+
+    /**
+     * Executes all the printing-methods (printIslandField... //todo complete)
+     */
+    public void printView() throws InvalidContainerIndexException, EmptyContainerException {
+        printIslandField();
+        System.out.println("\n");
+        printGameBoards();
     }
 }
 
