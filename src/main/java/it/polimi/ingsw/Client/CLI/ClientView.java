@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client.CLI;
 
-import it.polimi.ingsw.Client.CLI.GameUI;
 import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -97,7 +96,7 @@ public class ClientView {
             } else {
                 System.out.println(pb.getNickname() + "'s Playerboard");
             }
-            System.out.println(GameUI.drawPlayerBoard(pb, this.gameBoard));
+            System.out.println(PlayerBoardUI.drawPlayerBoard(pb, this.gameBoard));
             System.out.println("\n");
         }
     }

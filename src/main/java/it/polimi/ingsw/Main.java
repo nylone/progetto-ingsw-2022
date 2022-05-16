@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 public class Main {
     public static void main(String[] args) throws IOException {
         System.out.println("""
-                Welcome to the eriantys startup tool!
+                Welcome to the Eriantys startup tool!
                 Please choose one of the following options:
                 [S]\tstart server
                 [c]\tstart CLI client
