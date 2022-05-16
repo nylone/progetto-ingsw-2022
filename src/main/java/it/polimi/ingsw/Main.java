@@ -1,9 +1,9 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.Client.CLI.CLI;
+import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.RemoteView.WelcomeServer;
 
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,7 +40,7 @@ public class Main {
                 }
                 case "g" -> {
                     System.out.println("Starting GUI client...");
-                    SwingUtilities.invokeLater(it.polimi.ingsw.Client.GUI.Main::new);
+                    GUI.init();
                     again = false;
                 }
                 case "q" -> {

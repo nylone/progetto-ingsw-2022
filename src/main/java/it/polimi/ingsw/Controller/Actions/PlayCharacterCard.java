@@ -64,7 +64,7 @@ public class PlayCharacterCard extends PlayerAction {
             throw new GenericInputValidationException("Action", "this action can't be executed more than once or be executed by other player than the current");
         }
         CharacterCard selectedCard = ctx.getCharacterCards().get(this.selectedCard);
-        System.out.println("SERVER_BALANCE:"+caller.getCoinBalance());
+        System.out.println("SERVER_BALANCE:" + caller.getCoinBalance());
         if (caller.getCoinBalance() < selectedCard.getCost()) {
             throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD,
                     INPUT_NAME_CHARACTER_CARD + " can't be played due to insufficient coin balance");

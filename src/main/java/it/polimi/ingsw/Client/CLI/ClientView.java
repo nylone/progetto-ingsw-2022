@@ -77,15 +77,6 @@ public class ClientView {
         printGameBoards();
         printCharacterCard();
     }
-    private void printCharacterCard() {
-        if (this.gameBoard.getGameMode() == GameMode.SIMPLE) return;
-        System.out.println("Available CharacterCards:");
-        for(CharacterCard characterCard : this.gameBoard.getCharacterCards()){
-            System.out.println("CharacterCard number:"+characterCard.getId() +" cost:"+characterCard.getCost());
-        }
-        System.out.println("\n");
-    }
-
 
     /**
      * This method prints the islandField (islands and clouds)
@@ -105,6 +96,15 @@ public class ClientView {
             System.out.println(PlayerBoardUI.drawPlayerBoard(pb, this.gameBoard));
             System.out.println("\n");
         }
+    }
+
+    private void printCharacterCard() {
+        if (this.gameBoard.getGameMode() == GameMode.SIMPLE) return;
+        System.out.println("Available CharacterCards:");
+        for (CharacterCard characterCard : this.gameBoard.getCharacterCards()) {
+            System.out.println("CharacterCard number:" + characterCard.getId() + " cost:" + characterCard.getCost());
+        }
+        System.out.println("\n");
     }
 
     public String getNickname() {
