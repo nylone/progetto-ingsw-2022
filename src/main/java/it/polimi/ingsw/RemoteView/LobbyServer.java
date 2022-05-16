@@ -1,5 +1,6 @@
 package it.polimi.ingsw.RemoteView;
 
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Misc.SocketWrapper;
@@ -173,13 +174,21 @@ public class LobbyServer {
             }
             case PlayerActionRequest playerActionRequest -> {
                 try {
-                    this.currentLobby.getGameHandler().executeAction(playerActionRequest.getAction());
+                    if (playerActionRequest.getAction().getPlayerBoardId() ==
+                            this.currentLobby.getGameHandler().getPlayerBoardIDFromNickname(this.nickname)) {
+                        this.currentLobby.getGameHandler().executeAction(playerActionRequest.getAction());
+                    } else {
+                        sw.sendMessage(PlayerActionFeedback.fail("The action that was sent is malformed."));
+                    }
                 } catch (InputValidationException e) {
                     sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
                     return;
                 } catch (ClassNotFoundException e) {
                     sw.sendMessage(PlayerActionFeedback.fail("The action that was sent could not be deserialized."));
                     return;
+                } catch (InvalidContainerIndexException e) {
+                    // we are always in the game, so this exception should crash the process
+                    log.severe("Unreachable statement was reached. Nickname was not found in the gameboard.");
                 }
                 sw.sendMessage(PlayerActionFeedback.success());
             }

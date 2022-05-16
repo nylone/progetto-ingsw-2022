@@ -4,6 +4,7 @@ import it.polimi.ingsw.Controller.Actions.EndTurnOfActionPhase;
 import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Controller.Actions.PlayerAction;
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Optional;
@@ -192,5 +193,9 @@ public class GameHandler {
      */
     public GameBoard getModelCopy() {
         return model.getModelCopy(); // never executed
+    }
+
+    public int getPlayerBoardIDFromNickname(String nickname) throws InvalidContainerIndexException {
+        return this.model.getMutablePlayerBoardByNickname(nickname).getId();
     }
 }

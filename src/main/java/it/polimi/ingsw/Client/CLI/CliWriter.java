@@ -3,12 +3,12 @@ package it.polimi.ingsw.Client.CLI;
 import com.google.gson.Gson;
 import it.polimi.ingsw.Controller.Actions.*;
 import it.polimi.ingsw.Controller.Enums.MoveDestination;
+import it.polimi.ingsw.Misc.SocketWrapper;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.*;
-import it.polimi.ingsw.Misc.SocketWrapper;
 
 import java.io.BufferedReader;
 import java.io.IOException;

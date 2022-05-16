@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 
 public class SocketWrapper {
     private static final Logger log = Logger.getAnonymousLogger();
-
     private final Socket sock;
     private final InputStreamReader input;
     private final JsonReader jsonReader;
@@ -50,7 +49,6 @@ public class SocketWrapper {
         try {
             read = new Gson().fromJson(this.jsonReader, Message.class);
             if (read == null) throw new JsonSyntaxException("null message received");
-            log.info("received valid message: " + read.getType() + "\n" + read.getData());
         } catch (JsonSyntaxException e) {
             log.severe("received invalid syntax on: " + e.getMessage());
             if (this.input.read() == -1) {

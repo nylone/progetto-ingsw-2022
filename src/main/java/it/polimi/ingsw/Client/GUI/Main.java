@@ -54,7 +54,7 @@ public class Main {
         panel.add(connect);
 
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 15, SpringLayout.NORTH, panel);
-        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title,  0, SpringLayout.HORIZONTAL_CENTER, panel);
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, panel);
 
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, serverAddressLabel, 20, SpringLayout.VERTICAL_CENTER, title);
         layout.putConstraint(SpringLayout.EAST, serverAddressLabel, -10, SpringLayout.HORIZONTAL_CENTER, title);
