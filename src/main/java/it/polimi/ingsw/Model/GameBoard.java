@@ -58,6 +58,7 @@ public class GameBoard implements Serializable {
         this.clouds = clouds;
         this.characterCards = characterCards;
         this.coinReserve = coinReserve - coinPerPlayerBoard * playerBoards.size();
+        this.subscribedListener = Optional.empty();
     }
 
     public GameBoard(GameMode gameMode, String... playerNicknames) {
@@ -87,6 +88,7 @@ public class GameBoard implements Serializable {
             clouds.add(new Cloud(i));
         }
         refillClouds();
+        subscribedListener = Optional.empty();
     }
 
     public void refillClouds() {
