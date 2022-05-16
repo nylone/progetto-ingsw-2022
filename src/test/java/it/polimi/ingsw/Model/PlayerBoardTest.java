@@ -8,7 +8,8 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class PlayerBoardTest {
 
@@ -76,12 +77,12 @@ public class PlayerBoardTest {
     }
 
     @Test
-    public void InvalidEntrancePositionException() throws Exception{
+    public void InvalidEntrancePositionException() throws Exception {
         PlayerBoard playerBoard = new PlayerBoard(2, 4, "teo", new StudentBag(24));
         playerBoard.removeStudentFromEntrance(0);
         try {
             playerBoard.removeStudentFromEntrance(0);
-        }catch (InvalidContainerIndexException exception){
+        } catch (InvalidContainerIndexException exception) {
             assertEquals("An error occurred on: Entrance\n" +
                     "The error was: provided index is out of bounds or no valid value could be retrieved.", exception.getMessage());
         }

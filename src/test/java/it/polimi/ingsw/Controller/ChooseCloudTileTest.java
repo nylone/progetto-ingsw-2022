@@ -18,60 +18,10 @@ import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class ChooseCloudTileTest {
 
 
-    @Test
-    public void playerCanTakeStudentsFromCloud() throws Exception {
-        // arrange
-        GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
-        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        AssistantCard card = Utils.random(player.getMutableAssistantCards());
-        PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
-        gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        while(true) {
-            card = Utils.random(player.getMutableAssistantCards());
-            PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
-            AssistantCard finalCard = card;
-            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
-                gh.executeAction(playAssistantCard1);
-                break;
-            }
-        }
-        gameBoard = gh.getModelCopy();
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        //move 3 pawns
-        for(int i=0; i<3; i++){
-            MoveDestination moveDestination = MoveDestination.toIsland(0);
-            MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
-            gh.executeAction(moveStudent);
-            gameBoard = gh.getModelCopy();
-            player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        }
-        //move Mother Nature
-        int randomMovement = new Random().nextInt(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement());
-        randomMovement = randomMovement == 0 ? 1 : randomMovement;;
-        PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
-        // act
-        gh.executeAction(action);
-        gameBoard = gh.getModelCopy();
-        // assert
-        int selectedCloud = Utils.random(gameBoard.getClouds()).getId();
-        ChooseCloudTile chooseCloudTile = new ChooseCloudTile(player.getId(), selectedCloud);
-        // act
-        gh.executeAction(chooseCloudTile);
-        gameBoard = gh.getModelCopy();
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        // assert
-        assertEquals(0, gameBoard.getClouds().get(selectedCloud).getContents().size());
-        assertEquals(0, player.getEntranceSpaceLeft());
-    }
     @Test(expected = InputValidationException.class)
     public void EntranceFullException() throws Exception {
         // arrange
@@ -90,6 +40,7 @@ public class ChooseCloudTileTest {
      * a PlayCharacterCard action or MoveMotherNature action (due to the check order taken in validate method,
      * the controller does not recognize immediately that this action has already been executed, anyway the result
      * is the same that is to say, the validation fails)
+     *
      * @throws Exception
      */
     @Test
@@ -102,14 +53,65 @@ public class ChooseCloudTileTest {
         int selectedCloud = Utils.random(gameBoard.getClouds()).getId();
         ChooseCloudTile chooseCloudTile = new ChooseCloudTile(player.getId(), selectedCloud);
         // act
-        try{
+        try {
             gh.executeAction(chooseCloudTile);
-        }catch(GenericInputValidationException exception){
+        } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: History\n" +
                     "The error was: MoveMotherNature action has not been executed", exception.getMessage());
         }
     }
-    
+
+    @Test
+    public void playerCanTakeStudentsFromCloud() throws Exception {
+        // arrange
+        GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
+        GameBoard gameBoard = gh.getModelCopy();
+        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        AssistantCard card = Utils.random(player.getMutableAssistantCards());
+        PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
+        gh.executeAction(playAssistantCard);
+        gameBoard = gh.getModelCopy();
+        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        while (true) {
+            card = Utils.random(player.getMutableAssistantCards());
+            PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
+            AssistantCard finalCard = card;
+            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
+                gh.executeAction(playAssistantCard1);
+                break;
+            }
+        }
+        gameBoard = gh.getModelCopy();
+        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        //move 3 pawns
+        for (int i = 0; i < 3; i++) {
+            MoveDestination moveDestination = MoveDestination.toIsland(0);
+            MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
+            gh.executeAction(moveStudent);
+            gameBoard = gh.getModelCopy();
+            player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        }
+        //move Mother Nature
+        int randomMovement = new Random().nextInt(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement());
+        randomMovement = randomMovement == 0 ? 1 : randomMovement;
+        ;
+        PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
+        // act
+        gh.executeAction(action);
+        gameBoard = gh.getModelCopy();
+        // assert
+        int selectedCloud = Utils.random(gameBoard.getClouds()).getId();
+        ChooseCloudTile chooseCloudTile = new ChooseCloudTile(player.getId(), selectedCloud);
+        // act
+        gh.executeAction(chooseCloudTile);
+        gameBoard = gh.getModelCopy();
+        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        // assert
+        assertEquals(0, gameBoard.getClouds().get(selectedCloud).getContents().size());
+        assertEquals(0, player.getEntranceSpaceLeft());
+    }
+
     @Test
     public void CloudIndexOutOfBound() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
@@ -120,11 +122,11 @@ public class ChooseCloudTileTest {
         gh.executeAction(playAssistantCard);
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        while(true) {
+        while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
@@ -133,7 +135,7 @@ public class ChooseCloudTileTest {
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         //move 3 pawns
-        for(int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
@@ -142,7 +144,8 @@ public class ChooseCloudTileTest {
         }
         //move Mother Nature
         int randomMovement = new Random().nextInt(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement());
-        randomMovement = randomMovement == 0 ? 1 : randomMovement;;
+        randomMovement = randomMovement == 0 ? 1 : randomMovement;
+        ;
         PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
         // act
         gh.executeAction(action);
@@ -150,51 +153,52 @@ public class ChooseCloudTileTest {
         int selectedCloud = 5;
         ChooseCloudTile chooseCloudTile = new ChooseCloudTile(player.getId(), selectedCloud);
         // act
-        try{
+        try {
             gh.executeAction(chooseCloudTile);
-        }catch (InvalidElementException exception){
+        } catch (InvalidElementException exception) {
             assertEquals("An error occurred while validating: Cloud\n" +
                     "The error was: element Cloud was found to be invalid (eg: null, out of bounds or otherwise incorrect).", exception.getMessage());
         }
     }
 
-    /** We use the debug version of
+    /**
+     * We use the debug version of
      * GameBoard and GameHandler
-     *
+     * <p>
      * activating PlayCharacterCard action before the second chooseCloudTile action assure to not satisfy the condition
      * checked on PreviousActionNotValid method.
      *
      * @Throws Exception
      */
     @Test
-    public void FullEntranceExceptionTest() throws Exception{
+    public void FullEntranceExceptionTest() throws Exception {
         StudentBag studentBag = new StudentBag(24);
         List<PlayerBoard> players = new ArrayList<>(2);
-        players.add(new PlayerBoard(1,2,"Rouge", studentBag));
-        players.add(new PlayerBoard(2,2,"Rampeo", studentBag));
+        players.add(new PlayerBoard(1, 2, "Rouge", studentBag));
+        players.add(new PlayerBoard(2, 2, "Rampeo", studentBag));
         List<Cloud> clouds = new ArrayList<>(2);
         clouds.add(new Cloud(1));
         clouds.add(new Cloud(2));
         List<CharacterCard> characterCards = new ArrayList<>();
-        GameBoard gameBoard = new GameBoard(new IslandField(),GameMode.ADVANCED,studentBag, players, new EnumMap<>(PawnColour.class),
-                                            new TeamMapper(players), new TurnOrder(players.toArray(new PlayerBoard[0])),new EffectTracker(), clouds,
-                                            characterCards,20,1 );
+        GameBoard gameBoard = new GameBoard(new IslandField(), GameMode.ADVANCED, studentBag, players, new EnumMap<>(PawnColour.class),
+                new TeamMapper(players), new TurnOrder(players.toArray(new PlayerBoard[0])), new EffectTracker(), clouds,
+                characterCards, 20, 1);
         gameBoard.refillClouds();
         characterCards.add(new Card04(gameBoard));
         characterCards.add(new Card09(gameBoard));
         characterCards.add(new Card10(gameBoard));
-        GameHandler gh = new GameHandler(gameBoard,new ArrayList<>());
+        GameHandler gh = new GameHandler(gameBoard, new ArrayList<>());
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        while(true) {
+        while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
@@ -203,7 +207,7 @@ public class ChooseCloudTileTest {
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         //move 3 pawns
-        for(int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
@@ -212,7 +216,8 @@ public class ChooseCloudTileTest {
         }
         //move Mother Nature
         int randomMovement = new Random().nextInt(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement());
-        randomMovement = randomMovement == 0 ? 1 : randomMovement;;
+        randomMovement = randomMovement == 0 ? 1 : randomMovement;
+        ;
         PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
         // act
         gh.executeAction(action);
@@ -232,37 +237,37 @@ public class ChooseCloudTileTest {
         chooseCloudTile = new ChooseCloudTile(player.getId(), selectedCloud);
         try {
             gh.executeAction(chooseCloudTile);
-        }catch (GenericInputValidationException exception){
+        } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: Entrance\n" +
                     "The error was: Entrancecan't contain 3 element's without overflowing.", exception.getMessage());
         }
     }
 
     @Test
-    public void EmptyIslandException() throws Exception{
+    public void EmptyIslandException() throws Exception {
         StudentBag studentBag = new StudentBag(24);
         List<PlayerBoard> players = new ArrayList<>(2);
-        players.add(new PlayerBoard(1,2,"Rouge", studentBag));
-        players.add(new PlayerBoard(2,2,"Rampeo", studentBag));
+        players.add(new PlayerBoard(1, 2, "Rouge", studentBag));
+        players.add(new PlayerBoard(2, 2, "Rampeo", studentBag));
         List<Cloud> clouds = new ArrayList<>(2);
         clouds.add(new Cloud(1));
         clouds.add(new Cloud(2));
         List<CharacterCard> characterCards = new ArrayList<>();
-        GameBoard gameBoard = new GameBoard(new IslandField(),GameMode.SIMPLE,studentBag, players, new EnumMap<>(PawnColour.class),
-                new TeamMapper(players), new TurnOrder(players.toArray(new PlayerBoard[0])),new EffectTracker(), clouds,
-                characterCards,20,1);
-        GameHandler gh = new GameHandler(gameBoard,new ArrayList<>());
+        GameBoard gameBoard = new GameBoard(new IslandField(), GameMode.SIMPLE, studentBag, players, new EnumMap<>(PawnColour.class),
+                new TeamMapper(players), new TurnOrder(players.toArray(new PlayerBoard[0])), new EffectTracker(), clouds,
+                characterCards, 20, 1);
+        GameHandler gh = new GameHandler(gameBoard, new ArrayList<>());
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        while(true) {
+        while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
@@ -271,7 +276,7 @@ public class ChooseCloudTileTest {
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         //move 3 pawns
-        for(int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
@@ -280,7 +285,8 @@ public class ChooseCloudTileTest {
         }
         //move Mother Nature
         int randomMovement = new Random().nextInt(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement());
-        randomMovement = randomMovement == 0 ? 1 : randomMovement;;
+        randomMovement = randomMovement == 0 ? 1 : randomMovement;
+        ;
         PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
         // act
         gh.executeAction(action);
@@ -289,14 +295,14 @@ public class ChooseCloudTileTest {
         ChooseCloudTile chooseCloudTile = new ChooseCloudTile(player.getId(), selectedCloud);
         try {
             gh.executeAction(chooseCloudTile);
-        }catch (GenericInputValidationException exception){
+        } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: Cloud\n" +
                     "The error was: Cloud has already been emptied", exception.getMessage());
         }
     }
 
     @Test
-    public void outOfTurnException() throws Exception{
+    public void outOfTurnException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
         GameBoard gameBoard = gh.getModelCopy();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
@@ -305,11 +311,11 @@ public class ChooseCloudTileTest {
         gh.executeAction(playAssistantCard);
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        while(true) {
+        while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
@@ -318,7 +324,7 @@ public class ChooseCloudTileTest {
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         //move 3 pawns
-        for(int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
@@ -327,7 +333,8 @@ public class ChooseCloudTileTest {
         }
         //move Mother Nature
         int randomMovement = new Random().nextInt(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement());
-        randomMovement = randomMovement == 0 ? 1 : randomMovement;;
+        randomMovement = randomMovement == 0 ? 1 : randomMovement;
+        ;
         PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
         // act
         gh.executeAction(action);
@@ -341,7 +348,7 @@ public class ChooseCloudTileTest {
         ChooseCloudTile chooseCloudTile = new ChooseCloudTile(player.getId(), selectedCloud);
         try {
             gh.executeAction(chooseCloudTile);
-        }catch (Exception exception){
+        } catch (Exception exception) {
             assertEquals("An error occurred while validating: Action\n" +
                     "The error was: this action can't be executed more than once or be executed by other player than the current", exception.getMessage());
         }

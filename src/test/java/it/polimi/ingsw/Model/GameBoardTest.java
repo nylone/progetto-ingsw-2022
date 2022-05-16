@@ -11,7 +11,8 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class GameBoardTest {
     GameBoard gb_sim_2 = new GameBoard(GameMode.SIMPLE, "ari", "ale");
@@ -97,7 +98,7 @@ public class GameBoardTest {
     }
 
     @Test
-    public void testingInfluenceOnEmptyIsland() throws Exception{
+    public void testingInfluenceOnEmptyIsland() throws Exception {
         // arrange
         IslandGroup empty = Utils.modularSelection(gb_sim_2.getMutableIslandField().getMutableMotherNaturePosition(),
                 gb_sim_2.getMutableIslandField().getMutableGroups(), 6);
@@ -121,7 +122,7 @@ public class GameBoardTest {
         if (ig.getStudents().size() != 0) {
             studentOnTheIslandAtBeginning = ig.getStudents().get(0);
             for (PawnColour colour : PawnColour.values()) {
-                if (!colour.equals(studentOnTheIslandAtBeginning)){
+                if (!colour.equals(studentOnTheIslandAtBeginning)) {
                     ig.getMutableIslands().get(0).addStudent(colour);
                     ig.getMutableIslands().get(0).addStudent(colour);
                     gb_sim_2.setTeacher(colour, gb_sim_2.getMutablePlayerBoardByNickname("ari"));

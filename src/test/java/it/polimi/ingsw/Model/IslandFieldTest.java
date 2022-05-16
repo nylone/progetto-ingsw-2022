@@ -9,7 +9,8 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class IslandFieldTest {
     private final IslandField field = new IslandField();
@@ -75,7 +76,7 @@ public class IslandFieldTest {
     }
 
     @Test
-    public void testingJoiningMotherNatureWithPreviousGroup() throws Exception{
+    public void testingJoiningMotherNatureWithPreviousGroup() throws Exception {
         // arrange
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
         IslandGroup motherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
@@ -95,7 +96,7 @@ public class IslandFieldTest {
     }
 
     @Test
-    public void testingJoiningMotherNatureWithNextGroup() throws Exception{
+    public void testingJoiningMotherNatureWithNextGroup() throws Exception {
         // arrange
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
         IslandGroup motherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
@@ -115,7 +116,7 @@ public class IslandFieldTest {
     }
 
     @Test
-    public void testingJoiningThreeIslands() throws Exception{
+    public void testingJoiningThreeIslands() throws Exception {
         // arrange
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
         IslandGroup motherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();

@@ -5,7 +5,8 @@ import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.StateType;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class Card05Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");

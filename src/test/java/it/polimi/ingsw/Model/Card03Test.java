@@ -6,7 +6,6 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class Card03Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");

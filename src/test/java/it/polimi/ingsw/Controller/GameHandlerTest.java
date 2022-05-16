@@ -45,7 +45,7 @@ public class GameHandlerTest {
 
 
         for (int i = 0; i < 4; i++) {
-            PlayerAction a = new MoveStudent(currentPlayer.getId(), i+1, MoveDestination.toDiningRoom());
+            PlayerAction a = new MoveStudent(currentPlayer.getId(), i + 1, MoveDestination.toDiningRoom());
             gh.executeAction(a);
         }
 
@@ -125,7 +125,7 @@ public class GameHandlerTest {
         gh.executeAction(action);
 
         for (int i = 0; i < 2; i++) {
-            PlayerAction a = new MoveStudent(currentPlayer.getId(), i+1, MoveDestination.toIsland(11));
+            PlayerAction a = new MoveStudent(currentPlayer.getId(), i + 1, MoveDestination.toIsland(11));
             gh.executeAction(a);
         }
 
@@ -146,7 +146,7 @@ public class GameHandlerTest {
         currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
 
         for (int i = 0; i < 2; i++) {
-            PlayerAction a2 = new MoveStudent(currentPlayer.getId(), i+1, MoveDestination.toIsland(11));
+            PlayerAction a2 = new MoveStudent(currentPlayer.getId(), i + 1, MoveDestination.toIsland(11));
             gh.executeAction(a2);
         }
 

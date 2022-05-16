@@ -13,7 +13,6 @@ import org.junit.Test;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 
 public class EndTurnOfActionPhaseTest {
@@ -28,11 +27,11 @@ public class EndTurnOfActionPhaseTest {
         gh.executeAction(playAssistantCard);
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        while(true) {
+        while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
@@ -41,7 +40,7 @@ public class EndTurnOfActionPhaseTest {
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         //move 3 pawns
-        for(int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
@@ -82,11 +81,11 @@ public class EndTurnOfActionPhaseTest {
         gh.executeAction(playAssistantCard);
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        while(true) {
+        while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
@@ -95,7 +94,7 @@ public class EndTurnOfActionPhaseTest {
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         //move 3 pawns
-        for(int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
@@ -112,7 +111,7 @@ public class EndTurnOfActionPhaseTest {
         EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(player.getId());
         try {
             gh.executeAction(endTurnOfActionPhase);
-        }catch (GenericInputValidationException exception){
+        } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: History\n" +
                     "The error was: ChooseCloudTile action has not been executed", exception.getMessage());
         }
@@ -128,11 +127,11 @@ public class EndTurnOfActionPhaseTest {
         gh.executeAction(playAssistantCard);
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        while(true) {
+        while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
@@ -141,7 +140,7 @@ public class EndTurnOfActionPhaseTest {
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         //move 3 pawns
-        for(int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
@@ -167,7 +166,7 @@ public class EndTurnOfActionPhaseTest {
         EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(player.getId());
         try {
             gh.executeAction(endTurnOfActionPhase);
-        }catch (GenericInputValidationException exception){
+        } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: Action\n" +
                     "The error was: this action can't be executed more than once or be executed by other player than the current", exception.getMessage());
         }

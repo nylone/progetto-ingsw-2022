@@ -25,11 +25,11 @@ public class PlayAssistantCardTest {
         gh.executeAction(playAssistantCard);
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        while(true) {
+        while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
@@ -72,11 +72,10 @@ public class PlayAssistantCardTest {
         action = new PlayAssistantCard(player.getId(), 3);
         try {
             gh.executeAction(action);
-        }catch (GenericInputValidationException exception){
+        } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: Assitant Card\n" +
                     "The error was: Assitant Card has an already selected priority", exception.getMessage());
         }
-
 
 
     }

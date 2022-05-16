@@ -62,7 +62,7 @@ public class Card10Test {
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         pb.addStudentToDiningRoom(PawnColour.RED);
         pb.addStudentToDiningRoom(PawnColour.YELLOW);
-        for(int i=1; i<pb.getEntranceSize(); i++){
+        for (int i = 1; i < pb.getEntranceSize(); i++) {
             pb.removeStudentFromEntrance(i);
         }
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();

@@ -10,7 +10,7 @@ public class CloudUITest {
 
     @Test
     public void shouldDrawClouds() throws EmptyContainerException {
-        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale" , "teo");
+        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo");
         gb.getClouds().get(0).extractContents();
         System.out.println(CloudUI.draw(gb));
     }
