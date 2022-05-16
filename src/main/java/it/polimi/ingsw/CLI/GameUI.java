@@ -32,7 +32,7 @@ public class GameUI {
     public static String drawPlayerBoard(PlayerBoard playerBoard, GameBoard ctx) {
         String screen = "";
         // Playerboard sections' titles. Change the argument of repeat() to further separate islands from playerboards
-        screen = screen + "\n".repeat(3) + "Entrance:\t" + "Dining Room:\t" + "Teachers:\t" + "Towers:\t" + "\n";
+        screen = screen + "\n".repeat(1) + "Entrance:\t" + "Dining Room:\t" + "Teachers:\t" + "Towers:\t" + "\n";
 
         String entrance = PlayerBoardUI.drawEntrance(playerBoard, ctx);
         String towers = PlayerBoardUI.drawTowers(playerBoard, ctx);

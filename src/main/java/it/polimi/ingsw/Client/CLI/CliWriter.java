@@ -87,16 +87,16 @@ public class CliWriter implements Runnable {
      * @throws IOException the integer read from command line
      */
     private void elaborateInput(String userInput) throws IOException {
-        switch (userInput) {
-            case "showActions" -> printActions();
-            case "createLobby" -> createLobby();
-            case "joinLobby" -> joinLobby();
-            case "startGame" -> startGame();
-            case "playAssistantCard" -> playAssistantCard();
-            case "moveStudent" -> moveStudent();
-            case "moveMotherNature" -> moveMotherNature();
-            case "chooseCloud" -> chooseCloud();
-            case "endTurn" -> endTurn();
+        switch (userInput.toLowerCase()) {
+            case "showactions" -> printActions();
+            case "createlobby" -> createLobby();
+            case "joinlobby" -> joinLobby();
+            case "startgame" -> startGame();
+            case "playassistantcard" -> playAssistantCard();
+            case "movestudent" -> moveStudent();
+            case "movemothernature" -> moveMotherNature();
+            case "choosecloud" -> chooseCloud();
+            case "endturn" -> endTurn();
             default -> System.out.println("Command not valid");
         }
     }
@@ -111,7 +111,7 @@ public class CliWriter implements Runnable {
         if (!this.clientView.getGameStarted()) {
             if (this.clientView.getNickname().equals(this.clientView.getAdmin())) {
                 System.out.println("Available commands:\n");
-                System.out.println("-- StartGame (start the game)");
+                System.out.println("-- startGame (start the game)");
             } else {
                 System.out.println("No actions available, wait for the admin to start the game");
             }
