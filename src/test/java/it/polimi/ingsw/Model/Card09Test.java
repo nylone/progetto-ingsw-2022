@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class Card09Test {
@@ -20,7 +21,7 @@ public class Card09Test {
         if (card09.checkInput(input)) card09.unsafeApplyEffect(input);
 
         assertTrue(gb.getMutableEffects().isPawnColourDenied());
-        assertTrue(gb.getMutableEffects().getDeniedPawnColour().get().equals(p));
+        assertEquals(gb.getMutableEffects().getDeniedPawnColour().get(), p);
     }
 
     @Test(expected = InputValidationException.class)

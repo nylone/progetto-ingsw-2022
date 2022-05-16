@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class GameHandlerTest {
@@ -58,7 +59,7 @@ public class GameHandlerTest {
         PlayerAction mnAction = new MoveMotherNature(currentPlayer.getId(), 1);
         gh.executeAction(mnAction);
         // assert
-        assertTrue(expectedWinningTeam == gh.getWinner().get());
+        assertEquals(expectedWinningTeam, (int) gh.getWinner().get());
     }
 
     @Test
@@ -93,12 +94,18 @@ public class GameHandlerTest {
                 field,
                 GameMode.SIMPLE,
                 bag,
-                new ArrayList<PlayerBoard>() {{ add(p1); add(p2); }},
-                new HashMap<PawnColour, PlayerBoard>(),
+                new ArrayList<>() {{
+                    add(p1);
+                    add(p2);
+                }},
+                new HashMap<>(),
                 new TeamMapper(List.of(p1, p2)),
                 new TurnOrder(p1, p2),
                 new EffectTracker(),
-                new ArrayList<Cloud>() {{ add(c1); add(c2); }},
+                new ArrayList<>() {{
+                    add(c1);
+                    add(c2);
+                }},
                 null,
                 0,
                 0);

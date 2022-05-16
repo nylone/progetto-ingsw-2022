@@ -66,7 +66,7 @@ public class CloudTest {
         // act
         cloud.fill(colours);
         // assert
-        assertTrue(cloud.getContents().equals(colours));
+        assertEquals(cloud.getContents(), colours);
     }
 
     @Test

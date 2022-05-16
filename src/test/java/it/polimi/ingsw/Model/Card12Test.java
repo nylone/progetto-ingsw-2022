@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class Card12Test {
@@ -20,7 +21,7 @@ public class Card12Test {
         input.setTargetPawn(PawnColour.RED);
         if (card.checkInput(input)) card.unsafeApplyEffect(input);
 
-        assertTrue(pb.getDiningRoomCount(PawnColour.RED) == 2);
+        assertEquals(2, pb.getDiningRoomCount(PawnColour.RED));
     }
 
     @Test(expected = InputValidationException.class)

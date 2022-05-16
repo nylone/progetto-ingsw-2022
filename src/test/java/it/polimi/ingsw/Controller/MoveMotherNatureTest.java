@@ -32,8 +32,8 @@ public class MoveMotherNatureTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -77,8 +77,8 @@ public class MoveMotherNatureTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -132,8 +132,8 @@ public class MoveMotherNatureTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -160,8 +160,8 @@ public class MoveMotherNatureTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -205,8 +205,8 @@ public class MoveMotherNatureTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -250,8 +250,8 @@ public class MoveMotherNatureTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }

@@ -8,6 +8,7 @@ import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Utils;
+import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.TeamID;
 import it.polimi.ingsw.Model.GameBoard;
@@ -109,7 +110,7 @@ public class GameHandler {
     private boolean checkUsedAllCards() {
         return model.getMutableTurnOrder().getMutableCurrentPlayer()
                 .getMutableAssistantCards().stream()
-                .allMatch(card -> card.getUsed());
+                .allMatch(AssistantCard::getUsed);
     }
 
     private boolean checkEmptyBag() {

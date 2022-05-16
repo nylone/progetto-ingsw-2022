@@ -36,7 +36,7 @@ public class IslandFieldTest {
         IslandGroup found = field.getMutableIslandGroupById(1);
 
         // assert
-        assertTrue(found.getId() == 1);
+        assertEquals(1, found.getId());
     }
 
     @Test
@@ -59,7 +59,7 @@ public class IslandFieldTest {
         // act
         Island actualIsland = field.getMutableIslandById(2);
         // assert
-        assertTrue(actualIsland.getId() == 2);
+        assertEquals(2, actualIsland.getId());
     }
 
     @Test
@@ -89,7 +89,7 @@ public class IslandFieldTest {
         gameBoard.getMutableIslandField().joinGroups();
         // assert
         IslandGroup currentMotherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
-        assertTrue(currentMotherNaturePosition.getMutableIslands().size() == 2);
+        assertEquals(2, currentMotherNaturePosition.getMutableIslands().size());
         assertEquals(motherNaturePosition.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(0));
         assertEquals(previousGroup.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(1));
     }
@@ -109,7 +109,7 @@ public class IslandFieldTest {
         gameBoard.getMutableIslandField().joinGroups();
         // assert
         IslandGroup currentMotherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
-        assertTrue(currentMotherNaturePosition.getMutableIslands().size() == 2);
+        assertEquals(2, currentMotherNaturePosition.getMutableIslands().size());
         assertEquals(motherNaturePosition.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(0));
         assertEquals(nextGroup.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(1));
     }
@@ -131,7 +131,7 @@ public class IslandFieldTest {
         gameBoard.getMutableIslandField().joinGroups();
         // assert
         IslandGroup currentMotherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
-        assertTrue(currentMotherNaturePosition.getMutableIslands().size() == 3);
+        assertEquals(3, currentMotherNaturePosition.getMutableIslands().size());
         assertEquals(motherNaturePosition.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(0));
         assertEquals(prevGroup.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(1));
         assertEquals(nextGroup.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(2));

@@ -20,7 +20,7 @@ public class PlayerBoardTest {
         // act
         playerBoard.addStudentToDiningRoom(PawnColour.RED);
         // assert
-        assertTrue(playerBoard.getDiningRoomCount(PawnColour.RED) == expected + 1);
+        assertEquals(playerBoard.getDiningRoomCount(PawnColour.RED), expected + 1);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class PlayerBoardTest {
         // act
         playerBoard.removeStudentsFromDiningRoom(PawnColour.BLUE, 2);
         // assert
-        assertTrue(playerBoard.getDiningRoomCount(PawnColour.BLUE) == expected - 2);
+        assertEquals(playerBoard.getDiningRoomCount(PawnColour.BLUE), expected - 2);
     }
 
     @Test(expected = EmptyContainerException.class)

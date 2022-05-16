@@ -5,6 +5,7 @@ import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -19,7 +20,7 @@ public class TowerStorageTest {
         // act
         ts.pushTower(t);
         // assert
-        assertTrue(ts.getTowerCount() == initialCapacity + 1);
+        assertEquals(ts.getTowerCount(), initialCapacity + 1);
     }
 
     @Test
@@ -29,7 +30,7 @@ public class TowerStorageTest {
         // act
         ts.extractTower();
         // assert
-        assertTrue(ts.getTowerCount() == initialCapacity - 1);
+        assertEquals(ts.getTowerCount(), initialCapacity - 1);
     }
 
     @Test(expected = IllegalArgumentException.class)

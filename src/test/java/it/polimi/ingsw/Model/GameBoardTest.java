@@ -29,9 +29,9 @@ public class GameBoardTest {
 
 
         // assert VALID
-        assertTrue("Testing getPlayerBoardById, simple GameMode 2 people", actual_s2_valid.getNickname().equals("ari"));
-        assertTrue("Testing getPlayerBoardById, advanced GameMode 3 people", actual_a3_valid.getNickname().equals("ale"));
-        assertTrue("Testing getPlayerBoardById, advanced GameMode 4 people", actual_a4_valid.getNickname().equals("teo"));
+        assertEquals("Testing getPlayerBoardById, simple GameMode 2 people", "ari", actual_s2_valid.getNickname());
+        assertEquals("Testing getPlayerBoardById, advanced GameMode 3 people", "ale", actual_a3_valid.getNickname());
+        assertEquals("Testing getPlayerBoardById, advanced GameMode 4 people", "teo", actual_a4_valid.getNickname());
         // assert INVALID
         try {
             PlayerBoard actual_s2_invalid = gb_sim_2.getMutablePlayerBoardById(5);
@@ -55,9 +55,9 @@ public class GameBoardTest {
 
 
         // assert VALID
-        assertTrue("Testing getPlayerBoardByNickname, simple GameMode 2 people", actual_s2_valid.getId() == 2);
-        assertTrue("Testing getPlayerBoardByNickname, advanced GameMode 3 people", actual_a3_valid.getId() == 1);
-        assertTrue("Testing getPlayerBoardByNickname, advanced GameMode 4 people", actual_a4_valid.getId() == 3);
+        assertEquals("Testing getPlayerBoardByNickname, simple GameMode 2 people", 2, actual_s2_valid.getId());
+        assertEquals("Testing getPlayerBoardByNickname, advanced GameMode 3 people", 1, actual_a3_valid.getId());
+        assertEquals("Testing getPlayerBoardByNickname, advanced GameMode 4 people", 3, actual_a4_valid.getId());
         // assert INVALID
         try {
             PlayerBoard actual_s2_invalid = gb_sim_2.getMutablePlayerBoardByNickname("wrong");
@@ -121,8 +121,7 @@ public class GameBoardTest {
         if (ig.getStudents().size() != 0) {
             studentOnTheIslandAtBeginning = ig.getStudents().get(0);
             for (PawnColour colour : PawnColour.values()) {
-                if (colour.equals(studentOnTheIslandAtBeginning)) continue;
-                else {
+                if (!colour.equals(studentOnTheIslandAtBeginning)){
                     ig.getMutableIslands().get(0).addStudent(colour);
                     ig.getMutableIslands().get(0).addStudent(colour);
                     gb_sim_2.setTeacher(colour, gb_sim_2.getMutablePlayerBoardByNickname("ari"));

@@ -13,7 +13,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class Card07Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
@@ -21,8 +21,8 @@ public class Card07Test {
 
     @Test
     public void checkUse() throws Exception {
-        assertTrue(card.getState().size() == 6);
-        assertTrue(card.getStateType() == StateType.PAWNCOLOUR);
+        assertEquals(6, card.getState().size());
+        assertSame(card.getStateType(), StateType.PAWNCOLOUR);
 
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCardInput input = new CharacterCardInput(pb);
@@ -34,7 +34,7 @@ public class Card07Test {
 
         if (card.checkInput(input)) card.unsafeUseCard(input);
 
-        assertTrue(card.getState().containsAll(pairs.stream().map(p -> p.getFirst()).toList()));
+        assertTrue(card.getState().containsAll(pairs.stream().map(Pair::getFirst).toList()));
         assertTrue(pb.getEntranceStudents().containsAll(pairs.stream().map(p -> Optional.of(p.getSecond())).toList()));
     }
 

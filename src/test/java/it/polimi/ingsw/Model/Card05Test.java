@@ -5,7 +5,7 @@ import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.StateType;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class Card05Test {
     GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
@@ -13,21 +13,21 @@ public class Card05Test {
 
     @Test
     public void checkUse() throws Exception {
-        assertTrue(card05.getStateType() == StateType.NOENTRY);
+        assertSame(card05.getStateType(), StateType.NOENTRY);
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
 
         CharacterCardInput input = new CharacterCardInput(pb);
         IslandField field = gb.getMutableIslandField();
         input.setTargetIsland(field.getMutableIslandById(1));
         if (card05.checkInput(input)) card05.unsafeApplyEffect(input);
-        assertTrue(card05.getState().size() == 3); // 3 tiles left after one use
-        assertTrue(field.getMutableIslandGroupById(1).getMutableNoEntryTiles().size() == 1); // the island group contains the NoEntryTile
+        assertEquals(3, card05.getState().size()); // 3 tiles left after one use
+        assertEquals(1, field.getMutableIslandGroupById(1).getMutableNoEntryTiles().size()); // the island group contains the NoEntryTile
 
         field.getMutableIslandGroupById(1).resetNoEntry();
 
         // force return the NoEntryTile
-        assertTrue(field.getMutableIslandGroupById(1).getMutableNoEntryTiles().size() == 0);
-        assertTrue(card05.getState().size() == 4); // 4 tiles left after the return of the NoEntryTile
+        assertEquals(0, field.getMutableIslandGroupById(1).getMutableNoEntryTiles().size());
+        assertEquals(4, card05.getState().size()); // 4 tiles left after the return of the NoEntryTile
     }
 
     @Test(expected = InputValidationException.class)

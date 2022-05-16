@@ -34,8 +34,8 @@ public class MoveStudentTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -51,7 +51,7 @@ public class MoveStudentTest {
         gameBoard = gh.getModelCopy();
         int updatedCount = (int) gameBoard.getMutableIslandField().getMutableIslandById(0).getStudents()
                 .stream().filter(pawnColour -> toMove == pawnColour).count();
-        assertTrue(updatedCount == previousCount + 1);
+        assertEquals(updatedCount, previousCount + 1);
     }
 
     @Test
@@ -68,8 +68,8 @@ public class MoveStudentTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -83,7 +83,7 @@ public class MoveStudentTest {
         gh.executeAction(moveStudent);
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        assertTrue(player.getDiningRoomCount(toMove) == previousCount + 1);
+        assertEquals(player.getDiningRoomCount(toMove), previousCount + 1);
     }
 
     @Test
@@ -100,8 +100,8 @@ public class MoveStudentTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -157,8 +157,8 @@ public class MoveStudentTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -183,8 +183,8 @@ public class MoveStudentTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -209,8 +209,8 @@ public class MoveStudentTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -236,8 +236,8 @@ public class MoveStudentTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }

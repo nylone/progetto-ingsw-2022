@@ -32,8 +32,8 @@ public class EndTurnOfActionPhaseTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -67,7 +67,7 @@ public class EndTurnOfActionPhaseTest {
         gh.executeAction(endTurnOfActionPhase);
         gameBoard = gh.getModelCopy();
         //asserts
-        assertTrue(gameBoard.getClouds().stream().filter(cloud -> cloud.getContents().size()==3).count() == gameBoard.getClouds().size()-1);
+        assertEquals(gameBoard.getClouds().stream().filter(cloud -> cloud.getContents().size() == 3).count(), gameBoard.getClouds().size() - 1);
         //assertTrue();
 
     }
@@ -86,8 +86,8 @@ public class EndTurnOfActionPhaseTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -132,8 +132,8 @@ public class EndTurnOfActionPhaseTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }

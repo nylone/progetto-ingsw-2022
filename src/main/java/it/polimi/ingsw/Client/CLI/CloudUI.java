@@ -19,7 +19,7 @@ public class CloudUI {
                         students = students + Symbols.colorizeStudent(p, "\t" + Symbols.PAWN);
                         students = students + "\t\n";
                     }
-                    if (students == "") {
+                    if (students.equals("")) {
                         for (int i = 0; i < 4; i++) {
                             students = students + "\t\t\n";
                         }

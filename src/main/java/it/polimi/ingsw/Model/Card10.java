@@ -88,7 +88,7 @@ public class Card10 extends StatelessEffect {
         // validate size of dining room
         for (PawnColour p : secondMap.keySet()) {
             try {
-                playerBoard.removeStudentsFromDiningRoom(p, secondMap.get(p).intValue());
+                playerBoard.removeStudentsFromDiningRoom(p, secondMap.get(p));
             } catch (EmptyContainerException e) {
                 throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
                         CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.length
@@ -98,7 +98,7 @@ public class Card10 extends StatelessEffect {
         if (playerBoard.isDiningRoomFull(fromEntrance)) {
             for (PawnColour p : secondMap.keySet()) {
                 try {
-                    for (int i = 0; i < secondMap.get(p).intValue(); i++)
+                    for (int i = 0; i < secondMap.get(p); i++)
                         playerBoard.addStudentToDiningRoom(p);
                 } catch (FullContainerException e) {
                     throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
@@ -112,7 +112,7 @@ public class Card10 extends StatelessEffect {
         }
         for (PawnColour p : secondMap.keySet()) {
             try {
-                for (int i = 0; i < secondMap.get(p).intValue(); i++)
+                for (int i = 0; i < secondMap.get(p); i++)
                     playerBoard.addStudentToDiningRoom(p);
             } catch (FullContainerException e) {
                 throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,

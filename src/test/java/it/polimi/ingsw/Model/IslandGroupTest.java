@@ -28,8 +28,8 @@ public class IslandGroupTest {
         int expectedBlue = islandGroup.getStudentCount().get(PawnColour.BLUE);
         int expectedYellow = islandGroup.getStudentCount().get(PawnColour.YELLOW);
         // assert
-        assertTrue(expectedBlue == 2);
-        assertTrue(expectedYellow == 1);
+        assertEquals(2, expectedBlue);
+        assertEquals(1, expectedYellow);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class IslandGroupTest {
         List<PawnColour> actual = islandGroup.getStudents();
         // assert
         assertEquals(expected, actual);
-        assertTrue(actual.size() == 3);
-        assertTrue(islandGroup1.getStudentCount().get(PawnColour.BLUE) == 1);
+        assertEquals(3, actual.size());
+        assertEquals(1, (int) islandGroup1.getStudentCount().get(PawnColour.BLUE));
     }
 }

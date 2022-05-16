@@ -10,8 +10,7 @@ import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class PlayAssistantCardTest {
 
@@ -30,8 +29,8 @@ public class PlayAssistantCardTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -41,10 +40,10 @@ public class PlayAssistantCardTest {
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertTrue(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getUsed());
         for (int i = 1; i <= player.getMutableAssistantCards().size(); i++) {
-            if (i != gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getPriority()) assertTrue(!player.getMutableAssistantCards().get(i-1).getUsed());
+            if (i != gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getPriority())
+                assertFalse(player.getMutableAssistantCards().get(i - 1).getUsed());
         }
-        assertTrue(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getPriority() ==
-                player.getMutableAssistantCards().stream().filter(assistantCard -> assistantCard.getUsed()).findFirst().get().getPriority());
+        assertEquals(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getPriority(), player.getMutableAssistantCards().stream().filter(AssistantCard::getUsed).findFirst().get().getPriority());
     }
 
     @Test(expected = InputValidationException.class)

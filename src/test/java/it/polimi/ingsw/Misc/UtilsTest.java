@@ -14,7 +14,7 @@ public class UtilsTest {
     public void randomStringTest() {
 
         // initialized arrayList to apply the "random" method on it
-        ArrayList<String> list = new ArrayList<String>(3);
+        ArrayList<String> list = new ArrayList<>(3);
         list.addAll(Arrays.asList("mago", "strega", "re"));
 
         // execution of the random method
@@ -31,7 +31,7 @@ public class UtilsTest {
     public void randomIntTest() {
 
         // initialized ArrayList of Integers, to check if the method works with a different parameter type
-        ArrayList<Integer> list = new ArrayList<Integer>(4);
+        ArrayList<Integer> list = new ArrayList<>(4);
         Collections.addAll(list, 1, 5, 10, 13);
 
         int generatedNumber = Utils.random(list);

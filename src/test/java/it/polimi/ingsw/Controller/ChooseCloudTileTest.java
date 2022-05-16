@@ -38,8 +38,8 @@ public class ChooseCloudTileTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -69,8 +69,8 @@ public class ChooseCloudTileTest {
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         // assert
-        assertTrue(gameBoard.getClouds().get(selectedCloud).getContents().size() == 0);
-        assertTrue(player.getEntranceSpaceLeft() == 0);
+        assertEquals(0, gameBoard.getClouds().get(selectedCloud).getContents().size());
+        assertEquals(0, player.getEntranceSpaceLeft());
     }
     @Test(expected = InputValidationException.class)
     public void EntranceFullException() throws Exception {
@@ -124,8 +124,8 @@ public class ChooseCloudTileTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -194,8 +194,8 @@ public class ChooseCloudTileTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -262,8 +262,8 @@ public class ChooseCloudTileTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
@@ -309,8 +309,8 @@ public class ChooseCloudTileTest {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if(!(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
-                    .anyMatch(selected -> selected.getPriority() == finalCard.getPriority()))) {
+            if(gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }

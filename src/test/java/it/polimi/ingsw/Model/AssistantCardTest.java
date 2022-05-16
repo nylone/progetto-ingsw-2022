@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class AssistantCardTest {
@@ -14,6 +15,6 @@ public class AssistantCardTest {
         int actual = assistantCard.getMaxMovement();
 
         // assert
-        assertTrue(actual == 3);
+        assertEquals(3, actual);
     }
 }

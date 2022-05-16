@@ -55,7 +55,7 @@ public class Utils {
         frequencyMap.entrySet().stream()
                 .sorted(Comparator.comparingInt(o -> o.getValue().size()))
                 .map(Map.Entry::getValue)
-                .forEach(element -> sorted.addAll(element));
+                .forEach(sorted::addAll);
         Collections.reverse(sorted);
         return sorted;
     }

@@ -14,18 +14,18 @@ public class Card11Test {
 
     @Test
     public void checkUse() throws Exception {
-        assertTrue(card11.getState().size() == 4);
-        assertTrue(card11.getStateType() == StateType.PAWNCOLOUR);
+        assertEquals(4, card11.getState().size());
+        assertSame(card11.getStateType(), StateType.PAWNCOLOUR);
 
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
 
         CharacterCardInput input = new CharacterCardInput(pb);
         input.setTargetPawn((PawnColour) card11.getState().get(2));
         PawnColour toAdd = input.getTargetPawn().get();
-        assertTrue(card11.getState().size() == 4);
+        assertEquals(4, card11.getState().size());
         if (card11.checkInput(input)) card11.unsafeApplyEffect(input);
-        assertTrue(pb.getDiningRoomCount(toAdd) == 1);
-        assertTrue(card11.getState().size() == 4);
+        assertEquals(1, pb.getDiningRoomCount(toAdd));
+        assertEquals(4, card11.getState().size());
     }
 
     @Test(expected = InputValidationException.class)
@@ -47,9 +47,6 @@ public class Card11Test {
         InputValidationException exception = assertThrows(InputValidationException.class, () -> {
             if (card11.checkInput(input)) card11.unsafeApplyEffect(input);
         });
-        /*assertEquals("An error occurred while running the following operation: [MODEL] Card011 unsafeApplyEffect" +
-                "\nThe error was: could critically failed during execution." +
-                "\nAdditional INFO: Target pawn was not contained in card's state", exception.getMessage());*/
 
         assertEquals("An error occurred while validating: DiningRoom\n" +
                 "The error was: DiningRoomcan't contain " + input.getTargetPawn().get() + "without overflowing.", exception.getMessage());

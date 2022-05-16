@@ -7,7 +7,7 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class Card01Test {
 
@@ -18,10 +18,10 @@ public class Card01Test {
         CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
         input.setTargetPawn((PawnColour) card.getState().get(1));
         input.setTargetIsland(Utils.random(g.getMutableIslandField().getMutableGroups()).getMutableIslands().get(0));
-        assertTrue(card.getState().size() == 4);
+        assertEquals(4, card.getState().size());
         if (card.checkInput(input)) card.unsafeApplyEffect(input);
-        assertTrue(card.getState().size() == 4);
-        assertTrue(card.getStateType() == StateType.PAWNCOLOUR);
+        assertEquals(4, card.getState().size());
+        assertSame(card.getStateType(), StateType.PAWNCOLOUR);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class Card01Test {
         // act
         if (card.checkInput(input)) card.unsafeApplyEffect(input);
         // assert
-        assertTrue(island.getStudents().size() == expected + 1);
+        assertEquals(island.getStudents().size(), expected + 1);
         assertTrue(island.getStudents().contains(input.getTargetPawn().get()));
     }
 
@@ -46,7 +46,7 @@ public class Card01Test {
         GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
         CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
         Card01 card = new Card01(g);
-        assertTrue(card.getState().size() == 4);
+        assertEquals(4, card.getState().size());
         if (card.checkInput(input)) card.unsafeApplyEffect(input);
     }
 }

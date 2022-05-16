@@ -68,7 +68,7 @@ public class ClientReader implements Runnable {
                         System.out.println("No open lobbies available");
                     } else {
                         System.out.println("Available open lobbies:");
-                        response.getOpenLobbies().stream().forEach(uuidStringPair -> System.out.println("ID: " + uuidStringPair.getFirst() + " admin: " + uuidStringPair.getSecond()));
+                        response.getOpenLobbies().forEach(uuidStringPair -> System.out.println("ID: " + uuidStringPair.getFirst() + " admin: " + uuidStringPair.getSecond()));
                     }
                     System.out.println("type 'showActions' for a list of available actions during all the game");
                 } else {
