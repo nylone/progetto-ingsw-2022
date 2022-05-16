@@ -127,7 +127,6 @@ public class ClientReader implements Runnable {
     private void UpdateView() throws Exception {
         try {
             final String operatingSystem = System.getProperty("os.name");
-            System.out.println("OS:" + operatingSystem);
             if (operatingSystem.contains("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             } else {

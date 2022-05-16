@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.CLI;
 
 import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
+import it.polimi.ingsw.Model.CharacterCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -67,11 +68,6 @@ public class ClientView {
         isLogged = logged;
     }
 
-    private void drawCharacterCard() {
-        if (this.gameBoard.getGameMode() == GameMode.SIMPLE) return;
-
-    }
-
     /**
      * Executes all the printing-methods (printIslandField... //todo complete)
      */
@@ -79,7 +75,17 @@ public class ClientView {
         printIslandField();
         System.out.println("\n");
         printGameBoards();
+        printCharacterCard();
     }
+    private void printCharacterCard() {
+        if (this.gameBoard.getGameMode() == GameMode.SIMPLE) return;
+        System.out.println("Available CharacterCards:");
+        for(CharacterCard characterCard : this.gameBoard.getCharacterCards()){
+            System.out.println("CharacterCard number:"+characterCard.getId() +" cost:"+characterCard.getCost());
+        }
+        System.out.println("\n");
+    }
+
 
     /**
      * This method prints the islandField (islands and clouds)
