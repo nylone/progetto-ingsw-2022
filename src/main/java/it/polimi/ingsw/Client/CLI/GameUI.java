@@ -2,13 +2,14 @@ package it.polimi.ingsw.Client.CLI;
 
 import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
+import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.IslandGroup;
 
 public class GameUI {
 
     public static String draw(GameBoard ctx) throws InvalidContainerIndexException, EmptyContainerException {
-        String screen = "";
+        String screen = Symbols.BACKGROUND;
 
         int line = 0;
         String clouds = CloudUI.draw(ctx);

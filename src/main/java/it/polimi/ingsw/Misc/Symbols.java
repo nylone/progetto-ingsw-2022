@@ -13,8 +13,13 @@ public class Symbols {
     public static String YELLOW = "\u001b[33m";
     public static String RESET = "\u001b[00m";
 
-    public static String PAWN = "■";
-    public static String TOWER = "≡";
+    public static String BACKGROUND = "\u001b[48;5;237m";
+
+    public static String BOLD = "\u001b[1m";
+    public static String UNDERLINED = "\u001b[4m";
+
+    public static String PAWN = BOLD + "■" + RESET + BACKGROUND;
+    public static String TOWER = BOLD + "≡" + RESET + BACKGROUND;
 
 
     public static String colorizeStudent(PawnColour p, String message) {
@@ -31,7 +36,7 @@ public class Symbols {
 
 
     public static String colour(String s, String colour) {
-        return colour + s + Symbols.RESET;
+        return colour + s + Symbols.RESET + Symbols.BACKGROUND;
     }
 
     public static String stripFromANSICodes(String s) {
