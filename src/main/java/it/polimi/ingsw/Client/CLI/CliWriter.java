@@ -33,14 +33,15 @@ public class CliWriter implements Runnable {
      */
     private final ClientView clientView;
 
-    private final BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+    private final BufferedReader stdIn;
     private final Gson gson;
 
 
-    public CliWriter(SocketWrapper socketWrapper, ClientView clientView) {
+    public CliWriter(SocketWrapper socketWrapper, ClientView clientView, BufferedReader bufferedReader) {
         this.socketWrapper = socketWrapper;
         this.clientView = clientView;
         this.gson = new Gson();
+        this.stdIn = bufferedReader;
     }
 
     @Override
@@ -599,7 +600,6 @@ public class CliWriter implements Runnable {
             }
             default -> System.out.println("Gamephase is not valid");
         }
-        System.out.println("\n");
     }
 
     private int getCharacterCardIndex() throws IOException {
