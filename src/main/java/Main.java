@@ -1,5 +1,3 @@
-package it.polimi.ingsw;
-
 import it.polimi.ingsw.Client.CLI.CLI;
 import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.RemoteView.WelcomeServer;
