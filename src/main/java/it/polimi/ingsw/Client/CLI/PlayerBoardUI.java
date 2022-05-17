@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.CLI;
 
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Symbols;
+import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -20,7 +21,7 @@ public class PlayerBoardUI {
             screen = screen + entrance.substring(0, entrance.indexOf('\n'));
             entrance = entrance.substring(entrance.indexOf('\n') + 1);
             // This will print one row of the dining room
-            screen = screen + "\t\t" + PlayerBoardUI.drawDiningRoomRow(playerBoard, p);
+            screen = screen + "\t\t" + PlayerBoardUI.drawDiningRoomRow(playerBoard, p, ctx.getGameMode());
             // This will print one teacher per row if present
             screen = screen + "\t   " + PlayerBoardUI.drawTeacher(p, playerBoard, ctx);
 
@@ -69,12 +70,18 @@ public class PlayerBoardUI {
         return towers + "\t\t\n";
     }
 
-    public static String drawDiningRoomRow(PlayerBoard p, PawnColour pc) {
+    public static String drawDiningRoomRow(PlayerBoard p, PawnColour pc, GameMode gameMode) {
         String diningRoom = "";
         for (int i = 0; i < 9; i++) {
-            if (i < p.getDiningRoomCount(pc))
+            if (i < p.getDiningRoomCount(pc)) {
                 diningRoom = diningRoom + Symbols.colorizeStudent(pc, Symbols.PAWN + " ");
-            else diningRoom = diningRoom + "  ";
+            }
+            else {
+                if (gameMode.equals(GameMode.ADVANCED) && (i + 1) % 3 == 0) {
+                    diningRoom = diningRoom + Symbols.COIN + " ";
+                }
+                else diningRoom = diningRoom + "  ";
+            }
         }
         return diningRoom;
     }

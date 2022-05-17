@@ -11,15 +11,17 @@ public class Symbols {
     public static String PINK = "\u001b[35m";
     public static String RED = "\u001b[31m";
     public static String YELLOW = "\u001b[33m";
+    public static String GOLD = "\u001b[38;5;220m";
     public static String RESET = "\u001b[00m";
-
     public static String BACKGROUND = "\u001b[48;5;237m";
+
 
     public static String BOLD = "\u001b[1m";
     public static String UNDERLINED = "\u001b[4m";
 
     public static String PAWN = BOLD + "■" + RESET + BACKGROUND;
     public static String TOWER = BOLD + "≡" + RESET + BACKGROUND;
+    public static String COIN = GOLD + "¤" + RESET + BACKGROUND;
 
 
     public static String colorizeStudent(PawnColour p, String message) {
