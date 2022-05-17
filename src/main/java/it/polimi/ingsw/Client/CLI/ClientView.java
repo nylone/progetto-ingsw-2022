@@ -2,10 +2,10 @@ package it.polimi.ingsw.Client.CLI;
 
 import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
-import it.polimi.ingsw.Model.CharacterCard;
+import it.polimi.ingsw.Misc.Symbols;
+import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
-import it.polimi.ingsw.Model.GameBoard;
-import it.polimi.ingsw.Model.PlayerBoard;
+import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.util.UUID;
 
@@ -102,9 +102,19 @@ public class ClientView {
         if (this.gameBoard.getGameMode() == GameMode.SIMPLE) return;
         System.out.println("Available CharacterCards:");
         for (CharacterCard characterCard : this.gameBoard.getCharacterCards()) {
-            System.out.println("CharacterCard number:" + characterCard.getId() + " cost:" + characterCard.getCost());
+            System.out.print("CharacterCard number:" + characterCard.getId() + " cost:" + characterCard.getCost());
+            if(characterCard instanceof StatefulEffect){
+                System.out.print("\t");
+                for( Object o : ((StatefulEffect) characterCard).getState() ){
+                    switch (o) {
+                        case NoEntryTile ignored -> System.out.print(" X ");
+                        case PawnColour pawnColour -> System.out.print(Symbols.colorizeStudent(pawnColour, "  " + Symbols.PAWN));
+                        case default -> System.out.println("Card's object not valid");
+                    }
+                }
+            }
+            System.out.println("\n");
         }
-        System.out.println("\n");
     }
 
     public String getNickname() {

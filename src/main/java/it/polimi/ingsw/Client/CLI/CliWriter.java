@@ -435,7 +435,15 @@ public class CliWriter implements Runnable {
         if (!clientView.isInLobby()) {
             ConnectLobbyRequest connectLobbyRequest;
             System.out.println("Insert lobby's UUID");
-            UUID id = UUID.fromString(stdIn.readLine());
+            UUID id = null;
+            do {
+                try {
+                    id = UUID.fromString(stdIn.readLine());
+                }catch (IllegalArgumentException e){
+                    System.out.println("UUID not valid, try again");
+                }
+                break;
+            }while (true);
             connectLobbyRequest = new ConnectLobbyRequest(id);
             socketWrapper.sendMessage(connectLobbyRequest);
 
@@ -506,11 +514,8 @@ public class CliWriter implements Runnable {
                 break;
             }
         } while (true);
-        System.out.println("SELECTED:" + selected);
-        System.out.println("ID:" + this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected);
         PlayerActionRequest playerAction = new PlayerActionRequest(playAssistantCard);
-        System.out.println(playerAction.getPayloadType());
         socketWrapper.sendMessage(playerAction);
     }
 

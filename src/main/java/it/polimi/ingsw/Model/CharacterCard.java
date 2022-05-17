@@ -46,8 +46,7 @@ public abstract class CharacterCard implements Serializable {
      * @throws InputValidationException whenever the input is invalid
      */
     public final boolean checkInput(CharacterCardInput input) throws InputValidationException {
-        System.out.println(input.getCaller());
-        if (input.getCaller() == null || input.getCaller() != this.context.getMutableTurnOrder().getMutableCurrentPlayer()) {
+        if (input.getCaller() == null || !input.getCaller().getNickname().equals(this.context.getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {
             throw new InvalidElementException(INPUT_NAME_CALLER);
         }
         return overridableCheckInput(input);
