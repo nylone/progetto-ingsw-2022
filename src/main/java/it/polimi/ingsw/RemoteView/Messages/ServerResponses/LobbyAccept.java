@@ -8,15 +8,21 @@ import java.util.UUID;
 
 public class LobbyAccept extends Response {
 
-    private final List<Pair<UUID, String>> openLobbies;
+    private final List<LobbyInfo> publicLobbies;
+    private final List<LobbyInfo> reconnectToTheseLobbies;
 
-    public LobbyAccept(StatusCode statusCode, List<Pair<UUID, String>> openLobbies) {
+    public LobbyAccept(StatusCode statusCode, List<LobbyInfo> openLobbies, List<LobbyInfo> reconnectToTheseLobbies) {
         super(statusCode);
-        this.openLobbies = openLobbies;
+        this.publicLobbies = openLobbies;
+        this.reconnectToTheseLobbies = reconnectToTheseLobbies;
     }
 
-    public List<Pair<UUID, String>> getOpenLobbies() {
-        return openLobbies;
+    public List<LobbyInfo> getReconnectToTheseLobbies() {
+        return reconnectToTheseLobbies;
+    }
+
+    public List<LobbyInfo> getPublicLobbies() {
+        return publicLobbies;
     }
 
     @Override

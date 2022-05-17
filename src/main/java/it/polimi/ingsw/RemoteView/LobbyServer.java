@@ -2,7 +2,6 @@ package it.polimi.ingsw.RemoteView;
 
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
-import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Misc.SocketWrapper;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
@@ -40,7 +39,7 @@ public class LobbyServer {
                     switch (event) {
                         case SocketClosedEvent ignored -> {
                             if (this.currentLobby != null) {
-                                this.currentLobby.removePlayerHandler(this.nickname);
+                                this.currentLobby.disconnectPlayer(this.nickname);
                             }
                             log.info("Lobby server was closed for player: " +
                                     nickname +
@@ -70,14 +69,18 @@ public class LobbyServer {
             this.nickname = castedEvent.getNickname();
             String password = castedEvent.getPassword();
             if (nickToPass.get(this.nickname) != null && !nickToPass.get(this.nickname).equals(password)) {
-                sw.sendMessage(new LobbyAccept(StatusCode.Fail, null));
+                sw.sendMessage(new LobbyAccept(StatusCode.Fail, null, null));
             } else {
                 nickToPass.put(this.nickname, password);
-                List<Pair<UUID, String>> openLobbies = lobbyMap.entrySet().stream()
-                        .filter(e -> e.getValue().isPublic())
-                        .map(e -> new Pair<>(e.getKey(), e.getValue().getAdmin()))
+                List<LobbyInfo> publicLobbies = lobbyMap.values().stream()
+                        .filter(Lobby::isPublic)
+                        .map(LobbyInfo::new)
                         .toList();
-                sw.sendMessage(new LobbyAccept(StatusCode.Success, openLobbies));
+                List<LobbyInfo> lobbiesWaitingReconnection = lobbyMap.values().stream()
+                        .filter(lobby -> lobby.getDisconnectedPlayers().contains(this.nickname))
+                        .map(LobbyInfo::new)
+                        .toList();
+                sw.sendMessage(new LobbyAccept(StatusCode.Success, publicLobbies, lobbiesWaitingReconnection));
                 this.state = State.REDIRECT_PHASE;
             }
         } else {
@@ -97,13 +100,14 @@ public class LobbyServer {
                     sw.sendMessage(LobbyRedirect.fail());
                     break;
                 }
+                this.currentLobbyID = generateUUID();
                 this.currentLobby = new Lobby(
+                        this.currentLobbyID,
                         castedEvent.isPublic(),
                         castedEvent.getMaxPlayers(),
                         nickname,
                         this.getEventHandler()
                 );
-                this.currentLobbyID = generateUUID();
                 lobbyMap.put(this.currentLobbyID, this.currentLobby);
                 this.state = State.GAME_START_PHASE;
                 sw.sendMessage(LobbyRedirect.success(this.currentLobbyID, this.currentLobby.getAdmin()));

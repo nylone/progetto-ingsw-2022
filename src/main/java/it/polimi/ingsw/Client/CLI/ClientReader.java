@@ -64,11 +64,11 @@ public class ClientReader implements Runnable {
                 if (response.getStatusCode() == StatusCode.Success) {
                     this.clientView.setLogged(true);
                     System.out.println("User accepted\n");
-                    if (response.getOpenLobbies().size() == 0) {
+                    if (response.getPublicLobbies().size() == 0) {
                         System.out.println("No open lobbies available");
                     } else {
                         System.out.println("Available open lobbies:");
-                        response.getOpenLobbies().forEach(uuidStringPair -> System.out.println("ID: " + uuidStringPair.getFirst() + " admin: " + uuidStringPair.getSecond()));
+                        response.getPublicLobbies().forEach(lobbyInfo -> System.out.println("ID: " + lobbyInfo.getID() + " admin: " + lobbyInfo.getAdmin()));
                     }
                     System.out.println("type 'showActions' for a list of available actions during all the game");
                 } else {

@@ -82,7 +82,8 @@ public class UserCredentialsPanel extends JPanel {
                 if (msg.getType() == PayloadType.RESPONSE_LOBBY_ACCEPT) {
                     LobbyAccept response = new Gson().fromJson(msg.getData(), LobbyAccept.class);
                     if (response.getStatusCode() == StatusCode.Success) {
-                        ctx.setOpenLobbies(response.getOpenLobbies());
+                        ctx.setOpenLobbies(response.getPublicLobbies());
+                        ctx.setReconnectToTheseLobbies(response.getReconnectToTheseLobbies());
                         new LobbySelectionPanel(ctx);
                     } else {
                         new PopupMessage("Server denied your login", "Failure :(");

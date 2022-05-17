@@ -10,6 +10,7 @@ import it.polimi.ingsw.RemoteView.Messages.Events.Requests.ConnectLobbyRequest;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.CreateLobbyRequest;
 import it.polimi.ingsw.RemoteView.Messages.Message;
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyInfo;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyRedirect;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.StatusCode;
 
@@ -23,7 +24,8 @@ public class LobbySelectionPanel extends JTabbedPane {
         // unwrapping context into useful variables
         Window window = ctx.getWindow();
         SocketWrapper sw = ctx.getSocketWrapper();
-        List<Pair<UUID, String>> openLobbies = ctx.getOpenLobbies();
+        List<LobbyInfo> publicLobbies = ctx.getOpenLobbies();
+        List<LobbyInfo> reconnectToTheseLobbies = ctx.getReconnectToTheseLobbies();
 
         // tabbed pane tabs
         JPanel connectPanel = new JPanel();
@@ -36,7 +38,9 @@ public class LobbySelectionPanel extends JTabbedPane {
         // connect tab setup
         {
             // labels
-            JLabel title = new JLabel("Select a lobby");
+            JLabel title = new JLabel("Select a lobby from the list, or input a lobby id to connect to.");
+            JLabel lobbiesWaitingReconnectionLabel = new JLabel("These lobbies are waiting for you to come back:");
+            JLabel publicLobbiesLabel = new JLabel("These are all the public lobbies you can connect to:");
             JLabel lobbyIDLabel = new JLabel("Connecting to:", SwingConstants.RIGHT);
 
             // text fields
@@ -45,14 +49,14 @@ public class LobbySelectionPanel extends JTabbedPane {
             // buttons
             JButton connect = new JButton("Connect");
 
-            // list of lobbies
-            JList lobbies = new JList(ctx.getOpenLobbies().toArray());
-            lobbies.setLayoutOrientation(JList.VERTICAL);
-            lobbies.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            lobbies.setCellRenderer((list, entry, index, isSelected, hasCellFocus) -> {
+            // list cell renderer
+            ListCellRenderer cellRenderer = (list, entry, index, isSelected, _ignored) -> {
                 JLabel displayedText = new JLabel();
-                Pair<UUID, String> pair = (Pair<UUID, String>) entry;
-                displayedText.setText("ID: " + pair.getFirst() + " || Admin: " + pair.getSecond());
+                LobbyInfo info = (LobbyInfo) entry;
+                displayedText.setText(
+                        "ID: " + info.getID() +
+                                " || Admin: " + info.getAdmin() +
+                                " || Size: " + (info.getPlayers().size() - info.getDisconnectedPlayers().size()) + "/" + info.getMaxPlayers());
                 if (isSelected) {
                     displayedText.setBackground(list.getSelectionBackground());
                     displayedText.setForeground(list.getSelectionForeground());
@@ -62,29 +66,57 @@ public class LobbySelectionPanel extends JTabbedPane {
                 }
                 displayedText.setOpaque(true);
                 return displayedText;
-            });
+            };
+
+            // list of public lobbies
+            JList publicLobbiesList = new JList(publicLobbies.toArray());
+            publicLobbiesList.setLayoutOrientation(JList.VERTICAL);
+            publicLobbiesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            publicLobbiesList.setCellRenderer(cellRenderer);
 
             // wrapping the list of lobbies in a scrollable panel
-            JScrollPane scrollLobbies = new JScrollPane();
-            scrollLobbies.setViewportView(lobbies);
-            scrollLobbies.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-            scrollLobbies.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-            scrollLobbies.setPreferredSize(new Dimension(720, 100));
+            JScrollPane scrollablePublicLobbiesList = new JScrollPane();
+            scrollablePublicLobbiesList.setViewportView(publicLobbiesList);
+            scrollablePublicLobbiesList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+            scrollablePublicLobbiesList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            scrollablePublicLobbiesList.setPreferredSize(new Dimension(720, 100));
+
+            // list of lobbies waiting reconnection
+            JList waitingReconnectionLobbiesList = new JList(reconnectToTheseLobbies.toArray());
+            waitingReconnectionLobbiesList.setLayoutOrientation(JList.VERTICAL);
+            waitingReconnectionLobbiesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            waitingReconnectionLobbiesList.setCellRenderer(cellRenderer);
+
+            // wrapping the list of lobbies in a scrollable panel
+            JScrollPane scrollableWaitingReconnectionLobbiesList = new JScrollPane();
+            scrollableWaitingReconnectionLobbiesList.setViewportView(waitingReconnectionLobbiesList);
+            scrollableWaitingReconnectionLobbiesList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+            scrollableWaitingReconnectionLobbiesList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            scrollableWaitingReconnectionLobbiesList.setPreferredSize(new Dimension(720, 100));
 
             // adding all elements to the view
             connectPanel.add(title);
+            connectPanel.add(lobbiesWaitingReconnectionLabel);
+            connectPanel.add(publicLobbiesLabel);
             connectPanel.add(lobbyIDLabel);
             connectPanel.add(lobbyID);
             connectPanel.add(connect);
-            connectPanel.add(scrollLobbies);
+            connectPanel.add(scrollableWaitingReconnectionLobbiesList);
+            connectPanel.add(scrollablePublicLobbiesList);
 
             // setting correct focus
-            scrollLobbies.requestFocusInWindow();
+            scrollablePublicLobbiesList.requestFocusInWindow();
 
             // actionListeners
-            lobbies.addListSelectionListener(listSelectionEvent -> {
-                int selectedIndex = lobbies.getSelectedIndex();
-                lobbyID.setText(openLobbies.get(selectedIndex).getFirst().toString());
+            publicLobbiesList.addListSelectionListener(listSelectionEvent -> {
+                int selectedIndex = publicLobbiesList.getSelectedIndex();
+                lobbyID.setText(publicLobbies.get(selectedIndex).getID().toString());
+                waitingReconnectionLobbiesList.setSelectedIndices(new int[]{});
+            });
+            waitingReconnectionLobbiesList.addListSelectionListener(listSelectionEvent -> {
+                int selectedIndex = waitingReconnectionLobbiesList.getSelectedIndex();
+                lobbyID.setText(reconnectToTheseLobbies.get(selectedIndex).getID().toString());
+                publicLobbiesList.setSelectedIndex(-1);
             });
             lobbyID.addActionListener(actionEvent -> {
                 lobbyID.setText(lobbyID.getText().trim());
@@ -115,10 +147,17 @@ public class LobbySelectionPanel extends JTabbedPane {
             layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 20, SpringLayout.NORTH, connectPanel);
             layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);
 
-            layout.putConstraint(SpringLayout.NORTH, scrollLobbies, 20, SpringLayout.VERTICAL_CENTER, title);
-            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, scrollLobbies, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);
+            layout.putConstraint(SpringLayout.VERTICAL_CENTER, lobbiesWaitingReconnectionLabel, 20, SpringLayout.SOUTH, title);
+            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lobbiesWaitingReconnectionLabel, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);
+            layout.putConstraint(SpringLayout.NORTH, scrollableWaitingReconnectionLobbiesList, 20, SpringLayout.VERTICAL_CENTER, lobbiesWaitingReconnectionLabel);
+            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, scrollableWaitingReconnectionLobbiesList, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);
 
-            layout.putConstraint(SpringLayout.VERTICAL_CENTER, lobbyIDLabel, 20, SpringLayout.SOUTH, scrollLobbies);
+            layout.putConstraint(SpringLayout.VERTICAL_CENTER, publicLobbiesLabel, 20, SpringLayout.SOUTH, scrollableWaitingReconnectionLobbiesList);
+            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, publicLobbiesLabel, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);
+            layout.putConstraint(SpringLayout.NORTH, scrollablePublicLobbiesList, 20, SpringLayout.VERTICAL_CENTER, publicLobbiesLabel);
+            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, scrollablePublicLobbiesList, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);
+
+            layout.putConstraint(SpringLayout.VERTICAL_CENTER, lobbyIDLabel, 20, SpringLayout.SOUTH, scrollablePublicLobbiesList);
             layout.putConstraint(SpringLayout.EAST, lobbyIDLabel, -10, SpringLayout.HORIZONTAL_CENTER, connectPanel);
             layout.putConstraint(SpringLayout.VERTICAL_CENTER, lobbyID, 0, SpringLayout.VERTICAL_CENTER, lobbyIDLabel);
             layout.putConstraint(SpringLayout.WEST, lobbyID, 10, SpringLayout.HORIZONTAL_CENTER, connectPanel);
@@ -144,9 +183,9 @@ public class LobbySelectionPanel extends JTabbedPane {
             JRadioButton maxPlayers_2 = new JRadioButton("2");
             maxPlayers_2.setActionCommand("2");
             JRadioButton maxPlayers_3 = new JRadioButton("3");
-            maxPlayers_2.setActionCommand("3");
+            maxPlayers_3.setActionCommand("3");
             JRadioButton maxPlayers_4 = new JRadioButton("4");
-            maxPlayers_2.setActionCommand("4");
+            maxPlayers_4.setActionCommand("4");
 
             // radio buttons get grouped up
             ButtonGroup maxPlayers = new ButtonGroup();
@@ -168,7 +207,6 @@ public class LobbySelectionPanel extends JTabbedPane {
             create.addActionListener(actionEvent -> {
                 // normalize id
                 try {
-
                     sw.sendMessage(new CreateLobbyRequest(
                             openLobby.isSelected(),
                             Integer.parseInt(maxPlayers.getSelection().getActionCommand())
@@ -181,6 +219,7 @@ public class LobbySelectionPanel extends JTabbedPane {
                         new PopupMessage("Try again.", "Failure :(");
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     new PopupMessage("Try again.", "Failure :(");
                 }
             });

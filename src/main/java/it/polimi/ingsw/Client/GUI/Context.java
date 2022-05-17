@@ -1,22 +1,30 @@
 package it.polimi.ingsw.Client.GUI;
 
-import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Misc.SocketWrapper;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyInfo;
 
 import java.util.List;
-import java.util.UUID;
 
 public class Context {
     private Window window;
     private SocketWrapper socketWrapper;
     private String nickname;
-    private List<Pair<UUID, String>> openLobbies;
+    private List<LobbyInfo> openLobbies;
+    private List<LobbyInfo> reconnectToTheseLobbies;
 
-    public List<Pair<UUID, String>> getOpenLobbies() {
+    public List<LobbyInfo> getReconnectToTheseLobbies() {
+        return reconnectToTheseLobbies;
+    }
+
+    public void setReconnectToTheseLobbies(List<LobbyInfo> reconnectToTheseLobbies) {
+        this.reconnectToTheseLobbies = reconnectToTheseLobbies;
+    }
+
+    public List<LobbyInfo> getOpenLobbies() {
         return List.copyOf(this.openLobbies);
     }
 
-    public void setOpenLobbies(List<Pair<UUID, String>> openLobbies) {
+    public void setOpenLobbies(List<LobbyInfo> openLobbies) {
         this.openLobbies = openLobbies;
     }
 

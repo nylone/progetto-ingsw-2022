@@ -8,12 +8,12 @@ import it.polimi.ingsw.RemoteView.Messages.Events.Internal.ClientConnectEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.ClientDisconnectEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.GameStartEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 public class Lobby {
+    private final UUID id;
     private final String admin;
     private final boolean isPublic;
     private final int maxPlayers;
@@ -21,7 +21,8 @@ public class Lobby {
     private final Map<String, ClientEventHandler> playerEventSources;
     private GameHandler gameHandler;
 
-    protected Lobby(boolean isPublic, int maxPlayers, String admin, ClientEventHandler adminChannel) {
+    protected Lobby(UUID id, boolean isPublic, int maxPlayers, String admin, ClientEventHandler adminChannel) {
+        this.id = id;
         this.admin = admin;
         this.isPublic = isPublic;
         this.maxPlayers = maxPlayers;
@@ -31,24 +32,50 @@ public class Lobby {
         this.playerEventSources.put(admin, adminChannel);
     }
 
-    protected String getAdmin() {
+    public UUID getId() {
+        return id;
+    }
+
+    public String getAdmin() {
         return admin;
     }
 
-    protected GameHandler getGameHandler() {
+    public GameHandler getGameHandler() {
         return this.gameHandler;
     }
 
-    protected boolean isPublic() {
+    public boolean isPublic() {
         return isPublic;
     }
 
-    protected boolean isLobbyFull() {
+    public boolean isLobbyFull() {
         return this.players.size() == maxPlayers;
     }
 
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
 
-    protected boolean addPlayer(String nick, ClientEventHandler playerChannel) {
+    public List<String> getPlayers() {
+        synchronized (this.players) {
+            return List.copyOf(this.players);
+        }
+    }
+
+    public List<String> getDisconnectedPlayers() {
+        synchronized (this.players) {
+            Set<String> connected = this.playerEventSources.keySet();
+            return this.players.stream()
+                    .filter(Predicate.not(connected::contains))
+                    .toList();
+        }
+    }
+
+    public boolean isWaitingLobby() {
+        return this.gameHandler == null;
+    }
+
+    public boolean addPlayer(String nick, ClientEventHandler playerChannel) {
         synchronized (this.players) {
             // in case of reconnection
             if (this.players.contains(nick)) {
@@ -84,9 +111,16 @@ public class Lobby {
         }
     }
 
-    protected void removePlayerHandler(String nick) {
+    protected void disconnectPlayer(String nick) {
         synchronized (this.players) {
             this.playerEventSources.remove(nick);
+            if (this.isWaitingLobby()) {
+                if (Objects.equals(this.admin, nick)) {
+                    // todo delete the whole lobby
+                } else {
+                    this.players.remove(nick);
+                }
+            }
             notifyPlayers(new ClientDisconnectEvent(nick));
         }
     }

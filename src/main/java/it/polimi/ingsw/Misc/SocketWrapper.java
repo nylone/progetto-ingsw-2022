@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
@@ -46,17 +47,19 @@ public class SocketWrapper {
 
     public Message awaitMessage() throws IOException {
         Message read = null;
-        try {
-            read = new Gson().fromJson(this.jsonReader, Message.class);
-            if (read == null) throw new JsonSyntaxException("null message received");
-        } catch (JsonSyntaxException e) {
-            log.severe("received invalid syntax on: " + e.getMessage());
-            if (this.input.read() == -1) {
-                log.info("socket disconnected: closing socket");
-                this.sock.close();
-                log.info("closed SocketWrapper");
+        do {
+            try {
+                read = new Gson().fromJson(this.jsonReader, Message.class);
+            } catch (JsonSyntaxException e) {
+                log.severe("received invalid syntax on: " + e.getMessage());
+                if (this.input.read() == -1) {
+                    log.info("closing SocketWrapper");
+                    this.sock.close();
+                    log.info("closed SocketWrapper");
+                    throw new SocketException("SocketWrapper is closed");
+                }
             }
-        }
+        } while (read == null);
         return read;
     }
 

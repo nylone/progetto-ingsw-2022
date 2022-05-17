@@ -31,13 +31,6 @@ public class SocketListener implements Runnable {
         try {
             while (true) {
                 Message message = socket.awaitMessage();
-                if (message == null) { // the message can be null from invalid json or closed socket
-                    if (socket.isClosed()) {
-                        queue.enqueue(new SocketClosedEvent());
-                        return;
-                    }
-                    continue;
-                }
                 ClientEvent clientEvent;
                 switch (message.getType()) {
                     case REQUEST_DECLARE_PLAYER ->
@@ -60,10 +53,15 @@ public class SocketListener implements Runnable {
                 queue.enqueue(clientEvent);
             }
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        } finally {
             log.info("closing SocketListener");
+        } finally {
             this.socket.close();
+            try {
+                queue.enqueue(new SocketClosedEvent());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            log.info("closed SocketListener");
         }
     }
 }
