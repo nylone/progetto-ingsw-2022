@@ -1,4 +1,4 @@
-name: Build
+name: SonarQube Report
 on:
   workflow_dispatch:
     branches: [ main ]
