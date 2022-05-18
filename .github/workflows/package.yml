@@ -1,22 +1,20 @@
-name: Maven Package
-
+name: Publish package to GitHub Packages
 on:
-  push:
-    branches:
-      [main]
-
+  release:
+    types: [created]
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 18
-        uses: actions/setup-java@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
         with:
-          java-version: 18
-          distribution: adopt
-          server-id: github
-      – name: Build with Maven.
+          java-version: '18'
+          distribution: 'adopt'
+      - name: Publish package
         run: mvn clean package deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
