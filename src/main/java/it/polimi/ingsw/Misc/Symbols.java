@@ -17,6 +17,7 @@ public class Symbols {
 
 
     public static String BOLD = "\u001b[1m";
+    public static String STRIKED = "\u001b[9m";
     public static String UNDERLINED = "\u001b[4m";
 
     public static String PAWN = BOLD + "■" + RESET + BACKGROUND;
