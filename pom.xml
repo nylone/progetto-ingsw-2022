@@ -14,8 +14,8 @@
     <distributionManagement>
         <repository>
             <id>github</id>
-            <name>softeng-GC21</name>
-            <url>https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno</url>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/nylone/ing-sw-2022-rampone-rossi-salerno</url>
         </repository>
     </distributionManagement>
 
