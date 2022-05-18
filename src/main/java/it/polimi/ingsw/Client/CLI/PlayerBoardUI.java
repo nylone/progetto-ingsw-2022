@@ -11,7 +11,6 @@ public class PlayerBoardUI {
 
     public static String drawPlayerBoard(PlayerBoard playerBoard, GameBoard ctx) {
         String screen = "";
-        String coin="";
         // Playerboard sections' titles. Change the argument of repeat() to further separate islands from playerboards
         screen = screen + "\n".repeat(1) + "Entrance:\t" + "Dining Room:\t\t" + "Teachers:\t" + "Towers:\t\t";
         if(ctx.getGameMode() == GameMode.ADVANCED){
