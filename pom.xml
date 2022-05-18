@@ -6,7 +6,7 @@
 
     <groupId>it.polimi.ingsw</groupId>
     <artifactId>softeng-GC21</artifactId>
-    <version>0.1-DEVEL</version>
+    <version>0.0.1-alpha</version>
 
     <name>softeng-GC21</name>
     <url>https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno</url>
