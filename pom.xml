@@ -5,8 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>it.polimi.ingsw</groupId>
-    <artifactId>softeng-GC21</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>ing-sw-2022-rampone-rossi-salerno</artifactId>
+    <version>0.0.1-alpha</version>
+    <packaging>jar</packaging>
 
     <name>softeng-GC21</name>
     <url>https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno</url>
@@ -24,6 +25,7 @@
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
         <exec.mainClass>Main</exec.mainClass>
+        <sonar.exclusions>**/Client/**/*, **/RemoteView/**/*, **/Misc/**/*, **/Exceptions/**/*, Main.java</sonar.exclusions>
     </properties>
 
     <dependencies>
@@ -95,6 +97,30 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.7</version>
+                <configuration>
+                    <excludes>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
