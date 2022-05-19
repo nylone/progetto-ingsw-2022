@@ -19,12 +19,7 @@
             <url>https://maven.pkg.github.com/nylone/ing-sw-2022-rampone-rossi-salerno</url>
         </repository>
     </distributionManagement>
-
-    <scm>
-        <connection>scm:svn:https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno</connection>
-        <developerConnection>scm:svn:https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno</developerConnection>
-        <url>https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno</url>
-    </scm>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exec.mainClass>Main</exec.mainClass>
