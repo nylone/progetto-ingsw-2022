@@ -6,7 +6,7 @@
 
     <groupId>it.polimi.ingsw</groupId>
     <artifactId>ing-sw-2022-rampone-rossi-salerno</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.1-devel</version>
     <packaging>jar</packaging>
 
     <name>softeng-GC21</name>
@@ -19,7 +19,7 @@
             <url>https://maven.pkg.github.com/nylone/ing-sw-2022-rampone-rossi-salerno</url>
         </repository>
     </distributionManagement>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exec.mainClass>Main</exec.mainClass>

@@ -1,32 +1,29 @@
-name: Create Release and Package it.
+name: create release
 on:
   workflow_dispatch:
-    branches: [ main ]
     inputs:
       prerelease:
         description: "Is this a pre-release?"
         required: true
         type: boolean
-        default: true
+        default: false
       draft:
         description: "Is this a draft?"
         required: true
         type: boolean
-        default: false
+        default: true
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
         with:
           java-version: '18'
           distribution: 'adopt'
-      - name: Set Release version env variable
+      - name: Get Release version
         run: |
           echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -37,8 +34,3 @@ jobs:
           release_name: Release ${{ env.RELEASE_VERSION }}
           draft: ${{ github.event.inputs.draft }}
           prerelease: ${{ github.event.inputs.prerelease }}
-
-      - name: Publish package to Release
-        run: mvn clean package --batch-mode deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,4 +1,4 @@
-name: SonarQube Report
+name: sonarqube auto report
 on:
   workflow_dispatch:
     branches: [ main ]
