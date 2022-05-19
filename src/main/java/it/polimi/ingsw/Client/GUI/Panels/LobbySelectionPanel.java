@@ -19,12 +19,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class LobbySelectionPanel extends JTabbedPane {
-    public LobbySelectionPanel(Context ctx) {
+    public LobbySelectionPanel(Context ctx, List<LobbyInfo> publicLobbies, List<LobbyInfo> reconnectToTheseLobbies) {
         // unwrapping context into useful variables
         Window window = ctx.getWindow();
         SocketWrapper sw = ctx.getSocketWrapper();
-        List<LobbyInfo> publicLobbies = ctx.getOpenLobbies();
-        List<LobbyInfo> reconnectToTheseLobbies = ctx.getReconnectToTheseLobbies();
 
         // tabbed pane tabs
         JPanel connectPanel = new JPanel();
@@ -49,9 +47,8 @@ public class LobbySelectionPanel extends JTabbedPane {
             JButton connect = new JButton("Connect");
 
             // list cell renderer
-            ListCellRenderer cellRenderer = (list, entry, index, isSelected, _ignored) -> {
+            ListCellRenderer<LobbyInfo> cellRenderer = (list, info, index, isSelected, _ignored) -> {
                 JLabel displayedText = new JLabel();
-                LobbyInfo info = (LobbyInfo) entry;
                 displayedText.setText(
                         "ID: " + info.getID() +
                                 " || Admin: " + info.getAdmin() +
@@ -68,7 +65,7 @@ public class LobbySelectionPanel extends JTabbedPane {
             };
 
             // list of public lobbies
-            JList publicLobbiesList = new JList(publicLobbies.toArray());
+            JList<LobbyInfo> publicLobbiesList = new JList<>(publicLobbies.toArray(LobbyInfo[]::new));
             publicLobbiesList.setLayoutOrientation(JList.VERTICAL);
             publicLobbiesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             publicLobbiesList.setCellRenderer(cellRenderer);
@@ -81,7 +78,7 @@ public class LobbySelectionPanel extends JTabbedPane {
             scrollablePublicLobbiesList.setPreferredSize(new Dimension(720, 100));
 
             // list of lobbies waiting reconnection
-            JList waitingReconnectionLobbiesList = new JList(reconnectToTheseLobbies.toArray());
+            JList<LobbyInfo> waitingReconnectionLobbiesList = new JList<>(reconnectToTheseLobbies.toArray(LobbyInfo[]::new));
             waitingReconnectionLobbiesList.setLayoutOrientation(JList.VERTICAL);
             waitingReconnectionLobbiesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             waitingReconnectionLobbiesList.setCellRenderer(cellRenderer);

@@ -82,9 +82,7 @@ public class UserCredentialsPanel extends JPanel {
                 if (msg.getType() == PayloadType.RESPONSE_LOBBY_ACCEPT) {
                     LobbyAccept response = new Gson().fromJson(msg.getData(), LobbyAccept.class);
                     if (response.getStatusCode() == StatusCode.Success) {
-                        ctx.setOpenLobbies(response.getPublicLobbies());
-                        ctx.setReconnectToTheseLobbies(response.getReconnectToTheseLobbies());
-                        new LobbySelectionPanel(ctx);
+                        new LobbySelectionPanel(ctx, response.getPublicLobbies(), response.getReconnectToTheseLobbies());
                     } else {
                         new PopupMessage("Server denied your login", "Failure :(");
                     }
@@ -93,7 +91,7 @@ public class UserCredentialsPanel extends JPanel {
                 e.printStackTrace();
             }
         });
-
+        
         // layout object decleration and setup
         SpringLayout layout = new SpringLayout();
 
