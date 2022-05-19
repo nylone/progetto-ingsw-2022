@@ -2,14 +2,10 @@ name: Create new Release
 on:
   workflow_dispatch:
     inputs:
-      releaseVersion:
+      version:
         description: "Default version to use when preparing a release."
         required: true
         default: "X.Y.Z"
-      developmentVersion:
-        description: "Default version to use for new local working copy."
-        required: true
-        default: "X.Y.Z-SNAPSHOT"
 
 jobs:
   publish:
@@ -23,8 +19,10 @@ jobs:
         with:
           java-version: '18'
           distribution: 'adopt'
+      - name: Maven Set Version
+        run: mvn versions:set -DgenerateBackupPoms=false -DnewVersion=${{ github.event.inputs.version }}-SNAPSHOT
 
       - name: Maven Release
-        run: mvn clean release:prepare release:perform -B -DreleaseVersion=${{ github.event.inputs.releaseVersion }} -DdevelopmentVersion=${{ github.event.inputs.developmentVersion }}
+        run: mvn clean release:prepare release:perform -B -DreleaseVersion=${{ github.event.inputs.version }} -DdevelopmentVersion=${{ github.event.inputs.version }}-SNAPSHOT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
