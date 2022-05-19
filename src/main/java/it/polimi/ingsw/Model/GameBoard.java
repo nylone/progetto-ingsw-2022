@@ -22,7 +22,7 @@ public class GameBoard implements Serializable {
     private static final long serialVersionUID = 101L; // convention: 1 for model, (01 -> 99) for objects
     private final IslandField islandField;
     private final GameMode gameMode;
-    private final transient StudentBag studentBag;
+    private final StudentBag studentBag;
     private final List<PlayerBoard> playerBoards;
     private final Map<PawnColour, PlayerBoard> teachers;
     private final TeamMapper teamMap;

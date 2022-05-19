@@ -11,7 +11,8 @@ import java.util.List;
 public class StudentBag implements Serializable {
     @Serial
     private static final long serialVersionUID = 130L; // convention: 1 for model, (01 -> 99) for objects
-    private final ArrayList<PawnColour> studentBag;
+    private transient final ArrayList<PawnColour> studentBag;
+    private boolean isEmpty;
 
     public StudentBag(int numOfStudentsPerColour) {
         this.studentBag = new ArrayList<>(numOfStudentsPerColour * PawnColour.values().length);
@@ -22,10 +23,14 @@ public class StudentBag implements Serializable {
             }
         }
         Utils.shuffle(this.studentBag);
+        this.isEmpty = false;
     }
 
     public int getSize() {
         return studentBag.size();
+    }
+    public boolean isEmpty() {
+        return this.isEmpty;
     }
 
     public List<PawnColour> multipleExtraction(int extractions) {
@@ -35,10 +40,12 @@ public class StudentBag implements Serializable {
     }
 
     public PawnColour extract() {
+        if (this.getSize() == 1) this.isEmpty = true;
         return this.studentBag.remove(this.studentBag.size() - 1);
     }
 
     public void appendAndShuffle(PawnColour colour) {
+        if (this.getSize() == 0) this.isEmpty = false;
         this.studentBag.add(colour);
         Utils.shuffle(this.studentBag);
     }
