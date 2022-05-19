@@ -35,7 +35,7 @@ public class IslandGroupTest {
     public void testGetStudents() throws OperationException {
         // arrange
         GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo");
-        TeamMapper tm = gb.getTeamMap();
+        TeamMapper tm = gb.getTeamMapper();
         Island i1 = new Island(2);
         Island i2 = new Island(3);
         i1.addStudent(PawnColour.BLUE);

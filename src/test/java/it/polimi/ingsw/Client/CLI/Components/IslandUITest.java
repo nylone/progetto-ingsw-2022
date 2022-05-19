@@ -26,7 +26,7 @@ public class IslandUITest {
             for (int i = 0; i < new Random().nextInt(15); i++) {
                 ig.getMutableIslands().get(0).addStudent(Utils.random(List.of(PawnColour.values())));
             }
-            ig.swapTower(gb.getTeamMap().getMutableTowerStorage(Utils.random(List.of(TeamID.values()))));
+            ig.swapTower(gb.getTeamMapper().getMutableTowerStorage(Utils.random(List.of(TeamID.values()))));
             ig.addNoEntry(new NoEntryTile(new Card05(gb)));
             System.out.println(IslandUI.draw(ig, gb));
         }

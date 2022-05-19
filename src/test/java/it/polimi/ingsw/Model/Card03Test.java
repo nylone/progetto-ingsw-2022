@@ -31,7 +31,7 @@ public class Card03Test {
         input.setTargetIsland(island);
         if (card.checkInput(input)) card.unsafeApplyEffect(input);
 
-        assertEquals(ig.getTowerColour().get(), gb.getTeamMap().getMutableTowerStorage(pb1).getColour());
+        assertEquals(ig.getTowerColour().get(), gb.getTeamMapper().getMutableTowerStorage(pb1).getColour());
         assertEquals(expectedMotherNaturePosition, gb.getMutableIslandField().getMutableMotherNaturePosition());
     }
 

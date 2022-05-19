@@ -24,7 +24,7 @@ public class GameUITest {
             for (int i = 0; i < new Random().nextInt(15); i++) {
                 ig.getMutableIslands().get(0).addStudent(Utils.random(List.of(PawnColour.values())));
             }
-            ig.swapTower(gb.getTeamMap().getMutableTowerStorage(Utils.random(List.of(TeamID.ONE, TeamID.TWO))));
+            ig.swapTower(gb.getTeamMapper().getMutableTowerStorage(Utils.random(List.of(TeamID.ONE, TeamID.TWO))));
         }
         for (PawnColour p : PawnColour.values()) {
             for (int i = 0; i < new Random().nextInt(9); i++) {

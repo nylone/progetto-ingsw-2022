@@ -3,10 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.Container.FullContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Misc.Optional;
-import it.polimi.ingsw.Model.Enums.GameMode;
-import it.polimi.ingsw.Model.Enums.PawnColour;
-import it.polimi.ingsw.Model.Enums.TeamID;
-import it.polimi.ingsw.Model.Enums.TowerColour;
+import it.polimi.ingsw.Model.Enums.*;
 import it.polimi.ingsw.RemoteView.Lobby;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.ModelUpdateEvent;
 
@@ -171,7 +168,7 @@ public class GameBoard implements Serializable {
                 .toList();
     }
 
-    public TeamMapper getTeamMap() {
+    public TeamMapper getTeamMapper() {
         return teamMap;
     }
 
@@ -210,10 +207,10 @@ public class GameBoard implements Serializable {
         return turnOrder;
     }
     
-    public boolean isGameEnded() {
+    private boolean isGameOver() {
         // Check if current player has no towers left
         PlayerBoard currentPlayer = this.getMutableTurnOrder().getMutableCurrentPlayer();
-        boolean noTowersLeft = this.getTeamMap().getMutableTowerStorage(currentPlayer).getTowerCount() == 0;
+        boolean noTowersLeft = this.getTeamMapper().getMutableTowerStorage(currentPlayer).getTowerCount() == 0;
         // Check if only three island groups remain
         boolean onlyThreeIslands = this.getMutableIslandField().getMutableGroups().size() == 3;
         // Check if all assistant cards have been used
@@ -223,38 +220,60 @@ public class GameBoard implements Serializable {
         // Check if bag is empty
         boolean emptyBag = this.getMutableStudentBag().isEmpty();
         
-        return noTowersLeft || onlyThreeIslands || allCardsUsed || emptyBag;
+        return noTowersLeft ||
+                onlyThreeIslands ||
+                this.getMutableTurnOrder().getGamePhase() == GamePhase.SETUP &&
+                        ( allCardsUsed || emptyBag );
     }
-    
-    public Optional<ArrayList<PlayerBoard>> getWinners() {
-        if (!isGameEnded()) {
+
+    public List<PlayerBoard> getMutablePlayerBoardsByTeamID(TeamID teamID) {
+        return this.getMutablePlayerBoards().stream()
+                .filter(player -> teamID.equals(this.getTeamMapper().getTeamID(player)))
+                .toList();
+    }
+
+    private int getOwnTeamTeacherCount(TeamID teamID) {
+        return this.getMutablePlayerBoardsByTeamID(teamID).stream()
+                .map(this::getOwnTeachers)
+                .mapToInt(List::size)
+                .sum();
+    }
+
+    private int getOwnTeamTeacherCount(PlayerBoard pb) {
+        return this.getOwnTeamTeacherCount(this.getTeamMapper().getTeamID(pb));
+    }
+
+    public Optional<List<PlayerBoard>> getWinners() {
+        if (!isGameOver()) {
             return Optional.empty();
         }
-        ArrayList<PlayerBoard> winners = new ArrayList<>();
-        for (PlayerBoard player : this.getMutablePlayerBoards()) {
-            if (this.getTeamMap().getMutableTowerStorage(player).getTowerCount() == 0) {
-                    winners.add(player);
-            }
+
+        PlayerBoard currentPlayer = this.getMutableTurnOrder().getMutableCurrentPlayer();
+
+        // immediate win for 3 islands left
+        if (this.getMutableIslandField().getMutableGroups().size() == 3) {
+            return Optional.of(this.getMutablePlayerBoardsByTeamID(this.getTeamMapper().getTeamID(currentPlayer)));
         }
-        if (winners.size() > 0) {
-            return Optional.of(winners);
-        }
-        for (PlayerBoard player : this.getMutablePlayerBoards()) {
-            if (winners.size() == 0) {
-                winners.add(player);
-            } else if (this.getTeamMap().getMutableTowerStorage(player).getTowerCount()
-                    < this.getTeamMap().getMutableTowerStorage(winners.get(0)).getTowerCount()) {
-                winners.clear();
-                winners.add(player);
-            } else if (this.getTeamMap().getMutableTowerStorage(player).getTowerCount()
-                    == this.getTeamMap().getMutableTowerStorage(winners.get(0)).getTowerCount()) {
-                if (this.getOwnTeachers(player).size() > this.getOwnTeachers(winners.get(0)).size()) {
-                    winners.clear();
-                    winners.add(player);
-                }
-                else winners.add(player);
-            }
-        }
+
+        // calculate best players depending on tower storage.
+        List<PlayerBoard> sortByTowerAndTeacherCount = this.getMutablePlayerBoards().stream()
+                .sorted((e1, e2) -> {
+                    int countE1 = this.getTeamMapper().getMutableTowerStorage(e1).getTowerCount();
+                    int countE2 = this.getTeamMapper().getMutableTowerStorage(e2).getTowerCount();
+                    if (countE1 != countE2) return countE1 - countE2;
+                    else {
+                        return -this.getOwnTeamTeacherCount(e1) + this.getOwnTeamTeacherCount(e2);
+                    }
+                })
+                .toList();
+        PlayerBoard firstPlayer = sortByTowerAndTeacherCount.get(0);
+        int firstPlayerTeamTeacherCount = this.getOwnTeamTeacherCount(firstPlayer);
+        int firstPlayerTowerCount = this.getTeamMapper().getMutableTowerStorage(firstPlayer).getTowerCount();
+        List<PlayerBoard> winners = sortByTowerAndTeacherCount.stream()
+                .takeWhile(e -> this.getTeamMapper().getMutableTowerStorage(e).getTowerCount() == firstPlayerTowerCount)
+                .takeWhile(e -> this.getOwnTeamTeacherCount(e) == firstPlayerTeamTeacherCount)
+                .toList();
+
         return Optional.of(winners);
     }
 

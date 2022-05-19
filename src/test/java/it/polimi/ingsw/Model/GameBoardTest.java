@@ -116,7 +116,7 @@ public class GameBoardTest {
     public void testingInfluenceOnIslandWithSameInfluence() throws InvalidContainerIndexException {
         // arrange
         IslandGroup ig = gb_sim_2.getMutableIslandField().getMutableIslandGroupById(6);
-        ig.getMutableIslands().get(0).swapTower(gb_sim_2.getTeamMap().getMutableTowerStorage(TeamID.fromInteger(1)).extractTower());
+        ig.getMutableIslands().get(0).swapTower(gb_sim_2.getTeamMapper().getMutableTowerStorage(TeamID.fromInteger(1)).extractTower());
 
         PawnColour studentOnTheIslandAtBeginning;
         if (ig.getStudents().size() != 0) {
@@ -194,7 +194,7 @@ public class GameBoardTest {
         GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari");
         PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         for (int i = 0; i < 6; i++) { // leaving current player with just one tower left
-            gb.getTeamMap().getMutableTowerStorage(currentPlayer).extractTower();
+            gb.getTeamMapper().getMutableTowerStorage(currentPlayer).extractTower();
         }
         // assert
         assertEquals(currentPlayer, gb.getWinners().get().get(0));
@@ -227,7 +227,7 @@ public class GameBoardTest {
         GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari", "eriantys");
         PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         for (int i = 0; i < 8; i++) { // leaving current player with just one tower left
-            gb.getTeamMap().getMutableTowerStorage(currentPlayer).extractTower();
+            gb.getTeamMapper().getMutableTowerStorage(currentPlayer).extractTower();
         }
         // assert
         assertEquals(currentPlayer, gb.getWinners().get().get(0));

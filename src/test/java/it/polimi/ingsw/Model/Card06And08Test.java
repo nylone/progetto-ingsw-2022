@@ -37,7 +37,7 @@ public class Card06And08Test {
         CharacterCardInput input = new CharacterCardInput(turnOrder.getMutableCurrentPlayer());
         if (card08.checkInput(input)) card08.unsafeApplyEffect(input);
 
-        assertEquals(gb.getInfluencerOf(islandGroup).get(), gb.getTeamMap().getTeamID(turnOrder.getMutableCurrentPlayer()));
+        assertEquals(gb.getInfluencerOf(islandGroup).get(), gb.getTeamMapper().getTeamID(turnOrder.getMutableCurrentPlayer()));
         /*in this test, adding 2 points due to card8's effect will always give the influence to the caller; in fact:
                 teo caller --> 3 points of influence teo / 0 points of influence ari
                 ari caller --> 2 points of influence ari / 1 points of influence teo

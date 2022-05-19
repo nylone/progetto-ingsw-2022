@@ -83,7 +83,7 @@ public class IslandFieldTest {
         List<IslandGroup> groups = gameBoard.getMutableIslandField().getMutableGroups();
         IslandGroup previousGroup = Utils.modularSelection(motherNaturePosition, groups, -1);
 
-        TeamMapper teamMapper = gameBoard.getTeamMap();
+        TeamMapper teamMapper = gameBoard.getTeamMapper();
         motherNaturePosition.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         previousGroup.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         // act
@@ -103,7 +103,7 @@ public class IslandFieldTest {
         List<IslandGroup> groups = gameBoard.getMutableIslandField().getMutableGroups();
         IslandGroup nextGroup = Utils.modularSelection(motherNaturePosition, groups, +1);
 
-        TeamMapper teamMapper = gameBoard.getTeamMap();
+        TeamMapper teamMapper = gameBoard.getTeamMapper();
         motherNaturePosition.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         nextGroup.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         // act
@@ -124,7 +124,7 @@ public class IslandFieldTest {
         IslandGroup prevGroup = Utils.modularSelection(motherNaturePosition, groups, -1);
         IslandGroup nextGroup = Utils.modularSelection(motherNaturePosition, groups, +1);
 
-        TeamMapper teamMapper = gameBoard.getTeamMap();
+        TeamMapper teamMapper = gameBoard.getTeamMapper();
         motherNaturePosition.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         prevGroup.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         nextGroup.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());

@@ -57,13 +57,13 @@ public class PlayerBoardUI {
     public static String drawTowers(PlayerBoard p, GameBoard gb) {
         String towers = "";
         String towerColour = "";
-        switch (gb.getTeamMap().getMutableTowerStorage(p).getColour()) {
+        switch (gb.getTeamMapper().getMutableTowerStorage(p).getColour()) {
             case BLACK -> towerColour = Symbols.BLACK;
             case GRAY -> towerColour = Symbols.GRAY;
             case WHITE -> towerColour = Symbols.WHITE;
         }
         for (int i = 0; i < 8; i++) {
-            if (i < gb.getTeamMap().getMutableTowerStorage(p).getTowerCount()) {
+            if (i < gb.getTeamMapper().getMutableTowerStorage(p).getTowerCount()) {
                 towers = towers + Symbols.colour(Symbols.TOWER, towerColour) + " ";
             } else towers = towers + "  ";
 

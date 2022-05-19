@@ -6,7 +6,6 @@ import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
-import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.RemoteView.Lobby;
@@ -21,7 +20,6 @@ import java.util.List;
 public class GameHandler {
     private final List<PlayerAction> history;
     private final GameBoard model;
-    private Optional<Integer> winner;
 
     /**
      * Generates a new instance of Game. This is the default method to call to create a game.
@@ -33,7 +31,6 @@ public class GameHandler {
         if (players.length > 1 && players.length <= 4) {
             this.history = new ArrayList<>(6);
             this.model = new GameBoard(gameMode, players);
-            this.winner = Optional.empty();
         } else {
             throw new GenericInputValidationException("Players", "The number of players must be 2, 3 or 4.\n" +
                     "Players received: " + players.length);
@@ -51,7 +48,6 @@ public class GameHandler {
     GameHandler(GameBoard game, List<PlayerAction> history) {
         this.history = history;
         this.model = game;
-        this.winner = Optional.empty();
     }
 
     public void subscribeLobby(Lobby lobby) {
@@ -84,10 +80,6 @@ public class GameHandler {
      */
     private List<PlayerAction> getHistory() {
         return List.copyOf(history);
-    }
-
-    public boolean isGameEnded() {
-        return model.isGameEnded();
     }
 
     /**

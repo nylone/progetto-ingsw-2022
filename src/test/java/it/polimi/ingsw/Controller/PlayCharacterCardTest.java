@@ -94,7 +94,7 @@ public class PlayCharacterCardTest {
         assertEquals(player.getCoinBalance(), initialBalance - gameBoard.getCharacterCards().get(0).getCost() + 1);
         assertEquals(gameBoard.getCoinReserve(), initialReserve + gameBoard.getCharacterCards().get(0).getCost() - 2);
         assertTrue(gameBoard.getInfluencerOf(gameBoard.getMutableIslandField().getMutableGroups().get(0)).isEmpty() ||
-                gameBoard.getInfluencerOf(gameBoard.getMutableIslandField().getMutableGroups().get(0)).get().equals(gameBoard.getTeamMap().getTeamID(player)));
+                gameBoard.getInfluencerOf(gameBoard.getMutableIslandField().getMutableGroups().get(0)).get().equals(gameBoard.getTeamMapper().getTeamID(player)));
 
          /*
         -------------------------------------------
