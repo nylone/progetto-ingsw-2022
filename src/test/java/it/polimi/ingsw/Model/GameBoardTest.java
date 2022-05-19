@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
+import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -11,8 +12,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class GameBoardTest {
     GameBoard gb_sim_2 = new GameBoard(GameMode.SIMPLE, "ari", "ale");
@@ -187,4 +187,59 @@ public class GameBoardTest {
     public void testingInconsistentNumOfPlayers() {
         GameBoard gb_adv_5 = new GameBoard(GameMode.SIMPLE, "ari", "ale", "teo", "polimi", "java");
     }
+
+    @Test
+    public void finishingTowersMakesWin() throws InputValidationException {
+        // arrange & act
+        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari");
+        PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
+        for (int i = 0; i < 6; i++) { // leaving current player with just one tower left
+            gb.getTeamMap().getMutableTowerStorage(currentPlayer).extractTower();
+        }
+        // assert
+        assertEquals(currentPlayer, gb.getWinners().get().get(0));
+    }
+
+    @Test
+    public void winWhenSameTowersButMoreTeachers() {
+        // arrange & act
+        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari");
+        PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
+        gb.setTeacher(PawnColour.RED, currentPlayer);
+        gb.getMutableStudentBag().multipleExtraction(gb.getMutableStudentBag().getSize()); // ends game
+        // assert
+        assertEquals(currentPlayer, gb.getWinners().get().get(0));
+    }
+
+    @Test
+    public void parityWhenSameNumberOfTowersAndTeachers() {
+        // arrange & act
+        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari");
+        PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
+        gb.getMutableStudentBag().multipleExtraction(gb.getMutableStudentBag().getSize()); // ends game
+        // assert
+        assertTrue(gb.getWinners().get().size() == 3);
+    }
+
+    @Test
+    public void winShouldBeGivenToTeam() {
+        // arrange & act
+        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari", "eriantys");
+        PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
+        for (int i = 0; i < 8; i++) { // leaving current player with just one tower left
+            gb.getTeamMap().getMutableTowerStorage(currentPlayer).extractTower();
+        }
+        // assert
+        assertEquals(currentPlayer, gb.getWinners().get().get(0));
+        assertTrue(gb.getWinners().get().size() == 2);
+    }
+
+    @Test
+    public void thereShouldBeWinnerOnlyIfGameIsEnded() {
+        // arrange & act
+        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari", "eriantys");
+        // assert
+        assertTrue(gb.getWinners().isEmpty());
+    }
+
 }

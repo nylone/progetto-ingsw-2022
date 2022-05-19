@@ -209,6 +209,54 @@ public class GameBoard implements Serializable {
     public TurnOrder getMutableTurnOrder() {
         return turnOrder;
     }
+    
+    public boolean isGameEnded() {
+        // Check if current player has no towers left
+        PlayerBoard currentPlayer = this.getMutableTurnOrder().getMutableCurrentPlayer();
+        boolean noTowersLeft = this.getTeamMap().getMutableTowerStorage(currentPlayer).getTowerCount() == 0;
+        // Check if only three island groups remain
+        boolean onlyThreeIslands = this.getMutableIslandField().getMutableGroups().size() == 3;
+        // Check if all assistant cards have been used
+        boolean allCardsUsed = this.getMutableTurnOrder().getMutableCurrentPlayer()
+                .getMutableAssistantCards().stream()
+                .allMatch(AssistantCard::getUsed);
+        // Check if bag is empty
+        boolean emptyBag = this.getMutableStudentBag().isEmpty();
+        
+        return noTowersLeft || onlyThreeIslands || allCardsUsed || emptyBag;
+    }
+    
+    public Optional<ArrayList<PlayerBoard>> getWinners() {
+        if (!isGameEnded()) {
+            return Optional.empty();
+        }
+        ArrayList<PlayerBoard> winners = new ArrayList<>();
+        for (PlayerBoard player : this.getMutablePlayerBoards()) {
+            if (this.getTeamMap().getMutableTowerStorage(player).getTowerCount() == 0) {
+                    winners.add(player);
+            }
+        }
+        if (winners.size() > 0) {
+            return Optional.of(winners);
+        }
+        for (PlayerBoard player : this.getMutablePlayerBoards()) {
+            if (winners.size() == 0) {
+                winners.add(player);
+            } else if (this.getTeamMap().getMutableTowerStorage(player).getTowerCount()
+                    < this.getTeamMap().getMutableTowerStorage(winners.get(0)).getTowerCount()) {
+                winners.clear();
+                winners.add(player);
+            } else if (this.getTeamMap().getMutableTowerStorage(player).getTowerCount()
+                    == this.getTeamMap().getMutableTowerStorage(winners.get(0)).getTowerCount()) {
+                if (this.getOwnTeachers(player).size() > this.getOwnTeachers(winners.get(0)).size()) {
+                    winners.clear();
+                    winners.add(player);
+                }
+                else winners.add(player);
+            }
+        }
+        return Optional.of(winners);
+    }
 
     public void moveAndActMotherNature(int steps) {
         this.islandField.moveMotherNature(steps);

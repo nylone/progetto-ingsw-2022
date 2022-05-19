@@ -1,23 +1,18 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Actions.EndTurnOfActionPhase;
-import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Optional;
-import it.polimi.ingsw.Misc.Utils;
-import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
-import it.polimi.ingsw.Model.Enums.TeamID;
 import it.polimi.ingsw.Model.GameBoard;
-import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.RemoteView.Lobby;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The GameHandler object is the Controller of the whole game. <br>
@@ -74,7 +69,6 @@ public class GameHandler {
      */
     public synchronized void executeAction(PlayerAction action) throws InputValidationException {
         action.safeExecute(getHistory(), model);
-        setWinner(action); // todo seems wrong
         this.model.notifyLobby();
 
         if (action.getClass() == EndTurnOfActionPhase.class || action.getClass() == PlayAssistantCard.class) {
@@ -92,96 +86,8 @@ public class GameHandler {
         return List.copyOf(history);
     }
 
-    private boolean checkNoTowerLeft() {
-        PlayerBoard currentPlayer = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        return model.getTeamMap().getMutableTowerStorage(currentPlayer).getTowerCount() == 0;
-    }
-
-    private boolean check3IslandsLeft() {
-        return model.getMutableIslandField().getMutableGroups().size() == 3;
-    }
-
-    private boolean isEndOfRound(PlayerAction action) {
-        int currentPlayer = action.getPlayerBoardId();
-        int lastPlayer = model.getMutableTurnOrder().getCurrentTurnOrder()
-                .get(model.getMutablePlayerBoards().size() - 1).getId();
-        return action.getClass() == EndTurnOfActionPhase.class && currentPlayer == lastPlayer;
-    }
-
-    private boolean checkUsedAllCards() {
-        return model.getMutableTurnOrder().getMutableCurrentPlayer()
-                .getMutableAssistantCards().stream()
-                .allMatch(AssistantCard::getUsed);
-    }
-
-    private boolean checkEmptyBag() {
-        return model.getMutableStudentBag().getSize() == 0;
-    }
-
-    /**
-     * This method calculates the winner based on the least amount of towers left in the tower storage or
-     * alternatively based on the greatest number of teachers controlled.
-     * If a winner is not found, a random player is selected.
-     *
-     * @return the winning team.
-     */
-    private int calculateWinner() {
-        Map<TeamID, Integer> towersLeft = new HashMap<>();
-        for (PlayerBoard p : model.getMutablePlayerBoards()) {
-            towersLeft.put(model.getTeamMap().getTeamID(p), model.getTeamMap().getMutableTowerStorage(p).getTowerCount());
-        }
-        List<Map.Entry<TeamID, Integer>> topTeams = towersLeft.entrySet().stream()
-                .sorted(Comparator.comparingInt(Map.Entry::getValue))
-                .collect(Collectors.toCollection(ArrayList::new))
-                .subList(0, 2);
-        if (topTeams.get(0).getValue() == topTeams.get(1).getValue()) { // same number of towers
-            // verify number of teachers
-            Map<TeamID, Integer> teachersByTeam = new HashMap<>();
-            for (PlayerBoard p : model.getMutablePlayerBoards()) {
-                teachersByTeam.merge(model.getTeamMap().getTeamID(p),
-                        model.getOwnTeachers(p).size(), Integer::sum);
-            }
-            for (Map.Entry e : teachersByTeam.entrySet()) {
-                if (topTeams.stream().noneMatch(t -> t.getKey().equals(e.getKey()))) {
-                    teachersByTeam.remove(e.getKey()); // should remove player if he has a teammate
-                }
-            }
-            List<Map.Entry<TeamID, Integer>> topTeamsByTeacher = teachersByTeam.entrySet().stream()
-                    .sorted(Comparator.comparingInt(Map.Entry::getValue))
-                    .collect(Collectors.toCollection(ArrayList::new));
-            switch (topTeamsByTeacher.size()) {
-                case 2:
-                    if (topTeamsByTeacher.get(0).getValue() == topTeamsByTeacher.get(1).getValue()) {
-                        return Utils.random(topTeamsByTeacher).getKey().getTeamID();
-                    }
-                    return topTeamsByTeacher.get(0).getValue() > topTeamsByTeacher.get(1).getValue() ?
-                            topTeamsByTeacher.get(1).getKey().getTeamID() :
-                            topTeamsByTeacher.get(0).getKey().getTeamID();
-                case 1:
-                    return topTeamsByTeacher.get(0).getKey().getTeamID();
-            }
-        }
-        return topTeams.get(0).getValue() > topTeams.get(1).getValue() ?
-                topTeams.get(1).getKey().getTeamID() :
-                topTeams.get(0).getKey().getTeamID();
-    }
-
-    public Optional<Integer> getWinner() {
-        return winner;
-    }
-
-    private void setWinner(PlayerAction action) {
-        PlayerBoard currentPlayer = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        int currentTeam = model.getTeamMap().getTeamID(currentPlayer).getTeamID();
-        if (action.getClass() == MoveMotherNature.class) {
-            if (checkNoTowerLeft() || check3IslandsLeft()) {
-                winner = Optional.of(currentTeam);
-            }
-        } else if (isEndOfRound(action)) {
-            if (checkUsedAllCards() || checkEmptyBag()) {
-                winner = Optional.of(calculateWinner());
-            }
-        }
+    public boolean isGameEnded() {
+        return model.isGameEnded();
     }
 
     /**
