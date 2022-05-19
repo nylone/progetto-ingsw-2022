@@ -114,14 +114,12 @@ public class Lobby {
     protected void disconnectPlayer(String nick) {
         synchronized (this.players) {
             this.playerEventSources.remove(nick);
-            if (this.isWaitingLobby()) {
-                if (Objects.equals(this.admin, nick)) {
-                    // todo delete the whole lobby
-                } else {
-                    this.players.remove(nick);
-                }
-            }
             notifyPlayers(new ClientDisconnectEvent(nick));
+            if (this.isWaitingLobby() && !this.admin.equals(nick)) {
+                this.players.remove(nick);
+            } else {
+                // close lobby
+            }
         }
     }
 

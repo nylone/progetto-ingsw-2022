@@ -1,9 +1,10 @@
 package it.polimi.ingsw.Client.CLI;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.Misc.SocketWrapper;
+import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.RemoteView.Messages.Message;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import java.io.IOException;
 import java.util.UUID;

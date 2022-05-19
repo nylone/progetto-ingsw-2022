@@ -1,4 +1,4 @@
-package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
+package it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures;
 
 /**
  * StatusCode represents the a status.

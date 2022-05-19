@@ -6,7 +6,7 @@ import it.polimi.ingsw.Controller.Enums.MoveDestination;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Pair;
-import it.polimi.ingsw.Misc.SocketWrapper;
+import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.GamePhase;

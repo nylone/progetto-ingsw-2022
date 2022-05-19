@@ -1,4 +1,4 @@
-package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
+package it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures;
 
 import it.polimi.ingsw.RemoteView.Lobby;
 

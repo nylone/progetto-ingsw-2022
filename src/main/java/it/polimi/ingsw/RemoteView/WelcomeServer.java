@@ -1,7 +1,7 @@
 package it.polimi.ingsw.RemoteView;
 
-import it.polimi.ingsw.Misc.SocketWrapper;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.StatusCode;
+import it.polimi.ingsw.Network.SocketWrapper;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.Welcome;
 
 import java.io.IOException;
@@ -19,12 +19,21 @@ public class WelcomeServer implements Runnable {
 
     private final ServerSocket socket;
 
-    public WelcomeServer() throws IOException {
+    public WelcomeServer() {
         this(8080, InetAddress.getLoopbackAddress());
     }
 
-    public WelcomeServer(int port, InetAddress address) throws IOException {
-        this.socket = new ServerSocket(port, 50, address);
+    public WelcomeServer(int port, InetAddress address) {
+        log.info("Starting Welcome Server on: " + address + ":" + port);
+        try {
+            this.socket = new ServerSocket(port, 50, address);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        new Thread(new WelcomeServer()).start();
     }
 
     @Override

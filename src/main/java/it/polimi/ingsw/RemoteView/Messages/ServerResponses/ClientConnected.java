@@ -1,6 +1,7 @@
 package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
 public class ClientConnected extends Response {
     private final String nickname;

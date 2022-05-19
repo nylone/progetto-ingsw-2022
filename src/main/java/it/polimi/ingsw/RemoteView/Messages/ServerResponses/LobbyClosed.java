@@ -3,15 +3,20 @@ package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
-import static it.polimi.ingsw.RemoteView.Messages.PayloadType.RESPONSE_GAME_STARTED;
+public class LobbyClosed extends Response {
+    private final String nickname;
 
-public class GameStarted extends Response {
-    public GameStarted() {
+    public LobbyClosed(String nickname) {
         super(StatusCode.Success);
+        this.nickname = nickname;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     @Override
     public PayloadType getPayloadType() {
-        return RESPONSE_GAME_STARTED;
+        return PayloadType.RESPONSE_CLIENT_DISCONNECTED;
     }
 }

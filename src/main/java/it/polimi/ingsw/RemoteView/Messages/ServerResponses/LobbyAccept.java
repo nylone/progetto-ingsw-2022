@@ -1,10 +1,10 @@
 package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
-import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.LobbyInfo;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import java.util.List;
-import java.util.UUID;
 
 public class LobbyAccept extends Response {
 

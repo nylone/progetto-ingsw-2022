@@ -4,12 +4,12 @@ import com.google.gson.Gson;
 import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Client.GUI.Window;
-import it.polimi.ingsw.Misc.SocketWrapper;
+import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.DeclarePlayerRequest;
 import it.polimi.ingsw.RemoteView.Messages.Message;
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyAccept;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.StatusCode;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import javax.swing.*;
 import java.awt.*;

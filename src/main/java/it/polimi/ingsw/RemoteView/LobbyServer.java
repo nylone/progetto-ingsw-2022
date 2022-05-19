@@ -2,12 +2,14 @@ package it.polimi.ingsw.RemoteView;
 
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
-import it.polimi.ingsw.Misc.SocketWrapper;
+import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.*;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.*;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.LobbyInfo;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import java.io.IOException;
 import java.util.List;

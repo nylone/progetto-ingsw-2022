@@ -2,6 +2,7 @@ package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

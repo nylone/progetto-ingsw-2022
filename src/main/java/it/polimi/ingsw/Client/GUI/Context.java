@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.GUI;
 
-import it.polimi.ingsw.Misc.SocketWrapper;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyInfo;
+import it.polimi.ingsw.Network.SocketWrapper;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.LobbyInfo;
 
 import java.util.List;
 

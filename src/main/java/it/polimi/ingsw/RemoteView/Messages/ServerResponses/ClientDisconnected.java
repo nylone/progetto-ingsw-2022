@@ -2,6 +2,7 @@ package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
 import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
 import it.polimi.ingsw.RemoteView.Messages.PayloadType;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
 public class ClientDisconnected extends Response implements MessageBuilder {
     private final String nickname;
