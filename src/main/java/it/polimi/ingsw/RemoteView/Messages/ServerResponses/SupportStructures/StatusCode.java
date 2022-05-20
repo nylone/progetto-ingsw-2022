@@ -1,12 +1,15 @@
 package it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * StatusCode represents the a status.
  * A status can be:
  * {@link #Success}<br>
  * {@link #Fail}
  */
-public enum StatusCode {
+public enum StatusCode implements Serializable {
     /**
      * Status: positive outcome
      */
@@ -14,5 +17,7 @@ public enum StatusCode {
     /**
      * Status: negative outcome
      */
-    Fail
+    Fail;
+    @Serial
+    private static final long serialVersionUID = 313L;
 }

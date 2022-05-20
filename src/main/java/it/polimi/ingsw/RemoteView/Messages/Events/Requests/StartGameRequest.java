@@ -1,11 +1,12 @@
 package it.polimi.ingsw.RemoteView.Messages.Events.Requests;
 
 import it.polimi.ingsw.Model.Enums.GameMode;
-import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
-import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 
-public class StartGameRequest extends ClientEvent implements MessageBuilder {
+import java.io.Serial;
+
+public class StartGameRequest extends ClientRequest {
+    @Serial
+    private static final long serialVersionUID = 356L;
     private final GameMode gameMode;
 
     public StartGameRequest(GameMode gameMode) {
@@ -14,10 +15,5 @@ public class StartGameRequest extends ClientEvent implements MessageBuilder {
 
     public GameMode getGameMode() {
         return gameMode;
-    }
-
-    @Override
-    public PayloadType getPayloadType() {
-        return PayloadType.REQUEST_START_GAME;
     }
 }

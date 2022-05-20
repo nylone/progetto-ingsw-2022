@@ -1,11 +1,13 @@
 package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
+import java.io.Serial;
 import java.util.UUID;
 
 public class LobbyRedirect extends Response {
+    @Serial
+    private static final long serialVersionUID = 310L;
     private final UUID lobbyID;
 
     private final String admin;
@@ -32,8 +34,4 @@ public class LobbyRedirect extends Response {
         return admin;
     }
 
-    @Override
-    public PayloadType getPayloadType() {
-        return PayloadType.RESPONSE_LOBBY_REDIRECT;
-    }
 }

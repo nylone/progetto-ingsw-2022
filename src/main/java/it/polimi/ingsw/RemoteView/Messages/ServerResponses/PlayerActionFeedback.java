@@ -1,9 +1,13 @@
 package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
+import java.io.Serial;
+
 public class PlayerActionFeedback extends Response {
+    @Serial
+    private static final long serialVersionUID = 312L;
+
     private final String report;
 
     private PlayerActionFeedback(StatusCode statusCode, String report) {
@@ -21,10 +25,5 @@ public class PlayerActionFeedback extends Response {
 
     public String getReport() {
         return report;
-    }
-
-    @Override
-    public PayloadType getPayloadType() {
-        return PayloadType.RESPONSE_PLAYER_ACTION;
     }
 }

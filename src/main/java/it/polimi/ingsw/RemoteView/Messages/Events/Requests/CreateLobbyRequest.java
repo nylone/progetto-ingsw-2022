@@ -1,10 +1,10 @@
 package it.polimi.ingsw.RemoteView.Messages.Events.Requests;
 
-import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
-import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
+import java.io.Serial;
 
-public class CreateLobbyRequest extends ClientEvent implements MessageBuilder {
+public class CreateLobbyRequest extends ClientRequest {
+    @Serial
+    private static final long serialVersionUID = 353L;
     private final boolean isPublic;
     private final int maxPlayers;
 
@@ -21,8 +21,4 @@ public class CreateLobbyRequest extends ClientEvent implements MessageBuilder {
         return maxPlayers;
     }
 
-    @Override
-    public PayloadType getPayloadType() {
-        return PayloadType.REQUEST_CREATE_LOBBY;
-    }
 }

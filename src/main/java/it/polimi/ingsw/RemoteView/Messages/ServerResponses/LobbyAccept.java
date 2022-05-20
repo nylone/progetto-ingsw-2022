@@ -1,12 +1,14 @@
 package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.LobbyInfo;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
+import java.io.Serial;
 import java.util.List;
 
 public class LobbyAccept extends Response {
+    @Serial
+    private static final long serialVersionUID = 308L;
 
     private final List<LobbyInfo> publicLobbies;
     private final List<LobbyInfo> reconnectToTheseLobbies;
@@ -25,8 +27,4 @@ public class LobbyAccept extends Response {
         return publicLobbies;
     }
 
-    @Override
-    public PayloadType getPayloadType() {
-        return PayloadType.RESPONSE_LOBBY_ACCEPT;
-    }
 }

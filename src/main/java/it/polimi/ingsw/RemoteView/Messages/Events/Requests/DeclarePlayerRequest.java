@@ -1,10 +1,10 @@
 package it.polimi.ingsw.RemoteView.Messages.Events.Requests;
 
-import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
-import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
+import java.io.Serial;
 
-public class DeclarePlayerRequest extends ClientEvent implements MessageBuilder {
+public class DeclarePlayerRequest extends ClientRequest {
+    @Serial
+    private static final long serialVersionUID = 354L;
     private final String nickname;
     private final String password;
 
@@ -21,8 +21,4 @@ public class DeclarePlayerRequest extends ClientEvent implements MessageBuilder 
         return password;
     }
 
-    @Override
-    public PayloadType getPayloadType() {
-        return PayloadType.REQUEST_DECLARE_PLAYER;
-    }
 }

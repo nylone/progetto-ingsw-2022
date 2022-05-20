@@ -1,9 +1,12 @@
 package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
+import java.io.Serial;
+
 public class LobbyClosed extends Response {
+    @Serial
+    private static final long serialVersionUID = 309L;
     private final String nickname;
 
     public LobbyClosed(String nickname) {
@@ -15,8 +18,4 @@ public class LobbyClosed extends Response {
         return nickname;
     }
 
-    @Override
-    public PayloadType getPayloadType() {
-        return PayloadType.RESPONSE_CLIENT_DISCONNECTED;
-    }
 }

@@ -1,14 +1,11 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Client.GUI.Window;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.ConnectLobbyRequest;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.CreateLobbyRequest;
-import it.polimi.ingsw.RemoteView.Messages.Message;
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.LobbyInfo;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyRedirect;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
@@ -125,9 +122,8 @@ public class LobbySelectionPanel extends JTabbedPane {
                 UUID id = UUID.fromString(idString);
                 try {
                     sw.sendMessage(new ConnectLobbyRequest(id));
-                    Message response = sw.awaitMessage();
-                    if (response.getType() == PayloadType.RESPONSE_LOBBY_REDIRECT &&
-                            new Gson().fromJson(response.getData(), LobbyRedirect.class).getStatusCode() == StatusCode.Success) {
+                    if (sw.awaitMessage() instanceof LobbyRedirect lobbyRedirect &&
+                            lobbyRedirect.getStatusCode() == StatusCode.Success) {
                         new PopupMessage("Success!", "Success!");
                     } else {
                         new PopupMessage("Try again.", "Failure :(");
@@ -207,9 +203,8 @@ public class LobbySelectionPanel extends JTabbedPane {
                             openLobby.isSelected(),
                             Integer.parseInt(maxPlayers.getSelection().getActionCommand())
                     ));
-                    Message response = sw.awaitMessage();
-                    if (response.getType() == PayloadType.RESPONSE_LOBBY_REDIRECT &&
-                            new Gson().fromJson(response.getData(), LobbyRedirect.class).getStatusCode() == StatusCode.Success) {
+                    if (sw.awaitMessage() instanceof LobbyRedirect lobbyRedirect &&
+                            lobbyRedirect.getStatusCode() == StatusCode.Success) {
                         new PopupMessage("Success!", "Success!");
                     } else {
                         new PopupMessage("Try again.", "Failure :(");

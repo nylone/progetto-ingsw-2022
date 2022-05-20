@@ -2,10 +2,14 @@ package it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures;
 
 import it.polimi.ingsw.RemoteView.Lobby;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
-public class LobbyInfo {
+public class LobbyInfo implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 314L;
     private final String admin;
     private final UUID ID;
     private final boolean isPublic;

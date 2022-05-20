@@ -1,12 +1,9 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Client.GUI.Window;
 import it.polimi.ingsw.Network.SocketWrapper;
-import it.polimi.ingsw.RemoteView.Messages.Message;
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.Welcome;
 
@@ -50,9 +47,7 @@ public class StartPanel extends JPanel {
         connect.addActionListener(actionEvent -> {
             try {
                 SocketWrapper sw = new SocketWrapper(new Socket(address.getText(), Integer.parseInt(port.getText())));
-                Message response = sw.awaitMessage();
-                if (response.getType() == PayloadType.RESPONSE_WELCOME &&
-                        new Gson().fromJson(response.getData(), Welcome.class).getStatusCode() == StatusCode.Success) {
+                if (sw.awaitMessage() instanceof Welcome welcome && welcome.getStatusCode() == StatusCode.Success) {
                     // spawn and change to next view
                     ctx.setSocketWrapper(sw);
                     new UserCredentialsPanel(ctx);

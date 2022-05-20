@@ -1,9 +1,12 @@
 package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
+import java.io.Serial;
+
 public class GameInit extends Response {
+    @Serial
+    private static final long serialVersionUID = 305L;
     private final String errorMessage;
 
     private GameInit(StatusCode statusCode, String errorMessage) {
@@ -23,8 +26,4 @@ public class GameInit extends Response {
         return errorMessage;
     }
 
-    @Override
-    public PayloadType getPayloadType() {
-        return PayloadType.RESPONSE_GAME_INIT;
-    }
 }

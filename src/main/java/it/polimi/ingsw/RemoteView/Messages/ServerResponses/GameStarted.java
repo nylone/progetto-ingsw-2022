@@ -1,17 +1,14 @@
 package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
-import static it.polimi.ingsw.RemoteView.Messages.PayloadType.RESPONSE_GAME_STARTED;
+import java.io.Serial;
 
 public class GameStarted extends Response {
+    @Serial
+    private static final long serialVersionUID = 306L;
     public GameStarted() {
         super(StatusCode.Success);
     }
 
-    @Override
-    public PayloadType getPayloadType() {
-        return RESPONSE_GAME_STARTED;
-    }
 }

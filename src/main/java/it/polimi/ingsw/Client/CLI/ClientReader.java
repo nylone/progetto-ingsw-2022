@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client.CLI;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.RemoteView.Messages.Message;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
@@ -59,9 +58,8 @@ public class ClientReader implements Runnable {
     }
 
     private void AnalyzeResponse(Message serverResponse) throws Exception {
-        switch (serverResponse.getType()) {
-            case RESPONSE_LOBBY_ACCEPT -> {
-                LobbyAccept response = new Gson().fromJson(serverResponse.getData(), LobbyAccept.class);
+        switch (serverResponse) {
+            case LobbyAccept response -> {
                 if (response.getStatusCode() == StatusCode.Success) {
                     this.clientView.setLogged(true);
                     System.out.println("User accepted\n");
@@ -76,8 +74,7 @@ public class ClientReader implements Runnable {
                     System.out.println("Password wrong for this username, try again or change Username");
                 }
             }
-            case RESPONSE_LOBBY_REDIRECT -> {
-                LobbyRedirect response = new Gson().fromJson(serverResponse.getData(), LobbyRedirect.class);
+            case LobbyRedirect response -> {
                 UUID id = response.getLobbyID();
                 if (response.getStatusCode() == StatusCode.Success) {
                     System.out.println("Joined to lobby, id: " + id + " admin:" + response.getAdmin());
@@ -87,38 +84,33 @@ public class ClientReader implements Runnable {
                     System.out.println("Something gone wrong, lobby not joined");
                 }
             }
-            case RESPONSE_CLIENT_CONNECTED -> {
-                ClientConnected response = new Gson().fromJson(serverResponse.getData(), ClientConnected.class);
+            case ClientConnected response -> {
                 if (response.getStatusCode() == StatusCode.Success) {
                     System.out.println("player " + response.getNickname() + " has connected");
                     System.out.println("players connected :" + response.getPlayersConnected());
                 }
             }
-            case RESPONSE_GAME_INIT -> {
-                GameInit response = new Gson().fromJson(serverResponse.getData(), GameInit.class);
+            case GameInit response -> {
                 if (response.getStatusCode() == StatusCode.Fail) {
                     System.out.println(response.getErrorMessage());
                 } else {
                     System.out.println("Game is starting...");
                 }
             }
-            case RESPONSE_GAME_STARTED -> {
+            case GameStarted ignored -> {
                 System.out.println("The game has started");
                 clientView.setGameStarted(true);
             }
 
-            case RESPONSE_MODEL_UPDATED -> {
-                ModelUpdated modelUpdated = new Gson().fromJson(serverResponse.getData(), ModelUpdated.class);
+            case ModelUpdated modelUpdated -> {
                 this.clientView.setGame(modelUpdated.getModel());
                 UpdateView();
 
             }
 
-            case RESPONSE_PLAYER_ACTION -> {
-                PlayerActionFeedback response = new Gson().fromJson(serverResponse.getData(), PlayerActionFeedback.class);
-                System.out.println(response.getReport());
-            }
+            case PlayerActionFeedback response -> System.out.println(response.getReport());
 
+            default -> throw new IllegalStateException("Unexpected value: " + serverResponse);
         }
     }
 

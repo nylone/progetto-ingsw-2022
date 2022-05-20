@@ -1,29 +1,26 @@
 package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
 import it.polimi.ingsw.Model.GameBoard;
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serial;
 
 public class ModelUpdated extends Response {
-    private final byte[] model;
+    @Serial
+    private static final long serialVersionUID = 311L;
 
-    public ModelUpdated(GameBoard model) throws IOException {
+    private final GameBoard model;
+
+    public ModelUpdated(GameBoard model) {
         super(StatusCode.Success);
-        this.model = model.getSerializedModel();
+        this.model = model;
     }
 
-    public GameBoard getModel() throws IOException, ClassNotFoundException {
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(this.model);
-        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-        return (GameBoard) objectInputStream.readObject();
+    public GameBoard getModel() {
+        return this.model;
     }
 
-    @Override
-    public PayloadType getPayloadType() {
-        return PayloadType.RESPONSE_MODEL_UPDATED;
-    }
 }

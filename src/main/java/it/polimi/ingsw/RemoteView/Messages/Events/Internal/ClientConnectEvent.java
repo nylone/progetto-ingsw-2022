@@ -2,7 +2,7 @@ package it.polimi.ingsw.RemoteView.Messages.Events.Internal;
 
 import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 
-public class ClientConnectEvent extends ClientEvent {
+public class ClientConnectEvent implements ClientEvent {
     private final String nickname;
 
     private final int numberOfPlayersConnected;

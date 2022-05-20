@@ -1,13 +1,12 @@
 package it.polimi.ingsw.RemoteView.Messages.Events.Requests;
 
 import it.polimi.ingsw.Controller.Actions.PlayerAction;
-import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
-import it.polimi.ingsw.RemoteView.Messages.MessageBuilder;
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 
 import java.io.*;
 
-public class PlayerActionRequest extends ClientEvent implements MessageBuilder {
+public class PlayerActionRequest extends ClientRequest {
+    @Serial
+    private static final long serialVersionUID = 355L;
     private final byte[] payload;
 
     public PlayerActionRequest(PlayerAction action) throws IOException {
@@ -21,10 +20,5 @@ public class PlayerActionRequest extends ClientEvent implements MessageBuilder {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(this.payload);
         ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
         return (PlayerAction) objectInputStream.readObject();
-    }
-
-    @Override
-    public PayloadType getPayloadType() {
-        return PayloadType.REQUEST_PLAYER_ACTION;
     }
 }

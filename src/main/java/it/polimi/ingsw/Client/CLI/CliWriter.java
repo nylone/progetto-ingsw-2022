@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client.CLI;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.Controller.Actions.*;
 import it.polimi.ingsw.Controller.Enums.MoveDestination;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
@@ -33,13 +32,11 @@ public class CliWriter implements Runnable {
     private final ClientView clientView;
 
     private final BufferedReader stdIn;
-    private final Gson gson;
 
 
     public CliWriter(SocketWrapper socketWrapper, ClientView clientView, BufferedReader bufferedReader) {
         this.socketWrapper = socketWrapper;
         this.clientView = clientView;
-        this.gson = new Gson();
         this.stdIn = bufferedReader;
     }
 

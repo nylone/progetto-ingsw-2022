@@ -1,9 +1,12 @@
 package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
+import java.io.Serial;
+
 public class ClientConnected extends Response {
+    @Serial
+    private static final long serialVersionUID = 303L;
     private final String nickname;
 
     private final int playersConnected;
@@ -22,8 +25,4 @@ public class ClientConnected extends Response {
         return playersConnected;
     }
 
-    @Override
-    public PayloadType getPayloadType() {
-        return PayloadType.RESPONSE_CLIENT_CONNECTED;
-    }
 }

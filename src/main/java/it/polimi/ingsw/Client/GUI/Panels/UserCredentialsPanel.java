@@ -1,18 +1,16 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Client.GUI.Window;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.DeclarePlayerRequest;
-import it.polimi.ingsw.RemoteView.Messages.Message;
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyAccept;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 import static it.polimi.ingsw.Client.GUI.IconLoader.hidePassIcon;
 import static it.polimi.ingsw.Client.GUI.IconLoader.showPassIcon;
@@ -78,20 +76,24 @@ public class UserCredentialsPanel extends JPanel {
                         new String(password.getPassword()
                         )
                 ));
-                Message msg = sw.awaitMessage();
-                if (msg.getType() == PayloadType.RESPONSE_LOBBY_ACCEPT) {
-                    LobbyAccept response = new Gson().fromJson(msg.getData(), LobbyAccept.class);
-                    if (response.getStatusCode() == StatusCode.Success) {
-                        new LobbySelectionPanel(ctx, response.getPublicLobbies(), response.getReconnectToTheseLobbies());
-                    } else {
-                        new PopupMessage("Server denied your login", "Failure :(");
-                    }
-                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    if (sw.awaitMessage() instanceof LobbyAccept lobbyAccept) {
+                        if (lobbyAccept.getStatusCode() == StatusCode.Success) {
+                            new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies(), lobbyAccept.getReconnectToTheseLobbies());
+                        } else {
+                            new PopupMessage("Server denied your login", "Failure :(");
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         });
-        
+
         // layout object decleration and setup
         SpringLayout layout = new SpringLayout();
 

@@ -1,12 +1,8 @@
 package it.polimi.ingsw.RemoteView;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.Network.SocketWrapper;
-import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
+import it.polimi.ingsw.RemoteView.Messages.Events.Requests.ClientRequest;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.SocketClosedEvent;
-import it.polimi.ingsw.RemoteView.Messages.Events.Requests.*;
-import it.polimi.ingsw.RemoteView.Messages.Message;
-import it.polimi.ingsw.RemoteView.Messages.PayloadType;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -30,27 +26,13 @@ public class SocketListener implements Runnable {
     public void run() {
         try {
             while (true) {
-                Message message = socket.awaitMessage();
-                ClientEvent clientEvent;
-                switch (message.getType()) {
-                    case REQUEST_DECLARE_PLAYER ->
-                            clientEvent = new Gson().fromJson(message.getData(), DeclarePlayerRequest.class);
-                    case REQUEST_CONNECT_LOBBY ->
-                            clientEvent = new Gson().fromJson(message.getData(), ConnectLobbyRequest.class);
-                    case REQUEST_CREATE_LOBBY ->
-                            clientEvent = new Gson().fromJson(message.getData(), CreateLobbyRequest.class);
-                    case REQUEST_START_GAME ->
-                            clientEvent = new Gson().fromJson(message.getData(), StartGameRequest.class);
-                    case REQUEST_PLAYER_ACTION ->
-                            clientEvent = new Gson().fromJson(message.getData(), PlayerActionRequest.class);
-                    case default -> {
-                        log.severe(
-                                "Received unhandled " + PayloadType.class.getName() + ".\n" +
-                                        "Received: " + message.getType());
-                        return;
-                    }
+                if (socket.awaitMessage() instanceof ClientRequest request) {
+                    queue.enqueue(request);
+                } else {
+                    log.severe(
+                            "Received unhandled Message that was not of type" + ClientRequest.class.getName() + ".\n");
+                    return;
                 }
-                queue.enqueue(clientEvent);
             }
         } catch (IOException | InterruptedException e) {
             log.info("closing SocketListener");
