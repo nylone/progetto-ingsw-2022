@@ -7,15 +7,9 @@ import java.io.Serial;
 public class LobbyClosed extends Response {
     @Serial
     private static final long serialVersionUID = 309L;
-    private final String nickname;
 
-    public LobbyClosed(String nickname) {
+    public LobbyClosed() {
         super(StatusCode.Success);
-        this.nickname = nickname;
-    }
-
-    public String getNickname() {
-        return nickname;
     }
 
 }

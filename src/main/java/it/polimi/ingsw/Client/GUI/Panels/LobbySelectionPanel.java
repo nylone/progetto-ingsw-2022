@@ -124,7 +124,7 @@ public class LobbySelectionPanel extends JTabbedPane {
                     sw.sendMessage(new ConnectLobbyRequest(id));
                     if (sw.awaitMessage() instanceof LobbyRedirect lobbyRedirect &&
                             lobbyRedirect.getStatusCode() == StatusCode.Success) {
-                        new PopupMessage("Success!", "Success!");
+                        new GameStartingPanel(ctx, false);
                     } else {
                         new PopupMessage("Try again.", "Failure :(");
                     }
@@ -205,7 +205,7 @@ public class LobbySelectionPanel extends JTabbedPane {
                     ));
                     if (sw.awaitMessage() instanceof LobbyRedirect lobbyRedirect &&
                             lobbyRedirect.getStatusCode() == StatusCode.Success) {
-                        new PopupMessage("Success!", "Success!");
+                        new GameStartingPanel(ctx, true);
                     } else {
                         new PopupMessage("Try again.", "Failure :(");
                     }

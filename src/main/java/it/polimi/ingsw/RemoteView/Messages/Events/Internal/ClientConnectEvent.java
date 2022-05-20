@@ -1,22 +1,11 @@
 package it.polimi.ingsw.RemoteView.Messages.Events.Internal;
 
-import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
+import java.util.List;
 
-public class ClientConnectEvent implements ClientEvent {
-    private final String nickname;
+public class ClientConnectEvent extends ConnectEvent {
 
-    private final int numberOfPlayersConnected;
-
-    public ClientConnectEvent(String nickname, int numberOfPlayersConnected) {
-        this.nickname = nickname;
-        this.numberOfPlayersConnected = numberOfPlayersConnected;
+    public ClientConnectEvent(String lastConnectedNickname, List<String> players) {
+        super(lastConnectedNickname, players);
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public int getNumberOfPlayersConnected() {
-        return numberOfPlayersConnected;
-    }
 }

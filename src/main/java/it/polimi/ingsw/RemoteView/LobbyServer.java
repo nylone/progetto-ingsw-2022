@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class LobbyServer {
     private static final Logger log = Logger.getAnonymousLogger();
     private static final Map<String, String> nickToPass = new ConcurrentHashMap<>(); // maps username to password
-    private static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
+    protected static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
     private final SocketWrapper sw;
     private final ClientEventHandler eventHandler;
     private String nickname;
@@ -107,9 +107,9 @@ public class LobbyServer {
                         this.currentLobbyID,
                         castedEvent.isPublic(),
                         castedEvent.getMaxPlayers(),
-                        nickname,
-                        this.getEventHandler()
+                        nickname
                 );
+                this.currentLobby.addPlayer(nickname, this.getEventHandler());
                 lobbyMap.put(this.currentLobbyID, this.currentLobby);
                 this.state = State.GAME_START_PHASE;
                 sw.sendMessage(LobbyRedirect.success(this.currentLobbyID, this.currentLobby.getAdmin()));
@@ -120,6 +120,7 @@ public class LobbyServer {
                     sw.sendMessage(LobbyRedirect.fail());
                     break;
                 }
+                this.currentLobbyID = castedEvent.getCode();
                 this.currentLobby = lobbyMap.get(id);
                 sw.sendMessage(LobbyRedirect.success(id, this.currentLobby.getAdmin()));
                 this.state = State.GAME_START_PHASE;
@@ -134,10 +135,16 @@ public class LobbyServer {
         // - start (only from admin)
         // - start (as admin event reaction)
         switch (clientEvent) {
+            case LobbyClosedEvent ignored -> {
+                this.currentLobby = null;
+                this.currentLobbyID = null;
+                this.state = State.REDIRECT_PHASE;
+                sw.sendMessage(new LobbyClosed());
+            }
             case ClientConnectEvent clientConnectedEvent ->
-                    sw.sendMessage(new ClientConnected(clientConnectedEvent.getNickname(), clientConnectedEvent.getNumberOfPlayersConnected()));
+                    sw.sendMessage(new ClientConnected(clientConnectedEvent.getNickname(), clientConnectedEvent.getPlayers()));
             case ClientDisconnectEvent clientDisconnectedEvent ->
-                    sw.sendMessage(new ClientDisconnected(clientDisconnectedEvent.getNickname()));
+                    sw.sendMessage(new ClientDisconnected(clientDisconnectedEvent.getNickname(), clientDisconnectedEvent.getPlayers()));
             case StartGameRequest castedEvent -> {
                 if (!this.currentLobby.getAdmin().equals(this.nickname)) {
                     sw.sendMessage(GameInit.fail("Only the admin of the lobby can start the game."));
@@ -174,6 +181,12 @@ public class LobbyServer {
         // - start (only from admin)
         // - start (as admin event reaction)
         switch (clientEvent) {
+            case LobbyClosedEvent ignored -> {
+                this.currentLobby = null;
+                this.currentLobbyID = null;
+                this.state = State.REDIRECT_PHASE;
+                sw.sendMessage(new LobbyClosed());
+            }
             case ModelUpdateEvent modelUpdateEvent -> {
                 GameBoard model = modelUpdateEvent.getModel();
                 sw.sendMessage(new ModelUpdated(model));

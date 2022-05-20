@@ -3,19 +3,32 @@ package it.polimi.ingsw.RemoteView.Messages.ServerResponses;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import java.io.Serial;
+import java.util.List;
 
 public class ClientDisconnected extends Response {
+
     @Serial
     private static final long serialVersionUID = 304L;
-    private final String nickname;
+    private final String lastDisconnectedNickname;
 
-    public ClientDisconnected(String nickname) {
+    private final List<String> players;
+
+    public ClientDisconnected(String lastDisconnectedNickname, List<String> players) {
         super(StatusCode.Success);
-        this.nickname = nickname;
+        this.lastDisconnectedNickname = lastDisconnectedNickname;
+        this.players = players;
     }
 
-    public String getNickname() {
-        return nickname;
+    public int getNumOfPlayersConnected() {
+        return players.size();
+    }
+
+    public List<String> getPlayers() {
+        return this.players;
+    }
+
+    public String getLastDisconnectedNickname() {
+        return this.lastDisconnectedNickname;
     }
 
 }

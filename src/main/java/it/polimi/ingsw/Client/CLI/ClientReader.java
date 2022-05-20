@@ -86,8 +86,8 @@ public class ClientReader implements Runnable {
             }
             case ClientConnected response -> {
                 if (response.getStatusCode() == StatusCode.Success) {
-                    System.out.println("player " + response.getNickname() + " has connected");
-                    System.out.println("players connected :" + response.getPlayersConnected());
+                    System.out.println("player " + response.getLastConnectedNickname() + " has connected");
+                    System.out.println("players connected :" + response.getNumOfPlayersConnected());
                 }
             }
             case GameInit response -> {

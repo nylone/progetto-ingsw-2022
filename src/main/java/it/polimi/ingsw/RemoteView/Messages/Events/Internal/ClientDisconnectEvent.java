@@ -1,15 +1,11 @@
 package it.polimi.ingsw.RemoteView.Messages.Events.Internal;
 
-import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 
-public class ClientDisconnectEvent implements ClientEvent {
-    private final String nickname;
+import java.util.List;
 
-    public ClientDisconnectEvent(String nickname) {
-        this.nickname = nickname;
-    }
+public class ClientDisconnectEvent extends ConnectEvent {
 
-    public String getNickname() {
-        return nickname;
+    public ClientDisconnectEvent(String lastDisconnectedNickname, List<String> players) {
+        super(lastDisconnectedNickname, players);
     }
 }
