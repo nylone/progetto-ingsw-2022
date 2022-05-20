@@ -19,7 +19,7 @@ public class IslandGroup implements Serializable {
 
     private final int id;
     private final ArrayList<Island> islands;
-    private Stack<NoEntryTile> noEntryTiles;
+    private final Stack<NoEntryTile> noEntryTiles;
 
     public IslandGroup(Island i) {
         this.islands = new ArrayList<>();
@@ -32,8 +32,10 @@ public class IslandGroup implements Serializable {
         if (islandGroups.length > 0) {
             if (islandGroups[0].isJoinable(islandGroups)) {
                 this.islands = new ArrayList<>();
+                this.noEntryTiles = new Stack<>();
                 for (IslandGroup i : islandGroups) {
-                    islands.addAll(i.getMutableIslands());
+                    this.islands.addAll(i.getMutableIslands());
+                    this.noEntryTiles.addAll(i.getMutableNoEntryTiles());
                 }
                 this.id = Arrays.stream(islandGroups)
                         .min(Comparator.comparingInt(IslandGroup::getId))
