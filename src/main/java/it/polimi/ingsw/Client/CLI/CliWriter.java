@@ -43,6 +43,14 @@ public class CliWriter implements Runnable {
     @Override
     public void run() {
         try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        if(!this.clientView.isConnected()){
+            return;
+        }
+        try {
             System.out.println(
                     """
                             ERIANTYS
@@ -60,7 +68,7 @@ public class CliWriter implements Runnable {
                 } else {
                     DeclarePlayerRequest dp = new DeclarePlayerRequest(nickname, password);
                     socketWrapper.sendMessage(dp);
-                    Thread.sleep(1000); //wait for the server response
+                     //wait for the server response
                     if (this.clientView.isLogged()) {
                         break;
                     }
@@ -73,7 +81,7 @@ public class CliWriter implements Runnable {
                 elaborateInput(input);
 
             }
-        } catch (IOException | InterruptedException | InvalidContainerIndexException e) {
+        } catch (IOException | InvalidContainerIndexException e) {
             System.out.println("IO exception when reading from stdIn.");
             e.printStackTrace();
         }

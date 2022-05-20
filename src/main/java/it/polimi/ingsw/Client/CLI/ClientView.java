@@ -12,6 +12,8 @@ import java.util.UUID;
 public class ClientView {
 
     GameBoard gameBoard;
+
+    private boolean isConnected = false;
     private boolean isLogged = false;
     private boolean isInLobby = false;
     private boolean gameStarted = false;
@@ -62,6 +64,14 @@ public class ClientView {
 
     public boolean isLogged() {
         return isLogged;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
     }
 
     public void setLogged(boolean logged) {
