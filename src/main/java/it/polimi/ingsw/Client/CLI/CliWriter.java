@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 import java.util.stream.Collectors;
 
 /**
@@ -24,32 +26,36 @@ import java.util.stream.Collectors;
  */
 public class CliWriter implements Runnable {
 
-
     private final SocketWrapper socketWrapper;
     /**
      * used to store the client's game data
      */
     private final ClientView clientView;
 
+
     private final BufferedReader stdIn;
 
+    CyclicBarrier cyclicBarrier;
 
-    public CliWriter(SocketWrapper socketWrapper, ClientView clientView, BufferedReader bufferedReader) {
+
+    public CliWriter(SocketWrapper socketWrapper, ClientView clientView, BufferedReader bufferedReader, CyclicBarrier cyclicBarrier) {
         this.socketWrapper = socketWrapper;
         this.clientView = clientView;
         this.stdIn = bufferedReader;
+        this.cyclicBarrier = cyclicBarrier;
     }
 
     @Override
     public void run() {
         try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
+            cyclicBarrier.await();
+        } catch (BrokenBarrierException | InterruptedException e) {
             throw new RuntimeException(e);
         }
         if(!this.clientView.isConnected()){
             return;
         }
+
         try {
             System.out.println(
                     """
@@ -69,6 +75,7 @@ public class CliWriter implements Runnable {
                     DeclarePlayerRequest dp = new DeclarePlayerRequest(nickname, password);
                     socketWrapper.sendMessage(dp);
                      //wait for the server response
+                    cyclicBarrier.await();
                     if (this.clientView.isLogged()) {
                         break;
                     }
@@ -76,14 +83,17 @@ public class CliWriter implements Runnable {
             }
             this.clientView.setNickname(nickname);
             String input;
+            //noinspection InfiniteLoopStatement
             while (true) {
                 input = stdIn.readLine();
                 elaborateInput(input);
 
             }
-        } catch (IOException | InvalidContainerIndexException e) {
+        } catch (IOException | InvalidContainerIndexException | BrokenBarrierException e) {
             System.out.println("IO exception when reading from stdIn.");
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -146,9 +156,7 @@ public class CliWriter implements Runnable {
                 break;
             }
         }
-        System.out.println("BALANCE:" + currentPlayer.getCoinBalance());
-        System.out.println("SELECTED:" + selected);
-        System.out.println(characterCard.getClass());
+        PlayCharacterCard playCharacterCard;
         PlayerActionRequest playerActionRequest;
         switch (characterCard) {
             case Card01 card01 -> {
@@ -165,51 +173,51 @@ public class CliWriter implements Runnable {
                 pawnToMove = (PawnColour) card01.getState().get(selected);
                 System.out.println("Type target island's id");
                 Integer IslandId = getInt();
-                PlayCharacterCard playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.of(IslandId), Optional.of(pawnToMove), Optional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.of(IslandId), Optional.of(pawnToMove), Optional.empty());
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card02 ignored -> {
-                PlayCharacterCard playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.empty());
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card03 ignored1 -> {
                 System.out.println("Type target island's id");
                 Integer IslandId = getInt();
-                PlayCharacterCard playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.of(IslandId), Optional.empty(), Optional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.of(IslandId), Optional.empty(), Optional.empty());
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card04 ignored2 -> {
-                PlayCharacterCard playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.empty());
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card05 ignored3 -> {
                 System.out.println("Type target island's id");
                 Integer IslandId = getInt();
-                PlayCharacterCard playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.of(IslandId), Optional.empty(), Optional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.of(IslandId), Optional.empty(), Optional.empty());
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card06 ignored4 -> {
-                PlayCharacterCard playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.empty());
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card07 card07 -> {
-                System.out.println("You can now type up to 3 pairs to exchange, the first element coming from the entrance and the second one from the card" +
+                System.out.println("You can now type up to 3 pairs to exchange, the first element coming from the entrance and the second one from the card\n" +
                         "Press 'enter' after a pair if you want to exchange less than 3 pairs");
                 List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
                 Optional<Integer> PawnPosition;
                 int cardIndex;
+                outerWhile:
                 do {
                     System.out.println("Insert entrance's position containing the pawn to move, or 'enter' to conclude the choice");
                     do {
                         PawnPosition = getInt(stdIn.readLine());
-                        if (PawnPosition.isEmpty()) break;
+                        if (PawnPosition.isEmpty()) break outerWhile;
                         if (PawnPosition.get() < 0 || PawnPosition.get() >= currentPlayer.getEntranceStudents().size()) {
                             System.out.println("Target Entrance Position invalid");
                         } else {
                             break;
                         }
                     } while (true);
-                    if (PawnPosition.isEmpty()) break;
                     System.out.println("Select pawn's index from card");
                     do {
                         cardIndex = getInt();
@@ -221,12 +229,13 @@ public class CliWriter implements Runnable {
                     } while (true);
                     pairs.add(new Pair<>(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), (PawnColour) card07.getState().get(cardIndex)));
                 } while (pairs.size() < 3);
+                System.out.println(pairs);
                 Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
-                PlayCharacterCard playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.of(pairsArray));
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.of(pairs.toArray(pairsArray)));
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card08 ignored5 -> {
-                PlayCharacterCard playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.empty());
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card09 ignored6 -> {
@@ -234,22 +243,22 @@ public class CliWriter implements Runnable {
                 playerActionRequest = getPawnColourFromInput(selected, currentPlayer);
             }
             case Card10 ignored7 -> {
-                System.out.println("You can now type up to 3 pairs to exchange, the first element coming from the entrance and the second one from the dining room" +
+                System.out.println("You can now type up to 3 pairs to exchange, the first element coming from the entrance and the second one from the dining room\n" +
                         "Press 'enter' after a pair if you want to exchange less than 3 pairs");
                 List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
                 Optional<Integer> PawnPosition;
+                outerWhile:
                 do {
                     System.out.println("Insert entrance's position containing the pawn to move, or 'enter' to conclude the choice");
                     do {
                         PawnPosition = getInt(stdIn.readLine());
-                        if (PawnPosition.isEmpty()) break;
+                        if (PawnPosition.isEmpty()) break outerWhile;
                         if (PawnPosition.get() < 0 || PawnPosition.get() >= currentPlayer.getEntranceStudents().size()) {
                             System.out.println("Target Entrance Position invalid");
                         } else {
                             break;
                         }
                     } while (true);
-                    if (PawnPosition.isEmpty()) break;
                     System.out.println("Select diningRoom's colour");
                     boolean repeat = true;
                     do {
@@ -278,8 +287,9 @@ public class CliWriter implements Runnable {
                         }
                     } while (repeat);
                 } while (pairs.size() < 2);
+                System.out.println(pairs);
                 Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
-                PlayCharacterCard playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.of(pairsArray));
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.of(pairs.toArray(pairsArray)));
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card11 card11 -> {
@@ -293,7 +303,7 @@ public class CliWriter implements Runnable {
                         break;
                     }
                 } while (true);
-                PlayCharacterCard playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.of((PawnColour) card11.getState().get(cardIndex)), Optional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.of((PawnColour) card11.getState().get(cardIndex)), Optional.empty());
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card12 ignored8 -> {
@@ -305,6 +315,7 @@ public class CliWriter implements Runnable {
                 return;
             }
         }
+        System.out.println("SENDING PLAYER-ACTION");
         socketWrapper.sendMessage(playerActionRequest);
     }
 
@@ -319,9 +330,10 @@ public class CliWriter implements Runnable {
                     "an Island of your choice. Then, draw a new Student from the Bag and place it on this card.");
             case 2 -> System.out.println("EFFECT: During this turn, you take control of any\n" +
                     " number of Professors even if you have the same number of Students as the player who currently controls them.");
-            case 3 -> System.out.println("EFFECT: Choose an Island and resolve the Island as if\n" +
-                    " Mother Nature had ended her movement there. Mother\n" +
-                    " Nature will still move and the Island where she ends her movement will also be resolved.");
+            case 3 -> System.out.println("""
+                    EFFECT: Choose an Island and resolve the Island as if
+                     Mother Nature had ended her movement there. Mother
+                     Nature will still move and the Island where she ends her movement will also be resolved.""");
             case 4 -> System.out.println("EFFECT: You may move Mother Nature up to 2\n" +
                     " additional Islands than is indicated by the Assistant card you've played.");
             case 5 -> System.out.println("""
@@ -440,14 +452,15 @@ public class CliWriter implements Runnable {
             ConnectLobbyRequest connectLobbyRequest;
             System.out.println("Insert lobby's UUID");
             UUID id = null;
+            boolean repeat = false;
             do {
                 try {
                     id = UUID.fromString(stdIn.readLine());
                 }catch (IllegalArgumentException e){
                     System.out.println("UUID not valid, try again");
+                    repeat = true;
                 }
-                break;
-            }while (true);
+            }while (repeat);
             connectLobbyRequest = new ConnectLobbyRequest(id);
             socketWrapper.sendMessage(connectLobbyRequest);
 
@@ -486,6 +499,7 @@ public class CliWriter implements Runnable {
         startGameRequest = new StartGameRequest(gameMode);
         socketWrapper.sendMessage(startGameRequest);
     }
+
 
     /**
      * Executes the playAssistantCard command
@@ -703,4 +717,6 @@ public class CliWriter implements Runnable {
         playerActionRequest = new PlayerActionRequest(playCharacterCard);
         return playerActionRequest;
     }
+
+
 }

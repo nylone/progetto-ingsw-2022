@@ -106,7 +106,7 @@ public class ClientView {
             System.out.println(PlayerBoardUI.drawPlayerBoard(pb, this.gameBoard));
             System.out.println("\n");
         }
-        System.out.println(InfoUI.draw(this.gameBoard));
+        System.out.println(InfoUI.draw(this.gameBoard, this.Nickname));
     }
 
     private void printCharacterCard() {

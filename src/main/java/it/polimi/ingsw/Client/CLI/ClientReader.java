@@ -7,6 +7,7 @@ import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.Sta
 
 import java.io.IOException;
 import java.util.UUID;
+import java.util.concurrent.CyclicBarrier;
 
 public class ClientReader implements Runnable {
     /**
@@ -22,11 +23,15 @@ public class ClientReader implements Runnable {
      */
     private final CliWriter cli;
 
+    CyclicBarrier cyclicBarrier;
+
+
     //CLI-only constructor
-    public ClientReader(SocketWrapper socketWrapper, ClientView clientView, CliWriter cli) {
+    public ClientReader(SocketWrapper socketWrapper, ClientView clientView, CliWriter cli, CyclicBarrier cyclicBarrier) {
         this.socketWrapper = socketWrapper;
         this.clientView = clientView;
         this.cli = cli;
+        this.cyclicBarrier = cyclicBarrier;
     }
 
     @Override
@@ -59,9 +64,19 @@ public class ClientReader implements Runnable {
 
     private void AnalyzeResponse(Message serverResponse) throws Exception {
         switch (serverResponse) {
+            case Welcome welcome -> {
+                if(welcome.getStatusCode() == StatusCode.Success){
+                    System.out.println("Successfully connected to the server");
+                    this.clientView.setConnected(true);
+                }else{
+                    System.out.println("Something gone wrong, connection not established");
+                }
+                this.cyclicBarrier.await();
+            }
             case LobbyAccept response -> {
                 if (response.getStatusCode() == StatusCode.Success) {
                     this.clientView.setLogged(true);
+                    this.cyclicBarrier.await();
                     System.out.println("User accepted\n");
                     if (response.getPublicLobbies().size() == 0) {
                         System.out.println("No open lobbies available");
@@ -130,4 +145,5 @@ public class ClientReader implements Runnable {
         }
         this.clientView.printView();
     }
+
 }

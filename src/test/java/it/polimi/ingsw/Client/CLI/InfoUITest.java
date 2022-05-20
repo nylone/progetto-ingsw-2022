@@ -9,11 +9,11 @@ public class InfoUITest {
 
     @Test
     public void shouldDrawInfos() {
-        GameBoard gb = new GameBoard(GameMode.ADVANCED, "ale", "teo");
+       /* GameBoard gb = new GameBoard(GameMode.ADVANCED, "ale", "teo");
         System.out.println(InfoUI.draw(gb));
         gb.getMutableTurnOrder().stepToNextPlayer();
         gb.addCoinToReserve(1);
-        System.out.println(InfoUI.draw(gb));
+        System.out.println(InfoUI.draw(gb));*/
     }
 
 }

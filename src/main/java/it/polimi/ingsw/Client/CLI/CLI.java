@@ -9,21 +9,22 @@ import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.concurrent.CyclicBarrier;
 
 
 public class CLI implements Runnable {
 
     private static void OpenCLI(SocketWrapper socket, BufferedReader bufferedReader) {
-        //todo add a countDownLatch?
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(2);
 
         ClientView clientView = new ClientView();
 
-        CliWriter cliWriter = new CliWriter(socket, clientView, bufferedReader);
+        CliWriter cliWriter = new CliWriter(socket, clientView, bufferedReader, cyclicBarrier);
 
         Thread writerThread = new Thread(cliWriter);
         writerThread.start();
 
-        ClientReader ClientReader = new ClientReader(socket, clientView, cliWriter);
+        ClientReader ClientReader = new ClientReader(socket, clientView, cliWriter, cyclicBarrier);
         Thread readerThread = new Thread(ClientReader);
         readerThread.start();
 
