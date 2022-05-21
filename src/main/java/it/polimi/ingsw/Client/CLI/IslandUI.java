@@ -46,7 +46,7 @@ public class IslandUI {
         } else tower = "\t" + " ".repeat(4);
         String islandTitle = "Island " + i.getId();
         if (i.getMutableNoEntryTiles().size() > 0) {
-            islandTitle = Symbols.STRIKED + islandTitle + "***" + Symbols.RESET + Symbols.BACKGROUND;
+            islandTitle = Symbols.STRIKED + islandTitle + Symbols.RESET + Symbols.BACKGROUND;
         }
         return mn + islandTitle + ":\t" + students + tower;
     }
