@@ -50,6 +50,24 @@ public class IslandUI {
         }
         return mn + islandTitle + ":\t" + students + tower;
     }
+
+    public static String drawEmptyRow(GameBoard ctx) {
+        String mn = "";
+
+        String islandTitle = " ".repeat(10);
+
+        String students = "";
+
+        int maxStudents = 0;
+        for (IslandGroup ig : ctx.getMutableIslandField().getMutableGroups()) {
+            maxStudents = Math.max(maxStudents, ig.getStudents().size());
+        }
+        students = students + "  ".repeat(maxStudents);
+
+        String tower = "\t" + " ".repeat(4);
+
+        return mn + islandTitle + " \t" + students + tower;
+    }
 }
 
 

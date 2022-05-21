@@ -4,7 +4,6 @@ import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Model.GameBoard;
-import it.polimi.ingsw.Model.IslandGroup;
 
 public class GameUI {
 
@@ -13,9 +12,14 @@ public class GameUI {
 
         int line = 0;
         String clouds = CloudUI.draw(ctx);
-        for (IslandGroup ig : ctx.getMutableIslandField().getMutableGroups()) {
-            String currentIsland = IslandUI.draw(ig, ctx);
-            screen = screen + currentIsland + "\t".repeat(2); // '\t' is used for horizontal separation between islands and clouds
+        int groupsSize = ctx.getMutableIslandField().getMutableGroups().size();
+        int rows = groupsSize < 8 ? 8 : groupsSize;
+        for (int i = 0; i < rows; i++) {
+            if (i < ctx.getMutableIslandField().getMutableGroups().size()) {
+                String currentIsland = IslandUI.draw(ctx.getMutableIslandField().getMutableGroups().get(i), ctx);
+                screen = screen + currentIsland + "\t".repeat(2); // '\t' is used for horizontal separation between islands and clouds
+            }
+            else screen = screen + IslandUI.drawEmptyRow(ctx) + "\t".repeat(2);
 
             // This will print just one line of the clouds UI component
             screen = screen + clouds.substring(0, clouds.indexOf('\n') + 1);

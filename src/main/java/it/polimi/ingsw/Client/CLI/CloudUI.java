@@ -20,7 +20,7 @@ public class CloudUI {
                         students = students + "\t\n";
                     }
                     if (students.equals("")) {
-                        for (int i = 0; i < 4; i++) {
+                        for (int i = 0; i < 3; i++) {
                             students = students + "\t\t\n";
                         }
                     }

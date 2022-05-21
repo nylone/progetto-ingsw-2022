@@ -19,12 +19,15 @@ public class GameUITest {
 
     @Test
     public void shouldRenderScreen() throws InvalidContainerIndexException, EmptyContainerException, FullContainerException {
-        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo");
+        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari");
         for (IslandGroup ig : gb.getMutableIslandField().getMutableGroups()) {
             for (int i = 0; i < new Random().nextInt(15); i++) {
                 ig.getMutableIslands().get(0).addStudent(Utils.random(List.of(PawnColour.values())));
             }
-            ig.swapTower(gb.getTeamMapper().getMutableTowerStorage(Utils.random(List.of(TeamID.ONE, TeamID.TWO))));
+            ig.swapTower(gb.getTeamMapper().getMutableTowerStorage(Utils.random(List.of(TeamID.ONE, TeamID.TWO, TeamID.THREE))));
+        }
+        for (int i = 0; i < 20; i++) {
+            gb.moveAndActMotherNature(1);
         }
         for (PawnColour p : PawnColour.values()) {
             for (int i = 0; i < new Random().nextInt(9); i++) {
