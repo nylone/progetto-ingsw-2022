@@ -95,7 +95,6 @@ public class LobbyServer {
         // either:
         // - create
         // - join or rejoin
-        // TODO - join started game
         switch (clientEvent) {
             case CreateLobbyRequest castedEvent -> {
                 if (castedEvent.getMaxPlayers() < 1 || castedEvent.getMaxPlayers() > 4) {

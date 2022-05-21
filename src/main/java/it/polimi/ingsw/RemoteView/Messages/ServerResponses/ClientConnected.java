@@ -26,8 +26,5 @@ public class ClientConnected extends Response {
         return this.players;
     }
 
-    public int getNumOfPlayersConnected() {
-        return players.size();
-    }
 
 }

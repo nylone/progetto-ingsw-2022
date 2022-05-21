@@ -66,6 +66,7 @@ public class ClientReader implements Runnable {
         switch (serverResponse) {
             case Welcome welcome -> {
                 if(welcome.getStatusCode() == StatusCode.Success){
+                    ClearCLI();
                     System.out.println("Successfully connected to the server");
                     this.clientView.setConnected(true);
                 }else{
@@ -87,6 +88,7 @@ public class ClientReader implements Runnable {
                     System.out.println("type 'showActions' for a list of available actions during all the game");
                 } else {
                     System.out.println("Password wrong for this username, try again or change Username");
+                    this.cyclicBarrier.await();
                 }
             }
             case LobbyRedirect response -> {
@@ -94,15 +96,33 @@ public class ClientReader implements Runnable {
                 if (response.getStatusCode() == StatusCode.Success) {
                     System.out.println("Joined to lobby, id: " + id + " admin:" + response.getAdmin());
                     clientView.setAdmin(response.getAdmin());
-                    clientView.setLobbyID(id);
                 } else {
                     System.out.println("Something gone wrong, lobby not joined");
                 }
             }
-            case ClientConnected response -> {
-                if (response.getStatusCode() == StatusCode.Success) {
-                    System.out.println("player " + response.getLastConnectedNickname() + " has connected");
-                    System.out.println("players connected :" + response.getNumOfPlayersConnected());
+            case LobbyClosed lobbyClosed -> {
+                if(lobbyClosed.getStatusCode() == StatusCode.Success) {
+                    ClearCLI();
+                    System.out.println("The lobby has been closed; you can now join or create a lobby");
+                    this.clientView.disconnectView();
+                }else System.out.println("Something gone wrong, lobby not closed");
+            }
+            case ClientConnected clientConnected -> {
+                if (clientConnected.getStatusCode() == StatusCode.Success) {
+                    System.out.println("player " + clientConnected.getLastConnectedNickname() + " has connected");
+                    System.out.println("Players connected:");
+                    clientConnected.getPlayers().forEach(System.out::println);
+                }
+            }
+            case ClientDisconnected clientDisconnected -> {
+                if (clientDisconnected.getStatusCode() == StatusCode.Success) {
+                    if(!this.clientView.getGameStarted()) {
+                        System.out.println("player " + clientDisconnected.getLastDisconnectedNickname()+" has disconnected");
+                        System.out.println("Players connected:");
+                        clientDisconnected.getPlayers().forEach(System.out::println);
+                    }
+                }else{
+                    System.out.println("Something gone wrong, client not disconnected");
                 }
             }
             case GameInit response -> {
@@ -125,7 +145,7 @@ public class ClientReader implements Runnable {
 
             case PlayerActionFeedback response -> System.out.println(response.getReport());
 
-            default -> throw new IllegalStateException("Unexpected value: " + serverResponse);
+            default -> System.out.println("Received an unexpected server's response:"+serverResponse.getClass());
         }
     }
 
@@ -133,6 +153,11 @@ public class ClientReader implements Runnable {
      * This method clears Client's console to reprint it after an update
      */
     private void UpdateView() throws Exception {
+        ClearCLI();
+        this.clientView.printView();
+    }
+
+    private void ClearCLI() {
         try {
             final String operatingSystem = System.getProperty("os.name");
             if (operatingSystem.contains("Windows")) {
@@ -143,7 +168,6 @@ public class ClientReader implements Runnable {
         } catch (Exception e) {
             System.out.println("Clear operation failed");
         }
-        this.clientView.printView();
     }
 
 }

@@ -7,7 +7,6 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
-import java.util.UUID;
 
 public class ClientView {
 
@@ -19,7 +18,6 @@ public class ClientView {
     private boolean gameStarted = false;
     private String admin;
     private String Nickname;
-    private UUID lobbyID;
 
     public String getAdmin() {
         return admin;
@@ -41,14 +39,6 @@ public class ClientView {
         this.gameStarted = started;
     }
 
-    public UUID getLobbyID() {
-        return lobbyID;
-    }
-
-    public void setLobbyID(UUID lobbyID) {
-        this.lobbyID = lobbyID;
-        setIsInLobby(true);
-    }
 
     public void setIsInLobby(boolean inLobby) {
         this.isInLobby = inLobby;
@@ -99,7 +89,7 @@ public class ClientView {
         System.out.println("PLAYERBOARDS");
         for (PlayerBoard pb : this.gameBoard.getMutablePlayerBoards()) {
             if (this.getNickname().equals(pb.getNickname())) {
-                System.out.println("Your's Playerboard:");
+                System.out.println("Your Playerboard:");
             } else {
                 System.out.println(pb.getNickname() + "'s Playerboard");
             }
@@ -128,6 +118,7 @@ public class ClientView {
         }
     }
 
+
     public String getNickname() {
         return Nickname;
     }
@@ -135,6 +126,14 @@ public class ClientView {
     public void setNickname(String nickname) {
         Nickname = nickname;
     }
+
+    public void disconnectView(){
+        setIsInLobby(false);
+        setAdmin(null);
+        setGame(null);
+        setGameStarted(false);
+    }
+
 }
 
 
