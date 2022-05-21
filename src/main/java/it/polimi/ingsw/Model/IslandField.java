@@ -104,8 +104,9 @@ public class IslandField implements Serializable {
 
     private IslandGroup nextGroup(IslandGroup curr) {
         int groupSize = this.groups.size();
+        int currIndex = this.groups.indexOf(curr);
         return groups.get(
-                (curr.getId() + groupSize + 1) % groupSize
+                (currIndex + groupSize + 1) % groupSize
         );
     }
 
