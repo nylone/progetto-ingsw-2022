@@ -24,7 +24,7 @@ public class CloudUI {
                             students = students + "\t\t\n";
                         }
                     }
-                    twoClouds = twoClouds + "Cloud " + (c.getId() + 1) + "\n" + students;
+                    twoClouds = twoClouds + "\tCloud " + (c.getId() + 1) + "\n" + students;
                 }
                 clouds = twoClouds + "\n\n\n";
             }
