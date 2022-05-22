@@ -16,8 +16,10 @@ public class ClientView {
     private boolean isLogged = false;
     private boolean isInLobby = false;
     private boolean gameStarted = false;
+    private boolean gameEnded = false;
     private String admin;
     private String Nickname;
+
 
     public String getAdmin() {
         return admin;
@@ -39,13 +41,12 @@ public class ClientView {
         this.gameStarted = started;
     }
 
-
-    public void setIsInLobby(boolean inLobby) {
-        this.isInLobby = inLobby;
+    public boolean isGameEnded() {
+        return gameEnded;
     }
 
-    public void setGame(GameBoard game) {
-        this.gameBoard = game;
+    public boolean isConnected() {
+        return isConnected;
     }
 
     public boolean isInLobby() {
@@ -56,16 +57,25 @@ public class ClientView {
         return isLogged;
     }
 
-    public boolean isConnected() {
-        return isConnected;
+    public void setGameEnded(boolean gameEnded) {
+        this.gameEnded = gameEnded;
     }
+
+    public void setLogged(boolean logged) {
+        isLogged = logged;
+    }
+
 
     public void setConnected(boolean connected) {
         isConnected = connected;
     }
 
-    public void setLogged(boolean logged) {
-        isLogged = logged;
+    public void setIsInLobby(boolean inLobby) {
+        this.isInLobby = inLobby;
+    }
+
+    public void setGame(GameBoard game) {
+        this.gameBoard = game;
     }
 
     /**
@@ -104,12 +114,13 @@ public class ClientView {
         System.out.println("Available CharacterCards:");
         for (CharacterCard characterCard : this.gameBoard.getCharacterCards()) {
             System.out.print("CharacterCard number:" + characterCard.getId() + " cost:" + characterCard.getCost());
-            if(characterCard instanceof StatefulEffect){
+            if (characterCard instanceof StatefulEffect) {
                 System.out.print("\t");
-                for( Object o : ((StatefulEffect) characterCard).getState() ){
+                for (Object o : ((StatefulEffect) characterCard).getState()) {
                     switch (o) {
                         case NoEntryTile ignored -> System.out.print(" X ");
-                        case PawnColour pawnColour -> System.out.print(Symbols.colorizeStudent(pawnColour, "  " + Symbols.PAWN));
+                        case PawnColour pawnColour ->
+                                System.out.print(Symbols.colorizeStudent(pawnColour, "  " + Symbols.PAWN));
                         case default -> System.out.println("Card's object not valid");
                     }
                 }
@@ -127,7 +138,7 @@ public class ClientView {
         Nickname = nickname;
     }
 
-    public void disconnectView(){
+    public void disconnectView() {
         setIsInLobby(false);
         setAdmin(null);
         setGame(null);

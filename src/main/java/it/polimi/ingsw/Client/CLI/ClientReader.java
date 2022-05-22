@@ -5,7 +5,9 @@ import it.polimi.ingsw.RemoteView.Messages.Message;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
+import javax.crypto.spec.PSource;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CyclicBarrier;
 
@@ -64,6 +66,10 @@ public class ClientReader implements Runnable {
 
     private void AnalyzeResponse(Message serverResponse) throws Exception {
         switch (serverResponse) {
+            case PlayerActionFeedback playerActionFeedback -> {
+                if(playerActionFeedback.getStatusCode() == StatusCode.Fail)
+                    System.out.println(playerActionFeedback.getReport());
+            }
             case Welcome welcome -> {
                 if(welcome.getStatusCode() == StatusCode.Success){
                     ClearCLI();
@@ -103,9 +109,14 @@ public class ClientReader implements Runnable {
             }
             case LobbyClosed lobbyClosed -> {
                 if(lobbyClosed.getStatusCode() == StatusCode.Success) {
-                    ClearCLI();
-                    System.out.println("The lobby has been closed; you can now join or create a lobby");
-                    this.clientView.disconnectView();
+                    if(!this.clientView.isGameEnded()) {
+                        ClearCLI();
+                        System.out.println("The lobby has been closed; you can now join or create a lobby");
+                        this.clientView.disconnectView();
+                    }else{
+                        System.out.println("\nThe lobby has been closed; you can now join or create a lobby");
+                        this.clientView.disconnectView();
+                    }
                 }else System.out.println("Something gone wrong, lobby not closed");
             }
             case ClientConnected clientConnected -> {
@@ -137,14 +148,19 @@ public class ClientReader implements Runnable {
                 System.out.println("The game has started");
                 clientView.setGameStarted(true);
             }
-
             case ModelUpdated modelUpdated -> {
                 this.clientView.setGame(modelUpdated.getModel());
                 UpdateView();
 
             }
-
-            case PlayerActionFeedback response -> System.out.println(response.getReport());
+            case GameOver gameOver -> {
+                if(gameOver.getStatusCode()==StatusCode.Success){
+                    this.clientView.setGameEnded(true);
+                    UpdateViewWin(gameOver.getWinners());
+                }else {
+                    System.out.println("Something gone wrong, GameOver response not accepted");
+                }
+            }
 
             default -> System.out.println("Received an unexpected server's response:"+serverResponse.getClass());
         }
@@ -153,10 +169,6 @@ public class ClientReader implements Runnable {
     /**
      * This method clears Client's console to reprint it after an update
      */
-    private void UpdateView() throws Exception {
-        ClearCLI();
-        this.clientView.printView();
-    }
 
     private void ClearCLI() {
         try {
@@ -169,6 +181,27 @@ public class ClientReader implements Runnable {
         } catch (Exception e) {
             System.out.println("Clear operation failed");
         }
+    }
+
+    private void UpdateView() throws Exception {
+        ClearCLI();
+        this.clientView.printView();
+    }
+
+    private void UpdateViewWin(List<String> winners) {
+        ClearCLI();
+        System.out.println("\n" +
+                " _       __        __                                          _                       ____\n" +
+                "| |     / /__     / /_  ____ __   _____     ____ _   _      __(_)___  ____  ___  _____/ / /\n" +
+                "| | /| / / _ \\   / __ \\/ __ `/ | / / _ \\   / __ `/  | | /| / / / __ \\/ __ \\/ _ \\/ ___/ / / \n" +
+                "| |/ |/ /  __/  / / / / /_/ /| |/ /  __/  / /_/ /   | |/ |/ / / / / / / / /  __/ /  /_/_/  \n" +
+                "|__/|__/\\___/  /_/ /_/\\__,_/ |___/\\___/   \\__,_/    |__/|__/_/_/ /_/_/ /_/\\___/_/  (_|_)   \n" +
+                "                                                                                           \n");
+
+        System.out.println("The winner is/are:");
+        winners.stream().forEach(s -> {
+            System.out.println(s);
+        });
     }
 
 }
