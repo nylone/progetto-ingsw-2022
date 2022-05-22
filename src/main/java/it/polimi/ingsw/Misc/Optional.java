@@ -66,6 +66,13 @@ public class Optional<T> implements Serializable {
         return mapper.apply(value);
     }
 
+    public <U> Optional<U> map(Function<? super T, ? extends U> mapper) {
+        if (value == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(mapper.apply(value));
+    }
+
     public static <T> Optional<T> empty() {
         return new Optional<>();
     }

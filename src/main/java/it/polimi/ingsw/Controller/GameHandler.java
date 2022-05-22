@@ -6,8 +6,10 @@ import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.RemoteView.Lobby;
 
 import java.util.ArrayList;
@@ -64,6 +66,9 @@ public class GameHandler {
      *                                  the model is guaranteed to not have been modified.
      */
     public synchronized void executeAction(PlayerAction action) throws InputValidationException {
+        if (model.isGameOver()) {
+            throw new GenericInputValidationException("GameHandler", "Game is over, action cannot be executed");
+        }
         action.safeExecute(getHistory(), model);
         this.model.notifyLobby();
 
@@ -90,10 +95,18 @@ public class GameHandler {
      * by this method
      */
     public GameBoard getModelCopy() {
-        return model.getModelCopy(); // never executed
+        return model.getModelCopy();
     }
 
     public int getPlayerBoardIDFromNickname(String nickname) throws InvalidContainerIndexException {
         return this.model.getMutablePlayerBoardByNickname(nickname).getId();
+    }
+
+    public Optional<List<String>> getWinnerNicknames() {
+        return model.getWinners().map(list -> list.stream().map(PlayerBoard::getNickname).toList());
+    }
+
+    public Optional<List<Integer>> getWinnerIDs() {
+        return model.getWinners().map(list -> list.stream().map(PlayerBoard::getId).toList());
     }
 }

@@ -207,7 +207,7 @@ public class GameBoard implements Serializable {
         return turnOrder;
     }
     
-    private boolean isGameOver() {
+    public boolean isGameOver() {
         // Check if current player has no towers left
         PlayerBoard currentPlayer = this.getMutableTurnOrder().getMutableCurrentPlayer();
         boolean noTowersLeft = this.getTeamMapper().getMutableTowerStorage(currentPlayer).getTowerCount() == 0;

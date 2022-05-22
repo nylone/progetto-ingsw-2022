@@ -1,9 +1,10 @@
 package it.polimi.ingsw.RemoteView;
 
+import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Network.SocketWrapper;
-import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.*;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.*;
@@ -38,24 +39,21 @@ public class LobbyServer {
                 try {
                     ClientEvent event = this.eventHandler.dequeue();
                     log.info("Lobby server received a new Event: " + event.getClass());
-                    switch (event) {
-                        case SocketClosedEvent ignored -> {
-                            if (this.currentLobby != null) {
-                                this.currentLobby.disconnectPlayer(this.nickname);
-                            }
-                            log.info("Lobby server was closed for player: " +
-                                    nickname +
-                                    " on address " +
-                                    this.sw.getInetAddress());
-                            return;
+                    if (event instanceof SocketClosedEvent) {
+                        if (this.currentLobby != null) {
+                            this.currentLobby.disconnectPlayer(this.nickname);
                         }
-                        default -> {
-                            switch (this.state) {
-                                case ACCEPT_PHASE -> acceptPhase(event);
-                                case REDIRECT_PHASE -> redirectPhase(event);
-                                case GAME_START_PHASE -> gameStartPhase(event);
-                                case GAME_IN_PROGRESS_PHASE -> gameInProgressPhase(event);
-                            }
+                        log.info("Lobby server was closed for player: " +
+                                nickname +
+                                " on address " +
+                                this.sw.getInetAddress());
+                        return;
+                    } else {
+                        switch (this.state) {
+                            case ACCEPT_PHASE -> acceptPhase(event);
+                            case REDIRECT_PHASE -> redirectPhase(event);
+                            case GAME_START_PHASE -> gameStartPhase(event);
+                            case GAME_IN_PROGRESS_PHASE -> gameInProgressPhase(event);
                         }
                     }
                 } catch (Exception e) {
@@ -153,7 +151,7 @@ public class LobbyServer {
                     sw.sendMessage(GameInit.fail("The lobby has not been filled"));
                     return;
                 }
-                if (currentLobby.getGameHandler() != null) {
+                if (currentLobby.isGameInProgress()) {
                     sw.sendMessage(GameInit.fail("The game has already started"));
                     return;
                 }
@@ -186,29 +184,30 @@ public class LobbyServer {
                 this.state = State.REDIRECT_PHASE;
                 sw.sendMessage(new LobbyClosed());
             }
-            case ModelUpdateEvent modelUpdateEvent -> {
-                GameBoard model = modelUpdateEvent.getModel();
-                sw.sendMessage(new ModelUpdated(model));
+            case ModelUpdateEvent modelUpdateEvent -> sw.sendMessage(new ModelUpdated(modelUpdateEvent.getModel()));
+            case GameOverEvent gameOverEvent -> {
+                sw.sendMessage(new GameOver(gameOverEvent.getWinners()));
+                this.currentLobby.close();
             }
             case PlayerActionRequest playerActionRequest -> {
                 try {
-                    if (playerActionRequest.getAction().getPlayerBoardId() ==
-                            this.currentLobby.getGameHandler().getPlayerBoardIDFromNickname(this.nickname)) {
-                        this.currentLobby.getGameHandler().executeAction(playerActionRequest.getAction());
+                    PlayerAction pa = playerActionRequest.getAction();
+                    if (currentLobby.verifyAction(pa, this.nickname)) {
+                        this.currentLobby.executeAction(pa);
                     } else {
                         sw.sendMessage(PlayerActionFeedback.fail("The action that was sent is malformed."));
                     }
+                    sw.sendMessage(PlayerActionFeedback.success());
                 } catch (InputValidationException e) {
                     sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
-                    return;
-                } catch (ClassNotFoundException e) {
-                    sw.sendMessage(PlayerActionFeedback.fail("The action that was sent could not be deserialized."));
-                    return;
                 } catch (InvalidContainerIndexException e) {
                     // we are always in the game, so this exception should crash the process
                     log.severe("Unreachable statement was reached. Nickname was not found in the gameboard.");
+                    sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
+                } catch (OperationException e) {
+                    log.severe("Supposedly unreachable statement was reached:\n" + e.getMessage());
+                    sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
                 }
-                sw.sendMessage(PlayerActionFeedback.success());
             }
             case default -> sw.sendMessage(new InvalidRequest());
         }

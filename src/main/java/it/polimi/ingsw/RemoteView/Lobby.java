@@ -1,15 +1,14 @@
 package it.polimi.ingsw.RemoteView;
 
+import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Controller.GameHandler;
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
+import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
-import it.polimi.ingsw.RemoteView.Messages.Events.Internal.LobbyClosedEvent;
-import it.polimi.ingsw.RemoteView.Messages.Events.Requests.ClientRequest;
-import it.polimi.ingsw.RemoteView.Messages.Events.Internal.ClientConnectEvent;
-import it.polimi.ingsw.RemoteView.Messages.Events.Internal.ClientDisconnectEvent;
-import it.polimi.ingsw.RemoteView.Messages.Events.Internal.GameStartEvent;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyClosed;
+import it.polimi.ingsw.RemoteView.Messages.Events.Internal.*;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,16 +36,29 @@ public class Lobby {
         this.playerEventSources = new ConcurrentHashMap<>();
     }
 
+    public void executeAction(PlayerAction pa) throws InputValidationException, OperationException {
+        if (gameHandler == null) {
+            throw new ForbiddenOperationException("Lobby is in waiting state, no game is running");
+        }
+        gameHandler.executeAction(pa);
+        if (gameHandler.getWinnerNicknames().isPresent()) {
+            this.notifyPlayers(new GameOverEvent(gameHandler.getWinnerNicknames().get()));
+        }
+    }
+
+    public boolean verifyAction(PlayerAction pa, String nickname) throws InvalidContainerIndexException, OperationException {
+        if (gameHandler == null) {
+            throw new ForbiddenOperationException("Lobby is in waiting state, no game is running");
+        }
+        return gameHandler.getPlayerBoardIDFromNickname(nickname) == pa.getPlayerBoardId();
+    }
+
     public UUID getId() {
         return id;
     }
 
     public String getAdmin() {
         return admin;
-    }
-
-    public GameHandler getGameHandler() {
-        return this.gameHandler;
     }
 
     public boolean isPublic() {
@@ -76,8 +88,8 @@ public class Lobby {
         }
     }
 
-    public boolean isWaitingLobby() {
-        return this.gameHandler == null;
+    public boolean isGameInProgress() {
+        return this.gameHandler != null;
     }
 
     public void notifyPlayers(ClientEvent event) {
@@ -124,14 +136,18 @@ public class Lobby {
             this.playerEventSources.remove(nick);
             this.players.remove(nick);
             notifyPlayers(new ClientDisconnectEvent(nick, List.copyOf(this.players)));
-            if (!this.isWaitingLobby() || this.admin.equals(nick)) {
+            if (this.isGameInProgress() || this.admin.equals(nick)) {
                 lobbyMap.remove(this.id);
-                notifyPlayers(new LobbyClosedEvent());
-                this.players.clear();
-                this.playerEventSources.clear();
-                this.isClosed = true;
+                this.close();
             }
         }
+    }
+
+    protected void close() {
+        notifyPlayers(new LobbyClosedEvent());
+        this.players.clear();
+        this.playerEventSources.clear();
+        this.isClosed = true;
     }
 
     protected void startGame(GameMode gameMode) throws InputValidationException {

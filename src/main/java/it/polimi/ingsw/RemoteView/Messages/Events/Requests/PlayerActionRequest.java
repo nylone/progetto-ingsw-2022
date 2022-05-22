@@ -7,18 +7,13 @@ import java.io.*;
 public class PlayerActionRequest extends ClientRequest {
     @Serial
     private static final long serialVersionUID = 355L;
-    private final byte[] payload;
+    private final PlayerAction playerAction;
 
-    public PlayerActionRequest(PlayerAction action) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream writer = new ObjectOutputStream(out);
-        writer.writeObject(action);
-        this.payload = out.toByteArray();
+    public PlayerActionRequest(PlayerAction action) {
+        this.playerAction = action;
     }
 
-    public PlayerAction getAction() throws IOException, ClassNotFoundException {
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(this.payload);
-        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-        return (PlayerAction) objectInputStream.readObject();
+    public PlayerAction getAction() {
+        return playerAction;
     }
 }
