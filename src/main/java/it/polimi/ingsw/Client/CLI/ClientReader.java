@@ -96,6 +96,7 @@ public class ClientReader implements Runnable {
                 if (response.getStatusCode() == StatusCode.Success) {
                     System.out.println("Joined to lobby, id: " + id + " admin:" + response.getAdmin());
                     clientView.setAdmin(response.getAdmin());
+                    clientView.setIsInLobby(true);
                 } else {
                     System.out.println("Something gone wrong, lobby not joined");
                 }
