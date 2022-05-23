@@ -1,16 +1,14 @@
 package it.polimi.ingsw.Network;
 
+import it.polimi.ingsw.Logger;
 import it.polimi.ingsw.RemoteView.Messages.Message;
 
 import java.io.*;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.logging.Logger;
 
 public class SocketWrapper {
-    private static final Logger log = Logger.getAnonymousLogger();
     private final Socket sock;
     private final ObjectInputStream input;
     private final ObjectOutputStream output;
@@ -28,11 +26,11 @@ public class SocketWrapper {
             try {
                 return (Message) input.readObject();
             } catch (ClassNotFoundException e) {
-                log.severe("received invalid class as message: " + e.getMessage());
+                Logger.severe("received invalid class as message: " + e.getMessage());
                 if (this.input.read() == -1) {
-                    log.info("closing SocketWrapper");
+                    Logger.info("closing SocketWrapper");
                     this.close();
-                    log.info("closed SocketWrapper");
+                    Logger.info("closed SocketWrapper");
                     throw new SocketException("SocketWrapper is closed");
                 }
             }

@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class GUI {
     public static void init() {
-        SwingUtilities.invokeLater(GUI::start);
+        new Thread(GUI::start).start();
     }
 
     private static void start() {

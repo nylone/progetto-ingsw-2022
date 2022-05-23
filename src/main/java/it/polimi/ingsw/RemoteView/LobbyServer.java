@@ -4,6 +4,7 @@ import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
+import it.polimi.ingsw.Logger;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.*;
@@ -17,10 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 public class LobbyServer {
-    private static final Logger log = Logger.getAnonymousLogger();
     private static final Map<String, String> nickToPass = new ConcurrentHashMap<>(); // maps username to password
     protected static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
     private final SocketWrapper sw;
@@ -38,12 +37,12 @@ public class LobbyServer {
             while (true) {
                 try {
                     ClientEvent event = this.eventHandler.dequeue();
-                    log.info("Lobby server received a new Event: " + event.getClass());
+                    Logger.info("Lobby server received a new Event: " + event.getClass());
                     if (event instanceof SocketClosedEvent) {
                         if (this.currentLobby != null) {
                             this.currentLobby.disconnectPlayer(this.nickname);
                         }
-                        log.info("Lobby server was closed for player: " +
+                        Logger.info("Lobby server was closed for player: " +
                                 nickname +
                                 " on address " +
                                 this.sw.getInetAddress());
@@ -57,7 +56,7 @@ public class LobbyServer {
                         }
                     }
                 } catch (Exception e) {
-                    log.severe(e.getMessage());
+                    Logger.severe(e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -202,10 +201,10 @@ public class LobbyServer {
                     sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
                 } catch (InvalidContainerIndexException e) {
                     // we are always in the game, so this exception should crash the process
-                    log.severe("Unreachable statement was reached. Nickname was not found in the gameboard.");
+                    Logger.severe("Unreachable statement was reached. Nickname was not found in the gameboard.");
                     sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
                 } catch (OperationException e) {
-                    log.severe("Supposedly unreachable statement was reached:\n" + e.getMessage());
+                    Logger.severe("Supposedly unreachable statement was reached:\n" + e.getMessage());
                     sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
                 }
             }

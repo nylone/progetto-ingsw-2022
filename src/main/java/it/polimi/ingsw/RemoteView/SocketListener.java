@@ -5,11 +5,9 @@ import it.polimi.ingsw.RemoteView.Messages.Events.Requests.ClientRequest;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.SocketClosedEvent;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+import it.polimi.ingsw.Logger;
 
 public class SocketListener implements Runnable {
-    private static final Logger log = Logger.getLogger(SocketListener.class.getName());
-
     private final SocketWrapper socket;
     private final ClientEventHandler queue;
 
@@ -29,13 +27,13 @@ public class SocketListener implements Runnable {
                 if (socket.awaitMessage() instanceof ClientRequest request) {
                     queue.enqueue(request);
                 } else {
-                    log.severe(
+                    Logger.severe(
                             "Received unhandled Message that was not of type" + ClientRequest.class.getName() + ".\n");
                     return;
                 }
             }
         } catch (IOException | InterruptedException e) {
-            log.info("closing SocketListener");
+            Logger.info("closing SocketListener");
         } finally {
             this.socket.close();
             try {
@@ -43,7 +41,7 @@ public class SocketListener implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            log.info("closed SocketListener");
+            Logger.info("closed SocketListener");
         }
     }
 }
