@@ -161,22 +161,6 @@ public class GameBoard implements Serializable {
         return Map.copyOf(this.teachers);
     }
 
-    public List<PawnColour> getOwnTeachers(PlayerBoard p) {
-        return this.teachers.entrySet().stream()
-                .filter(e -> e.getValue().equals(p))
-                .map(Map.Entry::getKey)
-                .toList();
-    }
-
-    public TeamMapper getTeamMapper() {
-        return teamMap;
-    }
-
-    // MUTABLE GETTERS //
-    public List<PlayerBoard> getMutablePlayerBoards() {
-        return List.copyOf(playerBoards);
-    }
-
     public PlayerBoard getMutablePlayerBoardById(int id) throws InvalidContainerIndexException {
         return playerBoards.stream()
                 .filter(p -> p.getId() == id)
@@ -193,54 +177,6 @@ public class GameBoard implements Serializable {
 
     public EffectTracker getMutableEffects() {
         return effects;
-    }
-
-    public IslandField getMutableIslandField() {
-        return islandField;
-    }
-
-    public StudentBag getMutableStudentBag() {
-        return studentBag;
-    }
-
-    public TurnOrder getMutableTurnOrder() {
-        return turnOrder;
-    }
-    
-    public boolean isGameOver() {
-        // Check if current player has no towers left
-        PlayerBoard currentPlayer = this.getMutableTurnOrder().getMutableCurrentPlayer();
-        boolean noTowersLeft = this.getTeamMapper().getMutableTowerStorage(currentPlayer).getTowerCount() == 0;
-        // Check if only three island groups remain
-        boolean onlyThreeIslands = this.getMutableIslandField().getMutableGroups().size() == 3;
-        // Check if all assistant cards have been used
-        boolean allCardsUsed = this.getMutableTurnOrder().getMutableCurrentPlayer()
-                .getMutableAssistantCards().stream()
-                .allMatch(AssistantCard::getUsed);
-        // Check if bag is empty
-        boolean emptyBag = this.getMutableStudentBag().isEmpty();
-        
-        return noTowersLeft ||
-                onlyThreeIslands ||
-                this.getMutableTurnOrder().getGamePhase() == GamePhase.SETUP &&
-                        ( allCardsUsed || emptyBag );
-    }
-
-    public List<PlayerBoard> getMutablePlayerBoardsByTeamID(TeamID teamID) {
-        return this.getMutablePlayerBoards().stream()
-                .filter(player -> teamID.equals(this.getTeamMapper().getTeamID(player)))
-                .toList();
-    }
-
-    private int getOwnTeamTeacherCount(TeamID teamID) {
-        return this.getMutablePlayerBoardsByTeamID(teamID).stream()
-                .map(this::getOwnTeachers)
-                .mapToInt(List::size)
-                .sum();
-    }
-
-    private int getOwnTeamTeacherCount(PlayerBoard pb) {
-        return this.getOwnTeamTeacherCount(this.getTeamMapper().getTeamID(pb));
     }
 
     public Optional<List<PlayerBoard>> getWinners() {
@@ -275,6 +211,70 @@ public class GameBoard implements Serializable {
                 .toList();
 
         return Optional.of(winners);
+    }
+
+    public boolean isGameOver() {
+        // Check if current player has no towers left
+        PlayerBoard currentPlayer = this.getMutableTurnOrder().getMutableCurrentPlayer();
+        boolean noTowersLeft = this.getTeamMapper().getMutableTowerStorage(currentPlayer).getTowerCount() == 0;
+        // Check if only three island groups remain
+        boolean onlyThreeIslands = this.getMutableIslandField().getMutableGroups().size() == 3;
+        // Check if all assistant cards have been used
+        boolean allCardsUsed = this.getMutableTurnOrder().getMutableCurrentPlayer()
+                .getMutableAssistantCards().stream()
+                .allMatch(AssistantCard::getUsed);
+        // Check if bag is empty
+        boolean emptyBag = this.getMutableStudentBag().isEmpty();
+
+        return noTowersLeft ||
+                onlyThreeIslands ||
+                this.getMutableTurnOrder().getGamePhase() == GamePhase.SETUP &&
+                        (allCardsUsed || emptyBag);
+    }
+
+    public TurnOrder getMutableTurnOrder() {
+        return turnOrder;
+    }
+
+    public IslandField getMutableIslandField() {
+        return islandField;
+    }
+
+    public List<PlayerBoard> getMutablePlayerBoardsByTeamID(TeamID teamID) {
+        return this.getMutablePlayerBoards().stream()
+                .filter(player -> teamID.equals(this.getTeamMapper().getTeamID(player)))
+                .toList();
+    }
+
+    public TeamMapper getTeamMapper() {
+        return teamMap;
+    }
+
+    // MUTABLE GETTERS //
+    public List<PlayerBoard> getMutablePlayerBoards() {
+        return List.copyOf(playerBoards);
+    }
+
+    private int getOwnTeamTeacherCount(PlayerBoard pb) {
+        return this.getOwnTeamTeacherCount(this.getTeamMapper().getTeamID(pb));
+    }
+
+    public StudentBag getMutableStudentBag() {
+        return studentBag;
+    }
+
+    private int getOwnTeamTeacherCount(TeamID teamID) {
+        return this.getMutablePlayerBoardsByTeamID(teamID).stream()
+                .map(this::getOwnTeachers)
+                .mapToInt(List::size)
+                .sum();
+    }
+
+    public List<PawnColour> getOwnTeachers(PlayerBoard p) {
+        return this.teachers.entrySet().stream()
+                .filter(e -> e.getValue().equals(p))
+                .map(Map.Entry::getKey)
+                .toList();
     }
 
     public void moveAndActMotherNature(int steps) {

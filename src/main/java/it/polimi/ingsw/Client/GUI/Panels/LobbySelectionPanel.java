@@ -6,8 +6,8 @@ import it.polimi.ingsw.Client.GUI.Window;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.ConnectLobbyRequest;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.CreateLobbyRequest;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.LobbyInfo;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyRedirect;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.LobbyInfo;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import javax.swing.*;

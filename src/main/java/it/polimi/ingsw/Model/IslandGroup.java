@@ -64,6 +64,10 @@ public class IslandGroup implements Serializable {
         return List.copyOf(islands);
     }
 
+    public List<NoEntryTile> getMutableNoEntryTiles() {
+        return List.copyOf(noEntryTiles);
+    }
+
     public int getId() {
         return id;
     }
@@ -75,10 +79,6 @@ public class IslandGroup implements Serializable {
     public int getTowerCount() {
         if (getTowerColour().isPresent()) return getMutableIslands().size();
         else return 0;
-    }
-
-    public List<NoEntryTile> getMutableNoEntryTiles() {
-        return List.copyOf(noEntryTiles);
     }
 
     public Map<PawnColour, Integer> getStudentCount() { //the map will contain the colours of the placed pawns with relative counter

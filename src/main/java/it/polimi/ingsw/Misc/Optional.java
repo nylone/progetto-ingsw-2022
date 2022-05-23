@@ -23,13 +23,6 @@ public class Optional<T> implements Serializable {
         return new Optional<>(element);
     }
 
-    public static <T> Optional<T> ofNullable(T element) {
-        if (element == null) {
-            return new Optional<>();
-        }
-        return new Optional<>(element);
-    }
-
     public boolean isEmpty() {
         return value == null;
     }
@@ -66,6 +59,10 @@ public class Optional<T> implements Serializable {
         return mapper.apply(value);
     }
 
+    public static <T> Optional<T> empty() {
+        return new Optional<>();
+    }
+
     public <U> Optional<U> map(Function<? super T, ? extends U> mapper) {
         if (value == null) {
             return Optional.empty();
@@ -73,8 +70,11 @@ public class Optional<T> implements Serializable {
         return Optional.ofNullable(mapper.apply(value));
     }
 
-    public static <T> Optional<T> empty() {
-        return new Optional<>();
+    public static <T> Optional<T> ofNullable(T element) {
+        if (element == null) {
+            return new Optional<>();
+        }
+        return new Optional<>(element);
     }
 
     @Override

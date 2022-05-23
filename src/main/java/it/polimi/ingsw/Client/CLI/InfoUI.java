@@ -7,7 +7,7 @@ public class InfoUI {
 
     public static String draw(GameBoard ctx, String caller) {
         String info = "";
-        if(caller.equals(ctx.getMutableTurnOrder().getMutableCurrentPlayer().getNickname()))
+        if (caller.equals(ctx.getMutableTurnOrder().getMutableCurrentPlayer().getNickname()))
             info = info + ctx.getMutableTurnOrder().getMutableCurrentPlayer().getNickname() + " is your turn!\n";
         else
             info = info + "It's " + ctx.getMutableTurnOrder().getMutableCurrentPlayer().getNickname() + "'s turn\n";
@@ -18,15 +18,12 @@ public class InfoUI {
                     .getCurrentTurnOrder().indexOf(ctx.getMutableTurnOrder().getMutableCurrentPlayer()) + 1).getNickname();
             if (caller.equals(nextPlayer)) {
                 info = info + "Next player: you \n";
-            }
-            else info = info + "Next player: " + nextPlayer + "\n";
-        }
-        else {
+            } else info = info + "Next player: " + nextPlayer + "\n";
+        } else {
             String nextPlayer = ctx.getMutableTurnOrder().getCurrentTurnOrder().get(0).getNickname();
             if (caller.equals(nextPlayer)) {
                 info = info + "Next player: you \n";
-            }
-            else info = info + "Next player: " + nextPlayer + "\n";
+            } else info = info + "Next player: " + nextPlayer + "\n";
         }
         if (ctx.getGameMode().equals(GameMode.ADVANCED)) {
             switch (ctx.getCoinReserve()) {

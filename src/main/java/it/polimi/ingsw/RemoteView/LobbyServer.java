@@ -20,8 +20,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LobbyServer {
-    private static final Map<String, String> nickToPass = new ConcurrentHashMap<>(); // maps username to password
     protected static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
+    private static final Map<String, String> nickToPass = new ConcurrentHashMap<>(); // maps username to password
     private final SocketWrapper sw;
     private final ClientEventHandler eventHandler;
     private String nickname;
@@ -212,16 +212,16 @@ public class LobbyServer {
         }
     }
 
-    private ClientEventHandler getEventHandler() {
-        return this.eventHandler;
-    }
-
     private static UUID generateUUID() {
         UUID id = UUID.randomUUID();
         while (lobbyMap.containsKey(id)) {
             id = UUID.randomUUID();
         }
         return id;
+    }
+
+    private ClientEventHandler getEventHandler() {
+        return this.eventHandler;
     }
 
     public static void spawn(SocketWrapper socketWrapper) {

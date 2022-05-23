@@ -2,7 +2,7 @@ package it.polimi.ingsw.RemoteView.Messages.Events.Requests;
 
 import it.polimi.ingsw.Controller.Actions.PlayerAction;
 
-import java.io.*;
+import java.io.Serial;
 
 public class PlayerActionRequest extends ClientRequest {
     @Serial

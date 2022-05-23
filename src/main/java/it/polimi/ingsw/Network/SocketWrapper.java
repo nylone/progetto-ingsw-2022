@@ -3,7 +3,9 @@ package it.polimi.ingsw.Network;
 import it.polimi.ingsw.Logger;
 import it.polimi.ingsw.RemoteView.Messages.Message;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
@@ -37,11 +39,6 @@ public class SocketWrapper {
         }
     }
 
-    public synchronized void sendMessage(Message message) throws IOException {
-        this.output.writeObject(message);
-        this.output.flush();
-    }
-
     public void close() {
         try {
             this.input.close();
@@ -51,6 +48,11 @@ public class SocketWrapper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public synchronized void sendMessage(Message message) throws IOException {
+        this.output.writeObject(message);
+        this.output.flush();
     }
 
     public InetAddress getInetAddress() {

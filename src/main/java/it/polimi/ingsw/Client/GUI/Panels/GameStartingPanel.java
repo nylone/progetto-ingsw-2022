@@ -103,7 +103,7 @@ public class GameStartingPanel extends JPanel {
                     switch (sw.awaitMessage()) {
                         case LobbyClosed ignored -> {
                             new PopupMessage("Lobby was closed by the server.\n" +
-                                    "Client is disconnecting from the server.",  "Lobby closed");
+                                    "Client is disconnecting from the server.", "Lobby closed");
                             sw.close();
                             new StartPanel(ctx);
                         }
@@ -119,7 +119,7 @@ public class GameStartingPanel extends JPanel {
                         }
                         case GameInit gameInit -> {
                             if (gameInit.getStatusCode() == StatusCode.Fail) {
-                                new PopupMessage("Failure",  gameInit.getErrorMessage());
+                                new PopupMessage("Failure", gameInit.getErrorMessage());
                             } else {
                                 new PopupMessage("Success", "Game is now starting");
                             }

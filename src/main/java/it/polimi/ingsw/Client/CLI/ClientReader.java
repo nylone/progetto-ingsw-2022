@@ -5,7 +5,6 @@ import it.polimi.ingsw.RemoteView.Messages.Message;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
-import javax.crypto.spec.PSource;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -67,15 +66,15 @@ public class ClientReader implements Runnable {
     private void AnalyzeResponse(Message serverResponse) throws Exception {
         switch (serverResponse) {
             case PlayerActionFeedback playerActionFeedback -> {
-                if(playerActionFeedback.getStatusCode() == StatusCode.Fail)
+                if (playerActionFeedback.getStatusCode() == StatusCode.Fail)
                     System.out.println(playerActionFeedback.getReport());
             }
             case Welcome welcome -> {
-                if(welcome.getStatusCode() == StatusCode.Success){
+                if (welcome.getStatusCode() == StatusCode.Success) {
                     ClearCLI();
                     System.out.println("Successfully connected to the server");
                     this.clientView.setConnected(true);
-                }else{
+                } else {
                     System.out.println("Something gone wrong, connection not established");
                 }
                 this.cyclicBarrier.await();
@@ -108,16 +107,16 @@ public class ClientReader implements Runnable {
                 }
             }
             case LobbyClosed lobbyClosed -> {
-                if(lobbyClosed.getStatusCode() == StatusCode.Success) {
-                    if(!this.clientView.isGameEnded()) {
+                if (lobbyClosed.getStatusCode() == StatusCode.Success) {
+                    if (!this.clientView.isGameEnded()) {
                         ClearCLI();
                         System.out.println("The lobby has been closed; you can now join or create a lobby");
                         this.clientView.disconnectView();
-                    }else{
+                    } else {
                         System.out.println("\nThe lobby has been closed; you can now join or create a lobby");
                         this.clientView.disconnectView();
                     }
-                }else System.out.println("Something gone wrong, lobby not closed");
+                } else System.out.println("Something gone wrong, lobby not closed");
             }
             case ClientConnected clientConnected -> {
                 if (clientConnected.getStatusCode() == StatusCode.Success) {
@@ -128,12 +127,12 @@ public class ClientReader implements Runnable {
             }
             case ClientDisconnected clientDisconnected -> {
                 if (clientDisconnected.getStatusCode() == StatusCode.Success) {
-                    if(!this.clientView.getGameStarted()) {
-                        System.out.println("player " + clientDisconnected.getLastDisconnectedNickname()+" has disconnected");
+                    if (!this.clientView.getGameStarted()) {
+                        System.out.println("player " + clientDisconnected.getLastDisconnectedNickname() + " has disconnected");
                         System.out.println("Players connected:");
                         clientDisconnected.getPlayers().forEach(System.out::println);
                     }
-                }else{
+                } else {
                     System.out.println("Something gone wrong, client not disconnected");
                 }
             }
@@ -154,15 +153,15 @@ public class ClientReader implements Runnable {
 
             }
             case GameOver gameOver -> {
-                if(gameOver.getStatusCode()==StatusCode.Success){
+                if (gameOver.getStatusCode() == StatusCode.Success) {
                     this.clientView.setGameEnded(true);
                     UpdateViewWin(gameOver.getWinners());
-                }else {
+                } else {
                     System.out.println("Something gone wrong, GameOver response not accepted");
                 }
             }
 
-            default -> System.out.println("Received an unexpected server's response:"+serverResponse.getClass());
+            default -> System.out.println("Received an unexpected server's response:" + serverResponse.getClass());
         }
     }
 

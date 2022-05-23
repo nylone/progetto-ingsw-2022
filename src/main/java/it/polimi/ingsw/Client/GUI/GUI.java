@@ -2,8 +2,6 @@ package it.polimi.ingsw.Client.GUI;
 
 import it.polimi.ingsw.Client.GUI.Panels.StartPanel;
 
-import javax.swing.*;
-
 public class GUI {
     public static void init() {
         new Thread(GUI::start).start();

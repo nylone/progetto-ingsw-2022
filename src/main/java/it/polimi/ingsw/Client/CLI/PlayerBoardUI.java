@@ -13,10 +13,10 @@ public class PlayerBoardUI {
         String screen = "";
         // Playerboard sections' titles. Change the argument of repeat() to further separate islands from playerboards
         screen = screen + "\n".repeat(1) + "Entrance:\t" + "Dining Room:\t\t" + "Teachers:\t" + "Towers:\t\t";
-        if(ctx.getGameMode() == GameMode.ADVANCED){
+        if (ctx.getGameMode() == GameMode.ADVANCED) {
             screen = screen + "Coins available:" + playerBoard.getCoinBalance() + "\n";
-        }else{
-            screen = screen+ "\n";
+        } else {
+            screen = screen + "\n";
         }
 
         String entrance = PlayerBoardUI.drawEntrance(playerBoard, ctx);
@@ -80,12 +80,10 @@ public class PlayerBoardUI {
         for (int i = 0; i < 9; i++) {
             if (i < p.getDiningRoomCount(pc)) {
                 diningRoom = diningRoom + Symbols.colorizeStudent(pc, Symbols.PAWN + " ");
-            }
-            else {
+            } else {
                 if (gameMode.equals(GameMode.ADVANCED) && (i + 1) % 3 == 0) {
                     diningRoom = diningRoom + Symbols.COIN + " ";
-                }
-                else diningRoom = diningRoom + "  ";
+                } else diningRoom = diningRoom + "  ";
             }
         }
         return diningRoom;

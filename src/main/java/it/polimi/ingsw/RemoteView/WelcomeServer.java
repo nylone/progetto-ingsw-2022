@@ -1,5 +1,6 @@
 package it.polimi.ingsw.RemoteView;
 
+import it.polimi.ingsw.Logger;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.Welcome;
@@ -8,7 +9,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import it.polimi.ingsw.Logger;
 
 /**
  * This is the main server thread. </br>

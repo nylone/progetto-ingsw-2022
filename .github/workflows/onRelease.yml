@@ -1,11 +1,11 @@
 name: auto publish
 on:
   workflow_run:
-    workflows: ["create release"]
+    workflows: [ "create release" ]
     types:
       - completed
   release:
-    types: [created]
+    types: [ created ]
 jobs:
   publish:
     runs-on: ubuntu-latest

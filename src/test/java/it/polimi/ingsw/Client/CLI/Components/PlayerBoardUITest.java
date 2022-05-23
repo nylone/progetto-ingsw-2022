@@ -5,7 +5,6 @@ import it.polimi.ingsw.Exceptions.Container.FullContainerException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.GameBoard;
-import it.polimi.ingsw.Model.PlayerBoard;
 import org.junit.Test;
 
 import java.util.Random;

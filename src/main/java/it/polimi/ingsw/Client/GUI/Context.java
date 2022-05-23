@@ -1,9 +1,6 @@
 package it.polimi.ingsw.Client.GUI;
 
 import it.polimi.ingsw.Network.SocketWrapper;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.LobbyInfo;
-
-import java.util.List;
 
 public class Context {
     private Window window;

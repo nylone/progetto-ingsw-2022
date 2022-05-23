@@ -18,8 +18,7 @@ public class GameUI {
             if (i < ctx.getMutableIslandField().getMutableGroups().size()) {
                 String currentIsland = IslandUI.draw(ctx.getMutableIslandField().getMutableGroups().get(i), ctx);
                 screen = screen + currentIsland + "\t".repeat(2); // '\t' is used for horizontal separation between islands and clouds
-            }
-            else screen = screen + IslandUI.drawEmptyRow(ctx) + "\t".repeat(2);
+            } else screen = screen + IslandUI.drawEmptyRow(ctx) + "\t".repeat(2);
 
             // This will print just one line of the clouds UI component
             screen = screen + clouds.substring(0, clouds.indexOf('\n') + 1);

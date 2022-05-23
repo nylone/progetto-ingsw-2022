@@ -20,10 +20,10 @@ public class Lobby {
     private final UUID id;
     private final String admin;
     private final boolean isPublic;
-    private boolean isClosed;
     private final int maxPlayers;
     private final List<String> players;
     private final Map<String, ClientEventHandler> playerEventSources;
+    private boolean isClosed;
     private GameHandler gameHandler;
 
     protected Lobby(UUID id, boolean isPublic, int maxPlayers, String admin) {
@@ -43,6 +43,18 @@ public class Lobby {
         gameHandler.executeAction(pa);
         if (gameHandler.getWinnerNicknames().isPresent()) {
             this.notifyPlayers(new GameOverEvent(gameHandler.getWinnerNicknames().get()));
+        }
+    }
+
+    public void notifyPlayers(ClientEvent event) {
+        synchronized (this.players) {
+            for (ClientEventHandler ceh : this.playerEventSources.values()) {
+                try {
+                    ceh.enqueue(event);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -88,22 +100,6 @@ public class Lobby {
         }
     }
 
-    public boolean isGameInProgress() {
-        return this.gameHandler != null;
-    }
-
-    public void notifyPlayers(ClientEvent event) {
-        synchronized (this.players) {
-            for (ClientEventHandler ceh : this.playerEventSources.values()) {
-                try {
-                    ceh.enqueue(event);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     public boolean addPlayer(String nick, ClientEventHandler playerChannel) {
         synchronized (this.players) {
             if (this.isClosed) {
@@ -141,6 +137,10 @@ public class Lobby {
                 this.close();
             }
         }
+    }
+
+    public boolean isGameInProgress() {
+        return this.gameHandler != null;
     }
 
     protected void close() {

@@ -26,9 +26,6 @@ public class StudentBag implements Serializable {
         this.isEmpty = false;
     }
 
-    public int getSize() {
-        return studentBag.size();
-    }
     public boolean isEmpty() {
         return this.isEmpty;
     }
@@ -42,6 +39,10 @@ public class StudentBag implements Serializable {
     public PawnColour extract() {
         if (this.getSize() == 1) this.isEmpty = true;
         return this.studentBag.remove(this.studentBag.size() - 1);
+    }
+
+    public int getSize() {
+        return studentBag.size();
     }
 
     public void appendAndShuffle(PawnColour colour) {

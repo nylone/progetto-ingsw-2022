@@ -5,11 +5,11 @@ import it.polimi.ingsw.Controller.Enums.MoveDestination;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Pair;
-import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.Enums.PawnColour;
+import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.*;
 
 import java.io.BufferedReader;
@@ -52,7 +52,7 @@ public class CliWriter implements Runnable {
         } catch (BrokenBarrierException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        if(!this.clientView.isConnected()){
+        if (!this.clientView.isConnected()) {
             return;
         }
 
@@ -74,7 +74,7 @@ public class CliWriter implements Runnable {
                 } else {
                     DeclarePlayerRequest dp = new DeclarePlayerRequest(nickname, password);
                     socketWrapper.sendMessage(dp);
-                     //wait for the server response
+                    //wait for the server response
                     cyclicBarrier.await();
                     if (this.clientView.isLogged()) {
                         break;
@@ -456,11 +456,11 @@ public class CliWriter implements Runnable {
             do {
                 try {
                     id = UUID.fromString(stdIn.readLine());
-                }catch (IllegalArgumentException e){
+                } catch (IllegalArgumentException e) {
                     System.out.println("UUID not valid, try again");
                     repeat = true;
                 }
-            }while (repeat);
+            } while (repeat);
             connectLobbyRequest = new ConnectLobbyRequest(id);
             socketWrapper.sendMessage(connectLobbyRequest);
 

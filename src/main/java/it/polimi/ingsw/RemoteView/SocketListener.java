@@ -1,11 +1,11 @@
 package it.polimi.ingsw.RemoteView;
 
+import it.polimi.ingsw.Logger;
 import it.polimi.ingsw.Network.SocketWrapper;
-import it.polimi.ingsw.RemoteView.Messages.Events.Requests.ClientRequest;
 import it.polimi.ingsw.RemoteView.Messages.Events.Internal.SocketClosedEvent;
+import it.polimi.ingsw.RemoteView.Messages.Events.Requests.ClientRequest;
 
 import java.io.IOException;
-import it.polimi.ingsw.Logger;
 
 public class SocketListener implements Runnable {
     private final SocketWrapper socket;

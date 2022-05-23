@@ -14,22 +14,6 @@ import java.util.concurrent.CyclicBarrier;
 
 public class CLI implements Runnable {
 
-    private static void OpenCLI(SocketWrapper socket, BufferedReader bufferedReader) {
-        CyclicBarrier cyclicBarrier = new CyclicBarrier(2);
-
-        ClientView clientView = new ClientView();
-
-        CliWriter cliWriter = new CliWriter(socket, clientView, bufferedReader, cyclicBarrier);
-
-        Thread writerThread = new Thread(cliWriter);
-        writerThread.start();
-
-        ClientReader ClientReader = new ClientReader(socket, clientView, cliWriter, cyclicBarrier);
-        Thread readerThread = new Thread(ClientReader);
-        readerThread.start();
-
-    }
-
     public void run() {
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
         Socket connection;
@@ -74,6 +58,32 @@ public class CLI implements Runnable {
         }
     }
 
+    private boolean isIp(String string) {
+        String[] parts = string.split("\\.", -1);
+        return parts.length == 4 // 4 parts
+                && Arrays.stream(parts)
+                .filter(this::isDecimal) // Only decimal numbers
+                .map(Integer::parseInt)
+                .filter(i -> i <= 255 && i >= 0) // Must be inside [0, 255]
+                .count() == 4; // 4 numerical parts inside [0, 255]
+    }
+
+    private static void OpenCLI(SocketWrapper socket, BufferedReader bufferedReader) {
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(2);
+
+        ClientView clientView = new ClientView();
+
+        CliWriter cliWriter = new CliWriter(socket, clientView, bufferedReader, cyclicBarrier);
+
+        Thread writerThread = new Thread(cliWriter);
+        writerThread.start();
+
+        ClientReader ClientReader = new ClientReader(socket, clientView, cliWriter, cyclicBarrier);
+        Thread readerThread = new Thread(ClientReader);
+        readerThread.start();
+
+    }
+
     /**
      * Check that a string represents a decimal number
      *
@@ -91,15 +101,5 @@ public class CLI implements Runnable {
             }
         }
         return true;
-    }
-
-    private boolean isIp(String string) {
-        String[] parts = string.split("\\.", -1);
-        return parts.length == 4 // 4 parts
-                && Arrays.stream(parts)
-                .filter(this::isDecimal) // Only decimal numbers
-                .map(Integer::parseInt)
-                .filter(i -> i <= 255 && i >= 0) // Must be inside [0, 255]
-                .count() == 4; // 4 numerical parts inside [0, 255]
     }
 }

@@ -45,8 +45,16 @@ public class ClientView {
         return gameEnded;
     }
 
+    public void setGameEnded(boolean gameEnded) {
+        this.gameEnded = gameEnded;
+    }
+
     public boolean isConnected() {
         return isConnected;
+    }
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
     }
 
     public boolean isInLobby() {
@@ -57,25 +65,8 @@ public class ClientView {
         return isLogged;
     }
 
-    public void setGameEnded(boolean gameEnded) {
-        this.gameEnded = gameEnded;
-    }
-
     public void setLogged(boolean logged) {
         isLogged = logged;
-    }
-
-
-    public void setConnected(boolean connected) {
-        isConnected = connected;
-    }
-
-    public void setIsInLobby(boolean inLobby) {
-        this.isInLobby = inLobby;
-    }
-
-    public void setGame(GameBoard game) {
-        this.gameBoard = game;
     }
 
     /**
@@ -129,7 +120,6 @@ public class ClientView {
         }
     }
 
-
     public String getNickname() {
         return Nickname;
     }
@@ -143,6 +133,14 @@ public class ClientView {
         setAdmin(null);
         setGame(null);
         setGameStarted(false);
+    }
+
+    public void setIsInLobby(boolean inLobby) {
+        this.isInLobby = inLobby;
+    }
+
+    public void setGame(GameBoard game) {
+        this.gameBoard = game;
     }
 
 }

@@ -23,7 +23,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exec.mainClass>Main</exec.mainClass>
-        <sonar.exclusions>**/Client/**/*, **/RemoteView/**/*, **/Misc/**/*, **/Exceptions/**/*, Main.java</sonar.exclusions>
+        <sonar.exclusions>**/Client/**/*, **/RemoteView/**/*, **/Misc/**/*, **/Exceptions/**/*, Main.java
+        </sonar.exclusions>
     </properties>
 
     <dependencies>
