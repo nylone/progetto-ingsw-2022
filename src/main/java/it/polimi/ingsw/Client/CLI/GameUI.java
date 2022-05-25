@@ -24,7 +24,6 @@ public class GameUI {
         // The background colour helpful to enhance contrast between black towers and the default black background console
         String screen = Symbols.BACKGROUND;
 
-        int line = 0;
         String clouds = CloudUI.draw(ctx); // draws the cloud component which will be stripped and printed line by line
         int groupsSize = ctx.getMutableIslandField().getMutableGroups().size();
         int rows = groupsSize < 8 ? 8 : groupsSize;
