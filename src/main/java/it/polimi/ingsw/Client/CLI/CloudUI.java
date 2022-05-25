@@ -45,7 +45,7 @@ public class CloudUI {
                     // Adds the content on the cloud on separate lines.
                     twoClouds = twoClouds + "\tCloud " + (c.getId() + 1) + "\n" + students;
                 }
-                clouds = twoClouds + "\n\n\n";
+                clouds = twoClouds;
             }
 
             case 3 -> { // three clouds will be print: the first pair next to each other, the third under the first
@@ -71,7 +71,7 @@ public class CloudUI {
                                             + Symbols.PAWN) + "\n" :
                                     "\t\t\n");
                 }
-                clouds = threeClouds + "\n\n\n";
+                clouds = threeClouds;
             }
 
             case 4 -> { // four clouds will be print as a grid
@@ -103,9 +103,12 @@ public class CloudUI {
                                             + Symbols.PAWN) + "\n" :
                                     "\t\t\n");
                 }
-                clouds = fourClouds + "\n\n\n";
+                clouds = fourClouds;
             }
         }
-        return clouds;
+        // Multiple newlines are used in conjunction with IslandUI component.
+        // If there are more islands than CloudUI component's lines we still want to print the islands stacked
+        // in GameUI.
+        return clouds + "\n\n\n";
     }
 }
