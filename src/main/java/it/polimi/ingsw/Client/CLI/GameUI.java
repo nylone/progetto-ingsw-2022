@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Client.CLI;
 
-import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
-import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Model.GameBoard;
 
@@ -13,7 +11,6 @@ import it.polimi.ingsw.Model.GameBoard;
  */
 public class GameUI {
 
-    public static String draw(GameBoard ctx) throws InvalidContainerIndexException, EmptyContainerException {
     /**
      * The console will be populated with all the island groups in the island field followed by the clouds on
      * the same multiline block.
