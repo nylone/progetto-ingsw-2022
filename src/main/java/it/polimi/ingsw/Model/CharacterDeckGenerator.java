@@ -6,20 +6,27 @@ import java.util.List;
 import java.util.Random;
 
 public class CharacterDeckGenerator {
-    public static List<CharacterCard> generateCardSet(GameBoard ctx) {
-        List<CharacterCard> fulldeck = Arrays.asList(new Card01(ctx),
-                new Card02(ctx),
-                new Card03(ctx),
-                new Card04(ctx),
-                new Card05(ctx),
-                new Card06(ctx),
-                new Card07(ctx),
-                new Card08(ctx),
-                new Card09(ctx),
-                new Card10(ctx),
-                new Card11(ctx),
-                new Card12(ctx));
-        Collections.shuffle(fulldeck, new Random(System.currentTimeMillis()));
-        return List.copyOf(fulldeck.subList(0, 3));
+    public static List<CharacterCard> generateCardSet(GameBoard context) {
+        List<CharacterCardGenerator> deck = Arrays.asList(
+                Card01::new,
+                Card02::new,
+                Card02::new,
+                Card03::new,
+                Card04::new,
+                Card05::new,
+                Card06::new,
+                Card07::new,
+                Card08::new,
+                Card09::new,
+                Card10::new,
+                Card11::new,
+                Card12::new);
+        Collections.shuffle(deck, new Random(System.currentTimeMillis()));
+        return deck.subList(0, 3).stream()
+                .map(gen -> gen.build(context)).toList();
     }
+}
+
+interface CharacterCardGenerator {
+    CharacterCard build(GameBoard ctx);
 }
