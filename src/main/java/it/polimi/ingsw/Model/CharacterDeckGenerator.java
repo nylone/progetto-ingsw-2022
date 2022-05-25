@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Random;
 
 public class CharacterDeckGenerator {
+    private interface CharacterCardGenerator {
+        CharacterCard build(GameBoard ctx);
+    }
     public static List<CharacterCard> generateCardSet(GameBoard context) {
         List<CharacterCardGenerator> deck = Arrays.asList(
                 Card01::new,
@@ -25,8 +28,4 @@ public class CharacterDeckGenerator {
         return deck.subList(0, 3).stream()
                 .map(gen -> gen.build(context)).toList();
     }
-}
-
-interface CharacterCardGenerator {
-    CharacterCard build(GameBoard ctx);
 }
