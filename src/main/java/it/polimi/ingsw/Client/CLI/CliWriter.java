@@ -277,10 +277,8 @@ public class CliWriter implements Runnable {
                     pairs.add(new Pair<>(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), (PawnColour) card07.getState().get(cardIndex)));
                     //repeat the loop until the user has selected 3 pairs or pressed 'enter'
                 } while (pairs.size() < 3);
-                //create an array having the same size as the list
-                Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
                 //create playCharacterCard's controller action
-                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.of(pairs.toArray(pairsArray)));
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.of(pairs));
                 //create playerActionRequest message to send to the server
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
@@ -347,10 +345,12 @@ public class CliWriter implements Runnable {
                     } while (repeat);
                     //repeat the loop until the user has selected 2 pairs or pressed 'enter'
                 } while (pairs.size() < 2);
-                //create an array having the same size as the list
-                Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
                 //create playCharacterCard's controller action
-                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, Optional.empty(), Optional.empty(), Optional.of(pairs.toArray(pairsArray)));
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(),
+                        selected,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.of(pairs));
                 //create playerActionRequest message to send to the server
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }

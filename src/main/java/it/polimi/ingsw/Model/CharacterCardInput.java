@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 public class CharacterCardInput implements Serializable {
     @Serial
@@ -13,7 +14,7 @@ public class CharacterCardInput implements Serializable {
     private final PlayerBoard caller;
     private Island targetIsland;
     private PawnColour targetPawn;
-    private Pair<PawnColour, PawnColour>[] targetPawnPairs;
+    private List<Pair<PawnColour, PawnColour>> targetPawnPairs;
 
     public CharacterCardInput(PlayerBoard caller) {
         this.caller = caller;
@@ -41,12 +42,12 @@ public class CharacterCardInput implements Serializable {
         this.targetPawn = targetPawn;
     }
 
-    public Optional<Pair<PawnColour, PawnColour>[]> getTargetPawnPairs() {
+    public Optional<List<Pair<PawnColour, PawnColour>>> getTargetPawnPairs() {
         if (this.targetPawnPairs == null) return Optional.empty();
         else return Optional.of(targetPawnPairs);
     }
 
-    public void setTargetPawnPairs(Pair<PawnColour, PawnColour>[] targetPawnPairs) {
+    public void setTargetPawnPairs(List<Pair<PawnColour, PawnColour>> targetPawnPairs) {
         this.targetPawnPairs = targetPawnPairs;
     }
 }

@@ -27,8 +27,7 @@ public class Card10Test {
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
         pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.RED));
         pairs.add(new Pair<>(pb.getEntranceStudents().get(1).get(), PawnColour.YELLOW));
-        Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
-        input.setTargetPawnPairs(pairs.toArray(pairsArray));
+        input.setTargetPawnPairs(pairs);
         if (card10.checkInput(input)) card10.unsafeUseCard(input);
 
         assertTrue(pb.getDiningRoomCount(pairs.get(0).getFirst()) == 1 || pb.getDiningRoomCount(pairs.get(0).getFirst()) == 2); //equals 2 if students taken from entrance have the same colour
@@ -68,8 +67,7 @@ public class Card10Test {
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
         pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.RED));
         pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.YELLOW));
-        Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
-        input.setTargetPawnPairs(pairs.toArray(pairsArray));
+        input.setTargetPawnPairs(pairs);
         if (card10.checkInput(input)) card10.unsafeUseCard(input);
     }
 
@@ -85,8 +83,7 @@ public class Card10Test {
         pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.BLUE));
         for (int i = 0; i < 9; i++)
             pb.addStudentToDiningRoom(pb.getEntranceStudents().get(0).get());
-        Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
-        input.setTargetPawnPairs(pairs.toArray(pairsArray));
+        input.setTargetPawnPairs(pairs);
         if (card10.checkInput(input)) card10.unsafeUseCard(input);
     }
 }

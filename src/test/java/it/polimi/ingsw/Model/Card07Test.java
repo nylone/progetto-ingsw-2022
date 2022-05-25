@@ -28,8 +28,7 @@ public class Card07Test {
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
         pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), (PawnColour) card.getState().get(0)));
         pairs.add(new Pair<>(pb.getEntranceStudents().get(1).get(), (PawnColour) card.getState().get(1)));
-        Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
-        input.setTargetPawnPairs(pairs.toArray(pairsArray));
+        input.setTargetPawnPairs(pairs);
 
         if (card.checkInput(input)) card.unsafeUseCard(input);
 
@@ -55,8 +54,7 @@ public class Card07Test {
         pb.removeStudentFromEntrance(1);
         pairs.add(new Pair<>(pb.getEntranceStudents().get(2).get(), null));
         pb.removeStudentFromEntrance(2);
-        Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
-        input.setTargetPawnPairs(pairs.toArray(pairsArray));
+        input.setTargetPawnPairs(pairs);
         if (card.checkInput(input)) card.unsafeUseCard(input);
     }
 }

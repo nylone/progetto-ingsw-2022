@@ -25,14 +25,14 @@ public class PlayCharacterCard extends PlayerAction {
     private final int selectedCard; // mandatory
     private final Optional<Integer> optTargetIsland;
     private final Optional<PawnColour> optTargetPawn;
-    private final Optional<Pair<PawnColour, PawnColour>[]> optTargetPawnPairs;
+    private final Optional<List<Pair<PawnColour, PawnColour>>> optTargetPawnPairs;
 
     public PlayCharacterCard(
             int playerBoardId,
             int selectedCard,
             Optional<Integer> optTargetIsland,
             Optional<PawnColour> optTargetPawn,
-            Optional<Pair<PawnColour, PawnColour>[]> optTargetPawnPairs) {
+            Optional<List<Pair<PawnColour, PawnColour>>> optTargetPawnPairs) {
         super(playerBoardId);
         this.selectedCard = selectedCard;
         this.optTargetIsland = optTargetIsland;

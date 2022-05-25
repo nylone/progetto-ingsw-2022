@@ -9,10 +9,7 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
 
 import java.io.Serial;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.*;
 
 import static it.polimi.ingsw.Constants.CONTAINER_NAME_ENTRANCE;
 import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_PAIRS;
@@ -46,14 +43,14 @@ public class Card07 extends StatefulEffect {
 
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from card
-        Optional<Pair<PawnColour, PawnColour>[]> optionalPawnPair = input.getTargetPawnPairs();
+        Optional<List<Pair<PawnColour, PawnColour>>> optionalPawnPair = input.getTargetPawnPairs();
         PlayerBoard playerBoard = input.getCaller();
         // make sure the pair is formatted properly
         if (
                 optionalPawnPair.isEmpty() || // target pawn pairs was set as parameter
-                        optionalPawnPair.get().length == 0 || // target pawn pairs is not empty
-                        optionalPawnPair.get().length > 3 || // target pawn pairs are not over the pair limit of 2 swaps
-                        Arrays.stream(optionalPawnPair.get()).anyMatch(p -> p.getFirst() == null || p.getSecond() == null) // no null values in pair
+                        optionalPawnPair.get().size() == 0 || // target pawn pairs is not empty
+                        optionalPawnPair.get().size() > 3 || // target pawn pairs are not over the pair limit of 2 swaps
+                        optionalPawnPair.get().stream().anyMatch(p -> p.getFirst() == null || p.getSecond() == null) // no null values in pair
         ) {
             // in case throw exception for invalid element in input
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
@@ -61,7 +58,7 @@ public class Card07 extends StatefulEffect {
 
 
         // explode pawnpairs into respective arrays of elements
-        Pair<PawnColour, PawnColour>[] pawnPairs = optionalPawnPair.get();
+        List<Pair<PawnColour, PawnColour>> pawnPairs = optionalPawnPair.get();
         // first count how many students of each colour the user picked
         Map<PawnColour, Integer> firstMap = new EnumMap<>(PawnColour.class); // counts user entrance selected colours
         Map<PawnColour, Integer> secondMap = new EnumMap<>(PawnColour.class); // counts card state selected colours
@@ -93,9 +90,9 @@ public class Card07 extends StatefulEffect {
         if (!canCollectionFit(cardMap, secondMap)) {
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
         }
-        if (playerBoard.getEntranceSpaceLeft() + pawnPairs.length >= input.getCaller().getEntranceSize()) {
+        if (playerBoard.getEntranceSpaceLeft() + pawnPairs.size() >= input.getCaller().getEntranceSize()) {
             throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
-                    CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.length
+                    CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
                             + "pawns");
         }
 

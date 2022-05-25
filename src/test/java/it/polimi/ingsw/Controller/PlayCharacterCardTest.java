@@ -165,8 +165,7 @@ public class PlayCharacterCardTest {
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
         pairs.add(new Pair<>(player.getEntranceStudents().get(0).get(), (PawnColour) cardStateful.getState().get(0)));
         pairs.add(new Pair<>(player.getEntranceStudents().get(1).get(), (PawnColour) cardStateful.getState().get(1)));
-        Pair<PawnColour, PawnColour>[] pairsArray = new Pair[pairs.size()];
-        playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.of(pairs.toArray(pairsArray)));
+        playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.of(pairs));
         gh.executeAction(playCharacterCard);
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
@@ -243,10 +242,9 @@ public class PlayCharacterCardTest {
         pairs = new ArrayList<>();
         pairs.add(new Pair<>(player.getEntranceStudents().get(4).get(), firstPawnDiningRoom));
         pairs.add(new Pair<>(player.getEntranceStudents().get(5).get(), secondPawnDiningRoom));
-        pairsArray = new Pair[pairs.size()];
         int firstCount = player.getDiningRoomCount(pairs.get(0).getFirst());
         int secondCount = player.getDiningRoomCount(pairs.get(1).getFirst());
-        playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.of(pairs.toArray(pairsArray)));
+        playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.of(pairs));
         gh.executeAction(playCharacterCard);
         gameBoard = gh.getModelCopy();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();

@@ -29,20 +29,20 @@ public class Card10 extends StatelessEffect {
     @Override
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from diningroom
-        Optional<Pair<PawnColour, PawnColour>[]> optionalPawnPair = input.getTargetPawnPairs();
+        Optional<List<Pair<PawnColour, PawnColour>>> optionalPawnPair = input.getTargetPawnPairs();
         // make sure that:
         if (
                 optionalPawnPair.isEmpty() || // target pawn pairs was set as parameter
-                        optionalPawnPair.get().length == 0 || // target pawn pairs is not empty
-                        optionalPawnPair.get().length > 2 || // target pawn pairs are not over the pair limit of 2 swaps
-                        Arrays.stream(optionalPawnPair.get()).anyMatch(p -> p.getFirst() == null || p.getSecond() == null) // no null values in pair
+                        //optionalPawnPair.get().size() == 0 || // target pawn pairs is not empty (technically allowed)
+                        optionalPawnPair.get().size() > 2 || // target pawn pairs are not over the pair limit of 2 swaps
+                        optionalPawnPair.get().stream().anyMatch(p -> p.getFirst() == null || p.getSecond() == null) // no null values in pair
         ) {
             // in case throw exception for invalid element in input
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
         }
         // explode pawnpairs into respective arrays of elements
-        Pair<PawnColour, PawnColour>[] pawnPairs = optionalPawnPair.get();
-        List<PawnColour> fromEntrance = new ArrayList<>(pawnPairs.length);
+        List<Pair<PawnColour, PawnColour>> pawnPairs = optionalPawnPair.get();
+        List<PawnColour> fromEntrance = new ArrayList<>(pawnPairs.size());
         // first count how many students of each colour the user picked
         Map<PawnColour, Integer> firstMap = new EnumMap<>(PawnColour.class); // counts user entrance selected colours
         Map<PawnColour, Integer> secondMap = new EnumMap<>(PawnColour.class); // counts diningroom selected colours
@@ -80,9 +80,9 @@ public class Card10 extends StatelessEffect {
         }
 
         // validate size of entrance
-        if (playerBoard.getEntranceSpaceLeft() + pawnPairs.length >= input.getCaller().getEntranceSize()) {
+        if (playerBoard.getEntranceSpaceLeft() + pawnPairs.size() >= input.getCaller().getEntranceSize()) {
             throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
-                    CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.length
+                    CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
                             + "pawns");
         }
         // validate size of dining room
@@ -91,7 +91,7 @@ public class Card10 extends StatelessEffect {
                 playerBoard.removeStudentsFromDiningRoom(p, secondMap.get(p));
             } catch (EmptyContainerException e) {
                 throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
-                        CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.length
+                        CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
                                 + "pawns");
             }
         }
@@ -102,12 +102,12 @@ public class Card10 extends StatelessEffect {
                         playerBoard.addStudentToDiningRoom(p);
                 } catch (FullContainerException e) {
                     throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
-                            CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.length
+                            CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
                                     + "pawns");
                 }
             }
             throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
-                    CONTAINER_NAME_DININGROOM + "can't contain " + pawnPairs.length
+                    CONTAINER_NAME_DININGROOM + "can't contain " + pawnPairs.size()
                             + "elements without overflowing on one of its lanes.");
         }
         for (PawnColour p : secondMap.keySet()) {
@@ -116,7 +116,7 @@ public class Card10 extends StatelessEffect {
                     playerBoard.addStudentToDiningRoom(p);
             } catch (FullContainerException e) {
                 throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
-                        CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.length
+                        CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
                                 + "pawns");
             }
         }
@@ -126,9 +126,9 @@ public class Card10 extends StatelessEffect {
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         // explode pawnpairs into respective arrays of elements
-        Pair<PawnColour, PawnColour>[] pawnPairs = input.getTargetPawnPairs().get();
-        List<PawnColour> fromEntrance = new ArrayList<>(pawnPairs.length);
-        List<PawnColour> fromDiningRoom = new ArrayList<>(pawnPairs.length);
+        List<Pair<PawnColour, PawnColour>> pawnPairs = input.getTargetPawnPairs().get();
+        List<PawnColour> fromEntrance = new ArrayList<>(pawnPairs.size());
+        List<PawnColour> fromDiningRoom = new ArrayList<>(pawnPairs.size());
         PlayerBoard playerBoard = input.getCaller();
         for (Pair<PawnColour, PawnColour> p : pawnPairs) {
             fromEntrance.add(p.getFirst());
