@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Client.CLI;
 
-import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
-import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -170,9 +168,9 @@ public class ClientView {
     }
 
     /**
-     * Executes all the printing-methods (printIslandField... //todo complete)
+     * Prints all gameBoard's element that the user is allowed to see (Islands, clouds, playerBoards and characterCards)
      */
-    public void printView() throws InvalidContainerIndexException, EmptyContainerException {
+    public void printView() {
         printIslandField();
         System.out.println("\n");
         printGameBoards();
@@ -180,36 +178,51 @@ public class ClientView {
     }
 
     /**
-     * This method prints the islandField (islands and clouds)
+     * Support method responsible for printing all field's components (islands and clouds)
      */
-    private void printIslandField() throws InvalidContainerIndexException, EmptyContainerException {
+    private void printIslandField() {
+        //print GameBoard
         System.out.println(GameUI.draw(this.gameBoard));
     }
 
+    /**
+     * Support method responsible for printing all players' PlayerBoards
+     */
     private void printGameBoards() {
         System.out.println("PLAYERBOARDS");
+        //simple loop to print playerBoard and its Owner's nickname
         for (PlayerBoard pb : this.gameBoard.getMutablePlayerBoards()) {
             if (this.getNickname().equals(pb.getNickname())) {
                 System.out.println("Your Playerboard:");
             } else {
                 System.out.println(pb.getNickname() + "'s Playerboard");
             }
+            //print PlayerBoard
             System.out.println(PlayerBoardUI.drawPlayerBoard(pb, this.gameBoard));
             System.out.println("\n");
         }
+        //print current and next player
         System.out.println(InfoUI.draw(this.gameBoard, this.Nickname));
     }
 
+    /**
+     * Support method responsible for printing the 3 characterCards
+     */
     private void printCharacterCard() {
+        //Print only if the gameMode is Advanced
         if (this.gameBoard.getGameMode() == GameMode.SIMPLE) return;
         System.out.println("Available CharacterCards:");
         for (CharacterCard characterCard : this.gameBoard.getCharacterCards()) {
+            //print CharacterCard's number and cost
             System.out.print("CharacterCard number:" + characterCard.getId() + " cost:" + characterCard.getCost());
+            //only if the CharacterCard has a stateful effect then print it's content
             if (characterCard instanceof StatefulEffect) {
                 System.out.print("\t");
                 for (Object o : ((StatefulEffect) characterCard).getState()) {
                     switch (o) {
+                        //if the content is a NoENtryTile then print 'X'
                         case NoEntryTile ignored -> System.out.print(" X ");
+                        //if the content is a pawn then print it's colour
                         case PawnColour pawnColour ->
                                 System.out.print(Symbols.colorizeStudent(pawnColour, "  " + Symbols.PAWN));
                         case default -> System.out.println("Card's object not valid");
@@ -220,6 +233,9 @@ public class ClientView {
         }
     }
 
+    /**
+     * Method to disconnect the view from lobby (when the game ends or is closed for any reason)
+     */
     public void disconnectView() {
         setIsInLobby(false);
         setAdmin(null);

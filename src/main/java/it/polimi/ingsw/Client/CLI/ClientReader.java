@@ -22,25 +22,27 @@ public class ClientReader implements Runnable {
     /**
      * The reference to the CLIWriter class (used only in CLI mode)
      */
-    private final CliWriter cli;
 
     CyclicBarrier cyclicBarrier;
 
 
     //CLI-only constructor
-    public ClientReader(SocketWrapper socketWrapper, ClientView clientView, CliWriter cli, CyclicBarrier cyclicBarrier) {
+    public ClientReader(SocketWrapper socketWrapper, ClientView clientView, CyclicBarrier cyclicBarrier) {
         this.socketWrapper = socketWrapper;
         this.clientView = clientView;
-        this.cli = cli;
         this.cyclicBarrier = cyclicBarrier;
     }
 
+    /**
+     * Keep listening the socket
+     */
     @Override
     public void run() {
-
+        //create Message object
         Message response;
         while (true) {
             try {
+                //get message from Server
                 response = socketWrapper.awaitMessage();
             } catch (IOException ex) {
                 System.err.println("Server connection lost.");
@@ -63,79 +65,110 @@ public class ClientReader implements Runnable {
 
     }
 
+    /**
+     * Method responsible for analyze Server's response and modify client's view basing on response
+     * Furthermore it prints some useful information to update the player
+     * @param serverResponse message received from Server
+     * @throws Exception Necessary to handle synchronization and view's update's exceptions
+     */
     private void AnalyzeResponse(Message serverResponse) throws Exception {
         switch (serverResponse) {
             case PlayerActionFeedback playerActionFeedback -> {
                 if (playerActionFeedback.getStatusCode() == StatusCode.Fail)
                     System.out.println(playerActionFeedback.getReport());
             }
+            //Server's response received after requesting a connection
             case Welcome welcome -> {
+                //check if Client was able to connect to Server
                 if (welcome.getStatusCode() == StatusCode.Success) {
                     ClearCLI();
                     System.out.println("Successfully connected to the server");
+                    //notify view that Client has connected
                     this.clientView.setConnected(true);
                 } else {
                     System.out.println("Something gone wrong, connection not established");
                 }
+                //Notify CliWriter thread that Client has connected
                 this.cyclicBarrier.await();
             }
+            //Server's responde received after sending a DeclarePlayerRequest
             case LobbyAccept response -> {
+                //check if client was able to log the Server
                 if (response.getStatusCode() == StatusCode.Success) {
+                    //notify view that Client has logged
                     this.clientView.setLogged(true);
-                    this.cyclicBarrier.await();
                     System.out.println("User accepted\n");
+                    //check for openLobbies availability
                     if (response.getPublicLobbies().size() == 0) {
                         System.out.println("No open lobbies available");
                     } else {
                         System.out.println("Available open lobbies:");
+                        //print available openLobbies
                         response.getPublicLobbies().forEach(lobbyInfo -> System.out.println("ID: " + lobbyInfo.getID() + " admin: " + lobbyInfo.getAdmin()));
                     }
                     System.out.println("type 'showActions' for a list of available actions during all the game");
                 } else {
                     System.out.println("Password wrong for this username, try again or change Username");
-                    this.cyclicBarrier.await();
                 }
+                //Notify CliWriter thread that now Client has logged
+                this.cyclicBarrier.await();
             }
+            //Server's response received after sending a joinLobbyRequest or CreateLobbyRequest
             case LobbyRedirect response -> {
-                UUID id = response.getLobbyID();
+                //check if client was able to join the selected lobby
                 if (response.getStatusCode() == StatusCode.Success) {
+                    //get Lobby's UUID
+                    UUID id = response.getLobbyID();
                     System.out.println("Joined to lobby, id: " + id + " admin:" + response.getAdmin());
+                    //update lobby's Admin's nickname inside Client's view
                     clientView.setAdmin(response.getAdmin());
+                    //notify Client's view that Client has logged
                     clientView.setIsInLobby(true);
                 } else {
                     System.out.println("Something gone wrong, lobby not joined");
                 }
             }
+            //Server's response received when the lobby has been closed for some reason
             case LobbyClosed lobbyClosed -> {
+                //check if the lobby has been closed
                 if (lobbyClosed.getStatusCode() == StatusCode.Success) {
                     if (!this.clientView.isGameEnded()) {
+                        //if the lobby was closed before the end of the game clear cli before print any other message
                         ClearCLI();
                         System.out.println("The lobby has been closed; you can now join or create a lobby");
+                        //notify lobby that Client left lobby and game
                         this.clientView.disconnectView();
                     } else {
                         System.out.println("\nThe lobby has been closed; you can now join or create a lobby");
+                        //notify lobby that Client left lobby and game
                         this.clientView.disconnectView();
                     }
                 } else System.out.println("Something gone wrong, lobby not closed");
             }
+            //Server's response received when one player connected to the Lobby
             case ClientConnected clientConnected -> {
                 if (clientConnected.getStatusCode() == StatusCode.Success) {
                     System.out.println("player " + clientConnected.getLastConnectedNickname() + " has connected");
                     System.out.println("Players connected:");
+                    //print all connected players' nicknames
                     clientConnected.getPlayers().forEach(System.out::println);
                 }
             }
+            //Server's response received when one player disconnected from the Lobby
             case ClientDisconnected clientDisconnected -> {
                 if (clientDisconnected.getStatusCode() == StatusCode.Success) {
+                    //Only if the disconnection takes place before the game has started other waiting players should be notified of the disconnection
                     if (!this.clientView.getGameStarted()) {
                         System.out.println("player " + clientDisconnected.getLastDisconnectedNickname() + " has disconnected");
                         System.out.println("Players connected:");
+                        //print all connected players' nicknames
                         clientDisconnected.getPlayers().forEach(System.out::println);
                     }
                 } else {
                     System.out.println("Something gone wrong, client not disconnected");
                 }
             }
+            //Server's response received when Admin is starting the game
             case GameInit response -> {
                 if (response.getStatusCode() == StatusCode.Fail) {
                     System.out.println(response.getErrorMessage());
@@ -143,17 +176,22 @@ public class ClientReader implements Runnable {
                     System.out.println("Game is starting...");
                 }
             }
+            //Server's response received when game has started
             case GameStarted ignored -> {
                 System.out.println("The game has started");
+                //notify Client's view that the game has started
                 clientView.setGameStarted(true);
             }
+            //Server's response containing updated model to show
             case ModelUpdated modelUpdated -> {
+                //Update lobby's model
                 this.clientView.setGame(modelUpdated.getModel());
                 UpdateView();
-
             }
+            //Server's response received when the game ended after a victory
             case GameOver gameOver -> {
                 if (gameOver.getStatusCode() == StatusCode.Success) {
+                    //notify Client's view that the game has ended
                     this.clientView.setGameEnded(true);
                     UpdateViewWin(gameOver.getWinners());
                 } else {
@@ -166,7 +204,7 @@ public class ClientReader implements Runnable {
     }
 
     /**
-     * This method clears Client's console to reprint it after an update
+     * This method clears Client's console
      */
 
     private void ClearCLI() {
@@ -182,11 +220,18 @@ public class ClientReader implements Runnable {
         }
     }
 
-    private void UpdateView() throws Exception {
+    /**
+     * Support method responsible for clearing CLI and print updated model by using view's printing methods, not used to print winners
+     */
+    private void UpdateView() {
         ClearCLI();
         this.clientView.printView();
     }
 
+    /**
+     * Support method responsible for printing game's winners
+     * @param winners list of String containing winners' nicknames
+     */
     private void UpdateViewWin(List<String> winners) {
         ClearCLI();
         System.out.println("\n" +
@@ -198,9 +243,8 @@ public class ClientReader implements Runnable {
                 "                                                                                           \n");
 
         System.out.println("The winner is/are:");
-        winners.stream().forEach(s -> {
-            System.out.println(s);
-        });
+        //print winners
+        winners.forEach(System.out::println);
     }
 
 }
