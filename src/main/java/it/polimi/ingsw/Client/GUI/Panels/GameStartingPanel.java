@@ -6,6 +6,7 @@ import it.polimi.ingsw.Client.GUI.Window;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.RemoteView.Messages.Events.Requests.StartGameRequest;
+import it.polimi.ingsw.RemoteView.Messages.Message;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
 import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
 
@@ -100,7 +101,8 @@ public class GameStartingPanel extends JPanel {
         new Thread(() -> {
             while (true) {
                 try {
-                    switch (sw.awaitMessage()) {
+                    Message input = sw.awaitMessage();
+                    switch (input) {
                         case LobbyClosed ignored -> {
                             new PopupMessage("Lobby was closed by the server.\n" +
                                     "Client is disconnecting from the server.", "Lobby closed");
@@ -121,14 +123,15 @@ public class GameStartingPanel extends JPanel {
                             if (gameInit.getStatusCode() == StatusCode.Fail) {
                                 new PopupMessage("Failure", gameInit.getErrorMessage());
                             } else {
-                                new PopupMessage("Success", "Game is now starting");
+                                new PopupMessage("Success", "Game is starting");
                             }
                         }
                         case GameStarted ignored -> {
-                            new PopupMessage("unimplemented", "unimplemented");
+                            new PopupMessage("Success", "Game has started");
+                            new GameInProgressPanel(ctx);
                             return;
                         }
-                        default -> throw new IllegalStateException("Unexpected value: " + sw.awaitMessage());
+                        default -> throw new IllegalStateException("Unexpected value: " + input.getClass());
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);

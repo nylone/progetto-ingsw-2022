@@ -58,11 +58,15 @@ public class Lobby {
         }
     }
 
-    public boolean verifyAction(PlayerAction pa, String nickname) throws InvalidContainerIndexException, OperationException {
+    public boolean verifyPlayer(PlayerAction pa, String nickname) throws OperationException {
         if (gameHandler == null) {
             throw new ForbiddenOperationException("Lobby is in waiting state, no game is running");
         }
-        return gameHandler.getPlayerBoardIDFromNickname(nickname) == pa.getPlayerBoardId();
+        try {
+            return gameHandler.getPlayerBoardIDFromNickname(nickname) == pa.getPlayerBoardId();
+        } catch (InvalidContainerIndexException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public UUID getId() {
@@ -154,7 +158,7 @@ public class Lobby {
         synchronized (this.players) {
             notifyPlayers(new GameStartEvent());
             this.gameHandler = new GameHandler(gameMode, this.players.toArray(new String[0]));
-            this.gameHandler.subscribeLobby(this);
+            this.gameHandler.addEventListenerToModel(this);
         }
     }
 

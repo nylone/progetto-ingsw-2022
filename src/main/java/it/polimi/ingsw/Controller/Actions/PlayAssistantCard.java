@@ -27,7 +27,7 @@ public class PlayAssistantCard extends PlayerAction {
     }
 
     @Override
-    protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    public boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         TurnOrder turnOrder = ctx.getMutableTurnOrder();
         if (!(this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getMutableAssistantCards().size() - 1)) {

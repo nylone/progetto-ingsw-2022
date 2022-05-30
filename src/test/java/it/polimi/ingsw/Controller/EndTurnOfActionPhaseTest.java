@@ -20,12 +20,12 @@ public class EndTurnOfActionPhaseTest {
     @Test
     public void testExecute() throws Exception {
         GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -37,14 +37,14 @@ public class EndTurnOfActionPhaseTest {
                 break;
             }
         }
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         //move 3 pawns
         for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
-            gameBoard = gh.getModelCopy();
+            gameBoard = gh.debugModelReference();
             player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         }
         //move Mother Nature
@@ -53,18 +53,18 @@ public class EndTurnOfActionPhaseTest {
         PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
         // act
         gh.executeAction(action);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         // assert
         int selectedCloud = Utils.random(gameBoard.getClouds()).getId();
         ChooseCloudTile chooseCloudTile = new ChooseCloudTile(player.getId(), selectedCloud);
         // act
         gh.executeAction(chooseCloudTile);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
 
         EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(player.getId());
         gh.executeAction(endTurnOfActionPhase);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         //asserts
         assertEquals(gameBoard.getClouds().stream().filter(cloud -> cloud.getContents().size() == 3).count(), gameBoard.getClouds().size() - 1);
         //assertTrue();
@@ -74,12 +74,12 @@ public class EndTurnOfActionPhaseTest {
     @Test
     public void NoChooseCloudTileTest() throws Exception {
         GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -91,14 +91,14 @@ public class EndTurnOfActionPhaseTest {
                 break;
             }
         }
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         //move 3 pawns
         for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
-            gameBoard = gh.getModelCopy();
+            gameBoard = gh.debugModelReference();
             player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         }
         //move Mother Nature
@@ -120,12 +120,12 @@ public class EndTurnOfActionPhaseTest {
     @Test
     public void OutOfTurnAction() throws Exception {
         GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -137,14 +137,14 @@ public class EndTurnOfActionPhaseTest {
                 break;
             }
         }
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         //move 3 pawns
         for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
-            gameBoard = gh.getModelCopy();
+            gameBoard = gh.debugModelReference();
             player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         }
         //move Mother Nature
@@ -153,13 +153,13 @@ public class EndTurnOfActionPhaseTest {
         PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
         // act
         gh.executeAction(action);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         // assert
         int selectedCloud = Utils.random(gameBoard.getClouds()).getId();
         ChooseCloudTile chooseCloudTile = new ChooseCloudTile(player.getId(), selectedCloud);
         // act
         gh.executeAction(chooseCloudTile);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         gameBoard.getMutableTurnOrder().stepToNextPlayer();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
 

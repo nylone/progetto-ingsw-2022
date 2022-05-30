@@ -9,6 +9,7 @@ import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.RemoteView.Lobby;
 
@@ -21,7 +22,7 @@ import java.util.List;
  */
 public class GameHandler {
     private final List<PlayerAction> history;
-    private final GameBoard model;
+    private final Model modelWrapper;
 
     /**
      * Generates a new instance of Game. This is the default method to call to create a game.
@@ -32,7 +33,7 @@ public class GameHandler {
     public GameHandler(GameMode gameMode, String... players) throws InputValidationException {
         if (players.length > 1 && players.length <= 4) {
             this.history = new ArrayList<>(6);
-            this.model = new GameBoard(gameMode, players);
+            this.modelWrapper = new Model(gameMode, players);
         } else {
             throw new GenericInputValidationException("Players", "The number of players must be 2, 3 or 4.\n" +
                     "Players received: " + players.length);
@@ -49,12 +50,11 @@ public class GameHandler {
      */
     GameHandler(GameBoard game, List<PlayerAction> history) {
         this.history = history;
-        this.model = game;
+        this.modelWrapper = new Model(game);
     }
 
-    public void subscribeLobby(Lobby lobby) {
-        this.model.subscribeLobby(lobby);
-        this.model.notifyLobby();
+    public void addEventListenerToModel(Lobby lobby) {
+        this.modelWrapper.addModelUpdateListener(lobby);
     }
 
     /**
@@ -66,17 +66,19 @@ public class GameHandler {
      *                                  the model is guaranteed to not have been modified.
      */
     public synchronized void executeAction(PlayerAction action) throws InputValidationException {
-        if (model.isGameOver()) {
-            throw new GenericInputValidationException("GameHandler", "Game is over, action cannot be executed");
+        GameBoard gameBoard = this.modelWrapper.readModel().getGameBoard();
+        action.validate(this.getHistory(), gameBoard); // todo validate should return optionals containing validation exceptions
+        // as right now we are abusing the hell out of exception throwing
+        try {
+            this.modelWrapper.editModel(action::unsafeExecute);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        action.safeExecute(getHistory(), model);
-        this.model.notifyLobby();
 
+        history.add(action);
         if (action.getClass() == EndTurnOfActionPhase.class || action.getClass() == PlayAssistantCard.class) {
             this.history.clear();
-            return;
         }
-        history.add(action);
     }
 
     /**
@@ -94,19 +96,22 @@ public class GameHandler {
      * <b>Note:</b> once called, all changes to the original GameBoard object won't be reflected in the instance returned
      * by this method
      */
-    public GameBoard getModelCopy() {
-        return model.getModelCopy();
+    @Deprecated
+    GameBoard debugModelReference() {
+        return modelWrapper.debugGameBoardReference();
     }
 
     public int getPlayerBoardIDFromNickname(String nickname) throws InvalidContainerIndexException {
-        return this.model.getMutablePlayerBoardByNickname(nickname).getId();
+        return this.modelWrapper.readModel().getGameBoard()
+                .getMutablePlayerBoardByNickname(nickname)
+                .getId();
     }
 
     public Optional<List<String>> getWinnerNicknames() {
-        return model.getWinners().map(list -> list.stream().map(PlayerBoard::getNickname).toList());
-    }
-
-    public Optional<List<Integer>> getWinnerIDs() {
-        return model.getWinners().map(list -> list.stream().map(PlayerBoard::getId).toList());
+        return this.modelWrapper.readModel().getGameBoard()
+                .getWinners()
+                .map(list -> list.stream()
+                        .map(PlayerBoard::getNickname)
+                        .toList());
     }
 }

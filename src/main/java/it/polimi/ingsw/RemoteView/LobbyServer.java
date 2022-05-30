@@ -1,7 +1,6 @@
 package it.polimi.ingsw.RemoteView;
 
 import it.polimi.ingsw.Controller.Actions.PlayerAction;
-import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Logger;
@@ -191,21 +190,20 @@ public class LobbyServer {
             case PlayerActionRequest playerActionRequest -> {
                 try {
                     PlayerAction pa = playerActionRequest.getAction();
-                    if (currentLobby.verifyAction(pa, this.nickname)) {
-                        this.currentLobby.executeAction(pa);
+                    if (currentLobby.verifyPlayer(pa, this.nickname)) {
+                        try {
+                            this.currentLobby.executeAction(pa);
+                        } catch (InputValidationException e) {
+                            sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
+                        }
                     } else {
                         sw.sendMessage(PlayerActionFeedback.fail("The action that was sent is malformed."));
                     }
                     sw.sendMessage(PlayerActionFeedback.success());
-                } catch (InputValidationException e) {
-                    sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
-                } catch (InvalidContainerIndexException e) {
-                    // we are always in the game, so this exception should crash the process
-                    Logger.severe("Unreachable statement was reached. Nickname was not found in the gameboard.");
-                    sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
                 } catch (OperationException e) {
                     Logger.severe("Supposedly unreachable statement was reached:\n" + e.getMessage());
                     sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
+                    throw new RuntimeException(e);
                 }
             }
             case default -> sw.sendMessage(new InvalidRequest());

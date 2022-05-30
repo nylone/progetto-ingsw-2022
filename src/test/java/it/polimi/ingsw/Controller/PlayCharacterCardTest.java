@@ -27,7 +27,7 @@ public class PlayCharacterCardTest {
     @Test
     public void checkUse() throws Exception {
         GameHandler gh = initializeGameBoard(20, 1, 1);
-        GameBoard gameBoard = playAssistantCard(gh).getModelCopy();
+        GameBoard gameBoard = playAssistantCard(gh).debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         int initialReserve = gameBoard.getCoinReserve();
         int initialBalance = player.getCoinBalance();
@@ -37,7 +37,7 @@ public class PlayCharacterCardTest {
                 Optional.empty());
 
         gh.executeAction(playCharacterCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - gameBoard.getCharacterCards().get(0).getCost() + 1);
         assertTrue(gameBoard.getMutableIslandField().getMutableIslandById(0).getStudents().contains((PawnColour) (cardStateful).getState().get(0)));
@@ -50,13 +50,13 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         gh = initializeGameBoard(40, 2, 2);
-        gameBoard = playAssistantCard(gh).getModelCopy();
+        gameBoard = playAssistantCard(gh).debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = gameBoard.getCoinReserve();
         initialBalance = player.getCoinBalance();
         playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.empty());
         gh.executeAction(playCharacterCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - gameBoard.getCharacterCards().get(0).getCost() + 1);
         assertEquals(gameBoard.getCoinReserve(), initialReserve + gameBoard.getCharacterCards().get(0).getCost() - 2);
@@ -68,28 +68,28 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         gh = initializeGameBoard(60, 3, 3);
-        gameBoard = playAssistantCard(gh).getModelCopy();
+        gameBoard = playAssistantCard(gh).debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = gameBoard.getCoinReserve();
         initialBalance = player.getCoinBalance();
         playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.of(0), Optional.empty(), Optional.empty());
         gh.executeAction(playCharacterCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination moveDestination = MoveDestination.toIsland(0);
         MoveStudent moveStudent = new MoveStudent(player.getId(), 0, moveDestination);
         gh.executeAction(moveStudent);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         moveDestination = MoveDestination.toDiningRoom();
         moveStudent = new MoveStudent(player.getId(), 1, moveDestination);
         gh.executeAction(moveStudent);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         moveDestination = MoveDestination.toDiningRoom();
         moveStudent = new MoveStudent(player.getId(), 2, moveDestination);
         gh.executeAction(moveStudent);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - gameBoard.getCharacterCards().get(0).getCost() + 1);
         assertEquals(gameBoard.getCoinReserve(), initialReserve + gameBoard.getCharacterCards().get(0).getCost() - 2);
@@ -102,13 +102,13 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         gh = initializeGameBoard(20, 1, 4);
-        gameBoard = playAssistantCard(gh).getModelCopy();
+        gameBoard = playAssistantCard(gh).debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = gameBoard.getCoinReserve();
         initialBalance = player.getCoinBalance();
         playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.empty());
         gh.executeAction(playCharacterCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - gameBoard.getCharacterCards().get(0).getCost() + 1);
         assertEquals(gameBoard.getCoinReserve(), initialReserve + gameBoard.getCharacterCards().get(0).getCost() - 2);
@@ -120,13 +120,13 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         gh = initializeGameBoard(40, 2, 5);
-        gameBoard = playAssistantCard(gh).getModelCopy();
+        gameBoard = playAssistantCard(gh).debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = gameBoard.getCoinReserve();
         initialBalance = player.getCoinBalance();
         playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.of(0), Optional.empty(), Optional.empty());
         gh.executeAction(playCharacterCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - gameBoard.getCharacterCards().get(0).getCost() + 1);
         assertEquals(gameBoard.getCoinReserve(), initialReserve + gameBoard.getCharacterCards().get(0).getCost() - 2);
@@ -140,13 +140,13 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         gh = initializeGameBoard(60, 3, 6);
-        gameBoard = playAssistantCard(gh).getModelCopy();
+        gameBoard = playAssistantCard(gh).debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = gameBoard.getCoinReserve();
         initialBalance = player.getCoinBalance();
         playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.empty());
         gh.executeAction(playCharacterCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - gameBoard.getCharacterCards().get(0).getCost() + 1);
         assertEquals(gameBoard.getCoinReserve(), initialReserve + gameBoard.getCharacterCards().get(0).getCost() - 2);
@@ -157,7 +157,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         gh = initializeGameBoard(20, 1, 7);
-        gameBoard = playAssistantCard(gh).getModelCopy();
+        gameBoard = playAssistantCard(gh).debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = gameBoard.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -167,7 +167,7 @@ public class PlayCharacterCardTest {
         pairs.add(new Pair<>(player.getEntranceStudents().get(1).get(), (PawnColour) cardStateful.getState().get(1)));
         playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.of(pairs));
         gh.executeAction(playCharacterCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - gameBoard.getCharacterCards().get(0).getCost() + 1);
         assertEquals(gameBoard.getCoinReserve(), initialReserve + gameBoard.getCharacterCards().get(0).getCost() - 2);
@@ -181,13 +181,13 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         gh = initializeGameBoard(40, 2, 8);
-        gameBoard = playAssistantCard(gh).getModelCopy();
+        gameBoard = playAssistantCard(gh).debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = gameBoard.getCoinReserve();
         initialBalance = player.getCoinBalance();
         playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.empty());
         gh.executeAction(playCharacterCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - gameBoard.getCharacterCards().get(0).getCost() + 1);
         assertEquals(gameBoard.getCoinReserve(), initialReserve + gameBoard.getCharacterCards().get(0).getCost() - 2);
@@ -199,14 +199,14 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         gh = initializeGameBoard(60, 3, 9);
-        gameBoard = playAssistantCard(gh).getModelCopy();
+        gameBoard = playAssistantCard(gh).debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = gameBoard.getCoinReserve();
         initialBalance = player.getCoinBalance();
         PawnColour pawnColour = Utils.random(Arrays.asList(PawnColour.BLUE, PawnColour.RED, PawnColour.YELLOW, PawnColour.GREEN, PawnColour.PINK));
         playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.of(pawnColour), Optional.empty());
         gh.executeAction(playCharacterCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - gameBoard.getCharacterCards().get(0).getCost() + 1);
         assertEquals(gameBoard.getCoinReserve(), initialReserve + gameBoard.getCharacterCards().get(0).getCost() - 2);
@@ -218,7 +218,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         gh = initializeGameBoard(20, 2, 10);
-        gameBoard = playAssistantCard(gh).getModelCopy();
+        gameBoard = playAssistantCard(gh).debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = gameBoard.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -227,17 +227,17 @@ public class PlayCharacterCardTest {
         moveDestination = MoveDestination.toDiningRoom();
         moveStudent = new MoveStudent(player.getId(), 0, moveDestination);
         gh.executeAction(moveStudent);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         moveDestination = MoveDestination.toDiningRoom();
         moveStudent = new MoveStudent(player.getId(), 1, moveDestination);
         gh.executeAction(moveStudent);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         moveDestination = MoveDestination.toIsland(1);
         moveStudent = new MoveStudent(player.getId(), 2, moveDestination);
         gh.executeAction(moveStudent);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         pairs = new ArrayList<>();
         pairs.add(new Pair<>(player.getEntranceStudents().get(4).get(), firstPawnDiningRoom));
@@ -246,7 +246,7 @@ public class PlayCharacterCardTest {
         int secondCount = player.getDiningRoomCount(pairs.get(1).getFirst());
         playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.of(pairs));
         gh.executeAction(playCharacterCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - gameBoard.getCharacterCards().get(0).getCost() + 1);
         assertEquals(gameBoard.getCoinReserve(), initialReserve + gameBoard.getCharacterCards().get(0).getCost() - 2);
@@ -261,7 +261,7 @@ public class PlayCharacterCardTest {
          */
 
         gh = initializeGameBoard(40, 2, 11);
-        gameBoard = playAssistantCard(gh).getModelCopy();
+        gameBoard = playAssistantCard(gh).debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = gameBoard.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -269,7 +269,7 @@ public class PlayCharacterCardTest {
         PawnColour chosenPawn = (PawnColour) cardStateful.getState().get(0);
         playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.of(chosenPawn), Optional.empty());
         gh.executeAction(playCharacterCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - gameBoard.getCharacterCards().get(0).getCost() + 1);
         assertEquals(gameBoard.getCoinReserve(), initialReserve + gameBoard.getCharacterCards().get(0).getCost() - 2);
@@ -282,7 +282,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         gh = initializeGameBoard(60, 3, 12);
-        gameBoard = playAssistantCard(gh).getModelCopy();
+        gameBoard = playAssistantCard(gh).debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = gameBoard.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -290,11 +290,11 @@ public class PlayCharacterCardTest {
         moveDestination = MoveDestination.toDiningRoom();
         moveStudent = new MoveStudent(player.getId(), 1, moveDestination);
         gh.executeAction(moveStudent);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.of(chosenPawn), Optional.empty());
         gh.executeAction(playCharacterCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - gameBoard.getCharacterCards().get(0).getCost() + 1);
         assertEquals(gameBoard.getCoinReserve(), initialReserve + gameBoard.getCharacterCards().get(0).getCost() - 2);
@@ -350,12 +350,12 @@ public class PlayCharacterCardTest {
     }
 
     private GameHandler playAssistantCard(GameHandler gh) throws Exception {
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -373,7 +373,7 @@ public class PlayCharacterCardTest {
     @Test(expected = InputValidationException.class)
     public void CharacterCardIndexOutOfBound() throws Exception {
         GameHandler gh = initializeGameBoard(60, 3, 12);
-        GameBoard gameBoard = playAssistantCard(gh).getModelCopy();
+        GameBoard gameBoard = playAssistantCard(gh).debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, Optional.empty(), Optional.empty(), Optional.empty());
         gh.executeAction(playAction);
@@ -401,7 +401,7 @@ public class PlayCharacterCardTest {
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -413,7 +413,7 @@ public class PlayCharacterCardTest {
                 break;
             }
         }
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         StatefulEffect card1 = (StatefulEffect) gameBoard.getCharacterCards().get(0);
         PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.of(0),
@@ -432,7 +432,7 @@ public class PlayCharacterCardTest {
     @Test
     public void simpleModePlayAttempt() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, Optional.empty(), Optional.empty(), Optional.empty());
         try {
@@ -446,7 +446,7 @@ public class PlayCharacterCardTest {
     @Test
     public void NoAssistantCardPlayed() throws Exception {
         GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, Optional.empty(), Optional.empty(), Optional.empty());
         try {
@@ -460,7 +460,7 @@ public class PlayCharacterCardTest {
     @Test
     public void InsufficientBalanceException() throws Exception {
         GameHandler gh = initializeGameBoard(20, 1, 2);
-        GameBoard gameBoard = playAssistantCard(gh).getModelCopy();
+        GameBoard gameBoard = playAssistantCard(gh).debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.empty());
         try {

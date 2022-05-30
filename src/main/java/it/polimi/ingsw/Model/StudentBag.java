@@ -11,7 +11,7 @@ import java.util.List;
 public class StudentBag implements Serializable {
     @Serial
     private static final long serialVersionUID = 130L; // convention: 1 for model, (01 -> 99) for objects
-    private transient final ArrayList<PawnColour> studentBag;
+    private ArrayList<PawnColour> studentBag;
     private boolean isEmpty;
 
     public StudentBag(int numOfStudentsPerColour) {
@@ -49,5 +49,9 @@ public class StudentBag implements Serializable {
         if (this.getSize() == 0) this.isEmpty = false;
         this.studentBag.add(colour);
         Utils.shuffle(this.studentBag);
+    }
+
+    public void removeContentReference() {
+        this.studentBag = null;
     }
 }

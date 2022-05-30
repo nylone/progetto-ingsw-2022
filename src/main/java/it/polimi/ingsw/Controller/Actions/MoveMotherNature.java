@@ -23,7 +23,7 @@ public class MoveMotherNature extends PlayerAction {
     }
 
     @Override
-    protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    public boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         int maxCount = ctx.getMutablePlayerBoards().size() == 3 ? 4 : 3;
         Optional<AssistantCard> optionalAssistantCard = ctx.getMutableTurnOrder()
@@ -51,7 +51,7 @@ public class MoveMotherNature extends PlayerAction {
     }
 
     @Override
-    protected void unsafeExecute(GameBoard ctx) {
+    public void unsafeExecute(GameBoard ctx) {
         ctx.moveAndActMotherNature(distanceToMove);
     }
 

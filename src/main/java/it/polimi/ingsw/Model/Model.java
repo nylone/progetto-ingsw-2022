@@ -9,29 +9,33 @@ public class Model {
     private final GameBoard gameBoard;
     private Optional<Lobby> toNotify;
 
-    public Model(Lobby remoteViewLobby, GameMode gameMode, String... playerNicknames) {
-        this.toNotify = Optional.of(remoteViewLobby);
-        this.gameBoard = new GameBoard(gameMode, playerNicknames);
-    }
-
     public Model(GameMode gameMode, String... playerNicknames) {
         this.gameBoard = new GameBoard(gameMode, playerNicknames);
+        this.toNotify = Optional.empty();
     }
 
     public Model(GameBoard gameBoard) {
+        this.toNotify = Optional.empty();
         this.gameBoard = gameBoard;
     }
 
-    public void addEventListener(Lobby lobby) {
+    public void addModelUpdateListener(Lobby lobby) {
         this.toNotify = Optional.of(lobby);
+        this.toNotify.get().notifyPlayers(new ModelUpdateEvent(new ModelReader(this.gameBoard, true)));
     }
 
-    public <T extends Exception> void modifyModel(ModelModifier<T> modelModifier) throws Exception {
+    public <T extends Exception> void editModel(ModelModifier<T> modelModifier) throws Exception {
         modelModifier.modifyModel(this.gameBoard);
-        this.toNotify.ifPresent(lobby -> lobby.notifyPlayers(new ModelUpdateEvent(this.gameBoard.getModelCopy())));
+        this.toNotify.ifPresent(lobby -> lobby.notifyPlayers(
+                new ModelUpdateEvent(new ModelReader(this.gameBoard, true))
+        ));
     }
 
-    public GameBoard accessModel() {
+    public ModelReader readModel() {
+        return new ModelReader(this.gameBoard, false);
+    }
+
+    public GameBoard debugGameBoardReference() {
         return this.gameBoard;
     }
 

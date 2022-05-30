@@ -185,7 +185,7 @@ public class ClientReader implements Runnable {
             //Server's response containing updated model to show
             case ModelUpdated modelUpdated -> {
                 //Update lobby's model
-                this.clientView.setGame(modelUpdated.getModel());
+                this.clientView.setGame(modelUpdated.getModel().getGameBoard());
                 UpdateView();
             }
             //Server's response received when the game ended after a victory

@@ -4,8 +4,6 @@ import it.polimi.ingsw.Exceptions.Container.FullContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.*;
-import it.polimi.ingsw.RemoteView.Lobby;
-import it.polimi.ingsw.RemoteView.Messages.Events.Internal.ModelUpdateEvent;
 
 import java.io.*;
 import java.util.*;
@@ -27,7 +25,6 @@ public class GameBoard implements Serializable {
     private final EffectTracker effects;
     private final List<Cloud> clouds;
     private final List<CharacterCard> characterCards;
-    private transient Lobby subscribedListener;
     private int coinReserve;
 
     public GameBoard(
@@ -55,7 +52,6 @@ public class GameBoard implements Serializable {
         this.clouds = clouds;
         this.characterCards = characterCards;
         this.coinReserve = coinReserve - coinPerPlayerBoard * playerBoards.size();
-        this.subscribedListener = null;
     }
 
     public GameBoard(GameMode gameMode, String... playerNicknames) {
@@ -85,7 +81,6 @@ public class GameBoard implements Serializable {
             clouds.add(new Cloud(i));
         }
         refillClouds();
-        subscribedListener = null;
     }
 
     public void refillClouds() {
@@ -98,12 +93,6 @@ public class GameBoard implements Serializable {
         }
     }
 
-    public void notifyLobby() {
-        if (this.subscribedListener != null) {
-            this.subscribedListener.notifyPlayers(new ModelUpdateEvent(this.getModelCopy()));
-        }
-    }
-
     /**
      * Serializes the game model to a new object.
      *
@@ -111,7 +100,7 @@ public class GameBoard implements Serializable {
      * <b>Note:</b> once called, all changes to the original GameBoard object won't be reflected in the instance returned
      * by this method
      */
-    public GameBoard getModelCopy() {
+    public GameBoard copy() {
         try {
             ByteArrayInputStream stream = new ByteArrayInputStream(getSerializedModel());
             ObjectInputStream reader = new ObjectInputStream(stream);
@@ -134,10 +123,6 @@ public class GameBoard implements Serializable {
         ObjectOutputStream writer = new ObjectOutputStream(out);
         writer.writeObject(this);
         return out.toByteArray();
-    }
-
-    public void subscribeLobby(Lobby lobby) {
-        this.subscribedListener = lobby;
     }
 
     public int getCoinReserve() {

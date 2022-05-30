@@ -18,12 +18,12 @@ public class PlayAssistantCardTest {
     public void cardShouldBeAssociatedToPlayer() throws Exception {
         // arrange
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -36,7 +36,7 @@ public class PlayAssistantCardTest {
             }
         }
         // assert
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertTrue(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getUsed());
         for (int i = 1; i <= player.getMutableAssistantCards().size(); i++) {
@@ -49,7 +49,7 @@ public class PlayAssistantCardTest {
     @Test(expected = InputValidationException.class)
     public void SelectedAlreadyUsedCardException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayAssistantCard action = new PlayAssistantCard(player.getId(), 3);
         // act
@@ -61,13 +61,13 @@ public class PlayAssistantCardTest {
     @Test
     public void SelectedSamePriorityCardException() throws InputValidationException {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayAssistantCard action = new PlayAssistantCard(player.getId(), 3);
         // act
         gh.executeAction(action);
 
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         action = new PlayAssistantCard(player.getId(), 3);
         try {
@@ -83,7 +83,7 @@ public class PlayAssistantCardTest {
     @Test(expected = InputValidationException.class)
     public void OutOfTurnAccessException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayAssistantCard action = new PlayAssistantCard(3, 3);
         // act
@@ -93,7 +93,7 @@ public class PlayAssistantCardTest {
     @Test(expected = InputValidationException.class)
     public void AssistantCardIndexOutOfBound() throws Exception {
         GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayAssistantCard action = new PlayAssistantCard(3, 13);
         // act

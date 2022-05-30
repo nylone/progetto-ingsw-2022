@@ -24,7 +24,7 @@ public class ChooseCloudTile extends PlayerAction {
     }
 
     @Override
-    protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    public boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         if (
                 !(history.stream().
                         filter(playerAction -> playerAction.getClass() == MoveMotherNature.class)
@@ -58,7 +58,7 @@ public class ChooseCloudTile extends PlayerAction {
     }
 
     @Override
-    protected void unsafeExecute(GameBoard ctx) {
+    public void unsafeExecute(GameBoard ctx) {
         Cloud selectedCloud = ctx.getClouds().get(selectedTile); //get cloud
         try {
             ctx.getMutableTurnOrder()

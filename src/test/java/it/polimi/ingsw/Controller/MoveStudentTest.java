@@ -21,12 +21,12 @@ public class MoveStudentTest {
     @Test
     public void testSingleMovementToIsland() throws Exception {
         GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -38,7 +38,7 @@ public class MoveStudentTest {
                 break;
             }
         }
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination moveDestination = MoveDestination.toIsland(0);
         PawnColour toMove = player.getEntranceStudents().get(1).get();
@@ -46,7 +46,7 @@ public class MoveStudentTest {
                 .stream().filter(pawnColour -> toMove == pawnColour).count();
         MoveStudent moveStudent = new MoveStudent(player.getId(), 1, moveDestination);
         gh.executeAction(moveStudent);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         int updatedCount = (int) gameBoard.getMutableIslandField().getMutableIslandById(0).getStudents()
                 .stream().filter(pawnColour -> toMove == pawnColour).count();
         assertEquals(updatedCount, previousCount + 1);
@@ -55,12 +55,12 @@ public class MoveStudentTest {
     @Test
     public void testSingleMovementToDiningRoom() throws Exception {
         GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -72,14 +72,14 @@ public class MoveStudentTest {
                 break;
             }
         }
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination destination = MoveDestination.toDiningRoom();
         PawnColour toMove = player.getEntranceStudents().get(0).get();
         int previousCount = player.getDiningRoomCount(toMove);
         MoveStudent moveStudent = new MoveStudent(player.getId(), 0, destination);
         gh.executeAction(moveStudent);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getDiningRoomCount(toMove), previousCount + 1);
     }
@@ -87,12 +87,12 @@ public class MoveStudentTest {
     @Test
     public void Max3MovementsWithoutCharacterCardTest() throws Exception {
         GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -104,7 +104,7 @@ public class MoveStudentTest {
                 break;
             }
         }
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination destination = MoveDestination.toDiningRoom();
         MoveStudent moveStudent = new MoveStudent(player.getId(), 0, destination);
@@ -129,7 +129,7 @@ public class MoveStudentTest {
     @Test
     public void testMovementWithoutAssistantCard() throws Exception {
         GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination moveDestination = MoveDestination.toIsland(0);
         MoveStudent moveStudent = new MoveStudent(player.getId(), 1, moveDestination);
@@ -144,12 +144,12 @@ public class MoveStudentTest {
     @Test(expected = InvalidElementException.class)
     public void InvalidPlayerBoardIndexException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -161,7 +161,7 @@ public class MoveStudentTest {
                 break;
             }
         }
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         MoveDestination destination = MoveDestination.toDiningRoom();
         MoveStudent moveStudent = new MoveStudent(3, 0, destination);
         gh.executeAction(moveStudent);
@@ -170,12 +170,12 @@ public class MoveStudentTest {
     @Test(expected = InvalidElementException.class)
     public void InvalidEntranceIndexException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -187,7 +187,7 @@ public class MoveStudentTest {
                 break;
             }
         }
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         MoveDestination destination = MoveDestination.toDiningRoom();
         MoveStudent moveStudent = new MoveStudent(1, 12, destination);
         gh.executeAction(moveStudent);
@@ -196,12 +196,12 @@ public class MoveStudentTest {
     @Test(expected = InvalidElementException.class)
     public void InvalidIslandIdException() throws Exception {
         GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -213,7 +213,7 @@ public class MoveStudentTest {
                 break;
             }
         }
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination moveDestination = MoveDestination.toIsland(15);
         MoveStudent moveStudent = new MoveStudent(player.getId(), 1, moveDestination);
@@ -223,12 +223,12 @@ public class MoveStudentTest {
     @Test
     public void SelectedEntrancePositionEmpty() throws Exception {
         GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.getModelCopy();
+        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -240,7 +240,7 @@ public class MoveStudentTest {
                 break;
             }
         }
-        gameBoard = gh.getModelCopy();
+        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination destination = MoveDestination.toDiningRoom();
         MoveStudent moveStudent = new MoveStudent(player.getId(), 0, destination);

@@ -17,7 +17,7 @@ public class EndTurnOfActionPhase extends PlayerAction {
     }
 
     @Override
-    protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    public boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         if (
                 !(history.stream().
                         filter(playerAction -> playerAction.getClass() == ChooseCloudTile.class)
@@ -36,7 +36,7 @@ public class EndTurnOfActionPhase extends PlayerAction {
     }
 
     @Override
-    protected void unsafeExecute(GameBoard ctx) {
+    public void unsafeExecute(GameBoard ctx) {
         // reset effects through EffectTracker
         ctx.getMutableEffects().reset();
         ctx.getMutableTurnOrder().stepToNextPlayer();

@@ -1,16 +1,16 @@
 package it.polimi.ingsw.RemoteView.Messages.Events.Internal;
 
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.ModelReader;
 import it.polimi.ingsw.RemoteView.Messages.Events.ClientEvent;
 
 public class ModelUpdateEvent implements ClientEvent {
-    private final GameBoard update;
+    private final ModelReader update;
 
-    public ModelUpdateEvent(GameBoard update) {
+    public ModelUpdateEvent(ModelReader update) {
         this.update = update;
     }
 
-    public GameBoard getModel() {
+    public ModelReader getModel() {
         return update;
     }
 }

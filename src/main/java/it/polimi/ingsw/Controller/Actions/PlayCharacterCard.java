@@ -40,7 +40,7 @@ public class PlayCharacterCard extends PlayerAction {
         this.optTargetPawnPairs = optTargetPawnPairs;
     }
 
-    protected boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    public boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         if (ctx.getGameMode() == GameMode.SIMPLE) {
             throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD, INPUT_NAME_CHARACTER_CARD + "can't be played in simple mode");
         }
@@ -73,7 +73,7 @@ public class PlayCharacterCard extends PlayerAction {
     }
 
     @Override
-    protected void unsafeExecute(GameBoard ctx) {
+    public void unsafeExecute(GameBoard ctx) {
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCard characterCard = ctx.getCharacterCards().get(this.selectedCard);
         caller.payCharacterEffect(characterCard.getCost());
