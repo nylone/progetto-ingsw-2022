@@ -43,9 +43,7 @@ public class GameInProgressPanel extends JTabbedPane {
                                     "just disconnected.", "Client disconnected");
                         }
                         case ModelUpdated modelUpdated -> {
-                            new PopupMessage("received model update", "update");
-                            this.updatePlayerBoardViews(modelUpdated.getModel());
-                            this.commitView();
+                            this.updateViews(modelUpdated.getModel());
                         }
                         default -> throw new IllegalStateException("Unexpected value: " + input.getClass());
                     }
@@ -56,15 +54,12 @@ public class GameInProgressPanel extends JTabbedPane {
         }).start();
     }
 
-    private void updatePlayerBoardViews(ModelReader model) {
+    private void updateViews(ModelReader model) {
+        this.removeAll();
+        this.add("Islands", this.islandPanel);
         for (PlayerBoard pb: model.getPlayerBoards()) {
             this.playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb));
         }
-    }
-
-    private void commitView() {
-        this.removeAll();
-        this.add("Islands", this.islandPanel);
         for (Map.Entry<String, PlayerBoardPanel> pbp: this.playerTabs.entrySet()) {
             if (pbp.getKey().equals(this.ownNickname)) {
                 this.add("Your board", pbp.getValue());

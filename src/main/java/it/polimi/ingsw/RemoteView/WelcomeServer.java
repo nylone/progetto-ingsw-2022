@@ -41,13 +41,10 @@ public class WelcomeServer implements Runnable {
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
-                Logger.info("Detected a new connection from " + socket.getInetAddress());
                 SocketWrapper sw = new SocketWrapper(socket);
-                Logger.info("Wrapped new connection from " + sw.getInetAddress() + " into a " + SocketWrapper.class.getName());
+                Logger.info("New connection from: " + sw.getInetAddress());
                 sw.sendMessage(new Welcome(StatusCode.Success));
-                Logger.info("Accepted a new connection from " + sw.getInetAddress());
                 LobbyServer.spawn(sw);
-                Logger.info("Spawned a new lobby server for: " + sw.getInetAddress());
             } catch (IOException e) {
                 e.printStackTrace();
             }

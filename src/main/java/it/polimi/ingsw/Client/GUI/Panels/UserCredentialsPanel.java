@@ -69,10 +69,12 @@ public class UserCredentialsPanel extends JPanel {
         });
         login.addActionListener(actionEvent -> {
             // normalize username
-            username.setText(username.getText().trim());
+            ctx.setNickname(username.getText().trim());
+
+            username.setText(ctx.getNickname());
             try {
                 sw.sendMessage(new DeclarePlayerRequest(
-                        username.getText().trim(),
+                        ctx.getNickname(),
                         new String(password.getPassword()
                         )
                 ));

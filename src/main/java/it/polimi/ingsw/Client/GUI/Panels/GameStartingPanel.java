@@ -122,12 +122,9 @@ public class GameStartingPanel extends JPanel {
                         case GameInit gameInit -> {
                             if (gameInit.getStatusCode() == StatusCode.Fail) {
                                 new PopupMessage("Failure", gameInit.getErrorMessage());
-                            } else {
-                                new PopupMessage("Success", "Game is starting");
                             }
                         }
                         case GameStarted ignored -> {
-                            new PopupMessage("Success", "Game has started");
                             new GameInProgressPanel(ctx);
                             return;
                         }

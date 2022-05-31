@@ -206,6 +206,8 @@ public class LobbyServer {
                     throw new RuntimeException(e);
                 }
             }
+            case ClientDisconnectEvent clientDisconnectedEvent ->
+                    sw.sendMessage(new ClientDisconnected(clientDisconnectedEvent.getNickname(), clientDisconnectedEvent.getPlayers()));
             case default -> sw.sendMessage(new InvalidRequest());
         }
     }

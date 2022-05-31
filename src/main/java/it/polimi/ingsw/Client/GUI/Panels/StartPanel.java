@@ -44,7 +44,7 @@ public class StartPanel extends JPanel {
         // enter on port moves focus to connect
         port.addActionListener((actionEvent -> connect.requestFocusInWindow()));
 
-        connect.addActionListener(actionEvent -> {
+        connect.addActionListener(actionEvent -> new Thread(() -> {
             try {
                 SocketWrapper sw = new SocketWrapper(new Socket(address.getText(), Integer.parseInt(port.getText())));
                 if (sw.awaitMessage() instanceof Welcome welcome && welcome.getStatusCode() == StatusCode.Success) {
@@ -57,7 +57,7 @@ public class StartPanel extends JPanel {
             } catch (Exception e) {
                 new PopupMessage("No valid server was found", "Failure :(");
             }
-        });
+        }).start());
 
         // layout object decleration and setup
         SpringLayout layout = new SpringLayout();
