@@ -1,6 +1,6 @@
 import it.polimi.ingsw.Client.CLI.CLI;
 import it.polimi.ingsw.Client.GUI.GUI;
-import it.polimi.ingsw.RemoteView.WelcomeServer;
+import it.polimi.ingsw.Server.WelcomeServer;
 
 import java.io.BufferedReader;
 import java.io.IOException;

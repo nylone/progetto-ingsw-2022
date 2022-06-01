@@ -2,8 +2,8 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.GameMode;
-import it.polimi.ingsw.RemoteView.Lobby;
-import it.polimi.ingsw.RemoteView.Messages.Events.Internal.ModelUpdateEvent;
+import it.polimi.ingsw.Server.Lobby;
+import it.polimi.ingsw.Server.Messages.Events.Internal.ModelUpdateEvent;
 
 public class Model {
     private final GameBoard gameBoard;

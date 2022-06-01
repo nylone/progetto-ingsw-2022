@@ -7,10 +7,10 @@ import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.ModelReader;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Network.SocketWrapper;
-import it.polimi.ingsw.RemoteView.Messages.Message;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.ClientDisconnected;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyClosed;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.ModelUpdated;
+import it.polimi.ingsw.Server.Messages.Message;
+import it.polimi.ingsw.Server.Messages.ServerResponses.ClientDisconnected;
+import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyClosed;
+import it.polimi.ingsw.Server.Messages.ServerResponses.ModelUpdated;
 
 import javax.swing.*;
 import java.io.IOException;

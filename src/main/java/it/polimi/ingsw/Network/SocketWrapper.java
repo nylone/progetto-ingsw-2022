@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Network;
 
 import it.polimi.ingsw.Logger;
-import it.polimi.ingsw.RemoteView.Messages.Message;
+import it.polimi.ingsw.Server.Messages.Message;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

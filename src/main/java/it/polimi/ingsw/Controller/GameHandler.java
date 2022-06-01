@@ -11,7 +11,7 @@ import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
-import it.polimi.ingsw.RemoteView.Lobby;
+import it.polimi.ingsw.Server.Lobby;
 
 import java.util.ArrayList;
 import java.util.List;

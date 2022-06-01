@@ -1,9 +1,9 @@
 package it.polimi.ingsw.Client.CLI;
 
 import it.polimi.ingsw.Network.SocketWrapper;
-import it.polimi.ingsw.RemoteView.Messages.Message;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.SupportStructures.StatusCode;
+import it.polimi.ingsw.Server.Messages.Message;
+import it.polimi.ingsw.Server.Messages.ServerResponses.*;
+import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import java.io.IOException;
 import java.util.List;
