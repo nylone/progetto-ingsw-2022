@@ -11,6 +11,7 @@ public class Window {
         frame.setMinimumSize(new Dimension(720, 480));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        frame.setResizable(false);
     }
 
     public void changeView(JComponent newView) {

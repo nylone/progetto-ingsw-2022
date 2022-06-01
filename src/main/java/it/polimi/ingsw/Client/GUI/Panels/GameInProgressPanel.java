@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client.GUI.Panels;
 import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Client.GUI.Window;
+import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.ModelReader;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Network.SocketWrapper;
@@ -13,12 +14,14 @@ import javax.swing.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class GameInProgressPanel extends JTabbedPane {
 
     private final String ownNickname;
     private final Window window;
     private final JPanel islandPanel = new JPanel();
+
     private final Map<String, PlayerBoardPanel> playerTabs = new HashMap<>();
     public GameInProgressPanel(Context ctx) {
         // unwrapping context into useful variables
@@ -66,6 +69,10 @@ public class GameInProgressPanel extends JTabbedPane {
             } else {
                 this.add("Player " + pbp.getKey() + "'s board", pbp.getValue());
             }
+        }
+        if(model.getGameMode() == GameMode.ADVANCED){
+            final JPanel characterCardsPanel = new CharacterCardsPanel(model.getCharacterCards());
+            this.add("CharacterCards", characterCardsPanel);
         }
         // display the view
         this.window.changeView(this);

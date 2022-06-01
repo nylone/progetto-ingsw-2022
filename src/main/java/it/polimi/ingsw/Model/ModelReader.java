@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.Enums.GameMode;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
@@ -25,6 +27,9 @@ public class ModelReader implements Serializable {
         return gameBoard;
     }
 
+    public GameMode getGameMode() { return gameBoard.getGameMode(); }
+
+    public List<CharacterCard> getCharacterCards(){ return gameBoard.getCharacterCards(); }
     public List<IslandGroup> getIslandGroups() {
         return this.gameBoard.getMutableIslandField().getMutableGroups();
     }
