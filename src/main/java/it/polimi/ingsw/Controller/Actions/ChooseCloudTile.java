@@ -44,7 +44,7 @@ public class ChooseCloudTile extends PlayerAction {
 
         if (!(caller.getEntranceSpaceLeft() >= selectedCloud.getContents().size())) {
             throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
-                    CONTAINER_NAME_ENTRANCE + "can't contain " + selectedCloud.getContents().size()
+                    CONTAINER_NAME_ENTRANCE + " can't contain " + selectedCloud.getContents().size()
                             + " element's without overflowing.");
         }
         if (selectedCloud.getContents().size() == 0) {
