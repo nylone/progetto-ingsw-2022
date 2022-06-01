@@ -9,6 +9,7 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TeamID;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
@@ -226,11 +227,12 @@ public class GameBoardTest {
         // arrange & act
         GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari", "eriantys");
         PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
-        for (int i = 0; i < 8; i++) { // leaving current player with just one tower left
+        for (int i = 0; i < 8; i++) { // leaving current player with no towers left
             gb.getTeamMapper().getMutableTowerStorage(currentPlayer).extractTower();
         }
         // assert
-        assertEquals(currentPlayer, gb.getWinners().get().get(0));
+        PlayerBoard winner = gb.getWinners().get().get(0);
+        assertEquals(gb.getTeamMapper().getTeamID(currentPlayer), gb.getTeamMapper().getTeamID(winner));
         assertTrue(gb.getWinners().get().size() == 2);
     }
 
