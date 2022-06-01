@@ -13,7 +13,6 @@ public class CharacterDeckGenerator {
         List<CharacterCardGenerator> deck = Arrays.asList(
                 Card01::new,
                 Card02::new,
-                Card02::new,
                 Card03::new,
                 Card04::new,
                 Card05::new,
