@@ -19,7 +19,7 @@ public class PlayerBoardUI {
      * It draws a representation of the {@link PlayerBoard} of the provided player.
      *
      * @param playerBoard the {@link PlayerBoard} which will be represented
-     * @param ctx reference to the model used to check the available coins left in the game
+     * @param ctx         reference to the model used to check the available coins left in the game
      * @return the complete player board UI component
      */
     public static String drawPlayerBoard(PlayerBoard playerBoard, GameBoard ctx) {
@@ -83,7 +83,7 @@ public class PlayerBoardUI {
     /**
      * It draws a representation of the tower storage of the provided player.
      *
-     * @param p the {@link PlayerBoard} to which the towers should be associated with
+     * @param p  the {@link PlayerBoard} to which the towers should be associated with
      * @param gb reference to the model used to check the relationship between towers and player
      * @return the unused towers in a multiline dual column layout String representation
      */
@@ -114,8 +114,8 @@ public class PlayerBoardUI {
      * It draws a dining room's row with its related students and the not yet obtained coins
      *
      * @param rowColour the dining room's row which should be printed
-     * @param p the {@link PlayerBoard} to which the dining room should be associated with
-     * @param gameMode reference to the model used to add coin representation if in correct settings
+     * @param p         the {@link PlayerBoard} to which the dining room should be associated with
+     * @param gameMode  reference to the model used to add coin representation if in correct settings
      * @return a fixed length line containing all the students on the specific dining room's row
      */
     public static String drawDiningRoomRow(PawnColour rowColour, PlayerBoard p, GameMode gameMode) {
@@ -139,8 +139,8 @@ public class PlayerBoardUI {
      * an empty space if the player has not conquered that specific teacher yet.
      *
      * @param teacher the specific {@link PawnColour} of the teacher to be represented
-     * @param p the {@link PlayerBoard} to which the teacher should be associated with
-     * @param gb reference to the model used to check the relationship between teacher and player
+     * @param p       the {@link PlayerBoard} to which the teacher should be associated with
+     * @param gb      reference to the model used to check the relationship between teacher and player
      * @return single line containing teacher
      */
     public static String drawTeacher(PawnColour teacher, PlayerBoard p, GameBoard gb) {

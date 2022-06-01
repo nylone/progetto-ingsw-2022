@@ -23,6 +23,7 @@ public class MoveMotherNatureTest {
 
     GameBoard gameBoard = new GameBoard(GameMode.ADVANCED, "ale", "teo");
     GameHandler gh = new GameHandler(gameBoard, new ArrayList<>(6));
+
     @Test
     public void motherNatureShouldBeMoved() throws Exception {
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();

@@ -301,6 +301,7 @@ public class PlayCharacterCardTest {
         gameBoard.refillClouds();
         return gameBoard;
     }
+
     private GameHandler initializeGameHandler(GameBoard gameBoard, int card) {
         List<CharacterCard> characterCards = gameBoard.getCharacterCards();
         switch (card) {

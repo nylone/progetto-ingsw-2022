@@ -9,11 +9,7 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyAccept;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
-
-import static it.polimi.ingsw.Client.GUI.IconLoader.hidePassIcon;
-import static it.polimi.ingsw.Client.GUI.IconLoader.showPassIcon;
 
 public class UserCredentialsPanel extends JPanel {
     public UserCredentialsPanel(Context ctx) {
@@ -80,7 +76,7 @@ public class UserCredentialsPanel extends JPanel {
         layout.putConstraint(SpringLayout.EAST, usernameLabel, -10, SpringLayout.HORIZONTAL_CENTER, title);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, username, 0, SpringLayout.VERTICAL_CENTER, usernameLabel);
         layout.putConstraint(SpringLayout.WEST, username, 10, SpringLayout.HORIZONTAL_CENTER, title);
-        
+
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, login, 0, SpringLayout.HORIZONTAL_CENTER, this);
 
         // apply layout

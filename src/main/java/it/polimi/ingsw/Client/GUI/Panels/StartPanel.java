@@ -46,7 +46,9 @@ public class StartPanel extends JPanel {
 
         connect.addActionListener(actionEvent -> new Thread(() -> {
             try {
-                SocketWrapper sw = new SocketWrapper(new Socket(address.getText(), Integer.parseInt(port.getText())));
+                SocketWrapper sw = new SocketWrapper(new Socket(
+                        address.getText().trim(),
+                        Integer.parseInt(port.getText().trim())));
                 if (sw.awaitMessage() instanceof Welcome welcome && welcome.getStatusCode() == StatusCode.Success) {
                     // spawn and change to next view
                     ctx.setSocketWrapper(sw);
