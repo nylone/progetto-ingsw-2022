@@ -14,10 +14,20 @@ import it.polimi.ingsw.Model.Card11;
 import it.polimi.ingsw.Model.Card12;
 import it.polimi.ingsw.Model.CharacterCard;
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
-import static it.polimi.ingsw.Client.GUI.IconLoader.*;
+import static it.polimi.ingsw.Client.GUI.IconLoader.card01;
+import static it.polimi.ingsw.Client.GUI.IconLoader.card02;
+import static it.polimi.ingsw.Client.GUI.IconLoader.card03;
+import static it.polimi.ingsw.Client.GUI.IconLoader.card04;
+import static it.polimi.ingsw.Client.GUI.IconLoader.card05;
+import static it.polimi.ingsw.Client.GUI.IconLoader.card06;
+import static it.polimi.ingsw.Client.GUI.IconLoader.card07;
+import static it.polimi.ingsw.Client.GUI.IconLoader.card08;
+import static it.polimi.ingsw.Client.GUI.IconLoader.card09;
+import static it.polimi.ingsw.Client.GUI.IconLoader.card10;
+import static it.polimi.ingsw.Client.GUI.IconLoader.card11;
+import static it.polimi.ingsw.Client.GUI.IconLoader.card12;
 import static it.polimi.ingsw.Client.GUI.IconLoader.sky;
 
 public class CharacterCardsPanel extends JPanel {
@@ -28,6 +38,19 @@ public class CharacterCardsPanel extends JPanel {
 
     private JLabel thirdCard;
 
+    private void setCardImages(ImageIcon cardImage) {
+        if(firstCard == null){
+            firstCard = new JLabel(cardImage);
+            firstCard.setBounds(69,80,140,190);
+        } else if(secondCard == null){
+            secondCard = new JLabel(cardImage);
+            secondCard.setBounds(285, 80, 140, 190);
+        } else if(thirdCard == null){
+            thirdCard = new JLabel(cardImage);
+            thirdCard.setBounds(502,80,140, 190);
+        }
+    }
+
 
     public CharacterCardsPanel(List<CharacterCard> characterCards){
         this.setLayout(new OverlayLayout(this));
@@ -35,239 +58,28 @@ public class CharacterCardsPanel extends JPanel {
         pageBackground.setLayout(null);
         pageBackground.setBounds(0,0, 720, 480);
         this.add(pageBackground);
+
         for(CharacterCard characterCard : characterCards){
             switch (characterCard) {
-                case Card01 Card01 -> {
-                    if(firstCard == null){
-                        firstCard = new JLabel(card01);
-                        firstCard.setBounds(69,80,140,190);
-                        pageBackground.add(firstCard);
-                        continue;
-                    }
-                    if(secondCard == null){
-                        secondCard = new JLabel(card01);
-                        secondCard.setBounds(285, 80, 140, 190);
-                        pageBackground.add(secondCard);
-                        continue;
-                    }
-                    if(thirdCard == null){
-                        thirdCard = new JLabel(card01);
-                        thirdCard.setBounds(502,80,140, 190);
-                        pageBackground.add(thirdCard);
-                    }
-                }
-                case Card02 Card02 -> {
-                    if(firstCard == null){
-                        firstCard = new JLabel(card02);
-                        firstCard.setBounds(69,80,140, 190);
-                        pageBackground.add(firstCard);
-                        continue;
-                    }
-                    if(secondCard == null){
-                        secondCard = new JLabel(card02);
-                        secondCard.setBounds(285, 80, 140, 190);
-                        pageBackground.add(secondCard);
-                        continue;
-                    }
-                    if(thirdCard == null){
-                        thirdCard = new JLabel(card02);
-                        thirdCard.setBounds(502,80,140, 190);
-                        pageBackground.add(thirdCard);
-                    }
-                }
-                case Card03 Card03 -> {
-                    if(firstCard == null){
-                        firstCard = new JLabel(card03);
-                        firstCard.setBounds(69,80,140, 190);
-                        pageBackground.add(firstCard);
-                        continue;
-                    }
-                    if(secondCard == null){
-                        secondCard = new JLabel(card03);
-                        secondCard.setBounds(285, 80, 140, 190);
-                        pageBackground.add(secondCard);
-                        continue;
-                    }
-                    if(thirdCard == null){
-                        thirdCard = new JLabel(card03);
-                        thirdCard.setBounds(502,80,140, 190);
-                        pageBackground.add(thirdCard);
-                    }
-                }
-                case Card04 Card04-> {
-                    if(firstCard == null){
-                        firstCard = new JLabel(card04);
-                        firstCard.setBounds(69,80,140, 190);
-                        pageBackground.add(firstCard);
-                        continue;
-                    }
-                    if(secondCard == null){
-                        secondCard = new JLabel(card04);
-                        secondCard.setBounds(285, 80, 140, 190);
-                        pageBackground.add(secondCard);
-                        continue;
-                    }
-                    if(thirdCard == null){
-                        thirdCard = new JLabel(card04);
-                        thirdCard.setBounds(502,80,140, 190);
-                        pageBackground.add(thirdCard);
-                    }
-                }
-                case Card05 Card05 -> {
-                    if(firstCard == null){
-                        firstCard = new JLabel(card05);
-                        firstCard.setBounds(69,80,140, 190);
-                        pageBackground.add(firstCard);
-                        continue;
-                    }
-                    if(secondCard == null){
-                        secondCard = new JLabel(card05);
-                        secondCard.setBounds(285, 80, 140, 190);
-                        pageBackground.add(secondCard);
-                        continue;
-                    }
-                    if(thirdCard == null){
-                        thirdCard = new JLabel(card05);
-                        thirdCard.setBounds(502,80,140, 190);
-                        pageBackground.add(thirdCard);
-                    }
-                }
-                case Card06 Card06 -> {
-                    if(firstCard == null){
-                        firstCard = new JLabel(card06);
-                        firstCard.setBounds(69,80,140, 190);
-                        pageBackground.add(firstCard);
-                        continue;
-                    }
-                    if(secondCard == null){
-                        secondCard = new JLabel(card06);
-                        secondCard.setBounds(285, 80, 140, 190);
-                        pageBackground.add(secondCard);
-                        continue;
-                    }
-                    if(thirdCard == null){
-                        thirdCard = new JLabel(card06);
-                        thirdCard.setBounds(502,80,140, 190);
-                        pageBackground.add(thirdCard);
-                    }
-                }
-                case Card07 Card07 -> {
-                    if(firstCard == null){
-                        firstCard = new JLabel(card07);
-                        firstCard.setBounds(69,80,140, 190);
-                        pageBackground.add(firstCard);
-                        continue;
-                    }
-                    if(secondCard == null){
-                        secondCard = new JLabel(card07);
-                        secondCard.setBounds(285, 80, 140, 190);
-                        pageBackground.add(secondCard);
-                        continue;
-                    }
-                    if(thirdCard == null){
-                        thirdCard = new JLabel(card07);
-                        thirdCard.setBounds(502,80,140, 190);
-                        pageBackground.add(thirdCard);
-                    }
-                }
-                case Card08 Card08 -> {
-                    if(firstCard == null){
-                        firstCard = new JLabel(card08);
-                        firstCard.setBounds(69,80,140, 190);
-                        pageBackground.add(firstCard);
-                        continue;
-                    }
-                    if(secondCard == null){
-                        secondCard = new JLabel(card08);
-                        secondCard.setBounds(285, 80, 140, 190);
-                        pageBackground.add(secondCard);
-                        continue;
-                    }
-                    if(thirdCard == null){
-                        thirdCard = new JLabel(card08);
-                        thirdCard.setBounds(502,80,140, 190);
-                        pageBackground.add(thirdCard);
-                    }
-                }
-                case Card09 Card09 -> {
-                    if(firstCard == null){
-                        firstCard = new JLabel(card09);
-                        firstCard.setBounds(69,80,140, 190);
-                        pageBackground.add(firstCard);
-                        continue;
-                    }
-                    if(secondCard == null){
-                        secondCard = new JLabel(card09);
-                        secondCard.setBounds(285, 80, 140, 190);
-                        pageBackground.add(secondCard);
-                        continue;
-                    }
-                    if(thirdCard == null){
-                        thirdCard = new JLabel(card09);
-                        thirdCard.setBounds(502,80,140, 190);
-                        pageBackground.add(thirdCard);
-                    }
-                }
-                case Card10 Card10 -> {
-                    if(firstCard == null){
-                        firstCard = new JLabel(card10);
-                        firstCard.setBounds(69,80,140, 190);
-                        pageBackground.add(firstCard);
-                        continue;
-                    }
-                    if(secondCard == null){
-                        secondCard = new JLabel(card10);
-                        secondCard.setBounds(285, 80, 140, 190);
-                        pageBackground.add(secondCard);
-                        continue;
-                    }
-                    if(thirdCard == null){
-                        thirdCard = new JLabel(card10);
-                        thirdCard.setBounds(502,80,140, 190);
-                        pageBackground.add(thirdCard);
-                    }
-                }
-                case Card11 Card11 -> {
-                    if(firstCard == null){
-                        firstCard = new JLabel(card11);
-                        firstCard.setBounds(69,80,140, 190);
-                        pageBackground.add(firstCard);
-                        continue;
-                    }
-                    if(secondCard == null){
-                        secondCard = new JLabel(card11);
-                        secondCard.setBounds(285, 80, 140, 190);
-                        pageBackground.add(secondCard);
-                        continue;
-                    }
-                    if(thirdCard == null){
-                        thirdCard = new JLabel(card11);
-                        thirdCard.setBounds(502,80,140, 190);
-                        pageBackground.add(thirdCard);
-                    }
-                }
-                case Card12 Card12 -> {
-                    if(firstCard == null){
-                        firstCard = new JLabel(card12);
-                        firstCard.setBounds(69,80,140, 190);
-                        pageBackground.add(firstCard);
-                        continue;
-                    }
-                    if(secondCard == null){
-                        secondCard = new JLabel(card12);
-                        secondCard.setBounds(285, 80, 140, 190);
-                        pageBackground.add(secondCard);
-                        continue;
-                    }
-                    if(thirdCard == null){
-                        thirdCard = new JLabel(card12);
-                        thirdCard.setBounds(502,80,140, 190);
-                        pageBackground.add(thirdCard);
-                    }
-                }
+                case Card01 ignored -> setCardImages(card01);
+                case Card02 ignored -> setCardImages(card02);
+                case Card03 ignored -> setCardImages(card03);
+                case Card04 ignored -> setCardImages(card04);
+                case Card05 ignored -> setCardImages(card05);
+                case Card06 ignored -> setCardImages(card06);
+                case Card07 ignored -> setCardImages(card07);
+                case Card08 ignored -> setCardImages(card08);
+                case Card09 ignored -> setCardImages(card09);
+                case Card10 ignored -> setCardImages(card10);
+                case Card11 ignored -> setCardImages(card11);
+                case Card12 ignored -> setCardImages(card12);
                 default -> {}
             }
         }
+
+        pageBackground.add(firstCard);
+        pageBackground.add(secondCard);
+        pageBackground.add(thirdCard);
 
     }
 
