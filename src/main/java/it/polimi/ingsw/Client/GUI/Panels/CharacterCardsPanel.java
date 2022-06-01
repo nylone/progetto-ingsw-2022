@@ -19,7 +19,7 @@ public class CharacterCardsPanel extends JPanel {
         this.setLayout(new OverlayLayout(this));
         JLabel pageBackground = new JLabel(sky);
         pageBackground.setLayout(null);
-        pageBackground.setBounds(0, 0, 720, 480);
+        pageBackground.setBounds(0, 0, 1080, 720);
         this.add(pageBackground);
 
         for (CharacterCard characterCard : characterCards) {
@@ -50,13 +50,13 @@ public class CharacterCardsPanel extends JPanel {
     private void setCardImages(ImageIcon cardImage) {
         if (firstCard == null) {
             firstCard = new JLabel(cardImage);
-            firstCard.setBounds(69, 80, 140, 190);
+            firstCard.setBounds(100, 133, 198, 340);
         } else if (secondCard == null) {
             secondCard = new JLabel(cardImage);
-            secondCard.setBounds(285, 80, 140, 190);
+            secondCard.setBounds(441, 133, 198, 340);
         } else if (thirdCard == null) {
             thirdCard = new JLabel(cardImage);
-            thirdCard.setBounds(502, 80, 140, 190);
+            thirdCard.setBounds(782, 133, 198, 340);
         }
     }
 }

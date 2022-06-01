@@ -8,7 +8,7 @@ public class Window {
 
     public Window() {
         this.frame = new JFrame("Eriantys");
-        frame.setMinimumSize(new Dimension(720, 480));
+        frame.setMinimumSize(new Dimension(1080, 720));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setResizable(false);
