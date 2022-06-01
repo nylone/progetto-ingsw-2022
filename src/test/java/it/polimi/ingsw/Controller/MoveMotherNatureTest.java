@@ -13,6 +13,7 @@ import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -20,16 +21,14 @@ import static org.junit.Assert.assertEquals;
 
 public class MoveMotherNatureTest {
 
-
+    GameBoard gameBoard = new GameBoard(GameMode.ADVANCED, "ale", "teo");
+    GameHandler gh = new GameHandler(gameBoard, new ArrayList<>(6));
     @Test
     public void motherNatureShouldBeMoved() throws Exception {
-        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -41,14 +40,12 @@ public class MoveMotherNatureTest {
                 break;
             }
         }
-        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        //move 3 pawns
+        // move 3 pawns
         for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
-            gameBoard = gh.debugModelReference();
             player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         }
 
@@ -59,7 +56,6 @@ public class MoveMotherNatureTest {
         // act
         List<IslandGroup> groups = gameBoard.getMutableIslandField().getMutableGroups();
         gh.executeAction(action);
-        gameBoard = gh.debugModelReference();
         // assert
         assertEquals(Utils.modularSelection(initialPosition, groups, randomMovement).getId(),
                 gameBoard.getMutableIslandField().getMutableMotherNaturePosition().getId());
@@ -68,13 +64,10 @@ public class MoveMotherNatureTest {
 
     @Test
     public void playerCantMoveMoreThanAllowed() throws Exception {
-        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -86,13 +79,11 @@ public class MoveMotherNatureTest {
                 break;
             }
         }
-        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
-            gameBoard = gh.debugModelReference();
             player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         }
         int invalidMovement = gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement() + 1;
@@ -108,8 +99,6 @@ public class MoveMotherNatureTest {
 
     @Test(expected = InputValidationException.class)
     public void duplicateMoveMotherNatureException() throws Exception {
-        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         gameBoard.getMutableTurnOrder().setSelectedCard(player, card);
@@ -123,13 +112,10 @@ public class MoveMotherNatureTest {
 
     @Test(expected = InputValidationException.class)
     public void NoAssistantCardException() throws Exception {
-        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -141,7 +127,7 @@ public class MoveMotherNatureTest {
                 break;
             }
         }
-        gameBoard = gh.debugModelReference();
+
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         int randomMovement = new Random().nextInt(gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement());
         randomMovement = randomMovement == 0 ? 1 : randomMovement;
@@ -151,13 +137,10 @@ public class MoveMotherNatureTest {
 
     @Test
     public void exceedingMovementExceptionWithCard4Active() throws Exception {
-        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -169,7 +152,6 @@ public class MoveMotherNatureTest {
                 break;
             }
         }
-        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         Card04 card04 = new Card04(gameBoard);
         CharacterCardInput input = new CharacterCardInput(player);
@@ -177,12 +159,11 @@ public class MoveMotherNatureTest {
         int invalidMovement = gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement() + 3;
         PlayerAction action = new MoveMotherNature(player.getId(), invalidMovement);
 
-        //place 3 pawns
+        // place 3 pawns
         for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
-            gameBoard = gh.debugModelReference();
             player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         }
 
@@ -196,13 +177,10 @@ public class MoveMotherNatureTest {
 
     @Test
     public void MoveMotherNatureWithoutPlacingEnoughPawns() throws Exception {
-        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.debugModelReference();
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -214,7 +192,7 @@ public class MoveMotherNatureTest {
                 break;
             }
         }
-        gameBoard = gh.debugModelReference();
+
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         Card04 card04 = new Card04(gameBoard);
         CharacterCardInput input = new CharacterCardInput(player);
@@ -222,12 +200,12 @@ public class MoveMotherNatureTest {
         int invalidMovement = gameBoard.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement() + 3;
         PlayerAction action = new MoveMotherNature(player.getId(), invalidMovement);
 
-        //place 3 pawns
+        // place 3 pawns
         for (int i = 0; i < 2; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
-            gameBoard = gh.debugModelReference();
+
             player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         }
 
@@ -241,13 +219,11 @@ public class MoveMotherNatureTest {
 
     @Test
     public void DuplicateActionException() throws Exception {
-        GameHandler gh = new GameHandler(GameMode.ADVANCED, "ale", "teo");
-        GameBoard gameBoard = gh.debugModelReference();
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        gameBoard = gh.debugModelReference();
+
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -259,14 +235,14 @@ public class MoveMotherNatureTest {
                 break;
             }
         }
-        gameBoard = gh.debugModelReference();
+
         player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
-        //move 3 pawns
+        // move 3 pawns
         for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             gh.executeAction(moveStudent);
-            gameBoard = gh.debugModelReference();
+
             player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         }
 
@@ -274,7 +250,6 @@ public class MoveMotherNatureTest {
         randomMovement = randomMovement == 0 ? 1 : randomMovement;
         PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
         // act
-        List<IslandGroup> groups = gameBoard.getMutableIslandField().getMutableGroups();
         gh.executeAction(action);
         try {
             gh.executeAction(action);
