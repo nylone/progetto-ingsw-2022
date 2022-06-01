@@ -76,15 +76,12 @@ public class CliWriter implements Runnable {
                 System.out.println("Insert Username:");
                 //acquire Username from stdIn
                 nickname = stdIn.readLine();
-                System.out.println("Insert Password");
-                //acquire password from stdIn
-                password = stdIn.readLine();
                 //whether at least one between nickname and password is empty then repeat the login process
-                if (nickname.equals("") || password.equals("")) {
-                    System.out.println("Username or password not well formatted");
+                if (nickname.equals("")) {
+                    System.out.println("Username not well formatted");
                 } else {
                     //create and initialize the DeclarePlayer request
-                    DeclarePlayerRequest dp = new DeclarePlayerRequest(nickname, password);
+                    DeclarePlayerRequest dp = new DeclarePlayerRequest(nickname);
                     //send the request to the server
                     socketWrapper.sendMessage(dp);
                     //wait for the CliReader to receive the confirmation of successful login
