@@ -419,7 +419,7 @@ public class CliWriter implements Runnable {
             case 6 ->
                     System.out.println("EFFECT: When resolving a Conquering on an Island, Towers do not count towards influence.");
             case 7 ->
-                    System.out.println("you may take up to 3 students from this card and replace them with the same number of Students\n" +
+                    System.out.println("EFFECT: you may take up to 3 students from this card and replace them with the same number of Students\n" +
                             " from your Entrance");
             case 8 ->
                     System.out.println("EFFECT: During the influence calculation this turn, you count as having 2 more influence");
@@ -432,7 +432,7 @@ public class CliWriter implements Runnable {
                             "Bag and place it on this card.");
             case 12 -> System.out.println("""
                     EFFECT: Choose a type of Student: every player (including yourself) must return 3 Students of that type
-                     * from their Dining Room to the bag. If any player has fewer than 3 Students of that type, return as many Students as they have.
+                     from their Dining Room to the bag. If any player has fewer than 3 Students of that type, return as many Students as they have.
                     """);
         }
         System.out.println("You may now continue with the game, remember the 'showActions' command, it's your best friend during the game");
