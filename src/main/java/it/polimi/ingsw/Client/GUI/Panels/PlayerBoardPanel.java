@@ -1,11 +1,12 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Model.PlayerBoard;
-import javax.swing.*;
 
+import javax.swing.*;
 import java.awt.*;
 
 import static it.polimi.ingsw.Client.GUI.IconLoader.playerBoardIcon;
+
 public class PlayerBoardPanel extends JPanel {
     public PlayerBoardPanel(PlayerBoard pb) {
         SpringLayout layout = new SpringLayout();

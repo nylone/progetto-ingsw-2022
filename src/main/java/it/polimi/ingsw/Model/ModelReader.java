@@ -27,12 +27,18 @@ public class ModelReader implements Serializable {
         return gameBoard;
     }
 
-    public GameMode getGameMode() { return gameBoard.getGameMode(); }
+    public GameMode getGameMode() {
+        return gameBoard.getGameMode();
+    }
 
-    public List<CharacterCard> getCharacterCards(){ return gameBoard.getCharacterCards(); }
+    public List<CharacterCard> getCharacterCards() {
+        return gameBoard.getCharacterCards();
+    }
+
     public List<IslandGroup> getIslandGroups() {
         return this.gameBoard.getMutableIslandField().getMutableGroups();
     }
+
     public List<PlayerBoard> getPlayerBoards() {
         return this.gameBoard.getMutablePlayerBoards();
     }

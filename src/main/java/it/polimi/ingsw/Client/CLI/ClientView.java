@@ -45,6 +45,7 @@ public class ClientView {
 
     /**
      * Get lobby's admin's nickname
+     *
      * @return admin's nickname
      */
     public String getAdmin() {
@@ -52,7 +53,17 @@ public class ClientView {
     }
 
     /**
+     * Set Game's admin's nickname
+     *
+     * @param admin String containing admin's nickname
+     */
+    public void setAdmin(String admin) {
+        this.admin = admin;
+    }
+
+    /**
      * Get current game
+     *
      * @return gameBoard representing the game
      */
     public GameBoard getGameBoard() {
@@ -61,6 +72,7 @@ public class ClientView {
 
     /**
      * Get whether the game has started or not
+     *
      * @return true if the game has started, false otherwise
      */
     public boolean getGameStarted() {
@@ -68,22 +80,35 @@ public class ClientView {
     }
 
     /**
-     * get Client's nickname
-     * @return String containing the nickname
+     * Set Game's status (started or not)
+     *
+     * @param started boolean representing whether the game has started or not
      */
-    public String getNickname() {
-        return Nickname;
+    public void setGameStarted(boolean started) {
+        this.gameStarted = started;
     }
 
     /**
      * Get whether the game has ended or not
+     *
      * @return true if the game has ended, false otherwise
      */
     public boolean isGameEnded() {
         return gameEnded;
     }
+
+    /**
+     * Set Game's status (ended or not)
+     *
+     * @param gameEnded boolean representing whether the game has ended or not
+     */
+    public void setGameEnded(boolean gameEnded) {
+        this.gameEnded = gameEnded;
+    }
+
     /**
      * Get whether the client has connected to a lobby or not
+     *
      * @return true if the client has connected to a lobby, false otherwise
      */
     public boolean isInLobby() {
@@ -92,45 +117,16 @@ public class ClientView {
 
     /**
      * Get whether the client has connected to the Server or not
+     *
      * @return true if the client has connected to the Server, false otherwise
      */
     public boolean isConnected() {
         return isConnected;
     }
-    /**
-     * Get whether the client has logged to the Server or not
-     * @return true if the client has logged to the Server, false otherwise
-     */
-    public boolean isLogged() {
-        return isLogged;
-    }
-
-    /**
-     * Set Game's admin's nickname
-     * @param admin String containing admin's nickname
-     */
-    public void setAdmin(String admin) {
-        this.admin = admin;
-    }
-
-    /**
-     * Set Game's status (started or not)
-     * @param started boolean representing whether the game has started or not
-     */
-    public void setGameStarted(boolean started) {
-        this.gameStarted = started;
-    }
-
-    /**
-     * Set Game's status (ended or not)
-     * @param gameEnded boolean representing whether the game has ended or not
-     */
-    public void setGameEnded(boolean gameEnded) {
-        this.gameEnded = gameEnded;
-    }
 
     /**
      * Set Client's connection status(connected or not)
+     *
      * @param connected boolean representing whether the client has connected or not to the server
      */
     public void setConnected(boolean connected) {
@@ -138,33 +134,21 @@ public class ClientView {
     }
 
     /**
-     * Set game's model
-     * @param game GameBoard containing game's model
+     * Get whether the client has logged to the Server or not
+     *
+     * @return true if the client has logged to the Server, false otherwise
      */
-    public void setGame(GameBoard game) {
-        this.gameBoard = game;
+    public boolean isLogged() {
+        return isLogged;
     }
-    /**
-     * Set Client's status inside a lobby (connected to a lobby or not)
-     * @param inLobby boolean representing whether the client is in lobby or not
-     */
-    public void setIsInLobby(boolean inLobby) {
-        this.isInLobby = inLobby;
-    }
+
     /**
      * Set Client's logged status inside the server (logged or not)
+     *
      * @param logged boolean representing whether the client is logged or not
      */
     public void setLogged(boolean logged) {
         isLogged = logged;
-    }
-
-    /**
-     * Set Client's nickname
-     * @param nickname String containing Client's nickname
-     */
-    public void setNickname(String nickname) {
-        this.Nickname = nickname;
     }
 
     /**
@@ -234,6 +218,24 @@ public class ClientView {
     }
 
     /**
+     * get Client's nickname
+     *
+     * @return String containing the nickname
+     */
+    public String getNickname() {
+        return Nickname;
+    }
+
+    /**
+     * Set Client's nickname
+     *
+     * @param nickname String containing Client's nickname
+     */
+    public void setNickname(String nickname) {
+        this.Nickname = nickname;
+    }
+
+    /**
      * Method to disconnect the view from lobby (when the game ends or is closed for any reason)
      */
     public void disconnectView() {
@@ -243,6 +245,23 @@ public class ClientView {
         setGameStarted(false);
     }
 
+    /**
+     * Set Client's status inside a lobby (connected to a lobby or not)
+     *
+     * @param inLobby boolean representing whether the client is in lobby or not
+     */
+    public void setIsInLobby(boolean inLobby) {
+        this.isInLobby = inLobby;
+    }
+
+    /**
+     * Set game's model
+     *
+     * @param game GameBoard containing game's model
+     */
+    public void setGame(GameBoard game) {
+        this.gameBoard = game;
+    }
 
 
 }

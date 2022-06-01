@@ -68,6 +68,7 @@ public class ClientReader implements Runnable {
     /**
      * Method responsible for analyze Server's response and modify client's view basing on response
      * Furthermore it prints some useful information to update the player
+     *
      * @param serverResponse message received from Server
      * @throws Exception Necessary to handle synchronization and view's update's exceptions
      */
@@ -230,6 +231,7 @@ public class ClientReader implements Runnable {
 
     /**
      * Support method responsible for printing game's winners
+     *
      * @param winners list of String containing winners' nicknames
      */
     private void UpdateViewWin(List<String> winners) {

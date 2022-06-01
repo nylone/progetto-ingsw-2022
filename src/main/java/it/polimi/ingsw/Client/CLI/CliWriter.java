@@ -126,7 +126,7 @@ public class CliWriter implements Runnable {
             case "createlobby" -> createLobby();
             case "joinlobby" -> joinLobby();
             case "startgame" -> startGame();
-            case "charactercardinfo" ->{
+            case "charactercardinfo" -> {
                 if (checkActionRequest()) return;
                 characterCardInfo();
             }
@@ -161,6 +161,7 @@ public class CliWriter implements Runnable {
     /**
      * This method, after checking the gameMode, takes CharacterCard's number and extracts the characteCard; basing on CharacterCard type
      * the methods create dynamically the CharacterCardInput by requesting the user only the right input.
+     *
      * @throws IOException input has gone wrong
      */
     private void playCharacterCard() throws IOException {
@@ -388,6 +389,7 @@ public class CliWriter implements Runnable {
 
     /**
      * This method prints selected characterCard to the command line to explain card's effect to the player
+     *
      * @throws IOException input has gone wrong
      */
     private void characterCardInfo() throws IOException {
@@ -439,6 +441,7 @@ public class CliWriter implements Runnable {
     /**
      * Support method responsible for checking whether the user has the rights to perform the requested action.
      * This method will only be executed to check actions available only when the match has started
+     *
      * @return true if the check fails
      */
     private boolean checkActionRequest() {
@@ -489,7 +492,7 @@ public class CliWriter implements Runnable {
     /**
      * Executes the createLobby command; during the creation the user is able to choose lobby's visibility (private or public) and
      * lobby's dimension (this dimension will also be game's number of players).
-     *
+     * <p>
      * Finally, it creates the createLobby request and then sends it to the server.
      *
      * @throws IOException if an I/O error occurs
@@ -545,7 +548,7 @@ public class CliWriter implements Runnable {
 
     /**
      * Executes the joinLobby command by knowing lobby's UUID, it allows to access both open and private lobbies.
-     *
+     * <p>
      * Finally, it creates the joinLobby request and then sends it to the Server.
      *
      * @throws IOException if an I/O error occurs
@@ -581,7 +584,7 @@ public class CliWriter implements Runnable {
     /**
      * Executes the startGame command, it can be executed only by lobby's admin and whether the lobby is full.
      * The admin can choose the game mode between simple and advanced.
-     *
+     * <p>
      * Finally, it creates the startGameRequest and then sends it to the Server.
      *
      * @throws IOException if an I/O error occurs
@@ -597,7 +600,8 @@ public class CliWriter implements Runnable {
             String input;
             //create startGameRequest object
             StartGameRequest startGameRequest;
-            loop: //repeat until the user types a valid gamemode
+            loop:
+            //repeat until the user types a valid gamemode
             while (true) {
                 ////get gameMode  from stdIn
                 input = stdIn.readLine().toUpperCase();
@@ -617,7 +621,7 @@ public class CliWriter implements Runnable {
             startGameRequest = new StartGameRequest(gameMode);
             //send message to the server
             socketWrapper.sendMessage(startGameRequest);
-        }else{
+        } else {
             System.out.println("You first need to join or create a lobby");
         }
     }
@@ -627,7 +631,7 @@ public class CliWriter implements Runnable {
      * Executes the playAssistantCard command
      * The method shows the available assistantCard at that moment (removing the used cards and cards picked by other players in the same turn to avoid
      * playing cards with same value).
-     *
+     * <p>
      * Finally, it creates the playAssistantCard request and then sends it to the Server.
      *
      * @throws IOException if an I/O error occurs
@@ -668,7 +672,7 @@ public class CliWriter implements Runnable {
      * allows the user to choose the destination:
      * type enter to move the pawn directly to the dining room
      * type a number that will be interpreted as the island's id on which to move the pawn
-     *
+     * <p>
      * Finally, it creates the moveStudent request and then sends it to the Server.
      *
      * @throws IOException if an I/O error occurs
@@ -701,8 +705,9 @@ public class CliWriter implements Runnable {
 
     /**
      * Executes the moveMotherNature command, this method asks the user to type the amount of steps motherNature should take
-     *
+     * <p>
      * Finally, it creates the moveMotherNature request and then sends it to the Server.
+     *
      * @throws IOException if an I/O error occurs
      */
     private void moveMotherNature() throws IOException {
@@ -785,6 +790,7 @@ public class CliWriter implements Runnable {
      * Support method used to acquire chosen characterCard from command line; it requires user to type the characterCard number
      * (not the index inside Game's list of 3 characterCards but the "id" o the card between 1 and 12). The methods also checks
      * if the chosen characterCard's number is present among the 3 CharacterCards available during the game.
+     *
      * @return int representing characterCard's number
      * @throws IOException if an I/O error occurs
      */
@@ -834,7 +840,9 @@ public class CliWriter implements Runnable {
         return result;
     }
 
-    /**Support method to read an integer from command line, this method accepts 'enter' as input
+    /**
+     * Support method to read an integer from command line, this method accepts 'enter' as input
+     *
      * @return the integer read from command line or Optional.empty if the user pressed "Enter"
      * @throws IOException if an I/O error occurs
      */
@@ -862,7 +870,8 @@ public class CliWriter implements Runnable {
 
     /**
      * Support method that create the PlayerActionRequest after that user type a PawnColour.
-     * @param selected selected CharacterCard's index among the 3 available during the game
+     *
+     * @param selected      selected CharacterCard's index among the 3 available during the game
      * @param currentPlayer current player in turn, necessary to create PlayCharacterCard action
      * @return PlayerActionRequest with the selected PawnColour as parameter
      * @throws IOException if an I/O error occurs

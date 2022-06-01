@@ -21,7 +21,7 @@ public class InfoUI {
      * <br>
      * It also shows the number of remaining coins if the game is in advanced mode.
      *
-     * @param ctx reference to the model used to access {@link GameBoard#getMutableTurnOrder()}
+     * @param ctx    reference to the model used to access {@link GameBoard#getMutableTurnOrder()}
      * @param caller the player to whom the information will be displayed. It is used to highlight if you are
      *               the current or next player
      * @return a visual description of useful information for the players: turns and coins
@@ -35,8 +35,7 @@ public class InfoUI {
         if (caller.equals(currentPlayer.getNickname())) {
             // Highlight whether the current player is the person to which the console is shown
             info = info + currentPlayer.getNickname() + " is your turn!\n";
-        }
-        else
+        } else
             info = info + "It's " + currentPlayer.getNickname() + "'s turn\n";
 
         // Prints the next player

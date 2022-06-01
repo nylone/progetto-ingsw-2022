@@ -6,7 +6,6 @@ import it.polimi.ingsw.Model.GameBoard;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.lang.management.GarbageCollectorMXBean;
 import java.util.List;
 
 public abstract class PlayerAction implements Serializable {

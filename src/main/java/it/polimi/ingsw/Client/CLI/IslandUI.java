@@ -23,7 +23,8 @@ public class IslandUI {
      * Mother Nature is represented by an asterisk
      * <br>
      * The number of tower is shown via a number
-     * @param i the subject to be represented
+     *
+     * @param i   the subject to be represented
      * @param ctx reference to the model used to identify the presence of the mother nature piece on the island group
      * @return the representation of an island group.
      */
@@ -72,6 +73,7 @@ public class IslandUI {
     /**
      * It basically provides the same result as {@link IslandUI#draw(IslandGroup, GameBoard)} but it replaces
      * all characters with whitespaces (except tabulations)
+     *
      * @param ctx reference to the model used to identify the island group containing the most students
      * @return an all whitespace's filled String, long enough to fill the IslandUIs' composition
      */

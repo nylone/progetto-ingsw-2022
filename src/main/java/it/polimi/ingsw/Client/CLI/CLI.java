@@ -74,6 +74,7 @@ public class CLI implements Runnable {
 
     /**
      * used to verify that the string entered by the user is an ip address
+     *
      * @param string String typed by user
      * @return true if the string is a valid ip address, false otherwise
      */
@@ -89,8 +90,9 @@ public class CLI implements Runnable {
     }
 
     /**
-     *Support method to initialize CliWriter and ClientReader threads, it also creates and initialize Client's view
-     * @param socket SocketWrapper used to wrap the socket used from Client and Server
+     * Support method to initialize CliWriter and ClientReader threads, it also creates and initialize Client's view
+     *
+     * @param socket         SocketWrapper used to wrap the socket used from Client and Server
      * @param bufferedReader BufferedReader used to acquire ip address and port number will be used to acquire commands during the game
      */
     private static void OpenCLI(SocketWrapper socket, BufferedReader bufferedReader) {

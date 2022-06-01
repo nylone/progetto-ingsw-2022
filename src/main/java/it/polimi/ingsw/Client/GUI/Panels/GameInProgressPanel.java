@@ -8,13 +8,14 @@ import it.polimi.ingsw.Model.ModelReader;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.RemoteView.Messages.Message;
-import it.polimi.ingsw.RemoteView.Messages.ServerResponses.*;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.ClientDisconnected;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.LobbyClosed;
+import it.polimi.ingsw.RemoteView.Messages.ServerResponses.ModelUpdated;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class GameInProgressPanel extends JTabbedPane {
 
@@ -23,6 +24,7 @@ public class GameInProgressPanel extends JTabbedPane {
     private final JPanel islandPanel = new JPanel();
 
     private final Map<String, PlayerBoardPanel> playerTabs = new HashMap<>();
+
     public GameInProgressPanel(Context ctx) {
         // unwrapping context into useful variables
         this.ownNickname = ctx.getNickname();
@@ -60,17 +62,17 @@ public class GameInProgressPanel extends JTabbedPane {
     private void updateViews(ModelReader model) {
         this.removeAll();
         this.add("Islands", this.islandPanel);
-        for (PlayerBoard pb: model.getPlayerBoards()) {
+        for (PlayerBoard pb : model.getPlayerBoards()) {
             this.playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb));
         }
-        for (Map.Entry<String, PlayerBoardPanel> pbp: this.playerTabs.entrySet()) {
+        for (Map.Entry<String, PlayerBoardPanel> pbp : this.playerTabs.entrySet()) {
             if (pbp.getKey().equals(this.ownNickname)) {
                 this.add("Your board", pbp.getValue());
             } else {
                 this.add("Player " + pbp.getKey() + "'s board", pbp.getValue());
             }
         }
-        if(model.getGameMode() == GameMode.ADVANCED){
+        if (model.getGameMode() == GameMode.ADVANCED) {
             final JPanel characterCardsPanel = new CharacterCardsPanel(model.getCharacterCards());
             this.add("CharacterCards", characterCardsPanel);
         }
