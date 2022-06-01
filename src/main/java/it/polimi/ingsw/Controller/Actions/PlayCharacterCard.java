@@ -42,7 +42,7 @@ public class PlayCharacterCard extends PlayerAction {
 
     public boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
         if (ctx.getGameMode() == GameMode.SIMPLE) {
-            throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD, INPUT_NAME_CHARACTER_CARD + "can't be played in simple mode");
+            throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD, INPUT_NAME_CHARACTER_CARD + " can't be played in simple mode");
         }
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         if (ctx.getMutableTurnOrder().getMutableSelectedCard(caller).isEmpty()) {
