@@ -29,7 +29,8 @@ public class GameInProgressPanel extends JTabbedPane {
         // unwrapping context into useful variables
         this.ownNickname = ctx.getNickname();
         this.window = ctx.getWindow();
-        SocketWrapper sw = ctx.getSocketWrapper();
+        SocketWrapper sw = ctx.getSocketWrapper();// display the view
+        this.window.changeView(this);
 
         // start socket listener task
         new Thread(() -> {

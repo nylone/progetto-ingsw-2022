@@ -157,7 +157,7 @@ public class Lobby {
     protected void startGame(GameMode gameMode) throws InputValidationException {
         synchronized (this.players) {
             notifyPlayers(new GameStartEvent());
-            this.gameHandler = new GameHandler(gameMode, this.players.toArray(new String[0]));
+            this.gameHandler = new GameHandler(gameMode, this.players.toArray(String[]::new));
             this.gameHandler.addEventListenerToModel(this);
         }
     }
