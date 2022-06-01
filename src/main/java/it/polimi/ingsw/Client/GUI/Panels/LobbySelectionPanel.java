@@ -124,7 +124,7 @@ public class LobbySelectionPanel extends JTabbedPane {
                     sw.sendMessage(new ConnectLobbyRequest(id));
                     if (sw.awaitMessage() instanceof LobbyRedirect lobbyRedirect &&
                             lobbyRedirect.getStatusCode() == StatusCode.Success) {
-                        new GameStartingPanel(ctx, false);
+                        new GameStartingPanel(ctx, false, lobbyRedirect.getLobbyID());
                     } else {
                         new PopupMessage("Try again.", "Failure :(");
                     }
@@ -168,7 +168,6 @@ public class LobbySelectionPanel extends JTabbedPane {
             JLabel openLobbyLabel = new JLabel("Public lobby:", SwingConstants.RIGHT);
             JLabel maxPlayersLabel = new JLabel("Max Players:", SwingConstants.RIGHT);
 
-
             // buttons
             JButton create = new JButton("Create");
             JCheckBox openLobby = new JCheckBox();
@@ -205,7 +204,7 @@ public class LobbySelectionPanel extends JTabbedPane {
                     ));
                     if (sw.awaitMessage() instanceof LobbyRedirect lobbyRedirect &&
                             lobbyRedirect.getStatusCode() == StatusCode.Success) {
-                        new GameStartingPanel(ctx, true);
+                        new GameStartingPanel(ctx, true, lobbyRedirect.getLobbyID());
                     } else {
                         new PopupMessage("Try again.", "Failure :(");
                     }

@@ -13,18 +13,29 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusC
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.UUID;
 
 public class GameStartingPanel extends JPanel {
-    public GameStartingPanel(Context ctx, boolean isAdmin) {
+    public GameStartingPanel(Context ctx, boolean isAdmin, UUID lobbyID) {
         // unwrapping context into useful variables
         Window window = ctx.getWindow();
         SocketWrapper sw = ctx.getSocketWrapper();
 
         // labels
         JLabel title = new JLabel("Connected to the lobby");
+        JLabel lobbyIDlabel = new JLabel("Connected to the lobby");
         JLabel connectedPlayersLablel = new JLabel("Players in lobby:");
+        JLabel gameModeLabel = new JLabel("Advanced mode:");
+
+        // text boxes
+        JTextField lobbyIDField = new JTextField();
+        lobbyIDField.setText(lobbyID.toString());
+        lobbyIDField.setEditable(false);
 
         // buttons
+        JCheckBox gameMode = new JCheckBox();
+        gameMode.setEnabled(isAdmin);
+        gameMode.setToolTipText("Only the lobby admin can select the game mode");
         JButton disconnect = new JButton("Disconnect from the lobby");
         JButton start = new JButton("Start the game");
         start.setToolTipText("Only the lobby admin can start the lobby");
@@ -60,6 +71,10 @@ public class GameStartingPanel extends JPanel {
         this.add(start);
         this.add(connectedPlayersLablel);
         this.add(connectedPlayersList);
+        this.add(lobbyIDlabel);
+        this.add(lobbyIDField);
+        this.add(gameModeLabel);
+        this.add(gameMode);
 
         disconnect.addActionListener(actionEvent -> {
             sw.close();
@@ -69,7 +84,7 @@ public class GameStartingPanel extends JPanel {
 
         start.addActionListener(actionEvent -> {
             try {
-                sw.sendMessage(new StartGameRequest(GameMode.ADVANCED));
+                sw.sendMessage(new StartGameRequest(gameMode.isSelected() ? GameMode.ADVANCED : GameMode.SIMPLE));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -81,12 +96,21 @@ public class GameStartingPanel extends JPanel {
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 20, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, this);
 
-        layout.putConstraint(SpringLayout.NORTH, connectedPlayersLablel, 20, SpringLayout.SOUTH, title);
+        layout.putConstraint(SpringLayout.NORTH, lobbyIDlabel, 20, SpringLayout.SOUTH, title);
+        layout.putConstraint(SpringLayout.EAST, lobbyIDlabel, -10, SpringLayout.HORIZONTAL_CENTER, this);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER, lobbyIDField, 0, SpringLayout.VERTICAL_CENTER, lobbyIDlabel);
+        layout.putConstraint(SpringLayout.WEST, lobbyIDField, 10, SpringLayout.HORIZONTAL_CENTER, this);
+
+        layout.putConstraint(SpringLayout.NORTH, connectedPlayersLablel, 20, SpringLayout.SOUTH, lobbyIDField);
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, connectedPlayersLablel, 0, SpringLayout.HORIZONTAL_CENTER, this);
         layout.putConstraint(SpringLayout.NORTH, connectedPlayersList, 20, SpringLayout.SOUTH, connectedPlayersLablel);
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, connectedPlayersList, 0, SpringLayout.HORIZONTAL_CENTER, this);
 
-        layout.putConstraint(SpringLayout.NORTH, start, 20, SpringLayout.SOUTH, connectedPlayersList);
+        layout.putConstraint(SpringLayout.NORTH, gameModeLabel, 20, SpringLayout.SOUTH, connectedPlayersList);
+        layout.putConstraint(SpringLayout.EAST, gameModeLabel, -10, SpringLayout.HORIZONTAL_CENTER, this);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER, gameMode, 0, SpringLayout.VERTICAL_CENTER, gameModeLabel);
+        layout.putConstraint(SpringLayout.WEST, gameMode, 10, SpringLayout.HORIZONTAL_CENTER, this);
+        layout.putConstraint(SpringLayout.NORTH, start, 20, SpringLayout.SOUTH, gameMode);
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, start, 0, SpringLayout.HORIZONTAL_CENTER, this);
         layout.putConstraint(SpringLayout.NORTH, disconnect, 20, SpringLayout.SOUTH, start);
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, disconnect, 0, SpringLayout.HORIZONTAL_CENTER, this);

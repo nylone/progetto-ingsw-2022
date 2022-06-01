@@ -72,11 +72,13 @@ public class CharacterCardsPanel extends JPanel {
             secondCard = new JLabel(cardImage);
             secondCard.setBounds(441, 133, 205, 340);
             secondCard.setToolTipText(printCharacterCardInfo(characterCards.get(1)));
+            ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
             if (characterCards.get(1).getTimeUsed() > 0) secondCoinLabel.setVisible(true);
         } else if (thirdCard == null) {
             thirdCard = new JLabel(cardImage);
             thirdCard.setBounds(782, 133, 205, 340);
             thirdCard.setToolTipText(printCharacterCardInfo(characterCards.get(2)));
+            ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
             if (characterCards.get(2).getTimeUsed() > 0) thirdCoinLabel.setVisible(true);
         }
     }

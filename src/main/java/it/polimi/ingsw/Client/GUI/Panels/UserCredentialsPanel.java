@@ -44,7 +44,6 @@ public class UserCredentialsPanel extends JPanel {
         login.addActionListener(actionEvent -> {
             // normalize username
             ctx.setNickname(username.getText().trim());
-
             username.setText(ctx.getNickname());
             try {
                 sw.sendMessage(new DeclarePlayerRequest(ctx.getNickname()));
@@ -77,6 +76,7 @@ public class UserCredentialsPanel extends JPanel {
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, username, 0, SpringLayout.VERTICAL_CENTER, usernameLabel);
         layout.putConstraint(SpringLayout.WEST, username, 10, SpringLayout.HORIZONTAL_CENTER, title);
 
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER, login, 40, SpringLayout.VERTICAL_CENTER, username);
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, login, 0, SpringLayout.HORIZONTAL_CENTER, this);
 
         // apply layout
