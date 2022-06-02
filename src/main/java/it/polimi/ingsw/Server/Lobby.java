@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Actions.PlayerAction;
-import it.polimi.ingsw.Controller.GameHandler;
+import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
@@ -24,7 +24,7 @@ public class Lobby {
     private final List<String> players;
     private final Map<String, ClientEventHandler> playerEventSources;
     private boolean isClosed;
-    private GameHandler gameHandler;
+    private Controller controller;
 
     protected Lobby(UUID id, boolean isPublic, int maxPlayers, String admin) {
         this.id = id;
@@ -37,10 +37,10 @@ public class Lobby {
     }
 
     public void executeAction(PlayerAction pa) throws InputValidationException, OperationException {
-        if (gameHandler == null) {
+        if (controller == null) {
             throw new ForbiddenOperationException("Lobby is in waiting state, no game is running");
         }
-        gameHandler.executeAction(pa);
+        controller.executeAction(pa);
     }
 
     public void notifyPlayers(ClientEvent event) {
@@ -56,11 +56,11 @@ public class Lobby {
     }
 
     public boolean verifyPlayer(PlayerAction pa, String nickname) throws OperationException {
-        if (gameHandler == null) {
+        if (controller == null) {
             throw new ForbiddenOperationException("Lobby is in waiting state, no game is running");
         }
         try {
-            return gameHandler.getPlayerBoardIDFromNickname(nickname) == pa.getPlayerBoardId();
+            return controller.getPlayerBoardIDFromNickname(nickname) == pa.getPlayerBoardId();
         } catch (InvalidContainerIndexException e) {
             throw new RuntimeException(e);
         }
@@ -117,7 +117,7 @@ public class Lobby {
                     return false;
                 }
                 // in case of new connection check for max players and check that the game has not yet started
-            } else if (this.gameHandler == null && this.maxPlayers > this.players.size()) {
+            } else if (this.controller == null && this.maxPlayers > this.players.size()) {
                 this.players.add(nick);
                 this.playerEventSources.put(nick, playerChannel);
                 notifyPlayers(new ClientConnectEvent(nick, List.copyOf(this.players)));
@@ -141,7 +141,7 @@ public class Lobby {
     }
 
     public boolean isGameInProgress() {
-        return this.gameHandler != null;
+        return this.controller != null;
     }
 
     protected void close() {
@@ -154,8 +154,7 @@ public class Lobby {
     protected void startGame(GameMode gameMode) throws InputValidationException {
         synchronized (this.players) {
             notifyPlayers(new GameStartEvent());
-            this.gameHandler = new GameHandler(gameMode, this.players.toArray(String[]::new));
-            this.gameHandler.addEventListenerToModel(this);
+            this.controller = new Controller(gameMode, this, this.players.toArray(String[]::new));
         }
     }
 

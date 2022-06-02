@@ -27,7 +27,7 @@ public class PlayCharacterCardTest {
     @Test
     public void checkUse() throws Exception {
         GameBoard gameBoard = initializeGameBoard(20, 1);
-        GameHandler gh = initializeGameHandler(gameBoard, 1);
+        Controller gh = initializeGameHandler(gameBoard, 1);
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         int initialReserve = gameBoard.getCoinReserve();
         int initialBalance = player.getCoinBalance();
@@ -302,7 +302,7 @@ public class PlayCharacterCardTest {
         return gameBoard;
     }
 
-    private GameHandler initializeGameHandler(GameBoard gameBoard, int card) {
+    private Controller initializeGameHandler(GameBoard gameBoard, int card) {
         List<CharacterCard> characterCards = gameBoard.getCharacterCards();
         switch (card) {
             case 1:
@@ -331,13 +331,13 @@ public class PlayCharacterCardTest {
                 characterCards.add(new Card12(gameBoard));
         }
 
-        return new GameHandler(gameBoard, new ArrayList<>());
+        return new Controller(gameBoard, new ArrayList<>());
     }
 
     @Test(expected = InputValidationException.class)
     public void CharacterCardIndexOutOfBound() throws Exception {
         GameBoard gameBoard = initializeGameBoard(60, 3);
-        GameHandler gh = initializeGameHandler(gameBoard, 12);
+        Controller gh = initializeGameHandler(gameBoard, 12);
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, Optional.empty(), Optional.empty(), Optional.empty());
         gh.executeAction(playAction);
@@ -360,7 +360,7 @@ public class PlayCharacterCardTest {
         characterCards.add(new Card01(gameBoard));
         characterCards.add(new Card02(gameBoard));
         characterCards.add(new Card03(gameBoard));
-        GameHandler gh = new GameHandler(gameBoard, new ArrayList<>());
+        Controller gh = new Controller(gameBoard, new ArrayList<>());
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
@@ -394,7 +394,7 @@ public class PlayCharacterCardTest {
     @Test
     public void simpleModePlayAttempt() throws Exception {
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
-        GameHandler gh = new GameHandler(gameBoard, new ArrayList<>(6));
+        Controller gh = new Controller(gameBoard, new ArrayList<>(6));
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, Optional.empty(), Optional.empty(), Optional.empty());
         try {
@@ -408,7 +408,7 @@ public class PlayCharacterCardTest {
     @Test
     public void noAssistantCardPlayed() throws Exception {
         GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
-        GameHandler gh = new GameHandler(gameBoard, new ArrayList<>(6));
+        Controller gh = new Controller(gameBoard, new ArrayList<>(6));
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, Optional.empty(), Optional.empty(), Optional.empty());
         try {
@@ -422,7 +422,7 @@ public class PlayCharacterCardTest {
     @Test
     public void InsufficientBalanceException() throws Exception {
         GameBoard gameBoard = initializeGameBoard(20, 1);
-        GameHandler gh = initializeGameHandler(gameBoard, 2);
+        Controller gh = initializeGameHandler(gameBoard, 2);
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.empty());
         try {

@@ -6,11 +6,9 @@ import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
-import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.Model;
-import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Server.Lobby;
 
 import java.util.ArrayList;
@@ -20,9 +18,21 @@ import java.util.List;
  * The GameHandler object is the Controller of the whole game. <br>
  * The Controller should be the only entity able to modify the model.
  */
-public class GameHandler {
+public class Controller {
     private final List<PlayerAction> history;
-    private final Model modelWrapper;
+    private final Model model;
+
+    /**
+     * Generates a new instance of Game. This is the default method to call to create a game.
+     *
+     * @param gameMode the game mode the players are going to use
+     * @param lobby the model update listener (called by the model in case of meaningful updates)
+     * @param players  a list of maximum 4, minimum 2 strings containing the nicknames of the players
+     */
+    public Controller(GameMode gameMode, Lobby lobby, String... players) throws InputValidationException {
+        this(gameMode, players);
+        this.model.addModelUpdateListener(lobby);
+    }
 
     /**
      * Generates a new instance of Game. This is the default method to call to create a game.
@@ -30,15 +40,17 @@ public class GameHandler {
      * @param gameMode the game mode the players are going to use
      * @param players  a list of maximum 4, minimum 2 strings containing the nicknames of the players
      */
-    public GameHandler(GameMode gameMode, String... players) throws InputValidationException {
+    public Controller(GameMode gameMode, String... players) throws InputValidationException {
         if (players.length > 1 && players.length <= 4) {
             this.history = new ArrayList<>(6);
-            this.modelWrapper = new Model(gameMode, players);
+            this.model = new Model(gameMode, players);
         } else {
             throw new GenericInputValidationException("Players", "The number of players must be 2, 3 or 4.\n" +
                     "Players received: " + players.length);
         }
     }
+
+
 
     /**
      * Generates a new instance of Game. This is the debug method to call to create a game, since the internal attributes
@@ -48,13 +60,9 @@ public class GameHandler {
      * @param game    an instance of GameBoard
      * @param history an instance to a list of PlayerAction, is used by the controller to check the flow of the game
      */
-    GameHandler(GameBoard game, List<PlayerAction> history) {
+    Controller(GameBoard game, List<PlayerAction> history) {
         this.history = history;
-        this.modelWrapper = new Model(game);
-    }
-
-    public void addEventListenerToModel(Lobby lobby) {
-        this.modelWrapper.addModelUpdateListener(lobby);
+        this.model = new Model(game);
     }
 
     /**
@@ -66,11 +74,11 @@ public class GameHandler {
      *                                  the model is guaranteed to not have been modified.
      */
     public synchronized void executeAction(PlayerAction action) throws InputValidationException {
-        GameBoard gameBoard = this.modelWrapper.readModel().getGameBoard();
+        GameBoard gameBoard = this.model.readModel().getGameBoard();
         action.validate(this.getHistory(), gameBoard); // todo validate should return optionals containing validation exceptions
         // as right now we are abusing the hell out of exception throwing
         try {
-            this.modelWrapper.editModel(action::unsafeExecute);
+            this.model.editModel(action::unsafeExecute);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,12 +106,10 @@ public class GameHandler {
      */
     @Deprecated
     GameBoard debugModelReference() {
-        return modelWrapper.debugGameBoardReference();
+        return this.model.debugGameBoardReference();
     }
 
     public int getPlayerBoardIDFromNickname(String nickname) throws InvalidContainerIndexException {
-        return this.modelWrapper.readModel().getGameBoard()
-                .getMutablePlayerBoardByNickname(nickname)
-                .getId();
+        return this.model.readModel().getPlayerBoardByNickname(nickname).getId();
     }
 }

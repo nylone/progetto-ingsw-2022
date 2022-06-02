@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 public class MoveMotherNatureTest {
 
     GameBoard gameBoard = new GameBoard(GameMode.ADVANCED, "ale", "teo");
-    GameHandler gh = new GameHandler(gameBoard, new ArrayList<>(6));
+    Controller gh = new Controller(gameBoard, new ArrayList<>(6));
 
     @Test
     public void motherNatureShouldBeMoved() throws Exception {

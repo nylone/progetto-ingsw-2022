@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 
 import java.io.Serial;
@@ -41,5 +42,9 @@ public class ModelReader implements Serializable {
 
     public List<PlayerBoard> getPlayerBoards() {
         return this.gameBoard.getMutablePlayerBoards();
+    }
+
+    public PlayerBoard getPlayerBoardByNickname(String nickname) throws InvalidContainerIndexException {
+        return this.gameBoard.getMutablePlayerBoardByNickname(nickname);
     }
 }

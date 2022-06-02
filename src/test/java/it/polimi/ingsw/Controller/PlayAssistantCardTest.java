@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class PlayAssistantCardTest {
 
     GameBoard gameBoard = new GameBoard(GameMode.ADVANCED, "ale", "teo");
-    GameHandler gh = new GameHandler(gameBoard, new ArrayList<>(6));
+    Controller gh = new Controller(gameBoard, new ArrayList<>(6));
 
     @Test
     public void cardShouldBeAssociatedToPlayer() throws Exception {
@@ -51,7 +51,7 @@ public class PlayAssistantCardTest {
 
     @Test(expected = InputValidationException.class)
     public void SelectedAlreadyUsedCardException() throws Exception {
-        GameHandler gh = new GameHandler(GameMode.SIMPLE, "ale", "teo");
+        Controller gh = new Controller(GameMode.SIMPLE, "ale", "teo");
         PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayAssistantCard action = new PlayAssistantCard(player.getId(), 3);
         // act
