@@ -70,7 +70,7 @@ public class GameInProgressPanel extends JTabbedPane {
             if (pbp.getKey().equals(this.ownNickname)) {
                 this.add("Your board", pbp.getValue());
             } else {
-                this.add("Player " + pbp.getKey() + "'s board", pbp.getValue());
+                this.add(pbp.getKey() + "'s PlayerBoard", pbp.getValue());
             }
         }
         if (model.getGameMode() == GameMode.ADVANCED) {

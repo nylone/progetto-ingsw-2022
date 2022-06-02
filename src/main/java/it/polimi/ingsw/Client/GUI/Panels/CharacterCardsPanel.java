@@ -21,7 +21,6 @@ public class CharacterCardsPanel extends JPanel {
     public CharacterCardsPanel(List<CharacterCard> characterCards) {
         UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 14));
         this.characterCards = characterCards;
-        this.setLayout(new OverlayLayout(this));
         JLabel pageBackground = new JLabel(sky);
         pageBackground.setLayout(null);
         pageBackground.setBounds(0, 0, 1080, 720);

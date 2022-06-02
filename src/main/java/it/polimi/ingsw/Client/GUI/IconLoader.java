@@ -39,6 +39,39 @@ public class IconLoader {
 
     public static final ImageIcon card12 = loadIcon("CharacterCards/Card12", 205, 340);
 
+    public static final ImageIcon playerBoard = loadIcon("PlayerBoard", 1080, 420);
+
+    public static final ImageIcon playerBoardBackground = loadIcon("playerboardBG", 1080, 720);
+
+    public static final ImageIcon assistantCard1 = loadIcon("AssistantCards/Assistant1", 165, 255);
+
+    public static final ImageIcon assistantCard2 = loadIcon("AssistantCards/Assistant2", 165, 255);
+
+    public static final ImageIcon assistantCard3 = loadIcon("AssistantCards/Assistant3", 165, 255);
+
+    public static final ImageIcon assistantCard4 = loadIcon("AssistantCards/Assistant4", 165, 255);
+
+    public static final ImageIcon assistantCard5 = loadIcon("AssistantCards/Assistant5", 165, 255);
+
+    public static final ImageIcon assistantCard6 = loadIcon("AssistantCards/Assistant6", 165, 255);
+
+    public static final ImageIcon assistantCard7 = loadIcon("AssistantCards/Assistant7", 165, 255);
+
+    public static final ImageIcon assistantCard8 = loadIcon("AssistantCards/Assistant8", 165, 255);
+
+    public static final ImageIcon assistantCard9 = loadIcon("AssistantCards/Assistant9", 165, 255);
+
+    public static final ImageIcon assistantCard10 = loadIcon("AssistantCards/Assistant10", 165, 255);
+
+    public static final ImageIcon RedStudent = loadIcon("Students/RedStudent",50 , 45);
+
+    public static final ImageIcon BlueStudent = loadIcon("Students/BlueStudent",50 , 45);
+
+    public static final ImageIcon GreenStudent = loadIcon("Students/GreenStudent",50 , 45);
+
+    public static final ImageIcon YellowStudent = loadIcon("Students/YellowStudent",50 , 45);
+
+    public static final ImageIcon PinkStudent = loadIcon("Students/PinkStudent",50 , 45);
     private static ImageIcon loadIcon(String name, int width, int height) {
         Image img;
         try {
