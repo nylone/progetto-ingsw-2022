@@ -41,9 +41,6 @@ public class Lobby {
             throw new ForbiddenOperationException("Lobby is in waiting state, no game is running");
         }
         gameHandler.executeAction(pa);
-        if (gameHandler.getWinnerNicknames().isPresent()) {
-            this.notifyPlayers(new GameOverEvent(gameHandler.getWinnerNicknames().get()));
-        }
     }
 
     public void notifyPlayers(ClientEvent event) {

@@ -3,8 +3,16 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Server.Lobby;
+import it.polimi.ingsw.Server.Messages.Events.Internal.GameOverEvent;
 import it.polimi.ingsw.Server.Messages.Events.Internal.ModelUpdateEvent;
 
+import java.util.List;
+
+/**
+ * The model class is used by the controller to enact the game logic and (optionally) notifies the server whenever a meaningful
+ * change to the underlying data is carried out.
+ * Note: the model class provides a reader
+ */
 public class Model {
     private final GameBoard gameBoard;
     private Optional<Lobby> toNotify;
@@ -29,6 +37,10 @@ public class Model {
         this.toNotify.ifPresent(lobby -> lobby.notifyPlayers(
                 new ModelUpdateEvent(new ModelReader(this.gameBoard, true))
         ));
+        this.gameBoard.getWinners().ifPresent(winners ->
+                this.toNotify.ifPresent(lobby -> lobby.notifyPlayers(new GameOverEvent(winners.stream()
+                .map(PlayerBoard::getNickname)
+                .toList()))));
     }
 
     public ModelReader readModel() {

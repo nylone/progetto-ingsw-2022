@@ -106,12 +106,4 @@ public class GameHandler {
                 .getMutablePlayerBoardByNickname(nickname)
                 .getId();
     }
-
-    public Optional<List<String>> getWinnerNicknames() {
-        return this.modelWrapper.readModel().getGameBoard()
-                .getWinners()
-                .map(list -> list.stream()
-                        .map(PlayerBoard::getNickname)
-                        .toList());
-    }
 }
