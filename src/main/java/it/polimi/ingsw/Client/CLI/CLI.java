@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.CLI;
 
 
 import it.polimi.ingsw.Network.SocketWrapper;
+import it.polimi.ingsw.Server.WelcomeServer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +18,9 @@ import java.util.concurrent.CyclicBarrier;
  * One for receiving responses from Server and update Client's view (ClientReader class)
  */
 public class CLI implements Runnable {
+    public static void main(String... args) {
+        new Thread(new CLI()).start();
+    }
     /**
      * Run Thread responsible for asking User which server wants to connect to
      */

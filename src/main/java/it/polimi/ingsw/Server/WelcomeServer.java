@@ -31,7 +31,7 @@ public class WelcomeServer implements Runnable {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
         new Thread(new WelcomeServer()).start();
     }
 

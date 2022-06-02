@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String... args) throws IOException {
         System.out.println("""
                 Welcome to the Eriantys startup tool!
                 Please choose one of the following options:
@@ -33,12 +33,12 @@ public class Main {
                 }
                 case "c" -> {
                     System.out.println("Starting CLI client...");
-                    new Thread(new CLI()).start();
+                    CLI.main();
                     again = false;
                 }
                 case "g" -> {
                     System.out.println("Starting GUI client...");
-                    GUI.init();
+                    GUI.main();
                     again = false;
                 }
                 case "q" -> {
