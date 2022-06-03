@@ -85,7 +85,7 @@ public class CharacterCardsPanel extends JPanel {
     private String printCharacterCardInfo(CharacterCard characterCard) {
         String info;
         switch (characterCard) {
-            case Card01 card01 ->
+            case Card01 ignored9 ->
                     info = "<html><p width = 300px>EFFECT: Take 1 Student from this card and place it on" +
                             "an Island of your choice. Then, draw a new Student from the Bag and place it on this card.</p></html>";
             case Card02 ignored -> info = "<html><p width = 300px>EFFECT: During this turn, you take control of any" +

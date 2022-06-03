@@ -2,7 +2,6 @@ package it.polimi.ingsw.Client.CLI;
 
 
 import it.polimi.ingsw.Network.SocketWrapper;
-import it.polimi.ingsw.Server.WelcomeServer;
 
 import java.io.BufferedReader;
 import java.io.IOException;

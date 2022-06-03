@@ -71,7 +71,7 @@ public class CliWriter implements Runnable {
                             Welcome Player
                             """
             );
-            String nickname, password;
+            String nickname;
             while (true) {
                 System.out.println("Insert Username:");
                 //acquire Username from stdIn
@@ -527,7 +527,7 @@ public class CliWriter implements Runnable {
             int players;
             while (true) {
                 //get lobby's dimension from stdIn
-                players = Integer.parseInt(stdIn.readLine());
+                players = getInt();
                 //check input's validity (lobby's dimension must be between 2 and 4)
                 if (players >= 2 && players <= 4) {
                     break;
