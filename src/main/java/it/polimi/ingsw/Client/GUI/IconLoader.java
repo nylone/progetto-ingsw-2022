@@ -39,7 +39,7 @@ public class IconLoader {
 
     public static final ImageIcon card12 = loadIcon("CharacterCards/Card12", 205, 340);
 
-    public static final ImageIcon playerBoard = loadIcon("PlayerBoard", 1080, 420);
+    public static final ImageIcon playerBoard = loadIcon("player-board", 1080, 420);
 
     public static final ImageIcon playerBoardBackground = loadIcon("playerboardBG", 1080, 720);
 
@@ -72,6 +72,22 @@ public class IconLoader {
     public static final ImageIcon YellowStudent = loadIcon("Students/YellowStudent",50 , 45);
 
     public static final ImageIcon PinkStudent = loadIcon("Students/PinkStudent",50 , 45);
+
+    public static final ImageIcon RedTeacher = loadIcon("Teachers/RedTeacher", 50, 45);
+
+    public static final ImageIcon BlueTeacher = loadIcon("Teachers/BlueTeacher", 50, 45);
+
+    public static final ImageIcon YellowTeacher = loadIcon("Teachers/YellowTeacher", 50, 45);
+
+    public static final ImageIcon PinkTeacher = loadIcon("Teachers/PinkTeacher", 50, 45);
+
+    public static final ImageIcon GreenTeacher = loadIcon("Teachers/GreenTeacher", 50, 45);
+
+    public static final ImageIcon GrayTower = loadIcon("Towers/grayTower", 50, 75);
+
+    public static final ImageIcon BlackTower = loadIcon("Towers/blackTower", 50, 75);
+
+    public static final ImageIcon WhiteTower = loadIcon("Towers/whiteTower", 50, 75);
     private static ImageIcon loadIcon(String name, int width, int height) {
         Image img;
         try {

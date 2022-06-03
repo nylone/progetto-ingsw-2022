@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Model.Enums.GameMode;
+import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -42,6 +43,14 @@ public class ModelReader implements Serializable {
 
     public List<PlayerBoard> getPlayerBoards() {
         return this.gameBoard.getMutablePlayerBoards();
+    }
+
+    public List<PawnColour> getPlayerBoardTeachers(PlayerBoard p){
+        return this.gameBoard.getOwnTeachers(p);
+    }
+
+    public TowerStorage getTowerStorageFromPlayerBoard(PlayerBoard p){
+        return gameBoard.getTeamMapper().getMutableTowerStorage(p);
     }
 
     public PlayerBoard getPlayerBoardByNickname(String nickname) throws InvalidContainerIndexException {

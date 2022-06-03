@@ -64,7 +64,7 @@ public class GameInProgressPanel extends JTabbedPane {
         this.removeAll();
         this.add("Islands", this.islandPanel);
         for (PlayerBoard pb : model.getPlayerBoards()) {
-            this.playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb));
+            this.playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb, model.getPlayerBoardTeachers(pb), model.getTowerStorageFromPlayerBoard(pb)));
         }
         for (Map.Entry<String, PlayerBoardPanel> pbp : this.playerTabs.entrySet()) {
             if (pbp.getKey().equals(this.ownNickname)) {
