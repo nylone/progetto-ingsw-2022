@@ -3,8 +3,8 @@ package it.polimi.ingsw.Client.CLI;
 import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.PawnColour;
-import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.IslandGroup;
+import it.polimi.ingsw.Model.Model;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class IslandUI {
      * @param ctx reference to the model used to identify the presence of the mother nature piece on the island group
      * @return the representation of an island group.
      */
-    public static String draw(IslandGroup i, GameBoard ctx) {
+    public static String draw(IslandGroup i, Model ctx) {
         // Adds an identifier if the island contains MotherNature
         String mn = ctx.getMutableIslandField().getMutableMotherNaturePosition().equals(i) ? "*" : "";
 
@@ -71,13 +71,13 @@ public class IslandUI {
     }
 
     /**
-     * It basically provides the same result as {@link IslandUI#draw(IslandGroup, GameBoard)} but it replaces
+     * It basically provides the same result as {@link IslandUI#draw(IslandGroup, Model)} but it replaces
      * all characters with whitespaces (except tabulations)
      *
      * @param ctx reference to the model used to identify the island group containing the most students
      * @return an all whitespace's filled String, long enough to fill the IslandUIs' composition
      */
-    public static String drawEmptyRow(GameBoard ctx) {
+    public static String drawEmptyRow(Model ctx) {
         String mn = "";
 
         String islandTitle = " ".repeat(10);

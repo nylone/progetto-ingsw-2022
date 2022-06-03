@@ -10,7 +10,7 @@ import it.polimi.ingsw.Model.CharacterCard;
 import it.polimi.ingsw.Model.CharacterCardInput;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.io.Serial;
@@ -40,7 +40,7 @@ public class PlayCharacterCard extends PlayerAction {
         this.optTargetPawnPairs = optTargetPawnPairs;
     }
 
-    public boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    public boolean validate(List<PlayerAction> history, Model ctx) throws InputValidationException {
         if (ctx.getGameMode() == GameMode.SIMPLE) {
             throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD, INPUT_NAME_CHARACTER_CARD + " can't be played in simple mode");
         }
@@ -73,7 +73,7 @@ public class PlayCharacterCard extends PlayerAction {
     }
 
     @Override
-    public void unsafeExecute(GameBoard ctx) {
+    public void unsafeExecute(Model ctx) {
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCard characterCard = ctx.getCharacterCards().get(this.selectedCard);
         caller.payCharacterEffect(characterCard.getCost());
@@ -89,7 +89,7 @@ public class PlayCharacterCard extends PlayerAction {
         }
     }
 
-    private CharacterCardInput generateCharacterCardInput(PlayerBoard caller, GameBoard ctx) throws InvalidContainerIndexException {
+    private CharacterCardInput generateCharacterCardInput(PlayerBoard caller, Model ctx) throws InvalidContainerIndexException {
         CharacterCardInput out = new CharacterCardInput(caller);
         if (this.optTargetIsland.isPresent()) {
             int id = this.optTargetIsland.get();

@@ -3,7 +3,7 @@ package it.polimi.ingsw.Client.CLI;
 import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Model.Cloud;
 import it.polimi.ingsw.Model.Enums.PawnColour;
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.Model;
 
 /**
  * CloudUI is a graphical representation (as a String data structure) useful to print multiple cloud components
@@ -21,7 +21,7 @@ public class CloudUI {
      * @param ctx is a reference to the model used to access the clouds' information.
      * @return the representation of the clouds group.
      */
-    public static String draw(GameBoard ctx) {
+    public static String draw(Model ctx) {
         String clouds = "";
         switch (ctx.getClouds().size()) {
             case 2 -> { // two clouds will be print on top of each other

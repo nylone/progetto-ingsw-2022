@@ -9,7 +9,7 @@ import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
 import org.junit.Test;
 
@@ -19,89 +19,89 @@ import static org.junit.Assert.assertEquals;
 
 public class MoveStudentTest {
 
-    GameBoard gameBoard = new GameBoard(GameMode.ADVANCED, "ale", "teo");
-    Controller gh = new Controller(gameBoard, new ArrayList<>(6));
+    Model model = new Model(GameMode.ADVANCED, "ale", "teo");
+    Controller gh = new Controller(model, new ArrayList<>(6));
 
     @Test
     public void testSingleMovementToIsland() throws Exception {
-        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
 
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (model.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
         }
 
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination moveDestination = MoveDestination.toIsland(0);
         PawnColour toMove = player.getEntranceStudents().get(1).get();
-        int previousCount = (int) gameBoard.getMutableIslandField().getMutableIslandById(0).getStudents()
+        int previousCount = (int) model.getMutableIslandField().getMutableIslandById(0).getStudents()
                 .stream().filter(pawnColour -> toMove == pawnColour).count();
         MoveStudent moveStudent = new MoveStudent(player.getId(), 1, moveDestination);
         gh.executeAction(moveStudent);
-        int updatedCount = (int) gameBoard.getMutableIslandField().getMutableIslandById(0).getStudents()
+        int updatedCount = (int) model.getMutableIslandField().getMutableIslandById(0).getStudents()
                 .stream().filter(pawnColour -> toMove == pawnColour).count();
         assertEquals(updatedCount, previousCount + 1);
     }
 
     @Test
     public void testSingleMovementToDiningRoom() throws Exception {
-        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
 
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (model.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
         }
 
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination destination = MoveDestination.toDiningRoom();
         PawnColour toMove = player.getEntranceStudents().get(0).get();
         int previousCount = player.getDiningRoomCount(toMove);
         MoveStudent moveStudent = new MoveStudent(player.getId(), 0, destination);
         gh.executeAction(moveStudent);
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getDiningRoomCount(toMove), previousCount + 1);
     }
 
     @Test
     public void Max3MovementsWithoutCharacterCardTest() throws Exception {
-        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
 
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (model.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
         }
 
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination destination = MoveDestination.toDiningRoom();
         MoveStudent moveStudent = new MoveStudent(player.getId(), 0, destination);
         gh.executeAction(moveStudent);
@@ -124,7 +124,7 @@ public class MoveStudentTest {
 
     @Test
     public void testMovementWithoutAssistantCard() {
-        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination moveDestination = MoveDestination.toIsland(0);
         MoveStudent moveStudent = new MoveStudent(player.getId(), 1, moveDestination);
 
@@ -138,18 +138,18 @@ public class MoveStudentTest {
 
     @Test(expected = InvalidElementException.class)
     public void InvalidPlayerBoardIndexException() throws Exception {
-        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
 
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
 
-            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (model.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
@@ -162,16 +162,16 @@ public class MoveStudentTest {
 
     @Test(expected = InvalidElementException.class)
     public void InvalidEntranceIndexException() throws Exception {
-        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (model.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
@@ -184,22 +184,22 @@ public class MoveStudentTest {
 
     @Test(expected = InvalidElementException.class)
     public void InvalidIslandIdException() throws Exception {
-        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
-            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (model.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
         }
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination moveDestination = MoveDestination.toIsland(15);
         MoveStudent moveStudent = new MoveStudent(player.getId(), 1, moveDestination);
         gh.executeAction(moveStudent);
@@ -207,24 +207,24 @@ public class MoveStudentTest {
 
     @Test
     public void SelectedEntrancePositionEmpty() throws Exception {
-        PlayerBoard player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         gh.executeAction(playAssistantCard);
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
 
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
             PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
             AssistantCard finalCard = card;
 
-            if (gameBoard.getMutableTurnOrder().getSelectedCards().stream()
+            if (model.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
                 gh.executeAction(playAssistantCard1);
                 break;
             }
         }
-        player = gameBoard.getMutableTurnOrder().getMutableCurrentPlayer();
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination destination = MoveDestination.toDiningRoom();
         MoveStudent moveStudent = new MoveStudent(player.getId(), 0, destination);
         gh.executeAction(moveStudent);

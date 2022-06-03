@@ -18,7 +18,7 @@ public class Card12 extends StatelessEffect {
     @Serial
     private static final long serialVersionUID = 114L; // convention: 1 for model, (01 -> 99) for objects
 
-    public Card12(GameBoard ctx) {
+    public Card12(Model ctx) {
         super(12, 3, ctx);
     }
 

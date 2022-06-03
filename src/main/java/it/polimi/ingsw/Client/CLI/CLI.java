@@ -20,6 +20,7 @@ public class CLI implements Runnable {
     public static void main(String... args) {
         new Thread(new CLI()).start();
     }
+
     /**
      * Run Thread responsible for asking User which server wants to connect to
      */

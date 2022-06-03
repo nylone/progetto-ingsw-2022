@@ -4,7 +4,7 @@ import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Client.GUI.Window;
 import it.polimi.ingsw.Model.Enums.GameMode;
-import it.polimi.ingsw.Model.ModelReader;
+import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.Message;
@@ -60,11 +60,11 @@ public class GameInProgressPanel extends JTabbedPane {
         }).start();
     }
 
-    private void updateViews(ModelReader model) {
+    private void updateViews(Model model) {
         this.removeAll();
         this.add("Islands", this.islandPanel);
-        for (PlayerBoard pb : model.getPlayerBoards()) {
-            this.playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb, model.getPlayerBoardTeachers(pb), model.getTowerStorageFromPlayerBoard(pb)));
+        for (PlayerBoard pb : model.getMutablePlayerBoards()) {
+            this.playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb, model.getOwnTeachers(pb), model.getTeamMapper().getMutableTowerStorage(pb)));
         }
         for (Map.Entry<String, PlayerBoardPanel> pbp : this.playerTabs.entrySet()) {
             if (pbp.getKey().equals(this.ownNickname)) {

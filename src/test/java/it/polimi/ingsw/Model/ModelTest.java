@@ -14,10 +14,10 @@ import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
-public class GameBoardTest {
-    GameBoard gb_sim_2 = new GameBoard(GameMode.SIMPLE, "ari", "ale");
-    GameBoard gb_adv_3 = new GameBoard(GameMode.ADVANCED, "ari", "ale", "teo");
-    GameBoard gb_adv_4 = new GameBoard(GameMode.ADVANCED, "ari", "ale", "teo", "eriantys");
+public class ModelTest {
+    Model gb_sim_2 = new Model(GameMode.SIMPLE, "ari", "ale");
+    Model gb_adv_3 = new Model(GameMode.ADVANCED, "ari", "ale", "teo");
+    Model gb_adv_4 = new Model(GameMode.ADVANCED, "ari", "ale", "teo", "eriantys");
 
 
     @Test
@@ -185,13 +185,13 @@ public class GameBoardTest {
 
     @Test(expected = RuntimeException.class)
     public void testingInconsistentNumOfPlayers() {
-        GameBoard gb_adv_5 = new GameBoard(GameMode.SIMPLE, "ari", "ale", "teo", "polimi", "java");
+        Model gb_adv_5 = new Model(GameMode.SIMPLE, "ari", "ale", "teo", "polimi", "java");
     }
 
     @Test
     public void finishingTowersMakesWin() throws InputValidationException {
         // arrange & act
-        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari");
+        Model gb = new Model(GameMode.SIMPLE, "ale", "teo", "ari");
         PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         for (int i = 0; i < 6; i++) { // leaving current player with just one tower left
             gb.getTeamMapper().getMutableTowerStorage(currentPlayer).extractTower();
@@ -203,7 +203,7 @@ public class GameBoardTest {
     @Test
     public void winWhenSameTowersButMoreTeachers() {
         // arrange & act
-        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari");
+        Model gb = new Model(GameMode.SIMPLE, "ale", "teo", "ari");
         PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         gb.setTeacher(PawnColour.RED, currentPlayer);
         gb.getMutableStudentBag().multipleExtraction(gb.getMutableStudentBag().getSize()); // ends game
@@ -214,7 +214,7 @@ public class GameBoardTest {
     @Test
     public void parityWhenSameNumberOfTowersAndTeachers() {
         // arrange & act
-        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari");
+        Model gb = new Model(GameMode.SIMPLE, "ale", "teo", "ari");
         PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         gb.getMutableStudentBag().multipleExtraction(gb.getMutableStudentBag().getSize()); // ends game
         // assert
@@ -224,7 +224,7 @@ public class GameBoardTest {
     @Test
     public void winShouldBeGivenToTeam() {
         // arrange & act
-        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari", "eriantys");
+        Model gb = new Model(GameMode.SIMPLE, "ale", "teo", "ari", "eriantys");
         PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         for (int i = 0; i < 8; i++) { // leaving current player with no towers left
             gb.getTeamMapper().getMutableTowerStorage(currentPlayer).extractTower();
@@ -238,7 +238,7 @@ public class GameBoardTest {
     @Test
     public void thereShouldBeWinnerOnlyIfGameIsEnded() {
         // arrange & act
-        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari", "eriantys");
+        Model gb = new Model(GameMode.SIMPLE, "ale", "teo", "ari", "eriantys");
         // assert
         assertTrue(gb.getWinners().isEmpty());
     }

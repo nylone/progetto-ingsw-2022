@@ -26,7 +26,7 @@ public class Card11 extends StatefulEffect {
 
     private final PawnColour[] students = new PawnColour[4];
 
-    public Card11(GameBoard ctx) {
+    public Card11(Model ctx) {
         super(11, 2, StateType.PAWNCOLOUR, ctx);
         for (int i = 0; i < 4; i++) {
             this.students[i] = ctx.getMutableStudentBag().extract();

@@ -23,7 +23,7 @@ public class Card05 extends StatefulEffect {
 
     private final ArrayList<NoEntryTile> tiles;
 
-    public Card05(GameBoard ctx) {
+    public Card05(Model ctx) {
         super(5, 2, StateType.NOENTRY, ctx);
         tiles = new ArrayList<>(4);
         for (int i = 0; i < 4; i++) {

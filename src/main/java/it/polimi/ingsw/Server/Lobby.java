@@ -8,7 +8,10 @@ import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Server.Messages.Events.ClientEvent;
-import it.polimi.ingsw.Server.Messages.Events.Internal.*;
+import it.polimi.ingsw.Server.Messages.Events.Internal.ClientConnectEvent;
+import it.polimi.ingsw.Server.Messages.Events.Internal.ClientDisconnectEvent;
+import it.polimi.ingsw.Server.Messages.Events.Internal.GameStartEvent;
+import it.polimi.ingsw.Server.Messages.Events.Internal.LobbyClosedEvent;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,24 +46,12 @@ public class Lobby {
         controller.executeAction(pa);
     }
 
-    public void notifyPlayers(ClientEvent event) {
-        synchronized (this.players) {
-            for (ClientEventHandler ceh : this.playerEventSources.values()) {
-                try {
-                    ceh.enqueue(event);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     public boolean verifyPlayer(PlayerAction pa, String nickname) throws OperationException {
         if (controller == null) {
             throw new ForbiddenOperationException("Lobby is in waiting state, no game is running");
         }
         try {
-            return controller.getPlayerBoardIDFromNickname(nickname) == pa.getPlayerBoardId();
+            return controller.matchActionToNickname(pa, nickname);
         } catch (InvalidContainerIndexException e) {
             throw new RuntimeException(e);
         }
@@ -106,24 +97,26 @@ public class Lobby {
             if (this.isClosed) {
                 return false;
             }
-            // in case of reconnection
-            if (this.players.contains(nick)) {
-                // prevents player hijacking
-                if (!this.playerEventSources.containsKey(nick)) {
-                    this.playerEventSources.put(nick, playerChannel);
-                    notifyPlayers(new ClientConnectEvent(nick, List.copyOf(this.players)));
-                    return true;
-                } else {
-                    return false;
-                }
-                // in case of new connection check for max players and check that the game has not yet started
-            } else if (this.controller == null && this.maxPlayers > this.players.size()) {
+            // in case of new connection check for max players and check that the game has not yet started
+            if (this.controller == null && this.maxPlayers > this.players.size()) {
                 this.players.add(nick);
                 this.playerEventSources.put(nick, playerChannel);
                 notifyPlayers(new ClientConnectEvent(nick, List.copyOf(this.players)));
                 return true;
             } else {
                 return false;
+            }
+        }
+    }
+
+    public void notifyPlayers(ClientEvent event) {
+        synchronized (this.players) {
+            for (ClientEventHandler ceh : this.playerEventSources.values()) {
+                try {
+                    ceh.enqueue(event);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -154,7 +147,11 @@ public class Lobby {
     protected void startGame(GameMode gameMode) throws InputValidationException {
         synchronized (this.players) {
             notifyPlayers(new GameStartEvent());
-            this.controller = new Controller(gameMode, this, this.players.toArray(String[]::new));
+            this.controller = new Controller(
+                    gameMode,
+                    this,
+                    players.toArray(String[]::new)
+            );
         }
     }
 

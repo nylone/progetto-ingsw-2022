@@ -1,16 +1,16 @@
 package it.polimi.ingsw.Server.Messages.Events.Internal;
 
-import it.polimi.ingsw.Model.ModelReader;
+import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Server.Messages.Events.ClientEvent;
 
 public class ModelUpdateEvent implements ClientEvent {
-    private final ModelReader update;
+    private final Model update;
 
-    public ModelUpdateEvent(ModelReader update) {
+    public ModelUpdateEvent(Model update) {
         this.update = update;
     }
 
-    public ModelReader getModel() {
+    public Model getModel() {
         return update;
     }
 }

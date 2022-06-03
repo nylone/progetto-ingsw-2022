@@ -7,7 +7,7 @@ import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Model.Enums.PawnColour;
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.io.Serial;
@@ -30,7 +30,7 @@ public class MoveStudent extends PlayerAction {
     }
 
     @Override
-    public boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    public boolean validate(List<PlayerAction> history, Model ctx) throws InputValidationException {
         // super.validate(history, ctx)
         // note: this method is not to be called as it fails if there are multiple actions of same type in history
         // and this class will be present at least 3 times in the history as the turn is completed
@@ -94,7 +94,7 @@ public class MoveStudent extends PlayerAction {
 
 
     @Override
-    public void unsafeExecute(GameBoard ctx) throws Exception {
+    public void unsafeExecute(Model ctx) throws Exception {
         PawnColour toMove = ctx.getMutablePlayerBoardById(this.getPlayerBoardId())
                 .getEntranceStudents().get(this.selectedEntrancePosition).get();
         PlayerBoard pb = ctx.getMutablePlayerBoardById(this.getPlayerBoardId());

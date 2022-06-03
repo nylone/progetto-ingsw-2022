@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class Card09Test {
-    GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
+    Model gb = new Model(GameMode.ADVANCED, "ari", "teo");
     Card09 card09 = new Card09(gb);
 
     @Test

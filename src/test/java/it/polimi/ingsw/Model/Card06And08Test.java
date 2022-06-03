@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class Card06And08Test {
-    GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
+    Model gb = new Model(GameMode.ADVANCED, "ari", "teo");
     Card06 card06 = new Card06(gb);
     Card08 card08 = new Card08(gb);
 

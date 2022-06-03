@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 public class CharacterDeckGenerator {
-    public static List<CharacterCard> generateCardSet(GameBoard context) {
+    public static List<CharacterCard> generateCardSet(Model context) {
         List<CharacterCardGenerator> deck = Arrays.asList(
                 Card01::new,
                 Card02::new,
@@ -26,6 +26,6 @@ public class CharacterDeckGenerator {
     }
 
     private interface CharacterCardGenerator {
-        CharacterCard build(GameBoard ctx);
+        CharacterCard build(Model ctx);
     }
 }

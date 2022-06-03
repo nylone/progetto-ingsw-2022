@@ -63,15 +63,15 @@ public class IconLoader {
 
     public static final ImageIcon assistantCard10 = loadIcon("AssistantCards/Assistant10", 165, 255);
 
-    public static final ImageIcon RedStudent = loadIcon("Students/RedStudent",50 , 45);
+    public static final ImageIcon RedStudent = loadIcon("Students/RedStudent", 50, 45);
 
-    public static final ImageIcon BlueStudent = loadIcon("Students/BlueStudent",50 , 45);
+    public static final ImageIcon BlueStudent = loadIcon("Students/BlueStudent", 50, 45);
 
-    public static final ImageIcon GreenStudent = loadIcon("Students/GreenStudent",50 , 45);
+    public static final ImageIcon GreenStudent = loadIcon("Students/GreenStudent", 50, 45);
 
-    public static final ImageIcon YellowStudent = loadIcon("Students/YellowStudent",50 , 45);
+    public static final ImageIcon YellowStudent = loadIcon("Students/YellowStudent", 50, 45);
 
-    public static final ImageIcon PinkStudent = loadIcon("Students/PinkStudent",50 , 45);
+    public static final ImageIcon PinkStudent = loadIcon("Students/PinkStudent", 50, 45);
 
     public static final ImageIcon RedTeacher = loadIcon("Teachers/RedTeacher", 50, 45);
 
@@ -88,6 +88,7 @@ public class IconLoader {
     public static final ImageIcon BlackTower = loadIcon("Towers/blackTower", 50, 75);
 
     public static final ImageIcon WhiteTower = loadIcon("Towers/whiteTower", 50, 75);
+
     private static ImageIcon loadIcon(String name, int width, int height) {
         Image img;
         try {

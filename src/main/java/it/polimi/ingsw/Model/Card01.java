@@ -23,7 +23,7 @@ public class Card01 extends StatefulEffect {
     private static final long serialVersionUID = 103L; // convention: 1 for model, (01 -> 99) for objects
     private final PawnColour[] students = new PawnColour[4];
 
-    public Card01(GameBoard ctx) {
+    public Card01(Model ctx) {
         super(1, 1, StateType.PAWNCOLOUR, ctx);
         for (int i = 0; i < 4; i++) {
             this.students[i] = ctx.getMutableStudentBag().extract();

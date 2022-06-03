@@ -5,7 +5,7 @@ import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.AssistantCard;
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.io.Serial;
@@ -23,7 +23,7 @@ public class MoveMotherNature extends PlayerAction {
     }
 
     @Override
-    public boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    public boolean validate(List<PlayerAction> history, Model ctx) throws InputValidationException {
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         int maxCount = ctx.getMutablePlayerBoards().size() == 3 ? 4 : 3;
         Optional<AssistantCard> optionalAssistantCard = ctx.getMutableTurnOrder()
@@ -51,7 +51,7 @@ public class MoveMotherNature extends PlayerAction {
     }
 
     @Override
-    public void unsafeExecute(GameBoard ctx) {
+    public void unsafeExecute(Model ctx) {
         ctx.moveAndActMotherNature(distanceToMove);
     }
 

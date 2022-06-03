@@ -13,7 +13,7 @@ public class ClientView {
     /**
      * Used to contain the game
      */
-    GameBoard gameBoard;
+    Model model;
     /**
      * Used to verify whether the client is connected to the Server
      */
@@ -66,8 +66,8 @@ public class ClientView {
      *
      * @return gameBoard representing the game
      */
-    public GameBoard getGameBoard() {
-        return this.gameBoard;
+    public Model getGameBoard() {
+        return this.model;
     }
 
     /**
@@ -166,7 +166,7 @@ public class ClientView {
      */
     private void printIslandField() {
         //print GameBoard
-        System.out.println(GameUI.draw(this.gameBoard));
+        System.out.println(GameUI.draw(this.model));
     }
 
     /**
@@ -175,18 +175,18 @@ public class ClientView {
     private void printGameBoards() {
         System.out.println("PLAYERBOARDS");
         //simple loop to print playerBoard and its Owner's nickname
-        for (PlayerBoard pb : this.gameBoard.getMutablePlayerBoards()) {
+        for (PlayerBoard pb : this.model.getMutablePlayerBoards()) {
             if (this.getNickname().equals(pb.getNickname())) {
                 System.out.println("Your Playerboard:");
             } else {
                 System.out.println(pb.getNickname() + "'s Playerboard");
             }
             //print PlayerBoard
-            System.out.println(PlayerBoardUI.drawPlayerBoard(pb, this.gameBoard));
+            System.out.println(PlayerBoardUI.drawPlayerBoard(pb, this.model));
             System.out.println("\n");
         }
         //print current and next player
-        System.out.println(InfoUI.draw(this.gameBoard, this.Nickname));
+        System.out.println(InfoUI.draw(this.model, this.Nickname));
     }
 
     /**
@@ -194,9 +194,9 @@ public class ClientView {
      */
     private void printCharacterCard() {
         //Print only if the gameMode is Advanced
-        if (this.gameBoard.getGameMode() == GameMode.SIMPLE) return;
+        if (this.model.getGameMode() == GameMode.SIMPLE) return;
         System.out.println("Available CharacterCards:");
-        for (CharacterCard characterCard : this.gameBoard.getCharacterCards()) {
+        for (CharacterCard characterCard : this.model.getCharacterCards()) {
             //print CharacterCard's number and cost
             System.out.print("CharacterCard number:" + characterCard.getId() + " cost:" + characterCard.getCost());
             //only if the CharacterCard has a stateful effect then print it's content
@@ -259,8 +259,8 @@ public class ClientView {
      *
      * @param game GameBoard containing game's model
      */
-    public void setGame(GameBoard game) {
-        this.gameBoard = game;
+    public void setGame(Model game) {
+        this.model = game;
     }
 
 

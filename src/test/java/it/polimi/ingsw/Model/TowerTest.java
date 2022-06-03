@@ -11,7 +11,7 @@ public class TowerTest {
         // arrange
         TowerStorage ts = new TowerStorage(TowerColour.WHITE, 8);
         int initialCapacity = ts.getTowerCount();
-        Tower t = new Tower(2, TowerColour.WHITE, ts);
+        Tower t = new Tower(TowerColour.WHITE, ts);
         // act
         t.linkBackToStorage();
         // arrange

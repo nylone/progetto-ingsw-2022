@@ -7,7 +7,7 @@ public abstract class StatelessEffect extends CharacterCard implements Serializa
     @Serial
     private static final long serialVersionUID = 128L; // convention: 1 for model, (01 -> 99) for objects
 
-    public StatelessEffect(int id, int cost, GameBoard context) {
+    public StatelessEffect(int id, int cost, Model context) {
         super(id, cost, context);
     }
 }

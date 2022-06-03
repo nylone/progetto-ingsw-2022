@@ -8,8 +8,8 @@ import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TeamID;
-import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.IslandGroup;
+import it.polimi.ingsw.Model.Model;
 import org.junit.Test;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class GameUITest {
 
     @Test
     public void shouldRenderScreen() throws InvalidContainerIndexException, EmptyContainerException, FullContainerException {
-        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo", "ari");
+        Model gb = new Model(GameMode.SIMPLE, "ale", "teo", "ari");
         for (IslandGroup ig : gb.getMutableIslandField().getMutableGroups()) {
             for (int i = 0; i < new Random().nextInt(15); i++) {
                 ig.getMutableIslands().get(0).addStudent(Utils.random(List.of(PawnColour.values())));

@@ -13,7 +13,7 @@ public class Card01Test {
 
     @Test
     public void cardShouldAlwaysHave4Students() throws Exception {
-        GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
+        Model g = new Model(GameMode.ADVANCED, "ari", "teo");
         Card01 card = new Card01(g);
         CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
         input.setTargetPawn((PawnColour) card.getState().get(1));
@@ -27,7 +27,7 @@ public class Card01Test {
     @Test
     public void usingEffectShouldAddStudentToIsland() throws Exception {
         // arrange
-        GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
+        Model g = new Model(GameMode.ADVANCED, "ari", "teo");
         Card01 card = new Card01(g);
         CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
         Island island = Utils.random(g.getMutableIslandField().getMutableGroups()).getMutableIslands().get(0);
@@ -43,7 +43,7 @@ public class Card01Test {
 
     @Test(expected = InputValidationException.class)
     public void checkUseException() throws Exception {
-        GameBoard g = new GameBoard(GameMode.ADVANCED, "ari", "teo");
+        Model g = new Model(GameMode.ADVANCED, "ari", "teo");
         CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
         Card01 card = new Card01(g);
         assertEquals(4, card.getState().size());

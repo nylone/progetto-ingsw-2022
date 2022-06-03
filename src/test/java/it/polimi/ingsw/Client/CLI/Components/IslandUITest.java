@@ -6,8 +6,8 @@ import it.polimi.ingsw.Model.Card05;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TeamID;
-import it.polimi.ingsw.Model.GameBoard;
 import it.polimi.ingsw.Model.IslandGroup;
+import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.NoEntryTile;
 import org.junit.Test;
 
@@ -18,7 +18,7 @@ public class IslandUITest {
 
     @Test
     public void shouldDrawIsland() {
-        GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "ale", "teo");
+        Model gb = new Model(GameMode.ADVANCED, "ari", "ale", "teo");
 
         for (IslandGroup ig : gb.getMutableIslandField().getMutableGroups()) {
             for (int i = 0; i < new Random().nextInt(15); i++) {
@@ -32,7 +32,7 @@ public class IslandUITest {
 
     @Test
     public void shouldDrawIslandGroup() {
-        GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "ale", "teo");
+        Model gb = new Model(GameMode.ADVANCED, "ari", "ale", "teo");
 
         for (IslandGroup ig : gb.getMutableIslandField().getMutableGroups()) {
             for (int i = 0; i < new Random().nextInt(15); i++) {

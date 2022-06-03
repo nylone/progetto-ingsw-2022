@@ -34,7 +34,7 @@ public class IslandGroupTest {
     @Test
     public void testGetStudents() throws OperationException {
         // arrange
-        GameBoard gb = new GameBoard(GameMode.SIMPLE, "ale", "teo");
+        Model gb = new Model(GameMode.SIMPLE, "ale", "teo");
         TeamMapper tm = gb.getTeamMapper();
         Island i1 = new Island(2);
         Island i2 = new Island(3);

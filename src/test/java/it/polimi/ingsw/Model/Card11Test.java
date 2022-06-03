@@ -9,7 +9,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class Card11Test {
-    GameBoard gb = new GameBoard(GameMode.ADVANCED, "ari", "teo");
+    Model gb = new Model(GameMode.ADVANCED, "ari", "teo");
     Card11 card11 = new Card11(gb);
 
     @Test

@@ -5,7 +5,7 @@ import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Model.AssistantCard;
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Model.TurnOrder;
 
@@ -27,7 +27,7 @@ public class PlayAssistantCard extends PlayerAction {
     }
 
     @Override
-    public boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    public boolean validate(List<PlayerAction> history, Model ctx) throws InputValidationException {
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         TurnOrder turnOrder = ctx.getMutableTurnOrder();
         if (!(this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getMutableAssistantCards().size() - 1)) {
@@ -48,7 +48,7 @@ public class PlayAssistantCard extends PlayerAction {
         return true;
     }
 
-    public void unsafeExecute(GameBoard ctx) throws InputValidationException, OperationException {
+    public void unsafeExecute(Model ctx) throws InputValidationException, OperationException {
         PlayerBoard pb = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard sa = pb.getMutableAssistantCards().get(selectedAssistant);
         ctx.getMutableTurnOrder().setSelectedCard(pb, sa);

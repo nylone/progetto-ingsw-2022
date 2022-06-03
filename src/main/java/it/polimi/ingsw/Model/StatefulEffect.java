@@ -11,7 +11,7 @@ public abstract class StatefulEffect extends CharacterCard implements Serializab
     private static final long serialVersionUID = 127L; // convention: 1 for model, (01 -> 99) for objects
     protected StateType stateType;
 
-    public StatefulEffect(int id, int cost, StateType stateType, GameBoard context) {
+    public StatefulEffect(int id, int cost, StateType stateType, Model context) {
         super(id, cost, context);
         this.stateType = stateType;
     }

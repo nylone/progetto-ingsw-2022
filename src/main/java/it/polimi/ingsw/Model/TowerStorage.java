@@ -22,7 +22,7 @@ public class TowerStorage implements Serializable {
         this.colour = colour;
         this.storage = new Stack<>();
         for (int i = 0; i < size; i++) {
-            this.storage.push(new Tower(i, colour, this));
+            this.storage.push(new Tower(colour, this));
         }
     }
 

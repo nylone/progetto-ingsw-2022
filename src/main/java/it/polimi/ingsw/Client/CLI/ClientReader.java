@@ -186,7 +186,7 @@ public class ClientReader implements Runnable {
             //Server's response containing updated model to show
             case ModelUpdated modelUpdated -> {
                 //Update lobby's model
-                this.clientView.setGame(modelUpdated.getModel().getGameBoard());
+                this.clientView.setGame(modelUpdated.getModel());
                 UpdateView();
             }
             //Server's response received when the game ended after a victory
@@ -236,13 +236,15 @@ public class ClientReader implements Runnable {
      */
     private void UpdateViewWin(List<String> winners) {
         ClearCLI();
-        System.out.println("\n" +
-                " _       __        __                                          _                       ____\n" +
-                "| |     / /__     / /_  ____ __   _____     ____ _   _      __(_)___  ____  ___  _____/ / /\n" +
-                "| | /| / / _ \\   / __ \\/ __ `/ | / / _ \\   / __ `/  | | /| / / / __ \\/ __ \\/ _ \\/ ___/ / / \n" +
-                "| |/ |/ /  __/  / / / / /_/ /| |/ /  __/  / /_/ /   | |/ |/ / / / / / / / /  __/ /  /_/_/  \n" +
-                "|__/|__/\\___/  /_/ /_/\\__,_/ |___/\\___/   \\__,_/    |__/|__/_/_/ /_/_/ /_/\\___/_/  (_|_)   \n" +
-                "                                                                                           \n");
+        System.out.println("""
+
+                 _       __        __                                          _                       ____
+                | |     / /__     / /_  ____ __   _____     ____ _   _      __(_)___  ____  ___  _____/ / /
+                | | /| / / _ \\   / __ \\/ __ `/ | / / _ \\   / __ `/  | | /| / / / __ \\/ __ \\/ _ \\/ ___/ / /\s
+                | |/ |/ /  __/  / / / / /_/ /| |/ /  __/  / /_/ /   | |/ |/ / / / / / / / /  __/ /  /_/_/ \s
+                |__/|__/\\___/  /_/ /_/\\__,_/ |___/\\___/   \\__,_/    |__/|__/_/_/ /_/_/ /_/\\___/_/  (_|_)  \s
+                                                                                                          \s
+                """);
 
         System.out.println("The winner is/are:");
         //print winners

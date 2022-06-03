@@ -78,18 +78,18 @@ public class IslandFieldTest {
     @Test
     public void testingJoiningMotherNatureWithPreviousGroup() throws Exception {
         // arrange
-        GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
-        IslandGroup motherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
-        List<IslandGroup> groups = gameBoard.getMutableIslandField().getMutableGroups();
+        Model model = new Model(GameMode.SIMPLE, "ale", "teo");
+        IslandGroup motherNaturePosition = model.getMutableIslandField().getMutableMotherNaturePosition();
+        List<IslandGroup> groups = model.getMutableIslandField().getMutableGroups();
         IslandGroup previousGroup = Utils.modularSelection(motherNaturePosition, groups, -1);
 
-        TeamMapper teamMapper = gameBoard.getTeamMapper();
+        TeamMapper teamMapper = model.getTeamMapper();
         motherNaturePosition.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         previousGroup.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         // act
-        gameBoard.getMutableIslandField().joinGroups();
+        model.getMutableIslandField().joinGroups();
         // assert
-        IslandGroup currentMotherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
+        IslandGroup currentMotherNaturePosition = model.getMutableIslandField().getMutableMotherNaturePosition();
         assertEquals(2, currentMotherNaturePosition.getMutableIslands().size());
         assertEquals(motherNaturePosition.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(0));
         assertEquals(previousGroup.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(1));
@@ -98,18 +98,18 @@ public class IslandFieldTest {
     @Test
     public void testingJoiningMotherNatureWithNextGroup() throws Exception {
         // arrange
-        GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
-        IslandGroup motherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
-        List<IslandGroup> groups = gameBoard.getMutableIslandField().getMutableGroups();
+        Model model = new Model(GameMode.SIMPLE, "ale", "teo");
+        IslandGroup motherNaturePosition = model.getMutableIslandField().getMutableMotherNaturePosition();
+        List<IslandGroup> groups = model.getMutableIslandField().getMutableGroups();
         IslandGroup nextGroup = Utils.modularSelection(motherNaturePosition, groups, +1);
 
-        TeamMapper teamMapper = gameBoard.getTeamMapper();
+        TeamMapper teamMapper = model.getTeamMapper();
         motherNaturePosition.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         nextGroup.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         // act
-        gameBoard.getMutableIslandField().joinGroups();
+        model.getMutableIslandField().joinGroups();
         // assert
-        IslandGroup currentMotherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
+        IslandGroup currentMotherNaturePosition = model.getMutableIslandField().getMutableMotherNaturePosition();
         assertEquals(2, currentMotherNaturePosition.getMutableIslands().size());
         assertEquals(motherNaturePosition.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(0));
         assertEquals(nextGroup.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(1));
@@ -118,20 +118,20 @@ public class IslandFieldTest {
     @Test
     public void testingJoiningThreeIslands() throws Exception {
         // arrange
-        GameBoard gameBoard = new GameBoard(GameMode.SIMPLE, "ale", "teo");
-        IslandGroup motherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
-        List<IslandGroup> groups = gameBoard.getMutableIslandField().getMutableGroups();
+        Model model = new Model(GameMode.SIMPLE, "ale", "teo");
+        IslandGroup motherNaturePosition = model.getMutableIslandField().getMutableMotherNaturePosition();
+        List<IslandGroup> groups = model.getMutableIslandField().getMutableGroups();
         IslandGroup prevGroup = Utils.modularSelection(motherNaturePosition, groups, -1);
         IslandGroup nextGroup = Utils.modularSelection(motherNaturePosition, groups, +1);
 
-        TeamMapper teamMapper = gameBoard.getTeamMapper();
+        TeamMapper teamMapper = model.getTeamMapper();
         motherNaturePosition.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         prevGroup.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         nextGroup.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         // act
-        gameBoard.getMutableIslandField().joinGroups();
+        model.getMutableIslandField().joinGroups();
         // assert
-        IslandGroup currentMotherNaturePosition = gameBoard.getMutableIslandField().getMutableMotherNaturePosition();
+        IslandGroup currentMotherNaturePosition = model.getMutableIslandField().getMutableMotherNaturePosition();
         assertEquals(3, currentMotherNaturePosition.getMutableIslands().size());
         assertEquals(motherNaturePosition.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(0));
         assertEquals(prevGroup.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(1));

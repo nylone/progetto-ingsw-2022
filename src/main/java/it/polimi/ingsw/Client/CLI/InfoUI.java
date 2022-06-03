@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.CLI;
 
 import it.polimi.ingsw.Model.Enums.GameMode;
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Model.StudentBag;
 import it.polimi.ingsw.Model.TurnOrder;
@@ -21,12 +21,12 @@ public class InfoUI {
      * <br>
      * It also shows the number of remaining coins if the game is in advanced mode.
      *
-     * @param ctx    reference to the model used to access {@link GameBoard#getMutableTurnOrder()}
+     * @param ctx    reference to the model used to access {@link Model#getMutableTurnOrder()}
      * @param caller the player to whom the information will be displayed. It is used to highlight if you are
      *               the current or next player
      * @return a visual description of useful information for the players: turns and coins
      */
-    public static String draw(GameBoard ctx, String caller) {
+    public static String draw(Model ctx, String caller) {
         String info = "";
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         List<PlayerBoard> turnOrder = ctx.getMutableTurnOrder().getCurrentTurnOrder();

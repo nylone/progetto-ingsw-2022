@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.CLI;
 
 import it.polimi.ingsw.Misc.Symbols;
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.Model;
 
 /**
  * GameUI is a graphical representation (as a String data structure)
@@ -20,7 +20,7 @@ public class GameUI {
      *            {@link it.polimi.ingsw.Client.CLI.CloudUI}
      * @return a composed view of islands and clouds
      */
-    public static String draw(GameBoard ctx) {
+    public static String draw(Model ctx) {
         // The background colour helpful to enhance contrast between black towers and the default black background console
         String screen = Symbols.BACKGROUND;
 

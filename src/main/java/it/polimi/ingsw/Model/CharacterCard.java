@@ -15,9 +15,9 @@ public abstract class CharacterCard implements Serializable {
     protected int id;
     protected int cost;
     protected int timeUsed;
-    protected GameBoard context;
+    protected Model context;
 
-    public CharacterCard(int id, int cost, GameBoard context) {
+    public CharacterCard(int id, int cost, Model context) {
         this.id = id;
         this.cost = cost;
         this.timeUsed = 0;

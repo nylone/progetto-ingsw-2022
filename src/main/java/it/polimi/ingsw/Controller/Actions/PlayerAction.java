@@ -2,7 +2,7 @@ package it.polimi.ingsw.Controller.Actions;
 
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.Model;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -18,23 +18,11 @@ public abstract class PlayerAction implements Serializable {
         this.playerBoardId = playerBoardId;
     }
 
-    public final void safeExecute(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
-        if (validate(history, ctx)) {
-            try {
-                unsafeExecute(ctx);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    public boolean validate(List<PlayerAction> history, Model ctx) throws InputValidationException {
         return isGameRunning(ctx) && isCorrectTurn(ctx) && isNotDuplicateAction(history);
     }
 
-    public abstract void unsafeExecute(GameBoard ctx) throws Exception;
-
-    boolean isGameRunning(GameBoard ctx) throws InputValidationException {
+    boolean isGameRunning(Model ctx) throws InputValidationException {
         if (ctx.isGameOver()) {
             throw new GenericInputValidationException("GameHandler", "Game is over, action cannot be executed");
         }
@@ -42,7 +30,7 @@ public abstract class PlayerAction implements Serializable {
     }
 
     // can be used in validate to make sure the turn is correct
-    boolean isCorrectTurn(GameBoard ctx) {
+    boolean isCorrectTurn(Model ctx) {
         return ctx.getMutableTurnOrder().getMutableCurrentPlayer().getId() == this.getPlayerBoardId();
     }
 
@@ -55,11 +43,5 @@ public abstract class PlayerAction implements Serializable {
         return playerBoardId;
     }
 
-    int countDuplicateActions(List<PlayerAction> history) {
-        int count = 0;
-        for (PlayerAction previousAction : history) {
-            if (previousAction.getClass() == this.getClass()) count++;
-        }
-        return count;
-    }
+    public abstract void unsafeExecute(Model ctx) throws Exception;
 }

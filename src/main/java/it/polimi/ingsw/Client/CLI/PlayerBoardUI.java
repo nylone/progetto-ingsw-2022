@@ -4,7 +4,7 @@ import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
 
 /**
@@ -22,7 +22,7 @@ public class PlayerBoardUI {
      * @param ctx         reference to the model used to check the available coins left in the game
      * @return the complete player board UI component
      */
-    public static String drawPlayerBoard(PlayerBoard playerBoard, GameBoard ctx) {
+    public static String drawPlayerBoard(PlayerBoard playerBoard, Model ctx) {
         String screen = "";
         // Playerboard sections' titles. Change the argument of repeat() to further separate islands from playerboards
         screen = screen + "\n".repeat(1) + "Entrance:\t" + "Dining Room:\t\t" + "Teachers:\t" + "Towers:\t\t";
@@ -59,7 +59,7 @@ public class PlayerBoardUI {
      *           because they have less students in the entrance than 3 players' game
      * @return the unused students in a multiline dual column layout String representation
      */
-    public static String drawEntrance(PlayerBoard pb, GameBoard gb) {
+    public static String drawEntrance(PlayerBoard pb, Model gb) {
         String entrance = "  "; // the first place is empty because of odd number of students in an even grid
         // Print the content of every place in the entrance
         for (Optional<PawnColour> p : pb.getEntranceStudents()) {
@@ -87,7 +87,7 @@ public class PlayerBoardUI {
      * @param gb reference to the model used to check the relationship between towers and player
      * @return the unused towers in a multiline dual column layout String representation
      */
-    public static String drawTowers(PlayerBoard p, GameBoard gb) {
+    public static String drawTowers(PlayerBoard p, Model gb) {
         String towers = "";
         String towerColour = "";
         switch (gb.getTeamMapper().getMutableTowerStorage(p).getColour()) {
@@ -143,7 +143,7 @@ public class PlayerBoardUI {
      * @param gb      reference to the model used to check the relationship between teacher and player
      * @return single line containing teacher
      */
-    public static String drawTeacher(PawnColour teacher, PlayerBoard p, GameBoard gb) {
+    public static String drawTeacher(PawnColour teacher, PlayerBoard p, Model gb) {
         if (gb.getOwnTeachers(p).contains(teacher)) {
             return Symbols.colorizeStudent(teacher, Symbols.PAWN + " ");
         } else return "  ";

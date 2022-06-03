@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 
 public class Card10Test {
-    GameBoard gb = new GameBoard(GameMode.ADVANCED, "Rouge", "Rampeo");
+    Model gb = new Model(GameMode.ADVANCED, "Rouge", "Rampeo");
     Card10 card10 = new Card10(gb);
 
     @Test

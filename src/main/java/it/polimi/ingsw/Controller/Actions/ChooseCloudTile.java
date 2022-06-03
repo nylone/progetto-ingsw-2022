@@ -4,7 +4,7 @@ import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Model.Cloud;
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.io.Serial;
@@ -24,7 +24,7 @@ public class ChooseCloudTile extends PlayerAction {
     }
 
     @Override
-    public boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    public boolean validate(List<PlayerAction> history, Model ctx) throws InputValidationException {
         if (
                 !(history.stream().
                         filter(playerAction -> playerAction.getClass() == MoveMotherNature.class)
@@ -58,7 +58,7 @@ public class ChooseCloudTile extends PlayerAction {
     }
 
     @Override
-    public void unsafeExecute(GameBoard ctx) {
+    public void unsafeExecute(Model ctx) {
         Cloud selectedCloud = ctx.getClouds().get(selectedTile); //get cloud
         try {
             ctx.getMutableTurnOrder()

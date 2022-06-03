@@ -3,7 +3,7 @@ package it.polimi.ingsw.Controller.Actions;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Model.Enums.GamePhase;
-import it.polimi.ingsw.Model.GameBoard;
+import it.polimi.ingsw.Model.Model;
 
 import java.io.Serial;
 import java.util.List;
@@ -17,7 +17,7 @@ public class EndTurnOfActionPhase extends PlayerAction {
     }
 
     @Override
-    public boolean validate(List<PlayerAction> history, GameBoard ctx) throws InputValidationException {
+    public boolean validate(List<PlayerAction> history, Model ctx) throws InputValidationException {
         if (
                 !(history.stream().
                         filter(playerAction -> playerAction.getClass() == ChooseCloudTile.class)
@@ -36,7 +36,7 @@ public class EndTurnOfActionPhase extends PlayerAction {
     }
 
     @Override
-    public void unsafeExecute(GameBoard ctx) {
+    public void unsafeExecute(Model ctx) {
         // reset effects through EffectTracker
         ctx.getMutableEffects().reset();
         ctx.getMutableTurnOrder().stepToNextPlayer();
