@@ -3,7 +3,6 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Controller.Actions.EndTurnOfActionPhase;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Controller.Actions.PlayerAction;
-import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -39,24 +38,17 @@ public class Controller {
         }
     }
 
-    public Controller(ModelWrapper modelWrapper, List<PlayerAction> history) {
-        this.history = history;
-        this.modelWrapper = modelWrapper;
-    }
-
-
     /**
-     * Generates a new instance of Game. This is the debug method to call to create a game, since the internal attributes
+     * Generates a new instance of the controller. This is the debug method to call to create a game, since the internal attributes
      * are set to the parameters. <br>
      * <b>Note:</b> this method should be called <b>ONLY</b> by test code.
      *
-     * @param game    an instance of GameBoard
-     * @param history an instance to a list of PlayerAction, is used by the controller to check the flow of the game
+     * @param modelWrapper an instance of {@link ModelWrapper}
+     * @param history      an instance to a list of {@link PlayerAction}, used by the controller to check the flow of the game
      */
-    @Deprecated
-    Controller(Model game, List<PlayerAction> history) {
+    public Controller(ModelWrapper modelWrapper, List<PlayerAction> history) {
         this.history = history;
-        this.modelWrapper = new ModelWrapper(game, null);
+        this.modelWrapper = modelWrapper;
     }
 
     /**
@@ -89,9 +81,5 @@ public class Controller {
      */
     private List<PlayerAction> getHistory() {
         return List.copyOf(history);
-    }
-
-    public boolean matchActionToNickname(PlayerAction pa, String nickname) throws InvalidContainerIndexException {
-        return this.modelWrapper.modelCopy(false).getMutablePlayerBoardByNickname(nickname).getId() == pa.getPlayerBoardId();
     }
 }

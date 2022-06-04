@@ -2,7 +2,6 @@ package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
@@ -44,17 +43,6 @@ public class Lobby {
             throw new ForbiddenOperationException("Lobby is in waiting state, no game is running");
         }
         controller.executeAction(pa);
-    }
-
-    public boolean verifyPlayer(PlayerAction pa, String nickname) throws OperationException {
-        if (controller == null) {
-            throw new ForbiddenOperationException("Lobby is in waiting state, no game is running");
-        }
-        try {
-            return controller.matchActionToNickname(pa, nickname);
-        } catch (InvalidContainerIndexException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public UUID getId() {
@@ -146,7 +134,11 @@ public class Lobby {
 
     protected void startGame(GameMode gameMode) throws InputValidationException {
         synchronized (this.players) {
-            notifyPlayers(new GameStartEvent());
+            Map<String, Integer> nickToID = new HashMap<>(this.players.size());
+            for (int i = 0; i < this.players.size(); i++) {
+                nickToID.put(this.players.get(i), i);
+            }
+            notifyPlayers(new GameStartEvent(nickToID));
             this.controller = new Controller(
                     gameMode,
                     this,

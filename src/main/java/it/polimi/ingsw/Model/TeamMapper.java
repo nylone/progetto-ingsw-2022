@@ -20,12 +20,12 @@ public class TeamMapper implements Serializable {
         int nop = players.size();
         for (int i = 0; i < nop; i++) {
             this.playerTeamMap.put(players.get(i), TeamID.fromInteger(i % (nop == 4 ? 2 : nop)));
-        } // note: for 4 players the first team is always made up by the first 2 nicknames
+        } // note: for 4 players the first team is always made up by the even nicknames
         this.towerStorageMap = new HashMap<>(); // creates tower storage associations based on number of players
         for (int i = 0; i < (nop == 4 ? 2 : nop); i++) {
             TeamID tID = TeamID.fromInteger(i);
             this.towerStorageMap.put(tID, new TowerStorage(TowerColour.fromTeamId(tID), nop == 3 ? 6 : 8));
-        } // note: for 4 players the first team is always made up by the first 2 nicknames
+        }
     }
 
     public List<PlayerBoard> getPlayers(TeamID tID) {

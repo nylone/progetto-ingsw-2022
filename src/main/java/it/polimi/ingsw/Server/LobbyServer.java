@@ -22,6 +22,7 @@ public class LobbyServer {
     private final SocketWrapper sw;
     private final ClientEventHandler eventHandler;
     private String nickname;
+    private int playerID;
     private Lobby currentLobby;
     private UUID currentLobbyID;
     private State state;
@@ -161,8 +162,9 @@ public class LobbyServer {
                 // code executes only when a gameLobby was created
                 sw.sendMessage(GameInit.success());
             }
-            case GameStartEvent ignored -> {
+            case GameStartEvent gameStartEvent -> {
                 this.state = State.GAME_IN_PROGRESS_PHASE;
+                this.playerID = gameStartEvent.getNickToID().get(this.nickname);
                 sw.sendMessage(new GameStarted());
             }
             case default -> sw.sendMessage(new InvalidRequest());
@@ -189,7 +191,7 @@ public class LobbyServer {
             case PlayerActionRequest playerActionRequest -> {
                 try {
                     PlayerAction pa = playerActionRequest.getAction();
-                    if (currentLobby.verifyPlayer(pa, this.nickname)) {
+                    if (pa.getPlayerBoardID() == this.playerID) {
                         try {
                             this.currentLobby.executeAction(pa);
                         } catch (InputValidationException e) {

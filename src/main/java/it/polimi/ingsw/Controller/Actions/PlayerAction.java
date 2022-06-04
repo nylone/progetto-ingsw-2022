@@ -12,17 +12,17 @@ public abstract class PlayerAction implements Serializable {
     @Serial
     private static final long serialVersionUID = 200L; // convention: 2 for controller, (01 -> 99) for objects
 
-    private final int playerBoardId;
+    private final int playerBoardID;
 
-    public PlayerAction(int playerBoardId) {
-        this.playerBoardId = playerBoardId;
+    public PlayerAction(int playerBoardID) {
+        this.playerBoardID = playerBoardID;
     }
 
     public boolean validate(List<PlayerAction> history, Model ctx) throws InputValidationException {
         return isGameRunning(ctx) && isCorrectTurn(ctx) && isNotDuplicateAction(history);
     }
 
-    boolean isGameRunning(Model ctx) throws InputValidationException {
+    final boolean isGameRunning(Model ctx) throws InputValidationException {
         if (ctx.isGameOver()) {
             throw new GenericInputValidationException("GameHandler", "Game is over, action cannot be executed");
         }
@@ -30,17 +30,17 @@ public abstract class PlayerAction implements Serializable {
     }
 
     // can be used in validate to make sure the turn is correct
-    boolean isCorrectTurn(Model ctx) {
-        return ctx.getMutableTurnOrder().getMutableCurrentPlayer().getId() == this.getPlayerBoardId();
+    final boolean isCorrectTurn(Model ctx) {
+        return ctx.getMutableTurnOrder().getMutableCurrentPlayer().getId() == this.getPlayerBoardID();
     }
 
     // can be used in validate to make sure the action is not yet in the history
-    boolean isNotDuplicateAction(List<PlayerAction> history) {
+    final boolean isNotDuplicateAction(List<PlayerAction> history) {
         return history.stream().noneMatch(h -> h.getClass() == this.getClass());
     }
 
-    public int getPlayerBoardId() {
-        return playerBoardId;
+    final public int getPlayerBoardID() {
+        return playerBoardID;
     }
 
     public abstract void unsafeExecute(Model ctx) throws Exception;

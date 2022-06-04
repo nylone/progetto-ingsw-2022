@@ -12,8 +12,8 @@ public class Card02Test {
     public void checkEffectCard02IsWorking() throws Exception {
         // arrange
         Model gb = new Model(GameMode.ADVANCED, "ale", "teo");
+        gb.getMutablePlayerBoardById(0).addStudentToDiningRoom(PawnColour.BLUE);
         gb.getMutablePlayerBoardById(1).addStudentToDiningRoom(PawnColour.BLUE);
-        gb.getMutablePlayerBoardById(2).addStudentToDiningRoom(PawnColour.BLUE);
         gb.setTeacher(PawnColour.BLUE, gb.getMutablePlayerBoardByNickname("teo"));
         PlayerBoard greenOwner = gb.getTeachers().get(PawnColour.GREEN);
         PlayerBoard pinkOwner = gb.getTeachers().get(PawnColour.PINK);

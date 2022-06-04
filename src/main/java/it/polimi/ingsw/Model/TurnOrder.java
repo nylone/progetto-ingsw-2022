@@ -26,16 +26,16 @@ public class TurnOrder implements Serializable {
     private List<PlayerBoard> currentTurnOrder; // represents the order for the turn in play
     private GamePhase gamePhase;
 
-    public TurnOrder(PlayerBoard... playerBoards) {
-        if (playerBoards.length >= 2 && playerBoards.length <= 4) {
+    public TurnOrder(List<PlayerBoard> playerBoards) {
+        if (playerBoards != null && playerBoards.size() >= 2 && playerBoards.size() <= 4) {
             // add all players to their cards map and set them to not skipped
-            this.selectedCards = new HashMap<>(playerBoards.length);
+            this.selectedCards = new HashMap<>(playerBoards.size());
             for (PlayerBoard pb :
                     playerBoards) {
                 this.selectedCards.put(pb, Optional.empty());
             }
             // create turn order
-            this.currentTurnOrder = Arrays.stream(playerBoards).collect(Collectors.toList());
+            this.currentTurnOrder = new ArrayList<>(playerBoards);
             Utils.shuffle(currentTurnOrder); // starting order for first turn is randomized
             // set current turn position
             this.currentTurnPosition = 0;

@@ -53,7 +53,7 @@ public class MoveStudent extends PlayerAction {
         }
 
         try {
-            caller = ctx.getMutablePlayerBoardById(this.getPlayerBoardId());
+            caller = ctx.getMutablePlayerBoardById(this.getPlayerBoardID());
         } catch (InvalidContainerIndexException e) {
             throw new InvalidElementException("Target Entrance Position");
         }
@@ -95,9 +95,9 @@ public class MoveStudent extends PlayerAction {
 
     @Override
     public void unsafeExecute(Model ctx) throws Exception {
-        PawnColour toMove = ctx.getMutablePlayerBoardById(this.getPlayerBoardId())
+        PawnColour toMove = ctx.getMutablePlayerBoardById(this.getPlayerBoardID())
                 .getEntranceStudents().get(this.selectedEntrancePosition).get();
-        PlayerBoard pb = ctx.getMutablePlayerBoardById(this.getPlayerBoardId());
+        PlayerBoard pb = ctx.getMutablePlayerBoardById(this.getPlayerBoardID());
         // set entrance position to null
         pb.removeStudentFromEntrance(selectedEntrancePosition);
         switch (this.destination.getDestinationType()) {

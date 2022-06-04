@@ -297,7 +297,7 @@ public class PlayCharacterCardTest {
         clouds.add(new Cloud(2));
         List<CharacterCard> characterCards = new ArrayList<>();
         Model model = new Model(new IslandField(), GameMode.ADVANCED, studentBag, players, new EnumMap<>(PawnColour.class),
-                new TeamMapper(players), new TurnOrder(players.toArray(new PlayerBoard[0])), new EffectTracker(), clouds,
+                new TeamMapper(players), new TurnOrder(players), new EffectTracker(), clouds,
                 characterCards, coinReserve, coinPerPlayer);
         model.refillClouds();
         switch (card) {
@@ -371,7 +371,7 @@ public class PlayCharacterCardTest {
         clouds.add(new Cloud(2));
         List<CharacterCard> characterCards = new ArrayList<>();
         Model model = new Model(new IslandField(), GameMode.ADVANCED, studentBag, players, new EnumMap<>(PawnColour.class),
-                new TeamMapper(players), new TurnOrder(players.toArray(new PlayerBoard[0])), new EffectTracker(), clouds,
+                new TeamMapper(players), new TurnOrder(players), new EffectTracker(), clouds,
                 characterCards, 20, 1);
         model.refillClouds();
         characterCards.add(new Card01(model));

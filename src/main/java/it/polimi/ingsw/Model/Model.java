@@ -64,9 +64,9 @@ public class Model implements Serializable {
         this.coinReserve = 20 - nop; // hp: we assume 20 as amount of available coins just like the real game.
 
         for (int i = 0; i < nop; i++) {
-            this.playerBoards.add(new PlayerBoard(i + 1, nop, playerNicknames[i], this.studentBag));
+            this.playerBoards.add(new PlayerBoard(i, nop, playerNicknames[i], this.studentBag));
         } // add generate player based on nickname and store it
-        this.turnOrder = new TurnOrder(playerBoards.toArray(new PlayerBoard[0]));
+        this.turnOrder = new TurnOrder(playerBoards);
         this.teamMap = new TeamMapper(this.playerBoards);
         if (this.gameMode.equals(GameMode.ADVANCED)) {
             this.characterCards = CharacterDeckGenerator.generateCardSet(this);
@@ -118,7 +118,7 @@ public class Model implements Serializable {
      * <b>Note:</b> once called, all changes to the original GameBoard object won't be reflected in the instance returned
      * by this method
      */
-    public byte[] getSerializedModel() throws IOException {
+    private byte[] getSerializedModel() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ObjectOutputStream writer = new ObjectOutputStream(out);
         writer.writeObject(this);
@@ -129,7 +129,6 @@ public class Model implements Serializable {
         return coinReserve;
     }
 
-    // IMMUTABLE GETTERS //
     public List<Cloud> getClouds() {
         return List.copyOf(this.clouds);
     }
@@ -235,7 +234,6 @@ public class Model implements Serializable {
         return teamMap;
     }
 
-    // MUTABLE GETTERS //
     public List<PlayerBoard> getMutablePlayerBoards() {
         return List.copyOf(playerBoards);
     }

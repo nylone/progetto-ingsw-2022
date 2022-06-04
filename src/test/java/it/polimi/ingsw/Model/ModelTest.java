@@ -24,9 +24,9 @@ public class ModelTest {
     public void testPlayerBoardId() throws InvalidContainerIndexException {
         // act
         // VALID
-        PlayerBoard actual_s2_valid = gb_sim_2.getMutablePlayerBoardById(1);
-        PlayerBoard actual_a3_valid = gb_adv_3.getMutablePlayerBoardById(2);
-        PlayerBoard actual_a4_valid = gb_adv_4.getMutablePlayerBoardById(3);
+        PlayerBoard actual_s2_valid = gb_sim_2.getMutablePlayerBoardById(0);
+        PlayerBoard actual_a3_valid = gb_adv_3.getMutablePlayerBoardById(1);
+        PlayerBoard actual_a4_valid = gb_adv_4.getMutablePlayerBoardById(2);
 
 
         // assert VALID
@@ -56,9 +56,9 @@ public class ModelTest {
 
 
         // assert VALID
-        assertEquals("Testing getPlayerBoardByNickname, simple GameMode 2 people", 2, actual_s2_valid.getId());
-        assertEquals("Testing getPlayerBoardByNickname, advanced GameMode 3 people", 1, actual_a3_valid.getId());
-        assertEquals("Testing getPlayerBoardByNickname, advanced GameMode 4 people", 3, actual_a4_valid.getId());
+        assertEquals("Testing getPlayerBoardByNickname, simple GameMode 2 people", 1, actual_s2_valid.getId());
+        assertEquals("Testing getPlayerBoardByNickname, advanced GameMode 3 people", 0, actual_a3_valid.getId());
+        assertEquals("Testing getPlayerBoardByNickname, advanced GameMode 4 people", 2, actual_a4_valid.getId());
         // assert INVALID
         try {
             PlayerBoard actual_s2_invalid = gb_sim_2.getMutablePlayerBoardByNickname("wrong");

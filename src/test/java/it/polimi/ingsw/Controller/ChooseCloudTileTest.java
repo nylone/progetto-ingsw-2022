@@ -153,7 +153,7 @@ public class ChooseCloudTileTest {
         clouds.add(new Cloud(2));
         List<CharacterCard> characterCards = new ArrayList<>();
         Model model = new Model(new IslandField(), GameMode.ADVANCED, studentBag, players, new EnumMap<>(PawnColour.class),
-                new TeamMapper(players), new TurnOrder(players.toArray(new PlayerBoard[0])), new EffectTracker(), clouds,
+                new TeamMapper(players), new TurnOrder(players), new EffectTracker(), clouds,
                 characterCards, 20, 1);
         model.refillClouds();
         characterCards.add(new Card04(model));
@@ -220,7 +220,7 @@ public class ChooseCloudTileTest {
         clouds.add(new Cloud(2));
         List<CharacterCard> characterCards = new ArrayList<>();
         Model model = new Model(new IslandField(), GameMode.SIMPLE, studentBag, players, new EnumMap<>(PawnColour.class),
-                new TeamMapper(players), new TurnOrder(players.toArray(new PlayerBoard[0])), new EffectTracker(), clouds,
+                new TeamMapper(players), new TurnOrder(players), new EffectTracker(), clouds,
                 characterCards, 20, 1);
         Controller gh = new Controller(new ModelWrapper(model, null), new ArrayList<>());
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
