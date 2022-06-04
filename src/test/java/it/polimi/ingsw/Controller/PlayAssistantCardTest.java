@@ -7,6 +7,7 @@ import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Model;
+import it.polimi.ingsw.Model.ModelWrapper;
 import it.polimi.ingsw.Model.PlayerBoard;
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ import static org.junit.Assert.*;
 public class PlayAssistantCardTest {
 
     Model model = new Model(GameMode.ADVANCED, "ale", "teo");
-    Controller gh = new Controller(model, new ArrayList<>(6));
+    Controller gh = new Controller(new ModelWrapper(model, null), new ArrayList<>());
 
     @Test
     public void cardShouldBeAssociatedToPlayer() throws Exception {

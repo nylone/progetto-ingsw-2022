@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 public class MoveMotherNatureTest {
 
     Model model = new Model(GameMode.ADVANCED, "ale", "teo");
-    Controller gh = new Controller(model, new ArrayList<>(6));
+    Controller gh = new Controller(new ModelWrapper(model, null), new ArrayList<>());
 
     @Test
     public void motherNatureShouldBeMoved() throws Exception {

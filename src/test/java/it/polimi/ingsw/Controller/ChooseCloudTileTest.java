@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 public class ChooseCloudTileTest {
 
     Model model = new Model(GameMode.SIMPLE, "ale", "teo");
-    Controller gh = new Controller(model, new ArrayList<>(6));
+
+    Controller gh = new Controller(new ModelWrapper(model, null), new ArrayList<>());
 
     /**
      * 2 ChooseCloudAction actions in a row throw an exception because before a ChooseCloudAction should only be present
@@ -158,7 +159,7 @@ public class ChooseCloudTileTest {
         characterCards.add(new Card04(model));
         characterCards.add(new Card09(model));
         characterCards.add(new Card10(model));
-        Controller gh = new Controller(model, new ArrayList<>());
+        Controller gh = new Controller(new ModelWrapper(model, null), new ArrayList<>());
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
@@ -221,7 +222,7 @@ public class ChooseCloudTileTest {
         Model model = new Model(new IslandField(), GameMode.SIMPLE, studentBag, players, new EnumMap<>(PawnColour.class),
                 new TeamMapper(players), new TurnOrder(players.toArray(new PlayerBoard[0])), new EffectTracker(), clouds,
                 characterCards, 20, 1);
-        Controller gh = new Controller(model, new ArrayList<>());
+        Controller gh = new Controller(new ModelWrapper(model, null), new ArrayList<>());
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
