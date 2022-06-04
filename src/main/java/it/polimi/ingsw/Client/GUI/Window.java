@@ -3,6 +3,8 @@ package it.polimi.ingsw.Client.GUI;
 import javax.swing.*;
 import java.awt.*;
 
+import static it.polimi.ingsw.Client.GUI.IconLoader.Logo;
+
 public class Window {
     private final JFrame frame;
 
@@ -18,5 +20,6 @@ public class Window {
         frame.getContentPane().removeAll();
         frame.add(newView);
         frame.pack();
+        frame.setIconImage(Logo.getImage());
     }
 }

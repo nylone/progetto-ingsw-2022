@@ -27,11 +27,12 @@ public class PlayCharacterCardTest {
     @Test
     public void checkUse() throws Exception {
         Model model = initializeGameBoard(20, 1, 1);
-        Controller gh = initializeGameHandler(model);
+        Controller gh = initializeGameHandlerAndPlayAssistantCard(model);
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         int initialReserve = model.getCoinReserve();
         int initialBalance = player.getCoinBalance();
         StatefulEffect cardStateful = (StatefulEffect) model.getCharacterCards().get(0);
+        PawnColour fromCard = (PawnColour) (cardStateful).getState().get(0);
         PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.of(0),
                 Optional.of((PawnColour) (cardStateful).getState().get(0)),
                 Optional.empty());
@@ -39,7 +40,7 @@ public class PlayCharacterCardTest {
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - model.getCharacterCards().get(0).getCost() + 1);
-        assertTrue(model.getMutableIslandField().getMutableIslandById(0).getStudents().contains((PawnColour) (cardStateful).getState().get(0)));
+        assertTrue(model.getMutableIslandField().getMutableIslandById(0).getStudents().contains(fromCard));
         assertEquals(model.getCoinReserve(), initialReserve + model.getCharacterCards().get(0).getCost() - 2);
         // minus 2 because now card's cost has been increased by one so we keep one coin in the card and return ORIGINAL COST - 1 to the Reserve
 
@@ -49,7 +50,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         model = initializeGameBoard(40, 2, 2);
-        gh = initializeGameHandler(model);
+        gh = initializeGameHandlerAndPlayAssistantCard(model);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -66,7 +67,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         model = initializeGameBoard(60, 3, 3);
-        gh = initializeGameHandler(model);
+        gh = initializeGameHandlerAndPlayAssistantCard(model);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -96,7 +97,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         model = initializeGameBoard(20, 1, 4);
-        gh = initializeGameHandler(model);
+        gh = initializeGameHandlerAndPlayAssistantCard(model);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -113,7 +114,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         model = initializeGameBoard(40, 2, 5);
-        gh = initializeGameHandler(model);
+        gh = initializeGameHandlerAndPlayAssistantCard(model);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -132,7 +133,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         model = initializeGameBoard(60, 3, 6);
-        gh = initializeGameHandler(model);
+        gh = initializeGameHandlerAndPlayAssistantCard(model);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -148,7 +149,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         model = initializeGameBoard(20, 1, 7);
-        gh = initializeGameHandler(model);
+        gh = initializeGameHandlerAndPlayAssistantCard(model);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -171,7 +172,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         model = initializeGameBoard(40, 2, 8);
-        gh = initializeGameHandler(model);
+        gh = initializeGameHandlerAndPlayAssistantCard(model);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -188,7 +189,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         model = initializeGameBoard(60, 3, 9);
-        gh = initializeGameHandler(model);
+        gh = initializeGameHandlerAndPlayAssistantCard(model);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -206,7 +207,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         model = initializeGameBoard(20, 2, 10);
-        gh = initializeGameHandler(model);
+        gh = initializeGameHandlerAndPlayAssistantCard(model);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -244,7 +245,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         model = initializeGameBoard(40, 2, 11);
-        gh = initializeGameHandler(model);
+        gh = initializeGameHandlerAndPlayAssistantCard(model);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -264,7 +265,7 @@ public class PlayCharacterCardTest {
          ------------------------------------------
          */
         model = initializeGameBoard(60, 3, 12);
-        gh = initializeGameHandler(model);
+        gh = initializeGameHandlerAndPlayAssistantCard(model);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
@@ -326,16 +327,34 @@ public class PlayCharacterCardTest {
                 characterCards.add(new Card12(model));
         }
         return model;
+
     }
 
-    private Controller initializeGameHandler(Model model) {
-        return new Controller(new ModelWrapper(model, null), new ArrayList<>());
+    private Controller initializeGameHandlerAndPlayAssistantCard(Model model) throws InputValidationException {
+        Controller controller = new Controller(new ModelWrapper(model, null), new ArrayList<>());
+        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
+        AssistantCard card = Utils.random(player.getMutableAssistantCards());
+        PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
+        controller.executeAction(playAssistantCard);
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
+
+        while (true) {
+            card = Utils.random(player.getMutableAssistantCards());
+            PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
+            AssistantCard finalCard = card;
+            if (model.getMutableTurnOrder().getSelectedCards().stream()
+                    .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
+                controller.executeAction(playAssistantCard1);
+                break;
+            }
+        }
+        return controller;
     }
 
     @Test(expected = InputValidationException.class)
     public void CharacterCardIndexOutOfBound() throws Exception {
         Model model = initializeGameBoard(60, 3, 12);
-        Controller gh = initializeGameHandler(model);
+        Controller gh = initializeGameHandlerAndPlayAssistantCard(model);
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, Optional.empty(), Optional.empty(), Optional.empty());
         gh.executeAction(playAction);
@@ -419,8 +438,8 @@ public class PlayCharacterCardTest {
 
     @Test
     public void InsufficientBalanceException() throws Exception {
-        Model model = initializeGameBoard(20, 1, 2);
-        Controller gh = initializeGameHandler(model);
+        Model model = initializeGameBoard(20, 0, 2);
+        Controller gh = initializeGameHandlerAndPlayAssistantCard(model);
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.empty());
         try {

@@ -11,6 +11,8 @@ public class IconLoader {
     public static final ImageIcon hidePassIcon = loadIcon("eye-barred", 12, 12);
     public static final ImageIcon playerBoardIcon = loadIcon("player-board", 1660, 720);
 
+    public static final ImageIcon Logo = loadIcon("IconEriantys", 600, 600);
+
     public static final ImageIcon sky = loadIcon("sky", 1080, 720);
 
     public static final ImageIcon coin = loadIcon("Coin", 150, 160);
