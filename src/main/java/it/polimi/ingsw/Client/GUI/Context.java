@@ -2,6 +2,10 @@ package it.polimi.ingsw.Client.GUI;
 
 import it.polimi.ingsw.Network.SocketWrapper;
 
+/**
+ * Context holds the information needed to relate the player, the server connection
+ * and the player's personal graphical representation.
+ */
 public class Context {
     private Window window;
     private SocketWrapper socketWrapper;

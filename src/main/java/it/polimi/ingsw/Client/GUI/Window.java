@@ -5,6 +5,9 @@ import java.awt.*;
 
 import static it.polimi.ingsw.Client.GUI.IconLoader.Logo;
 
+/**
+ * Window creates the top-level container (Java Swing component) onto which the game will be rendered
+ */
 public class Window {
     private final JFrame frame;
 
