@@ -5,7 +5,6 @@ import it.polimi.ingsw.Model.Cloud;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +21,7 @@ public class CloudPanel extends JPanel {
         cloudIcons.addAll(Arrays.asList(cloud1Icon, cloud2Icon, cloud3Icon, cloud4Icon));
 
         for(Cloud cloud : clouds) {
-            JLabel c = new CloudComponent(cloudIcons.get(clouds.indexOf(cloud)), cloud);
+            JLabel c = new CloudComponent(cloudIcons.get(clouds.indexOf(cloud)), cloud, clouds.size() == 2);
             this.add(c);
 
         }
