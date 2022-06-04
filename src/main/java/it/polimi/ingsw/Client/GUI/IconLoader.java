@@ -12,6 +12,10 @@ public class IconLoader {
     public static final ImageIcon playerBoardIcon = loadIcon("player-board", 1660, 720);
 
     public static final ImageIcon Logo = loadIcon("IconEriantys", 600, 600);
+    public static final ImageIcon cloud1Icon = loadIcon("cloud1", 450, 450);
+    public static final ImageIcon cloud2Icon = loadIcon("cloud2", 450, 450);
+    public static final ImageIcon cloud3Icon = loadIcon("cloud3", 450, 450);
+    public static final ImageIcon cloud4Icon = loadIcon("cloud4", 450, 450);
 
     public static final ImageIcon sky = loadIcon("sky", 1080, 720);
 

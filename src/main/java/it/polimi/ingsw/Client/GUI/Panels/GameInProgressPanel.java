@@ -73,6 +73,7 @@ public class GameInProgressPanel extends JTabbedPane {
                 this.add(pbp.getKey() + "'s PlayerBoard", pbp.getValue());
             }
         }
+        this.add("Clouds", new CloudPanel(model.getClouds()));
         if (model.getGameMode() == GameMode.ADVANCED) {
             final JPanel characterCardsPanel = new CharacterCardsPanel(model.getCharacterCards());
             this.add("CharacterCards", characterCardsPanel);
