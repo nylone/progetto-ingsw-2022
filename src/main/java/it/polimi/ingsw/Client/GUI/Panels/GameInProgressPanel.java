@@ -21,7 +21,6 @@ public class GameInProgressPanel extends JTabbedPane {
 
     private final String ownNickname;
     private final Window window;
-    private final JPanel islandPanel = new JPanel();
 
     private final Map<String, PlayerBoardPanel> playerTabs = new HashMap<>();
 
@@ -62,7 +61,7 @@ public class GameInProgressPanel extends JTabbedPane {
 
     private void updateViews(Model model) {
         this.removeAll();
-        this.add("Islands", this.islandPanel);
+        this.add("Islands", new IslandFieldPanel(model.getMutableIslandField().getMutableGroups()));
         for (PlayerBoard pb : model.getMutablePlayerBoards()) {
             this.playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb, model.getOwnTeachers(pb), model.getTeamMapper().getMutableTowerStorage(pb)));
         }

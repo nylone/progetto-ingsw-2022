@@ -245,6 +245,11 @@ public class ClientView {
         setGameStarted(false);
     }
 
+    public void disconnectViewFromServer(){
+        disconnectView();
+        setConnected(false);
+    }
+
     /**
      * Set Client's status inside a lobby (connected to a lobby or not)
      *

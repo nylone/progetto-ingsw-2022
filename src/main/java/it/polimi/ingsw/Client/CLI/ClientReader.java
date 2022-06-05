@@ -46,10 +46,12 @@ public class ClientReader implements Runnable {
                 response = socketWrapper.awaitMessage();
             } catch (IOException ex) {
                 System.err.println("Server connection lost.");
+                this.clientView.disconnectViewFromServer();
                 break;
             }
             if (response == null) {
                 System.err.println("Server connection lost.");
+                this.clientView.disconnectViewFromServer();
                 break;
             }
 
