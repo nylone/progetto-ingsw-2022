@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
+import it.polimi.ingsw.Client.GUI.Components.StudentButton;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -62,10 +63,10 @@ public class PlayerBoardPanel extends JPanel {
         for (int i = 0; i < pb.getEntranceSize(); i++) {
             switch (pb.getEntranceStudents().get(i).get()) {
                 //Basing on pawnColour, labels have different images
-                case RED -> entranceStudentsButton.add(new JButton(RedStudent));
-                case GREEN -> entranceStudentsButton.add(new JButton(GreenStudent));
+                case RED -> entranceStudentsButton.add(new StudentButton(PawnColour.RED, 1));
+                case GREEN -> entranceStudentsButton.add(new StudentButton(PawnColour.GREEN, 3));
                 case YELLOW -> entranceStudentsButton.add(new JButton(YellowStudent));
-                case BLUE -> entranceStudentsButton.add(new JButton(BlueStudent));
+                case BLUE -> entranceStudentsButton.add(new StudentButton(PawnColour.BLUE, 3));
                 case PINK -> entranceStudentsButton.add(new JButton(PinkStudent));
             }
             //Remove borders and filling from every button
@@ -158,10 +159,10 @@ public class PlayerBoardPanel extends JPanel {
         int secondCount = 0;
         for (int i = 0; i < pb.getEntranceSize(); i++) {
             if (i % 2 == 0) {
-                entranceStudentsButton.get(i).setBounds(100, 50 + 70 * count, 50, 45);
+                entranceStudentsButton.get(i).setBounds(90, 50 + 70 * count, 60, 45);
                 count++;
             } else {
-                entranceStudentsButton.get(i).setBounds(35, 123 + 70 * (secondCount), 50, 45);
+                entranceStudentsButton.get(i).setBounds(25, 123 + 70 * (secondCount), 60, 45);
                 secondCount++;
             }
         }
