@@ -23,9 +23,14 @@ public class CloudPanel extends JPanel {
         for(Cloud cloud : clouds) {
             JLabel c = new CloudComponent(cloudIcons.get(clouds.indexOf(cloud)), cloud, clouds.size() == 2);
             this.add(c);
-
         }
 
         this.setLayout(layout);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(playerBoardBackground.getImage(), 0, 0, null);
     }
 }
