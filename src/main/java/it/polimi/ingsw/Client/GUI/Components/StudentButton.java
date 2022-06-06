@@ -10,6 +10,10 @@ import static it.polimi.ingsw.Client.GUI.IconLoader.*;
 
 public class StudentButton extends JButton {
         public StudentButton(PawnColour pawnColour, int amount) {
+            this.setBorderPainted(false);
+            this.setContentAreaFilled(false);
+            this.setFocusPainted(false);
+            this.setOpaque(false);
             switch (pawnColour) {
                 case BLUE -> this.setIcon(BlueStudent);
                 case YELLOW -> this.setIcon(YellowStudent);

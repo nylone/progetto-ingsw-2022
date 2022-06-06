@@ -61,7 +61,7 @@ public class GameInProgressPanel extends JTabbedPane {
 
     private void updateViews(Model model) {
         this.removeAll();
-        this.add("Islands", new IslandFieldPanel(model.getMutableIslandField().getMutableGroups()));
+        this.add("Islands", new IslandFieldPanel(model.getMutableIslandField().getMutableGroups(), model.getMutableIslandField().getMutableMotherNaturePosition()));
         for (PlayerBoard pb : model.getMutablePlayerBoards()) {
             this.playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb, model.getOwnTeachers(pb), model.getTeamMapper().getMutableTowerStorage(pb)));
         }

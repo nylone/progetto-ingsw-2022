@@ -30,7 +30,7 @@ public class CloudPanel extends JPanel {
         backGroundLabel.setLayout(null);
         backGroundLabel.setBounds(0, 0, 1080, 720);
         this.add(backGroundLabel);
-        ArrayList<ImageIcon> cloudIcons = new ArrayList<>(clouds.size());
+        //ArrayList<ImageIcon> cloudIcons = new ArrayList<>(clouds.size());
         //cloudIcons.addAll(Arrays.asList(cloud1Icon, cloud2Icon, cloud3Icon, cloud4Icon));
         ArrayList<CloudComponent> cloudButtons = new ArrayList<>(clouds.size());
         for(Cloud Cloud: clouds){

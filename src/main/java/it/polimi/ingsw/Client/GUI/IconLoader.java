@@ -13,6 +13,8 @@ public class IconLoader {
 
     public static final ImageIcon Logo = loadIcon("IconEriantys", 600, 600);
 
+    public static final ImageIcon motherNature = loadIcon("motherNature", 50,75);
+
     public static final ImageIcon cloudIcon = loadIcon("cloud", 1300, 700);
 
     public static final ImageIcon cloud1Icon = loadIcon("cloud1", 150, 150);
