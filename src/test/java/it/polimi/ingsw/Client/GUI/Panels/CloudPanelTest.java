@@ -34,6 +34,7 @@ public class CloudPanelTest {
        changeView(clouds, createScreen());
        Thread.sleep(10000);
    }
+   /* Waiting for IslandPanel component to be written
    @Test
    public void islandGUITest() throws InterruptedException {
        Model ctx = new Model(GameMode.SIMPLE, "ale", "teo", "ari");
@@ -41,6 +42,8 @@ public class CloudPanelTest {
        changeView(island, createScreen());
        Thread.sleep(600000);
    }
+    */
+
    @Test
    public void studentGUITest() throws InterruptedException {
        Model ctx = new Model(GameMode.SIMPLE, "ale", "teo", "ari");
