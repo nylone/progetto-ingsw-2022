@@ -24,7 +24,8 @@
         <mainClass>Main</mainClass>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <exec.mainClass>${mainClass}</exec.mainClass>
-        <sonar.exclusions>**/Client/**/*, **/Server/**/*, **/Misc/**/*, **/Exceptions/**/*, Main.java
+        <sonar.exclusions>
+        **/Client/**/*, **/Server/**/*, **/Misc/**/*, **/Network/**/*, **/Exceptions/**/*, **/Logger.java, **/Constants.java, Main.java
         </sonar.exclusions>
     </properties>
 
