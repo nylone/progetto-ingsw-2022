@@ -40,6 +40,9 @@ public class LobbyServer {
                         if (this.currentLobby != null) {
                             this.currentLobby.disconnectPlayer(this.nickname);
                         }
+                        synchronized (connectedNicknames) {
+                            connectedNicknames.remove(this.nickname);
+                        }
                         Logger.info("Lobby server was closed for player: " +
                                 nickname +
                                 " on address " +
