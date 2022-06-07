@@ -1,10 +1,9 @@
 package it.polimi.ingsw.Client.GUI;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
 import it.polimi.ingsw.Logger;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
@@ -14,7 +13,7 @@ public class IconLoader {
     public static final ImageIcon hidePassIcon = loadIcon("eye-barred.png", 12, 12);
     public static final ImageIcon playerBoardIcon = loadIcon("player-board.png", 1660, 720);
     public static final ImageIcon logo = loadIcon("IconEriantys.png", 600, 600);
-    public static final ImageIcon motherNature = loadIcon("motherNature.png", 50,75);
+    public static final ImageIcon motherNature = loadIcon("motherNature.png", 50, 75);
     public static final ImageIcon cloudIcon = loadIcon("cloud.png", 1300, 700);
     public static final ImageIcon sky = loadIcon("sky.png", 1080, 720);
     public static final ImageIcon coin = loadIcon("Coin.png", 150, 160);

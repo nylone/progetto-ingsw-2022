@@ -76,12 +76,12 @@ public class CliWriter implements Runnable {
                 System.out.println("Insert Username:");
                 //acquire Username from stdIn
                 nickname = stdIn.readLine();
-                if(!this.clientView.isConnected()) return;
+                if (!this.clientView.isConnected()) return;
                 //whether at least one between nickname and password is empty then repeat the login process
                 if (nickname.equals("")) {
                     System.out.println("Username not well formatted");
                 } else {
-                    if(!this.clientView.isConnected()) return;
+                    if (!this.clientView.isConnected()) return;
                     //create and initialize the DeclarePlayer request
                     DeclarePlayerRequest dp = new DeclarePlayerRequest(nickname);
                     //send the request to the server
@@ -98,12 +98,12 @@ public class CliWriter implements Runnable {
             //set nickname in clientView object
             this.clientView.setNickname(nickname);
             String input;
-            if(!this.clientView.isConnected()) Thread.currentThread().interrupt();
+            if (!this.clientView.isConnected()) Thread.currentThread().interrupt();
             //noinspection InfiniteLoopStatement
             while (true) {
                 //acquire command from stdIn
                 input = stdIn.readLine();
-                if(!this.clientView.isConnected()) return;
+                if (!this.clientView.isConnected()) return;
                 //execute command
                 elaborateInput(input);
             }

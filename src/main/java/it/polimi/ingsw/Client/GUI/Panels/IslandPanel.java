@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class IslandPanel extends JPanel {
 
-    public IslandPanel(Island island){
+    public IslandPanel(Island island) {
 
     }
 }

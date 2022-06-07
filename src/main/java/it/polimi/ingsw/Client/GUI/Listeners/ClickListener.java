@@ -20,15 +20,15 @@ public class ClickListener extends MouseAdapter {
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-        component.setIcon(image);
-
-    }
-
-    @Override
     public void mousePressed(MouseEvent e) {
         if (clickableArea.contains(e.getX(), e.getY())) {
             component.setIcon(new ImageIcon(GrayFilter.createDisabledImage(image.getImage())));
         }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        component.setIcon(image);
+
     }
 }

@@ -235,6 +235,11 @@ public class ClientView {
         this.Nickname = nickname;
     }
 
+    public void disconnectViewFromServer() {
+        disconnectView();
+        setConnected(false);
+    }
+
     /**
      * Method to disconnect the view from lobby (when the game ends or is closed for any reason)
      */
@@ -243,11 +248,6 @@ public class ClientView {
         setAdmin(null);
         setGame(null);
         setGameStarted(false);
-    }
-
-    public void disconnectViewFromServer(){
-        disconnectView();
-        setConnected(false);
     }
 
     /**

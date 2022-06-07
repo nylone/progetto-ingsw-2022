@@ -65,7 +65,7 @@ public class PlayerBoardPanel extends JPanel {
                 //Basing on pawnColour, labels have different images
                 case RED -> entranceStudentsButton.add(new StudentButton(PawnColour.RED, 1));
                 case GREEN -> entranceStudentsButton.add(new StudentButton(PawnColour.GREEN, 1));
-                case YELLOW -> entranceStudentsButton.add(new StudentButton(PawnColour.YELLOW,1 ));
+                case YELLOW -> entranceStudentsButton.add(new StudentButton(PawnColour.YELLOW, 1));
                 case BLUE -> entranceStudentsButton.add(new StudentButton(PawnColour.BLUE, 1));
                 case PINK -> entranceStudentsButton.add(new StudentButton(PawnColour.PINK, 1));
             }

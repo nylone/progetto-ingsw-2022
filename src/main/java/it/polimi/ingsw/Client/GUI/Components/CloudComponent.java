@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client.GUI.Components;
 
-import it.polimi.ingsw.Client.GUI.Listeners.ClickListener;
 import it.polimi.ingsw.Model.Cloud;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
@@ -28,7 +27,7 @@ public class CloudComponent extends JButton {
         this.setContentAreaFilled(false);
         this.setFocusPainted(false);
         this.setOpaque(false);
-        this.setLayout(new GridLayout(2,2));
+        this.setLayout(new GridLayout(2, 2));
         students.forEach(this::add);
         /*
         int offset = isDualPlayerGame ? 155 : 0;
