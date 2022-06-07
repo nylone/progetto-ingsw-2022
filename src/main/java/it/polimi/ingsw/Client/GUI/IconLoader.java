@@ -105,6 +105,8 @@ public class IconLoader {
 
     public static final ImageIcon Island3 = loadIcon("Islands/Island3", 300, 210);
 
+    public static final ImageIcon noEntryTileIcon = loadIcon("noEntryTile.png", 52, 60);
+
 
 
     private static ImageIcon loadIcon(String name, int width, int height) {
