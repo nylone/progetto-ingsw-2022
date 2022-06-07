@@ -16,11 +16,6 @@ public class IconLoader {
     public static final ImageIcon motherNature = loadIcon("motherNature", 50,75);
 
     public static final ImageIcon cloudIcon = loadIcon("cloud", 1300, 700);
-
-    public static final ImageIcon cloud1Icon = loadIcon("cloud1", 150, 150);
-    public static final ImageIcon cloud2Icon = loadIcon("cloud2", 150, 150);
-    public static final ImageIcon cloud3Icon = loadIcon("cloud3", 150, 150);
-    public static final ImageIcon cloud4Icon = loadIcon("cloud4", 150, 150);
     public static final ImageIcon sky = loadIcon("sky", 1080, 720);
 
     public static final ImageIcon coin = loadIcon("Coin", 150, 160);
