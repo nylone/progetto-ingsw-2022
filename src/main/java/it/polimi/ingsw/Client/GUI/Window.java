@@ -3,7 +3,7 @@ package it.polimi.ingsw.Client.GUI;
 import javax.swing.*;
 import java.awt.*;
 
-import static it.polimi.ingsw.Client.GUI.IconLoader.Logo;
+import static it.polimi.ingsw.Client.GUI.IconLoader.logo;
 
 /**
  * Window creates the top-level container (Java Swing component) onto which the game will be rendered
@@ -23,6 +23,6 @@ public class Window {
         frame.getContentPane().removeAll();
         frame.add(newView);
         frame.pack();
-        frame.setIconImage(Logo.getImage());
+        frame.setIconImage(logo.getImage());
     }
 }
