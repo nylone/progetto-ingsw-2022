@@ -46,11 +46,11 @@ public class PlayerBoardPanel extends JPanel {
             for (int i = 0; i < pb.getDiningRoomCount(p); i++) {
                 //Basing on pawnColour, labels have different images
                 switch (p) {
-                    case RED -> diningRoomButtons.get(p).add(new StudentButton(PawnColour.RED, 1));
-                    case GREEN -> diningRoomButtons.get(p).add(new StudentButton(PawnColour.GREEN, 1));
-                    case YELLOW -> diningRoomButtons.get(p).add(new StudentButton(PawnColour.YELLOW, 1));
-                    case BLUE -> diningRoomButtons.get(p).add(new StudentButton(PawnColour.BLUE, 1));
-                    case PINK -> diningRoomButtons.get(p).add(new StudentButton(PawnColour.PINK, 1));
+                    case RED -> diningRoomButtons.get(p).add(new StudentButton(PawnColour.RED, 1, false));
+                    case GREEN -> diningRoomButtons.get(p).add(new StudentButton(PawnColour.GREEN, 1, false));
+                    case YELLOW -> diningRoomButtons.get(p).add(new StudentButton(PawnColour.YELLOW, 1, false));
+                    case BLUE -> diningRoomButtons.get(p).add(new StudentButton(PawnColour.BLUE, 1, false));
+                    case PINK -> diningRoomButtons.get(p).add(new StudentButton(PawnColour.PINK, 1, false));
                 }
                 //Remove borders and filling from every button
                 diningRoomButtons.get(p).get(diningRoomButtons.get(p).size() - 1).setBorderPainted(false);
@@ -63,11 +63,11 @@ public class PlayerBoardPanel extends JPanel {
         for (int i = 0; i < pb.getEntranceSize(); i++) {
             switch (pb.getEntranceStudents().get(i).get()) {
                 //Basing on pawnColour, labels have different images
-                case RED -> entranceStudentsButton.add(new StudentButton(PawnColour.RED, 1));
-                case GREEN -> entranceStudentsButton.add(new StudentButton(PawnColour.GREEN, 1));
-                case YELLOW -> entranceStudentsButton.add(new StudentButton(PawnColour.YELLOW, 1));
-                case BLUE -> entranceStudentsButton.add(new StudentButton(PawnColour.BLUE, 1));
-                case PINK -> entranceStudentsButton.add(new StudentButton(PawnColour.PINK, 1));
+                case RED -> entranceStudentsButton.add(new StudentButton(PawnColour.RED, 1, false));
+                case GREEN -> entranceStudentsButton.add(new StudentButton(PawnColour.GREEN, 1, false));
+                case YELLOW -> entranceStudentsButton.add(new StudentButton(PawnColour.YELLOW, 1, false));
+                case BLUE -> entranceStudentsButton.add(new StudentButton(PawnColour.BLUE, 1, false));
+                case PINK -> entranceStudentsButton.add(new StudentButton(PawnColour.PINK, 1, false));
             }
             //Remove borders and filling from every button
             entranceStudentsButton.get(entranceStudentsButton.size() - 1).setBorderPainted(false);

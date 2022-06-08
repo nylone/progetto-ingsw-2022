@@ -8,7 +8,7 @@ import java.awt.*;
 import static it.polimi.ingsw.Client.GUI.IconLoader.*;
 
 public class StudentButton extends JButton {
-    public StudentButton(PawnColour pawnColour, int amount) {
+    public StudentButton(PawnColour pawnColour, int amount, boolean overrideTextColour) {
         this.setBorderPainted(false);
         this.setContentAreaFilled(false);
         this.setFocusPainted(false);
@@ -31,6 +31,9 @@ public class StudentButton extends JButton {
                 case GREEN -> this.setForeground(new Color(0x1FB47F));
                 case PINK -> this.setForeground(new Color(0xDB5FA2));
                 case RED -> this.setForeground(new Color(0xEC1F23));
+            }
+            if (overrideTextColour) {
+                this.setForeground(Color.BLACK);
             }
         }
     }

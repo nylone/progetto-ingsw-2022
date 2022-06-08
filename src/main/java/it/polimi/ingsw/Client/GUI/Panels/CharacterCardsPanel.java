@@ -174,7 +174,7 @@ public class CharacterCardsPanel extends JPanel {
         }
         for(PawnColour p : colourIntegerEnumMap.keySet()){
             System.out.println("colour:"+p+" amount:"+colourIntegerEnumMap.get(p));
-            studentButtons.add(new StudentButton(p, colourIntegerEnumMap.get(p)));
+            studentButtons.add(new StudentButton(p, colourIntegerEnumMap.get(p), false));
         }
         return studentButtons;
     }
