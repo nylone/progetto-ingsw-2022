@@ -201,7 +201,9 @@ public class ClientReader implements Runnable {
                     System.out.println("Something gone wrong, GameOver response not accepted");
                 }
             }
-
+            case InvalidRequest ignored -> {
+                System.out.println("Something gone wrong, your request has not been executed");
+            }
             default -> System.out.println("Received an unexpected server's response:" + serverResponse.getClass());
         }
     }

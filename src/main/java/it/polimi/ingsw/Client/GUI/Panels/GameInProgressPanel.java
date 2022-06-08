@@ -8,9 +8,8 @@ import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.Message;
-import it.polimi.ingsw.Server.Messages.ServerResponses.ClientDisconnected;
-import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyClosed;
-import it.polimi.ingsw.Server.Messages.ServerResponses.ModelUpdated;
+import it.polimi.ingsw.Server.Messages.ServerResponses.*;
+import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -24,11 +23,13 @@ public class GameInProgressPanel extends JTabbedPane {
 
     private final Map<String, PlayerBoardPanel> playerTabs = new HashMap<>();
 
+    private final SocketWrapper sw;
+
     public GameInProgressPanel(Context ctx) {
         // unwrapping context into useful variables
         this.ownNickname = ctx.getNickname();
         this.window = ctx.getWindow();
-        SocketWrapper sw = ctx.getSocketWrapper();// display the view
+        this.sw = ctx.getSocketWrapper();// display the view
         this.window.changeView(this);
 
         // start socket listener task
@@ -50,6 +51,13 @@ public class GameInProgressPanel extends JTabbedPane {
                         case ModelUpdated modelUpdated -> {
                             this.updateViews(modelUpdated.getModel());
                         }
+                        case PlayerActionFeedback playerActionFeedback -> {
+                            if (playerActionFeedback.getStatusCode() == StatusCode.Fail)
+                                JOptionPane.showMessageDialog(null, playerActionFeedback.getReport());
+                        }
+                        case InvalidRequest invalidRequest -> {
+                            JOptionPane.showMessageDialog(null, "Your request has not been executed, probably you are trying to play out of turn");
+                        }
                         default -> throw new IllegalStateException("Unexpected value: " + input.getClass());
                     }
                 } catch (IOException e) {
@@ -63,13 +71,19 @@ public class GameInProgressPanel extends JTabbedPane {
         this.removeAll();
         this.add("Islands", new IslandFieldPanel(model.getMutableIslandField().getMutableGroups(), model.getMutableIslandField().getMutableMotherNaturePosition()));
         for (PlayerBoard pb : model.getMutablePlayerBoards()) {
-            this.playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb, model.getOwnTeachers(pb), model.getTeamMapper().getMutableTowerStorage(pb), model.getMutableTurnOrder()));
+            this.playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb, model.getOwnTeachers(pb), model.getTeamMapper().getMutableTowerStorage(pb), model.getMutableTurnOrder(), this.sw));
         }
         for (Map.Entry<String, PlayerBoardPanel> pbp : this.playerTabs.entrySet()) {
             if (pbp.getKey().equals(this.ownNickname)) {
-                this.add("Your board", pbp.getValue());
+                if(pbp.getKey().equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname()))
+                    this.add("Your board (current player)", pbp.getValue());
+                else
+                    this.add("Your board", pbp.getValue());
             } else {
-                this.add(pbp.getKey() + "'s PlayerBoard", pbp.getValue());
+                if(pbp.getKey().equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname()))
+                    this.add(pbp.getKey() + "'s PlayerBoard (current player)", pbp.getValue());
+                else
+                    this.add(pbp.getKey() + "'s PlayerBoard", pbp.getValue());
             }
         }
         this.add("Clouds", new CloudPanel(model.getClouds()));

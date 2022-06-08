@@ -1,18 +1,20 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.Components.StudentButton;
+import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Model.TowerStorage;
 import it.polimi.ingsw.Model.TurnOrder;
+import it.polimi.ingsw.Network.SocketWrapper;
+import it.polimi.ingsw.Server.Messages.Events.Requests.PlayerActionRequest;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.EnumMap;
+import java.io.IOException;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.Client.GUI.IconLoader.*;
@@ -21,7 +23,7 @@ import static it.polimi.ingsw.Client.GUI.IconLoader.*;
  * Panel class that contains one playerBoard and all not-used assistantCards
  */
 public class PlayerBoardPanel extends JPanel {
-    public PlayerBoardPanel(PlayerBoard pb, List<PawnColour> teachers, TowerStorage towerStorage, TurnOrder turnOrder) {
+    public PlayerBoardPanel(PlayerBoard pb, List<PawnColour> teachers, TowerStorage towerStorage, TurnOrder turnOrder, SocketWrapper socketWrapper) {
         ArrayList<JButton> assistantCardsLabels = new ArrayList<>(10);
         ArrayList<JButton> entranceStudentsButton = new ArrayList<>(pb.getEntranceSize());
         ArrayList<JLabel> towersLabels = new ArrayList<>(towerStorage.getTowerCount());
@@ -77,22 +79,32 @@ public class PlayerBoardPanel extends JPanel {
             entranceStudentsButton.get(entranceStudentsButton.size() - 1).setOpaque(false);
         }
 
-        ArrayList<JButton> assistantCardsLabelToShow;
+        ArrayList<JButton> assistantCardsButtonsToShow;
         //label containing all others elements
         JLabel boardBackground = new JLabel(playerBoardBackground);
         //label containing PlayerBoard
         JLabel playerBoardLabel = new JLabel(playerBoard);
         //----labels containing assistantCards----
-        JButton assistantCard1Button = new JButton(assistantCard1);
-        JButton assistantCard2Button = new JButton(assistantCard2);
-        JButton assistantCard3Button = new JButton(assistantCard3);
-        JButton assistantCard4Button = new JButton(assistantCard4);
-        JButton assistantCard5Button = new JButton(assistantCard5);
-        JButton assistantCard6Button = new JButton(assistantCard6);
-        JButton assistantCard7Button = new JButton(assistantCard7);
-        JButton assistantCard8Button = new JButton(assistantCard8);
-        JButton assistantCard9Button = new JButton(assistantCard9);
-        JButton assistantCard10Button = new JButton(assistantCard10);
+        ArrayList<ImageIcon> assistantCardsIcon = new ArrayList<>(Arrays.asList(assistantCard1, assistantCard2, assistantCard3, assistantCard4, assistantCard5, assistantCard6, assistantCard7, assistantCard8, assistantCard9, assistantCard10));
+        ArrayList<JButton> assistantCardsButtons = new ArrayList<>(10);
+        for(int i=0; i<10; i++){
+            JButton assistantCardButton = new JButton(assistantCardsIcon.get(i));
+            int finalI = i+1;
+            assistantCardButton.addActionListener(e -> {
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog(this, "Confirm to play assistant card with priority: "+finalI+"?", "PlayAssistant card confirmation", dialogButton);
+                if(dialogResult == 0) {
+                    PlayAssistantCard playAssistantCard = new PlayAssistantCard(pb.getId(), finalI);
+                    PlayerActionRequest playerAction = new PlayerActionRequest(playAssistantCard);
+                    try {
+                        socketWrapper.sendMessage(playerAction);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            });
+            assistantCardsButtons.add(assistantCardButton);
+        }
         //----labels containing Teachers----
         JLabel redTeacherLabel = new JLabel(RedTeacher);
         JLabel blueTeacherLabel = new JLabel(BlueTeacher);
@@ -100,16 +112,7 @@ public class PlayerBoardPanel extends JPanel {
         JLabel greenTeacherLabel = new JLabel(GreenTeacher);
         JLabel yellowTeacherLabel = new JLabel(YellowTeacher);
         //add all assistantcardLabels to support ArrayList
-        assistantCardsLabels.add(assistantCard1Button);
-        assistantCardsLabels.add(assistantCard2Button);
-        assistantCardsLabels.add(assistantCard3Button);
-        assistantCardsLabels.add(assistantCard4Button);
-        assistantCardsLabels.add(assistantCard5Button);
-        assistantCardsLabels.add(assistantCard6Button);
-        assistantCardsLabels.add(assistantCard7Button);
-        assistantCardsLabels.add(assistantCard8Button);
-        assistantCardsLabels.add(assistantCard9Button);
-        assistantCardsLabels.add(assistantCard10Button);
+        assistantCardsButtons.forEach(assistantCardsLabels::add);
         //get unused assistantCards
         ArrayList<AssistantCard> availableAssistants = pb.getMutableAssistantCards()
                 .stream().filter(assistantCard -> !assistantCard.getUsed())
@@ -120,17 +123,18 @@ public class PlayerBoardPanel extends JPanel {
                 availableAssistants.removeIf(assistantCard -> assistantCard.getPriority() == turnOrder.getMutableSelectedCard(p).get().getPriority());
             }
         }
-        assistantCardsLabelToShow = GetCardsToShow(assistantCardsLabels, availableAssistants);
+        assistantCardsButtonsToShow = GetCardsToShow(assistantCardsLabels, availableAssistants);
         //Remove borders and filling from every button
-        assistantCardsLabelToShow.forEach(jButton -> {
+        assistantCardsButtonsToShow.forEach(jButton -> {
                     jButton.setBorderPainted(false);
                     jButton.setContentAreaFilled(false);
                     jButton.setFocusPainted(false);
                     jButton.setOpaque(false);
+                    //jButton.addActionListener(e -> playAssistantCard(e));
                 }
         );
 
-        assistantCardsPanel.setPreferredSize(new Dimension(assistantCardsLabelToShow.size() * 205, 250));
+        assistantCardsPanel.setPreferredSize(new Dimension(assistantCardsButtonsToShow.size() * 205, 250));
         //add Panel containing assistantCards as parameter for JScrollPane's constructor
         JScrollPane assistantCardsScrollPane = new JScrollPane(assistantCardsPanel);
         //remove JScrollPane's borders
@@ -207,7 +211,7 @@ public class PlayerBoardPanel extends JPanel {
         //add playerBoard's label to boardBackground's label
         boardBackground.add(playerBoardLabel);
         //add every assistant card to assistantCards' panel
-        assistantCardsLabelToShow.forEach(assistantCardsPanel::add);
+        assistantCardsButtonsToShow.forEach(assistantCardsPanel::add);
         //add JScrollPane to boardBackground's label
         boardBackground.add(assistantCardsScrollPane);
         //add every entrance's student to PlayerBoard's label
