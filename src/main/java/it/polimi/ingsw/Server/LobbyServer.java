@@ -15,6 +15,7 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusC
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 public class LobbyServer {
     protected static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
@@ -69,18 +70,15 @@ public class LobbyServer {
             this.nickname = castedEvent.getNickname();
             synchronized (connectedNicknames) {
                 if (connectedNicknames.contains(this.nickname)) {
-                    sw.sendMessage(new LobbyAccept(StatusCode.Fail, null, null));
+                    sw.sendMessage(new LobbyAccept(StatusCode.Fail, null));
                 } else {
                     connectedNicknames.add(this.nickname);
                     List<LobbyInfo> publicLobbies = lobbyMap.values().stream()
                             .filter(Lobby::isPublic)
+                            .filter(Predicate.not(Lobby::isGameInProgress))
                             .map(LobbyInfo::new)
                             .toList();
-                    List<LobbyInfo> lobbiesWaitingReconnection = lobbyMap.values().stream()
-                            .filter(lobby -> lobby.getDisconnectedPlayers().contains(this.nickname))
-                            .map(LobbyInfo::new)
-                            .toList();
-                    sw.sendMessage(new LobbyAccept(StatusCode.Success, publicLobbies, lobbiesWaitingReconnection));
+                    sw.sendMessage(new LobbyAccept(StatusCode.Success, publicLobbies));
                     this.state = State.REDIRECT_PHASE;
                 }
             }

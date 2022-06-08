@@ -6,11 +6,13 @@ import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Model.Enums.GameMode;
+import it.polimi.ingsw.Model.ModelWrapper;
 import it.polimi.ingsw.Server.Messages.Events.ClientEvent;
 import it.polimi.ingsw.Server.Messages.Events.Internal.ClientConnectEvent;
 import it.polimi.ingsw.Server.Messages.Events.Internal.ClientDisconnectEvent;
 import it.polimi.ingsw.Server.Messages.Events.Internal.GameStartEvent;
 import it.polimi.ingsw.Server.Messages.Events.Internal.LobbyClosedEvent;
+import it.polimi.ingsw.Misc.Optional;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,7 +40,7 @@ public class Lobby {
         this.playerEventSources = new ConcurrentHashMap<>();
     }
 
-    public void executeAction(PlayerAction pa) throws InputValidationException, OperationException {
+    public synchronized void executeAction(PlayerAction pa) throws InputValidationException, OperationException {
         if (controller == null) {
             throw new ForbiddenOperationException("Lobby is in waiting state, no game is running");
         }
@@ -68,15 +70,6 @@ public class Lobby {
     public List<String> getPlayers() {
         synchronized (this.players) {
             return List.copyOf(this.players);
-        }
-    }
-
-    public List<String> getDisconnectedPlayers() {
-        synchronized (this.players) {
-            Set<String> connected = this.playerEventSources.keySet();
-            return this.players.stream()
-                    .filter(Predicate.not(connected::contains))
-                    .toList();
         }
     }
 
@@ -139,9 +132,8 @@ public class Lobby {
                 nickToID.put(this.players.get(i), i);
             }
             notifyPlayers(new GameStartEvent(nickToID));
-            this.controller = new Controller(
-                    gameMode,
-                    this,
+            this.controller = Controller.createGame(gameMode,
+                    Optional.of(this),
                     players.toArray(String[]::new)
             );
         }

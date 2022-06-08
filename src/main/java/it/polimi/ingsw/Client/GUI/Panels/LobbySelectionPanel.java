@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class LobbySelectionPanel extends JTabbedPane {
-    public LobbySelectionPanel(Context ctx, List<LobbyInfo> publicLobbies, List<LobbyInfo> reconnectToTheseLobbies) {
+    public LobbySelectionPanel(Context ctx, List<LobbyInfo> publicLobbies) {
         // unwrapping context into useful variables
         Window window = ctx.getWindow();
         SocketWrapper sw = ctx.getSocketWrapper();
@@ -33,7 +33,6 @@ public class LobbySelectionPanel extends JTabbedPane {
         {
             // labels
             JLabel title = new JLabel("Select a lobby from the list, or input a lobby id to connect to.");
-            JLabel lobbiesWaitingReconnectionLabel = new JLabel("These lobbies are waiting for you to come back:");
             JLabel publicLobbiesLabel = new JLabel("These are all the public lobbies you can connect to:");
             JLabel lobbyIDLabel = new JLabel("Connecting to:", SwingConstants.RIGHT);
 
@@ -74,27 +73,12 @@ public class LobbySelectionPanel extends JTabbedPane {
             scrollablePublicLobbiesList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             scrollablePublicLobbiesList.setPreferredSize(new Dimension(720, 100));
 
-            // list of lobbies waiting reconnection
-            JList<LobbyInfo> waitingReconnectionLobbiesList = new JList<>(reconnectToTheseLobbies.toArray(LobbyInfo[]::new));
-            waitingReconnectionLobbiesList.setLayoutOrientation(JList.VERTICAL);
-            waitingReconnectionLobbiesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            waitingReconnectionLobbiesList.setCellRenderer(cellRenderer);
-
-            // wrapping the list of lobbies in a scrollable panel
-            JScrollPane scrollableWaitingReconnectionLobbiesList = new JScrollPane();
-            scrollableWaitingReconnectionLobbiesList.setViewportView(waitingReconnectionLobbiesList);
-            scrollableWaitingReconnectionLobbiesList.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-            scrollableWaitingReconnectionLobbiesList.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-            scrollableWaitingReconnectionLobbiesList.setPreferredSize(new Dimension(720, 100));
-
             // adding all elements to the view
             connectPanel.add(title);
-            connectPanel.add(lobbiesWaitingReconnectionLabel);
             connectPanel.add(publicLobbiesLabel);
             connectPanel.add(lobbyIDLabel);
             connectPanel.add(lobbyID);
             connectPanel.add(connect);
-            connectPanel.add(scrollableWaitingReconnectionLobbiesList);
             connectPanel.add(scrollablePublicLobbiesList);
 
             // setting correct focus
@@ -104,12 +88,6 @@ public class LobbySelectionPanel extends JTabbedPane {
             publicLobbiesList.addListSelectionListener(listSelectionEvent -> {
                 int selectedIndex = publicLobbiesList.getSelectedIndex();
                 lobbyID.setText(publicLobbies.get(selectedIndex).getID().toString());
-                waitingReconnectionLobbiesList.setSelectedIndices(new int[]{});
-            });
-            waitingReconnectionLobbiesList.addListSelectionListener(listSelectionEvent -> {
-                int selectedIndex = waitingReconnectionLobbiesList.getSelectedIndex();
-                lobbyID.setText(reconnectToTheseLobbies.get(selectedIndex).getID().toString());
-                publicLobbiesList.setSelectedIndex(-1);
             });
             lobbyID.addActionListener(actionEvent -> {
                 lobbyID.setText(lobbyID.getText().trim());
@@ -139,12 +117,7 @@ public class LobbySelectionPanel extends JTabbedPane {
             layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 20, SpringLayout.NORTH, connectPanel);
             layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);
 
-            layout.putConstraint(SpringLayout.VERTICAL_CENTER, lobbiesWaitingReconnectionLabel, 20, SpringLayout.SOUTH, title);
-            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, lobbiesWaitingReconnectionLabel, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);
-            layout.putConstraint(SpringLayout.NORTH, scrollableWaitingReconnectionLobbiesList, 20, SpringLayout.VERTICAL_CENTER, lobbiesWaitingReconnectionLabel);
-            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, scrollableWaitingReconnectionLobbiesList, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);
-
-            layout.putConstraint(SpringLayout.VERTICAL_CENTER, publicLobbiesLabel, 20, SpringLayout.SOUTH, scrollableWaitingReconnectionLobbiesList);
+            layout.putConstraint(SpringLayout.VERTICAL_CENTER, publicLobbiesLabel, 20, SpringLayout.SOUTH, title);
             layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, publicLobbiesLabel, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);
             layout.putConstraint(SpringLayout.NORTH, scrollablePublicLobbiesList, 20, SpringLayout.VERTICAL_CENTER, publicLobbiesLabel);
             layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, scrollablePublicLobbiesList, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);

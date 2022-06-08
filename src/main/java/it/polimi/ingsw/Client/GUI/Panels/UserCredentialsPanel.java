@@ -54,7 +54,7 @@ public class UserCredentialsPanel extends JPanel {
                 try {
                     if (sw.awaitMessage() instanceof LobbyAccept lobbyAccept) {
                         if (lobbyAccept.getStatusCode() == StatusCode.Success) {
-                            new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies(), lobbyAccept.getReconnectToTheseLobbies());
+                            new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies());
                         } else {
                             new PopupMessage("Server denied your login", "Failure :(");
                         }
