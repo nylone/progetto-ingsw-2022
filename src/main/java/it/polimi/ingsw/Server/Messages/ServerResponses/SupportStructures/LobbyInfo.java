@@ -15,7 +15,6 @@ public class LobbyInfo implements Serializable {
     private final boolean isPublic;
     private final int maxPlayers;
     private final List<String> players;
-    private final List<String> disconnectedPlayers;
 
     public LobbyInfo(Lobby lobby) {
         this.admin = lobby.getAdmin();
@@ -23,7 +22,6 @@ public class LobbyInfo implements Serializable {
         this.isPublic = lobby.isPublic();
         this.maxPlayers = lobby.getMaxPlayers();
         this.players = lobby.getPlayers();
-        this.disconnectedPlayers = lobby.getDisconnectedPlayers();
     }
 
     public String getAdmin() {
@@ -44,9 +42,5 @@ public class LobbyInfo implements Serializable {
 
     public List<String> getPlayers() {
         return players;
-    }
-
-    public List<String> getDisconnectedPlayers() {
-        return disconnectedPlayers;
     }
 }
