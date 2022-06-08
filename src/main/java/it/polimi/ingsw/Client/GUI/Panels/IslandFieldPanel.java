@@ -20,7 +20,6 @@ public class IslandFieldPanel extends JPanel {
 
     IslandFieldPanel(List<IslandGroup> islandGroups, IslandGroup motherNaturePosition) {
         this.setOpaque(true);
-        this.setOpaque(true);
         this.setBackground(new Color(105, 186, 233));
         this.setLayout(new CircleLayout());
         ArrayList<ImageIcon> islandIcons = new ArrayList<>(Arrays.asList(Island1, Island2, Island3));
