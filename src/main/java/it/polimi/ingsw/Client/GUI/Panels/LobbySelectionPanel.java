@@ -48,7 +48,7 @@ public class LobbySelectionPanel extends JTabbedPane {
                 displayedText.setText(
                         "ID: " + info.getID() +
                                 " || Admin: " + info.getAdmin() +
-                                " || Size: " + (info.getPlayers().size() - info.getDisconnectedPlayers().size()) + "/" + info.getMaxPlayers());
+                                " || Size: " + (info.getPlayers().size()) + "/" + info.getMaxPlayers());
                 if (isSelected) {
                     displayedText.setBackground(list.getSelectionBackground());
                     displayedText.setForeground(list.getSelectionForeground());

@@ -47,7 +47,7 @@ public class IslandFieldPanel extends JPanel {
             for (PawnColour p : pawnCountMap.keySet()) {
                 if (pawnCountMap.get(p) > 0) {
                     StudentButton studentButton = new StudentButton(p, pawnCountMap.get(p), true);
-                    newImg = iconToImage(studentButton.getIcon()).getScaledInstance((int) (widthStudent/1.5), (int) (heightStudent/1.5), java.awt.Image.SCALE_SMOOTH);
+                    newImg = iconToImage(studentButton.getIcon()).getScaledInstance((int) (widthStudent / 1.5), (int) (heightStudent / 1.5), java.awt.Image.SCALE_SMOOTH);
                     icon = new ImageIcon(newImg);
                     studentButton.setIcon(icon);
                     studentButton.setPreferredSize(new Dimension(widthStudent, heightStudent));

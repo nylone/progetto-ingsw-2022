@@ -14,9 +14,9 @@ public class ModelWrapper {
     private final Model model;
     private final Optional<Lobby> toNotify;
 
-    public ModelWrapper(GameMode gameMode, Lobby lobby, String... playerNicknames) {
+    public ModelWrapper(GameMode gameMode, Optional<Lobby> toNotify, String... playerNicknames) {
         this.model = new Model(gameMode, playerNicknames);
-        this.toNotify = Optional.ofNullable(lobby);
+        this.toNotify = toNotify;
         notifyLobby();
     }
 

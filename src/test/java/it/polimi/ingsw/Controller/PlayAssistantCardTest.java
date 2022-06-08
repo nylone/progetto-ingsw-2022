@@ -3,6 +3,7 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -52,7 +53,8 @@ public class PlayAssistantCardTest {
 
     @Test(expected = InputValidationException.class)
     public void SelectedAlreadyUsedCardException() throws Exception {
-        Controller gh = new Controller(GameMode.SIMPLE, null, "ale", "teo");
+        ModelWrapper modelWrapper = new ModelWrapper(GameMode.SIMPLE, Optional.empty(), "ale", "teo");
+        Controller gh = new Controller(modelWrapper, new ArrayList<>(6));
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayAssistantCard action = new PlayAssistantCard(player.getId(), 3);
         // act

@@ -5,16 +5,20 @@ import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.ModelWrapper;
 import it.polimi.ingsw.Server.Lobby;
+import it.polimi.ingsw.Server.Messages.Events.Internal.GameOverEvent;
+import it.polimi.ingsw.Server.Messages.Events.Internal.ModelUpdateEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * The GameHandler object is the Controller of the whole game. <br>
+ * This is the Controller of the whole game. <br>
  * The Controller should be the only entity able to modify the model.
  */
 public class Controller {
@@ -23,15 +27,48 @@ public class Controller {
 
 
     /**
-     * Generates a new instance of Game. This is the default method to call to create a game.
+     * Subscribes a new {@link Controller} object to a {@link ModelWrapper} instance, allowing the creation of a
+     * Controller to Model connection.
+     *
+     * @param modelWrapper an instance of {@link ModelWrapper}
+     */
+    private Controller(ModelWrapper modelWrapper) {
+        Objects.requireNonNull(modelWrapper);
+
+        this.history = new ArrayList<>(6);
+        this.modelWrapper = modelWrapper;
+    }
+
+    /**
+     * Generates a new instance of the {@link Controller}. This is the debug method to call to create a game, since the internal attributes
+     * are set to the parameters. <br>
+     * <b>Note:</b> this method should be called <b>ONLY</b> by test code.
+     *
+     * @param modelWrapper an instance of {@link ModelWrapper}
+     * @param history      an instance to a list of {@link PlayerAction}, used by the controller to check the flow of the game
+     */
+    Controller(ModelWrapper modelWrapper, List<PlayerAction> history) {
+        this.history = history;
+        this.modelWrapper = modelWrapper;
+    }
+
+    /**
+     * Generates a new instance. This is the factory method to call for general purpose creation of a game.
      *
      * @param gameMode the game mode the players are going to use
-     * @param players  a list of maximum 4, minimum 2 strings containing the nicknames of the players
+     * @param lobby    in case a server is used, insert the {@linkplain Lobby} object wrapped in an {@link Optional} to let it
+     *                 receive {@link ModelUpdateEvent} and {@link GameOverEvent}
+     * @param players  a list of minimum 2 and maximum 4 strings containing the nicknames of the players.
+     *                 In the case of 4 players: players at index 0 and 2 go together against players at index 1 and 3
+     * @throws InputValidationException if the supplied players are less than 2 or more than 4
      */
-    public Controller(GameMode gameMode, Lobby lobby, String... players) throws InputValidationException {
+    public static Controller createGame(GameMode gameMode, Optional<Lobby> lobby, String... players) throws InputValidationException {
+        Objects.requireNonNull(gameMode);
+        Objects.requireNonNull(lobby);
+        Objects.requireNonNull(players);
+
         if (players.length > 1 && players.length <= 4) {
-            this.history = new ArrayList<>(6);
-            this.modelWrapper = new ModelWrapper(gameMode, lobby, players);
+            return new Controller(new ModelWrapper(gameMode, lobby, players));
         } else {
             throw new GenericInputValidationException("Players", "The number of players must be 2, 3 or 4.\n" +
                     "Players received: " + players.length);
@@ -39,29 +76,17 @@ public class Controller {
     }
 
     /**
-     * Generates a new instance of the controller. This is the debug method to call to create a game, since the internal attributes
-     * are set to the parameters. <br>
-     * <b>Note:</b> this method should be called <b>ONLY</b> by test code.
+     * An execution request handler. Actions are passed in, validated and (if possible) executed. <br>
+     * Warning: this request is not thread safe, that job is delegated to the caller to handle.
      *
-     * @param modelWrapper an instance of {@link ModelWrapper}
-     * @param history      an instance to a list of {@link PlayerAction}, used by the controller to check the flow of the game
-     */
-    public Controller(ModelWrapper modelWrapper, List<PlayerAction> history) {
-        this.history = history;
-        this.modelWrapper = modelWrapper;
-    }
-
-    /**
-     * A thread safe execution request. Actions are passed in, validated and executed without risk of deadlocks or
-     * undefined behaviours.
-     *
-     * @param action the action to be validated and (if validation succeeds) to be executed.
+     * @param action the action to be validated and executed.
      * @throws InputValidationException thrown when validation fails, carries information about the error. If thrown,
      *                                  the model is guaranteed to not have been modified.
      */
-    public synchronized void executeAction(PlayerAction action) throws InputValidationException {
+    public void executeAction(PlayerAction action) throws InputValidationException {
         Model model = this.modelWrapper.modelCopy(false);
-        action.validate(this.getHistory(), model); // todo validate should return optionals containing validation exceptions
+        Optional<InputValidationException> validation = action.validate(this.getHistory(), model);
+        if (validation.isPresent()) throw validation.get();
         // as right now we are abusing the hell out of exception throwing
         try {
             this.modelWrapper.editModel(action::unsafeExecute);

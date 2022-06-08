@@ -33,20 +33,38 @@ public class PlayCharacterCard extends PlayerAction {
             Optional<Integer> optTargetIsland,
             Optional<PawnColour> optTargetPawn,
             Optional<List<Pair<PawnColour, PawnColour>>> optTargetPawnPairs) {
-        super(playerBoardId);
+        super(playerBoardId, true);
         this.selectedCard = selectedCard;
         this.optTargetIsland = optTargetIsland;
         this.optTargetPawn = optTargetPawn;
         this.optTargetPawnPairs = optTargetPawnPairs;
     }
 
-    public boolean validate(List<PlayerAction> history, Model ctx) throws InputValidationException {
+    /**
+     * {@inheritDoc}
+     * <ul>
+     *     <li>The {@link GameMode} must be {@link GameMode#ADVANCED}</li>
+     *     <li>The player must have played a {@link PlayAssistantCard} action before</li>
+     *     <li>The selected character card must be within bounds (index 0 to 2 included)</li>
+     *     <li>The player needs to have enough coins to by the card</li>
+     *     <li>The {@link CharacterCardInput} generated from the attributes must be correct</li>
+     * </ul>
+     *
+     * @param history the controller stores a {@link List} of previous {@link PlayerAction}s related to the player taking
+     *                the current turn (at every new turn, the history is cleared).
+     *                Some actions may use this {@link List} to check for duplicates.
+     * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
+     *                the actions declares and what the Model offers.
+     * @return
+     */
+    @Override
+    protected Optional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
         if (ctx.getGameMode() == GameMode.SIMPLE) {
-            throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD, INPUT_NAME_CHARACTER_CARD + " can't be played in simple mode");
+            return Optional.of(new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD, INPUT_NAME_CHARACTER_CARD + " can't be played in simple mode"));
         }
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         if (ctx.getMutableTurnOrder().getMutableSelectedCard(caller).isEmpty()) {
-            throw new GenericInputValidationException(HISTORY, "No PlayAssistantCard has been played");
+            return Optional.of(new GenericInputValidationException(HISTORY, "No PlayAssistantCard has been played"));
         }
 
         // generate the input object before validation
@@ -54,22 +72,26 @@ public class PlayCharacterCard extends PlayerAction {
         try {
             cardInput = generateCharacterCardInput(caller, ctx);
         } catch (InvalidContainerIndexException e) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND);
+            return Optional.of(new InvalidElementException(INPUT_NAME_TARGET_ISLAND));
         }
 
         if (!(this.selectedCard >= 0 && this.selectedCard < 3)) { //selectedCard out of bounds
-            throw new InvalidElementException(INPUT_NAME_CHARACTER_CARD);
-        }
-        if (!super.validate(history, ctx)) {
-            throw new GenericInputValidationException("Action", "this action can't be executed more than once or be executed by other player than the current");
+            return Optional.of(new InvalidElementException(INPUT_NAME_CHARACTER_CARD));
         }
         CharacterCard selectedCard = ctx.getCharacterCards().get(this.selectedCard);
         if (caller.getCoinBalance() < selectedCard.getCost()) {
-            throw new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD,
-                    INPUT_NAME_CHARACTER_CARD + " can't be played due to insufficient coin balance");
+            return Optional.of(new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD,
+                    INPUT_NAME_CHARACTER_CARD + " can't be played due to insufficient coin balance"));
         }
 
-        return selectedCard.checkInput(cardInput);
+        // todo redo character card validation
+        try {
+            selectedCard.checkInput(cardInput);
+        } catch (InputValidationException e) {
+            return Optional.of(e);
+        }
+
+        return Optional.empty();
     }
 
     @Override

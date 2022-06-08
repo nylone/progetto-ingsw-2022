@@ -108,23 +108,6 @@ public class CharacterCardsPanel extends JPanel {
         }
     }
 
-    private void checkStatefulCard(CharacterCard characterCard, JLabel container) {
-        System.out.println(characterCard instanceof StatefulEffect);
-        if(!(characterCard instanceof StatefulEffect)) return;
-        container.setVisible(true);
-        ArrayList<StudentButton> studentButtons;
-        container.setLayout(new FlowLayout()); // arranges student and tiles under card horizontally
-        if(((StatefulEffect) characterCard).getStateType() == StateType.PAWNCOLOUR){
-            studentButtons = getStudentButton(((StatefulEffect) characterCard).getState().stream().map(o -> (PawnColour) o).collect(Collectors.toList()));
-            studentButtons.forEach(container::add);
-        }else if(((StatefulEffect) characterCard).getStateType() == StateType.NOENTRY){
-            System.out.println("add no entry tile");
-            container.add(new NoEntryTileComponent(((StatefulEffect) characterCard).getState().size()));
-        }
-        //container.add(new StudentButton(PawnColour.RED, 5));
-        System.out.println(container.getBounds());
-    }
-
     private String printCharacterCardInfo(CharacterCard characterCard) {
         String info;
         switch (characterCard) {
@@ -166,14 +149,31 @@ public class CharacterCardsPanel extends JPanel {
         return info;
     }
 
-    private ArrayList<StudentButton> getStudentButton(List<PawnColour> pawns){
+    private void checkStatefulCard(CharacterCard characterCard, JLabel container) {
+        System.out.println(characterCard instanceof StatefulEffect);
+        if (!(characterCard instanceof StatefulEffect)) return;
+        container.setVisible(true);
+        ArrayList<StudentButton> studentButtons;
+        container.setLayout(new FlowLayout()); // arranges student and tiles under card horizontally
+        if (((StatefulEffect) characterCard).getStateType() == StateType.PAWNCOLOUR) {
+            studentButtons = getStudentButton(((StatefulEffect) characterCard).getState().stream().map(o -> (PawnColour) o).collect(Collectors.toList()));
+            studentButtons.forEach(container::add);
+        } else if (((StatefulEffect) characterCard).getStateType() == StateType.NOENTRY) {
+            System.out.println("add no entry tile");
+            container.add(new NoEntryTileComponent(((StatefulEffect) characterCard).getState().size()));
+        }
+        //container.add(new StudentButton(PawnColour.RED, 5));
+        System.out.println(container.getBounds());
+    }
+
+    private ArrayList<StudentButton> getStudentButton(List<PawnColour> pawns) {
         EnumMap<PawnColour, Integer> colourIntegerEnumMap = new EnumMap<>(PawnColour.class);
         ArrayList<StudentButton> studentButtons = new ArrayList<>();
-        for(PawnColour p : pawns){
-            colourIntegerEnumMap.merge(p,1,Integer::sum);
+        for (PawnColour p : pawns) {
+            colourIntegerEnumMap.merge(p, 1, Integer::sum);
         }
-        for(PawnColour p : colourIntegerEnumMap.keySet()){
-            System.out.println("colour:"+p+" amount:"+colourIntegerEnumMap.get(p));
+        for (PawnColour p : colourIntegerEnumMap.keySet()) {
+            System.out.println("colour:" + p + " amount:" + colourIntegerEnumMap.get(p));
             studentButtons.add(new StudentButton(p, colourIntegerEnumMap.get(p), false));
         }
         return studentButtons;

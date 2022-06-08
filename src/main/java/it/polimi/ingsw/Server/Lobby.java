@@ -5,18 +5,16 @@ import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
+import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.GameMode;
-import it.polimi.ingsw.Model.ModelWrapper;
 import it.polimi.ingsw.Server.Messages.Events.ClientEvent;
 import it.polimi.ingsw.Server.Messages.Events.Internal.ClientConnectEvent;
 import it.polimi.ingsw.Server.Messages.Events.Internal.ClientDisconnectEvent;
 import it.polimi.ingsw.Server.Messages.Events.Internal.GameStartEvent;
 import it.polimi.ingsw.Server.Messages.Events.Internal.LobbyClosedEvent;
-import it.polimi.ingsw.Misc.Optional;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Predicate;
 
 import static it.polimi.ingsw.Server.LobbyServer.lobbyMap;
 
