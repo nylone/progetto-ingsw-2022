@@ -23,7 +23,7 @@ public class StudentButton extends JButton {
         if (amount > 1) {
             this.setText("x" + amount);
             this.setHorizontalTextPosition(SwingConstants.RIGHT);
-            Font font = new Font("SansSerif", Font.BOLD, 18);
+            Font font = new Font("SansSerif", Font.BOLD, 16);
             this.setFont(font);
             switch (pawnColour) {
                 case BLUE -> this.setForeground(new Color(0x27C3F2));
