@@ -18,7 +18,7 @@ public class NoEntryTileComponent extends JButton {
         if (amount > 1) {
             this.setText("x" + amount);
             this.setHorizontalTextPosition(SwingConstants.RIGHT);
-            Font font = new Font("SansSerif", Font.BOLD, 18);
+            Font font = new Font("SansSerif", Font.BOLD, 16);
             this.setFont(font);
         }
     }

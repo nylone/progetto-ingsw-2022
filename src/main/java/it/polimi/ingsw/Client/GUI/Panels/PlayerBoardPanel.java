@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Model.TowerStorage;
+import it.polimi.ingsw.Model.TurnOrder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +21,7 @@ import static it.polimi.ingsw.Client.GUI.IconLoader.*;
  * Panel class that contains one playerBoard and all not-used assistantCards
  */
 public class PlayerBoardPanel extends JPanel {
-    public PlayerBoardPanel(PlayerBoard pb, List<PawnColour> teachers, TowerStorage towerStorage) {
+    public PlayerBoardPanel(PlayerBoard pb, List<PawnColour> teachers, TowerStorage towerStorage, TurnOrder turnOrder) {
         ArrayList<JButton> assistantCardsLabels = new ArrayList<>(10);
         ArrayList<JButton> entranceStudentsButton = new ArrayList<>(pb.getEntranceSize());
         ArrayList<JLabel> towersLabels = new ArrayList<>(towerStorage.getTowerCount());
@@ -28,7 +29,7 @@ public class PlayerBoardPanel extends JPanel {
         Map<PawnColour, ArrayList<JButton>> diningRoomButtons = new EnumMap<>(PawnColour.class);
         //Contains assistantCards' buttons
         JPanel assistantCardsPanel = new JPanel();
-        assistantCardsPanel.setLayout(new FlowLayout());
+        assistantCardsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         //initialize diningRoomButtons' map
         for (PawnColour p : PawnColour.values()) {
             diningRoomButtons.put(p, new ArrayList<>(pb.getDiningRoomCount(p)));
@@ -110,8 +111,16 @@ public class PlayerBoardPanel extends JPanel {
         assistantCardsLabels.add(assistantCard9Button);
         assistantCardsLabels.add(assistantCard10Button);
         //get unused assistantCards
-        assistantCardsLabelToShow = GetCardsToShow(assistantCardsLabels,
-                pb.getMutableAssistantCards().stream().filter(assistantCard -> !assistantCard.getUsed()).collect(Collectors.toCollection(ArrayList::new)));
+        ArrayList<AssistantCard> availableAssistants = pb.getMutableAssistantCards()
+                .stream().filter(assistantCard -> !assistantCard.getUsed())
+                .collect(Collectors.toCollection(ArrayList::new));
+        //from the unused cards, extract the card with a priority not selected before by other players
+        for (PlayerBoard p : turnOrder.getCurrentTurnOrder()) {
+            if (turnOrder.getMutableSelectedCard(p).isPresent()) {
+                availableAssistants.removeIf(assistantCard -> assistantCard.getPriority() == turnOrder.getMutableSelectedCard(p).get().getPriority());
+            }
+        }
+        assistantCardsLabelToShow = GetCardsToShow(assistantCardsLabels, availableAssistants);
         //Remove borders and filling from every button
         assistantCardsLabelToShow.forEach(jButton -> {
                     jButton.setBorderPainted(false);
@@ -121,7 +130,7 @@ public class PlayerBoardPanel extends JPanel {
                 }
         );
 
-        assistantCardsPanel.setPreferredSize(new Dimension(assistantCardsLabelToShow.size() * 165, 250));
+        assistantCardsPanel.setPreferredSize(new Dimension(assistantCardsLabelToShow.size() * 205, 250));
         //add Panel containing assistantCards as parameter for JScrollPane's constructor
         JScrollPane assistantCardsScrollPane = new JScrollPane(assistantCardsPanel);
         //remove JScrollPane's borders
