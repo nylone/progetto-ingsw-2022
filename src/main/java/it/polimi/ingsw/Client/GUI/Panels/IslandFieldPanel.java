@@ -18,7 +18,7 @@ import static it.polimi.ingsw.Client.GUI.IconLoader.*;
 
 public class IslandFieldPanel extends JPanel {
 
-    IslandFieldPanel(List<IslandGroup> islandGroups, IslandGroup motherNaturePosition) {
+    public IslandFieldPanel(List<IslandGroup> islandGroups, IslandGroup motherNaturePosition) {
         this.setOpaque(true);
         this.setBackground(new Color(105, 186, 233));
         this.setLayout(new CircleLayout());
@@ -29,6 +29,8 @@ public class IslandFieldPanel extends JPanel {
         int heightStudent = 30 + (getDimBoost(islandGroups.size()) / 5);
         int widthMotherNature = 35 + (getDimBoost(islandGroups.size()) / 5);
         int heightMotherNature = 45 + (getDimBoost(islandGroups.size()) / 5);
+        int widthTower = 17 + (getDimBoost(islandGroups.size()) / 5);
+        int heightTower = 35 + (getDimBoost(islandGroups.size()) / 5);
         Map<PawnColour, Integer> pawnCountMap;
         for (int i = 0; i < islandGroups.size(); i++) {
             pawnCountMap = islandGroups.get(i).getStudentCount();
@@ -41,11 +43,11 @@ public class IslandFieldPanel extends JPanel {
             IslandButton.setContentAreaFilled(false);
             IslandButton.setFocusPainted(false);
             IslandButton.setOpaque(false);
-            IslandButton.setLayout(new FlowLayout());
+            IslandButton.setLayout(new GridLayout(3, 1, -10, 0));
             for (PawnColour p : pawnCountMap.keySet()) {
                 if (pawnCountMap.get(p) > 0) {
-                    StudentButton studentButton = new StudentButton(p, pawnCountMap.get(p));
-                    newImg = iconToImage(studentButton.getIcon()).getScaledInstance(widthStudent, heightStudent, java.awt.Image.SCALE_SMOOTH);
+                    StudentButton studentButton = new StudentButton(p, pawnCountMap.get(p), true);
+                    newImg = iconToImage(studentButton.getIcon()).getScaledInstance((int) (widthStudent/1.5), (int) (heightStudent/1.5), java.awt.Image.SCALE_SMOOTH);
                     icon = new ImageIcon(newImg);
                     studentButton.setIcon(icon);
                     studentButton.setPreferredSize(new Dimension(widthStudent, heightStudent));
@@ -62,10 +64,13 @@ public class IslandFieldPanel extends JPanel {
             }
             if (islandGroups.get(i).getTowerColour().isPresent()) {
                 TowerComponent tower = new TowerComponent(islandGroups.get(i).getTowerColour().get(), islandGroups.get(i).getTowerCount());
-                newImg = iconToImage(tower.getIcon()).getScaledInstance(widthMotherNature, heightMotherNature, java.awt.Image.SCALE_SMOOTH);
+                newImg = iconToImage(tower.getIcon()).getScaledInstance(widthTower, heightTower, java.awt.Image.SCALE_SMOOTH);
                 icon = new ImageIcon(newImg);
                 tower.setIcon(icon);
-                tower.setPreferredSize(new Dimension(widthStudent, heightStudent));
+                tower.setBorderPainted(false);
+                tower.setContentAreaFilled(false);
+                tower.setFocusPainted(false);
+                tower.setPreferredSize(new Dimension(widthTower, heightTower));
                 IslandButton.add(tower);
             }
             IslandButton.setToolTipText("<html><p width = 100px>STUDENTS:<br>" +
