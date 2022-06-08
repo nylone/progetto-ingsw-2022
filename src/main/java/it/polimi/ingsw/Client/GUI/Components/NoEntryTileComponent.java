@@ -9,6 +9,10 @@ import static it.polimi.ingsw.Client.GUI.IconLoader.noEntryTileIcon;
 public class NoEntryTileComponent extends JButton {
 
     public NoEntryTileComponent(int amount) {
+        this.setBorderPainted(false);
+        this.setContentAreaFilled(false);
+        this.setFocusPainted(false);
+        this.setOpaque(false);
         this.setIcon(noEntryTileIcon);
 
         if (amount > 1) {
