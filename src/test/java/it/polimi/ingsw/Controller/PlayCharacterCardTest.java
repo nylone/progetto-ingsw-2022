@@ -287,8 +287,8 @@ public class PlayCharacterCardTest {
     private Model initializeGameBoard(int coinReserve, int coinPerPlayer, int card) {
         StudentBag studentBag = new StudentBag(24);
         List<PlayerBoard> players = new ArrayList<>(2);
-        players.add(new PlayerBoard(1, 2, "Rouge", studentBag));
-        players.add(new PlayerBoard(2, 2, "Rampeo", studentBag));
+        players.add(new PlayerBoard(0, 2, "Rouge", studentBag));
+        players.add(new PlayerBoard(1, 2, "Rampeo", studentBag));
         for (PlayerBoard playerBoard : players) {
             playerBoard.setCoinBalance(coinPerPlayer);
         }
@@ -364,8 +364,8 @@ public class PlayCharacterCardTest {
     public void duplicateCharacterCardAction() throws Exception {
         StudentBag studentBag = new StudentBag(24);
         List<PlayerBoard> players = new ArrayList<>(2);
-        players.add(new PlayerBoard(1, 2, "Rouge", studentBag));
-        players.add(new PlayerBoard(2, 2, "Rampeo", studentBag));
+        players.add(new PlayerBoard(0, 2, "Rouge", studentBag));
+        players.add(new PlayerBoard(1, 2, "Rampeo", studentBag));
         List<Cloud> clouds = new ArrayList<>(2);
         clouds.add(new Cloud(1));
         clouds.add(new Cloud(2));
@@ -403,8 +403,8 @@ public class PlayCharacterCardTest {
         try {
             gh.executeAction(playCharacterCard);
         } catch (GenericInputValidationException exception) {
-            assertEquals("An error occurred while validating: Action\n" +
-                    "The error was: this action can't be executed more than once or be executed by other player than the current", exception.getMessage());
+            assertEquals("An error occurred while validating: PlayCharacterCard\n" +
+                    "The error was: Too many similar actions have been executed", exception.getMessage());
         }
     }
 

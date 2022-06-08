@@ -181,7 +181,7 @@ public class MoveStudentTest {
             }
         }
         MoveDestination destination = MoveDestination.toDiningRoom();
-        MoveStudent moveStudent = new MoveStudent(1, 12, destination);
+        MoveStudent moveStudent = new MoveStudent(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(), 12, destination);
         gh.executeAction(moveStudent);
     }
 

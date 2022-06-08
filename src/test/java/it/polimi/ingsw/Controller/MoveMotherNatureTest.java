@@ -255,8 +255,8 @@ public class MoveMotherNatureTest {
         try {
             gh.executeAction(action);
         } catch (GenericInputValidationException exception) {
-            assertEquals("An error occurred while validating: Action\n" +
-                    "The error was: this action can't be executed more than once or be executed by other player than the current", exception.getMessage());
+            assertEquals("An error occurred while validating: MoveMotherNature\n" +
+                    "The error was: Too many similar actions have been executed", exception.getMessage());
         }
     }
 }

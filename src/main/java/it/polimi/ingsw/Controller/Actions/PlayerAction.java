@@ -1,7 +1,9 @@
 package it.polimi.ingsw.Controller.Actions;
 
+import it.polimi.ingsw.Constants;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Model;
 
@@ -67,23 +69,26 @@ public abstract class PlayerAction implements Serializable {
 
     private Optional<InputValidationException> isGameRunning(Model ctx) {
         if (ctx.isGameOver()) {
-            return Optional.of(new GenericInputValidationException("GameHandler", "Game is over"));
+            return Optional.of(new GenericInputValidationException(this.getClass().getSimpleName(), "Game is over"));
         }
         return Optional.empty();
     }
 
     private Optional<InputValidationException> isCorrectTurn(Model ctx) {
-        if (ctx.getMutableTurnOrder().getMutableCurrentPlayer().getId() == this.getPlayerBoardID()) {
-            return Optional.empty();
+        if (!(ctx.getMutablePlayerBoards().size() > this.getPlayerBoardID())) {
+            return Optional.of(new InvalidElementException("PlayerBoardID out of range"));
         }
-        return Optional.of(new GenericInputValidationException("GameHandler", "It's not your turn yet"));
+        if (ctx.getMutableTurnOrder().getMutableCurrentPlayer().getId() != this.getPlayerBoardID()) {
+            return Optional.of(new GenericInputValidationException(this.getClass().getSimpleName(), "It's not your turn yet"));
+        }
+        return Optional.empty();
     }
 
     private Optional<InputValidationException> isDuplicate(List<PlayerAction> history) {
         if (!this.uniquePerTurn || history.stream().noneMatch(h -> h.getClass() == this.getClass())) {
             return Optional.empty();
         }
-        return Optional.of(new GenericInputValidationException("GameHandler", "Too many similar actions have been executed"));
+        return Optional.of(new GenericInputValidationException(this.getClass().getSimpleName(), "Too many similar actions have been executed"));
     }
 
     /**

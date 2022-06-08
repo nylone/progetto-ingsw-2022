@@ -146,8 +146,8 @@ public class ChooseCloudTileTest {
     public void FullEntranceExceptionTest() throws Exception {
         StudentBag studentBag = new StudentBag(24);
         List<PlayerBoard> players = new ArrayList<>(2);
-        players.add(new PlayerBoard(1, 2, "Rouge", studentBag));
-        players.add(new PlayerBoard(2, 2, "Rampeo", studentBag));
+        players.add(new PlayerBoard(0, 2, "Rouge", studentBag));
+        players.add(new PlayerBoard(1, 2, "Rampeo", studentBag));
         List<Cloud> clouds = new ArrayList<>(2);
         clouds.add(new Cloud(1));
         clouds.add(new Cloud(2));
@@ -204,8 +204,8 @@ public class ChooseCloudTileTest {
         try {
             gh.executeAction(chooseCloudTile);
         } catch (GenericInputValidationException exception) {
-            assertEquals("An error occurred while validating: Entrance\n" +
-                    "The error was: Entrance can't contain 3 element's without overflowing.", exception.getMessage());
+            assertEquals("An error occurred while validating: ChooseCloudTile\n" +
+                    "The error was: Too many similar actions have been executed", exception.getMessage());
         }
     }
 
@@ -213,8 +213,8 @@ public class ChooseCloudTileTest {
     public void EmptyIslandException() throws Exception {
         StudentBag studentBag = new StudentBag(24);
         List<PlayerBoard> players = new ArrayList<>(2);
-        players.add(new PlayerBoard(1, 2, "Rouge", studentBag));
-        players.add(new PlayerBoard(2, 2, "Rampeo", studentBag));
+        players.add(new PlayerBoard(0, 2, "Rouge", studentBag));
+        players.add(new PlayerBoard(1, 2, "Rampeo", studentBag));
         List<Cloud> clouds = new ArrayList<>(2);
         clouds.add(new Cloud(1));
         clouds.add(new Cloud(2));
