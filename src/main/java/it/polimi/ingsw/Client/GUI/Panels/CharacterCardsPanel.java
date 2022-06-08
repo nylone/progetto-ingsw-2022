@@ -1,10 +1,17 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
+import it.polimi.ingsw.Client.GUI.Components.NoEntryTileComponent;
+import it.polimi.ingsw.Client.GUI.Components.StudentButton;
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.Enums.PawnColour;
+import it.polimi.ingsw.Model.Enums.StateType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.Client.GUI.IconLoader.*;
 
@@ -14,32 +21,45 @@ public class CharacterCardsPanel extends JPanel {
     private final JLabel secondCoinLabel = new JLabel(coin);
     private final JLabel thirdCoinLabel = new JLabel(coin);
     private final List<CharacterCard> characterCards;
-    private JLabel firstCard;
-    private JLabel secondCard;
-    private JLabel thirdCard;
+
+    private final JLabel characterCard1State = new JLabel();
+
+    private final JLabel characterCard2State = new JLabel();
+
+    private final JLabel characterCard3State = new JLabel();
+
+    private JButton firstCard;
+    private JButton secondCard;
+    private JButton thirdCard;
 
     public CharacterCardsPanel(List<CharacterCard> characterCards) {
         UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 14));
         this.characterCards = characterCards;
         JLabel pageBackground = new JLabel(sky);
-        pageBackground.setLayout(null);
         pageBackground.setBounds(0, 0, 1080, 720);
         this.add(pageBackground);
 
+        characterCard1State.setBounds(100, 485, 205, 200);
+        characterCard2State.setBounds(441, 485, 205, 200);
+        characterCard3State.setBounds(782, 485, 205, 200);
+        characterCard1State.setVisible(false);
+        characterCard2State.setVisible(false);
+        characterCard3State.setVisible(false);
+
         for (CharacterCard characterCard : characterCards) {
             switch (characterCard) {
-                case Card01 ignored -> setCardImages(card01);
-                case Card02 ignored -> setCardImages(card02);
-                case Card03 ignored -> setCardImages(card03);
-                case Card04 ignored -> setCardImages(card04);
-                case Card05 ignored -> setCardImages(card05);
-                case Card06 ignored -> setCardImages(card06);
-                case Card07 ignored -> setCardImages(card07);
-                case Card08 ignored -> setCardImages(card08);
-                case Card09 ignored -> setCardImages(card09);
-                case Card10 ignored -> setCardImages(card10);
-                case Card11 ignored -> setCardImages(card11);
-                case Card12 ignored -> setCardImages(card12);
+                case Card01 Card -> setCardImages(card01, Card);
+                case Card02 Card -> setCardImages(card02, Card);
+                case Card03 Card -> setCardImages(card03, Card);
+                case Card04 Card -> setCardImages(card04, Card);
+                case Card05 Card -> setCardImages(card05, Card);
+                case Card06 Card -> setCardImages(card06, Card);
+                case Card07 Card -> setCardImages(card07, Card);
+                case Card08 Card -> setCardImages(card08, Card);
+                case Card09 Card -> setCardImages(card09, Card);
+                case Card10 Card -> setCardImages(card10, Card);
+                case Card11 Card -> setCardImages(card11, Card);
+                case Card12 Card -> setCardImages(card12, Card);
                 default -> {
                 }
             }
@@ -57,29 +77,52 @@ public class CharacterCardsPanel extends JPanel {
         pageBackground.add(firstCard);
         pageBackground.add(secondCard);
         pageBackground.add(thirdCard);
+        pageBackground.add(characterCard1State);
+        pageBackground.add(characterCard2State);
+        pageBackground.add(characterCard3State);
 
     }
 
-    private void setCardImages(ImageIcon cardImage) {
+    private void setCardImages(ImageIcon cardImage, CharacterCard characterCard) {
         if (firstCard == null) {
-            firstCard = new JLabel(cardImage);
+            firstCard = new JButton(cardImage);
             firstCard.setBounds(100, 133, 205, 340);
             firstCard.setToolTipText(printCharacterCardInfo(characterCards.get(0)));
             ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
+            checkStatefulCard(characterCard, characterCard1State);
             if (characterCards.get(0).getTimeUsed() > 0) firstCoinLabel.setVisible(true);
         } else if (secondCard == null) {
-            secondCard = new JLabel(cardImage);
+            secondCard = new JButton(cardImage);
             secondCard.setBounds(441, 133, 205, 340);
             secondCard.setToolTipText(printCharacterCardInfo(characterCards.get(1)));
             ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
+            checkStatefulCard(characterCard, characterCard2State);
             if (characterCards.get(1).getTimeUsed() > 0) secondCoinLabel.setVisible(true);
         } else if (thirdCard == null) {
-            thirdCard = new JLabel(cardImage);
+            thirdCard = new JButton(cardImage);
             thirdCard.setBounds(782, 133, 205, 340);
             thirdCard.setToolTipText(printCharacterCardInfo(characterCards.get(2)));
             ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
+            checkStatefulCard(characterCard, characterCard3State);
             if (characterCards.get(2).getTimeUsed() > 0) thirdCoinLabel.setVisible(true);
         }
+    }
+
+    private void checkStatefulCard(CharacterCard characterCard, JLabel container) {
+        System.out.println(characterCard instanceof StatefulEffect);
+        if(!(characterCard instanceof StatefulEffect)) return;
+        container.setVisible(true);
+        ArrayList<StudentButton> studentButtons;
+        container.setLayout(new FlowLayout()); // arranges student and tiles under card horizontally
+        if(((StatefulEffect) characterCard).getStateType() == StateType.PAWNCOLOUR){
+            studentButtons = getStudentButton(((StatefulEffect) characterCard).getState().stream().map(o -> (PawnColour) o).collect(Collectors.toList()));
+            studentButtons.forEach(container::add);
+        }else if(((StatefulEffect) characterCard).getStateType() == StateType.NOENTRY){
+            System.out.println("add no entry tile");
+            container.add(new NoEntryTileComponent(((StatefulEffect) characterCard).getState().size()));
+        }
+        //container.add(new StudentButton(PawnColour.RED, 5));
+        System.out.println(container.getBounds());
     }
 
     private String printCharacterCardInfo(CharacterCard characterCard) {
@@ -121,5 +164,18 @@ public class CharacterCardsPanel extends JPanel {
             case default -> info = "CharacterCard not recognized";
         }
         return info;
+    }
+
+    private ArrayList<StudentButton> getStudentButton(List<PawnColour> pawns){
+        EnumMap<PawnColour, Integer> colourIntegerEnumMap = new EnumMap<>(PawnColour.class);
+        ArrayList<StudentButton> studentButtons = new ArrayList<>();
+        for(PawnColour p : pawns){
+            colourIntegerEnumMap.merge(p,1,Integer::sum);
+        }
+        for(PawnColour p : colourIntegerEnumMap.keySet()){
+            System.out.println("colour:"+p+" amount:"+colourIntegerEnumMap.get(p));
+            studentButtons.add(new StudentButton(p, colourIntegerEnumMap.get(p)));
+        }
+        return studentButtons;
     }
 }
