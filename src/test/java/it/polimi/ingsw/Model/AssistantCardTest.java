@@ -5,6 +5,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class AssistantCardTest {
+
+    /**
+     * Every {@link AssistantCard} movement should be proportional to its ID.
+     * The formula is: maxMovement = round(ID/2)
+     */
     @Test
     public void testGetMaxMovement() {
         // arrange
