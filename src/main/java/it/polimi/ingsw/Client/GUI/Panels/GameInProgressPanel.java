@@ -29,7 +29,7 @@ public class GameInProgressPanel extends JTabbedPane {
         // unwrapping context into useful variables
         this.ownNickname = ctx.getNickname();
         this.window = ctx.getWindow();
-        this.sw = ctx.getSocketWrapper();// display the view
+        this.sw = ctx.getSocketWrapper();
         this.window.changeView(this);
 
         // start socket listener task
@@ -49,7 +49,8 @@ public class GameInProgressPanel extends JTabbedPane {
                                     "just disconnected.", "Client disconnected");
                         }
                         case ModelUpdated modelUpdated -> {
-                            this.updateViews(modelUpdated.getModel());
+                            this.window.changeView(new GameInProgressPanel(ctx, modelUpdated.getModel()));
+                            return;
                         }
                         case PlayerActionFeedback playerActionFeedback -> {
                             if (playerActionFeedback.getStatusCode() == StatusCode.Fail)
@@ -67,7 +68,8 @@ public class GameInProgressPanel extends JTabbedPane {
         }).start();
     }
 
-    private void updateViews(Model model) {
+    private GameInProgressPanel(Context ctx, Model model) {
+        this(ctx);
         this.removeAll();
         this.add("Islands", new IslandFieldPanel(model.getMutableIslandField().getMutableGroups(), model.getMutableIslandField().getMutableMotherNaturePosition()));
         for (PlayerBoard pb : model.getMutablePlayerBoards()) {
@@ -91,7 +93,5 @@ public class GameInProgressPanel extends JTabbedPane {
             final JPanel characterCardsPanel = new CharacterCardsPanel(model.getCharacterCards());
             this.add("CharacterCards", characterCardsPanel);
         }
-        // display the view
-        this.window.changeView(this);
-    }
+;    }
 }
