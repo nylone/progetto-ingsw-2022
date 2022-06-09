@@ -6,6 +6,7 @@ import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.AssistantCard;
+import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Model.TurnOrder;
@@ -31,6 +32,9 @@ public class PlayAssistantCard extends PlayerAction {
     protected Optional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         TurnOrder turnOrder = ctx.getMutableTurnOrder();
+        if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.SETUP) {
+            return Optional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + "may only be used during the setup phase"));
+        }
         if (!(this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getMutableAssistantCards().size() - 1)) {
             return Optional.of(new InvalidElementException(INPUT_NAME_ASSISTANT_CARD));
         }
