@@ -1,12 +1,14 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
+import it.polimi.ingsw.Client.GUI.ActionType;
 import it.polimi.ingsw.Client.GUI.Components.StudentButton;
+import it.polimi.ingsw.Client.GUI.GUIReader;
+import it.polimi.ingsw.Controller.Actions.MoveStudent;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
-import it.polimi.ingsw.Model.AssistantCard;
+import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Controller.Enums.MoveDestination;
+import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.PawnColour;
-import it.polimi.ingsw.Model.PlayerBoard;
-import it.polimi.ingsw.Model.TowerStorage;
-import it.polimi.ingsw.Model.TurnOrder;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.Events.Requests.PlayerActionRequest;
 
@@ -23,9 +25,22 @@ import static it.polimi.ingsw.Client.GUI.IconLoader.*;
  * Panel class that contains one playerBoard and all not-used assistantCards
  */
 public class PlayerBoardPanel extends JPanel {
-    public PlayerBoardPanel(PlayerBoard pb, List<PawnColour> teachers, TowerStorage towerStorage, TurnOrder turnOrder, SocketWrapper socketWrapper) {
+
+    private final ArrayList<JButton> entranceStudentsButton;
+
+    private final PlayerBoard player;
+
+    //private boolean enableEntrance;
+
+    private GUIReader guiReader;
+    public PlayerBoardPanel(PlayerBoard pb, Model model, SocketWrapper socketWrapper, GUIReader guiReader) {
+        this.player = pb;
+        this.guiReader = guiReader;
+        List<PawnColour> teachers = model.getOwnTeachers(this.player);
+        TowerStorage towerStorage = model.getTeamMapper().getMutableTowerStorage(this.player);
+        TurnOrder turnOrder = model.getMutableTurnOrder();
         ArrayList<JButton> assistantCardsLabels = new ArrayList<>(10);
-        ArrayList<JButton> entranceStudentsButton = new ArrayList<>(pb.getEntranceSize());
+        this.entranceStudentsButton = new ArrayList<>(this.player.getEntranceSize());
         ArrayList<JLabel> towersLabels = new ArrayList<>(towerStorage.getTowerCount());
         //Map that associates every pawnColour to an arrayList of JButton
         Map<PawnColour, ArrayList<JButton>> diningRoomButtons = new EnumMap<>(PawnColour.class);
@@ -34,7 +49,7 @@ public class PlayerBoardPanel extends JPanel {
         assistantCardsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         //initialize diningRoomButtons' map
         for (PawnColour p : PawnColour.values()) {
-            diningRoomButtons.put(p, new ArrayList<>(pb.getDiningRoomCount(p)));
+            diningRoomButtons.put(p, new ArrayList<>(this.player.getDiningRoomCount(p)));
         }
         //Basing on towerStorage's colour, labels contained by towersLabels have different images
         for (int i = 0; i < towerStorage.getTowerCount(); i++) {
@@ -46,7 +61,7 @@ public class PlayerBoardPanel extends JPanel {
         }
         //Draw students inside diningRoom
         for (PawnColour p : diningRoomButtons.keySet()) {
-            for (int i = 0; i < pb.getDiningRoomCount(p); i++) {
+            for (int i = 0; i < this.player.getDiningRoomCount(p); i++) {
                 //Basing on pawnColour, labels have different images
                 switch (p) {
                     case RED -> diningRoomButtons.get(p).add(new StudentButton(PawnColour.RED, 1, false));
@@ -63,8 +78,13 @@ public class PlayerBoardPanel extends JPanel {
             }
         }
         //Draw students inside entrance
-        for (int i = 0; i < pb.getEntranceSize(); i++) {
-            switch (pb.getEntranceStudents().get(i).get()) {
+        for (int i = 0; i < this.player.getEntranceSize(); i++) {
+            if(this.player.getEntranceStudents().get(i).isEmpty()){
+                entranceStudentsButton.add(new JButton(""));
+                entranceStudentsButton.get(i).setVisible(false);
+                continue;
+            }
+            switch (this.player.getEntranceStudents().get(i).get()) {
                 //Basing on pawnColour, labels have different images
                 case RED -> entranceStudentsButton.add(new StudentButton(PawnColour.RED, 1, false));
                 case GREEN -> entranceStudentsButton.add(new StudentButton(PawnColour.GREEN, 1, false));
@@ -73,10 +93,42 @@ public class PlayerBoardPanel extends JPanel {
                 case PINK -> entranceStudentsButton.add(new StudentButton(PawnColour.PINK, 1, false));
             }
             //Remove borders and filling from every button
-            entranceStudentsButton.get(entranceStudentsButton.size() - 1).setBorderPainted(false);
-            entranceStudentsButton.get(entranceStudentsButton.size() - 1).setContentAreaFilled(false);
-            entranceStudentsButton.get(entranceStudentsButton.size() - 1).setFocusPainted(false);
-            entranceStudentsButton.get(entranceStudentsButton.size() - 1).setOpaque(false);
+            entranceStudentsButton.get(i).setBorderPainted(false);
+            entranceStudentsButton.get(i).setContentAreaFilled(false);
+            entranceStudentsButton.get(i).setFocusPainted(false);
+            entranceStudentsButton.get(i).setOpaque(false);
+            int finalI = i;
+            entranceStudentsButton.get(i).addActionListener(e -> {
+                //if(!enableEntrance) {
+                    String[] buttons = {"DiningRoom", "Island"};
+                    int returnValue = JOptionPane.showOptionDialog(null, "Where do you want to send this pawn?", "Destination ", JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
+                    Container c = this.getParent();
+                    while (!(c instanceof JTabbedPane jTabbedPane)) {
+                        c = c.getParent();
+                    }
+                    if (returnValue == 0) {
+                        MoveStudent moveStudent = new MoveStudent(this.player.getId(), finalI, MoveDestination.toDiningRoom());
+                        PlayerActionRequest playerAction = new PlayerActionRequest(moveStudent);
+                        this.guiReader.savePlayerActionRequest(moveStudent);
+                        try {
+                            socketWrapper.sendMessage(playerAction);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    } else if (returnValue == 1) {
+                        jTabbedPane.setSelectedIndex(0);
+                        IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
+                        /*for (int j = 1; j <= model.getMutablePlayerBoards().size(); j++) {
+                            jTabbedPane.setSelectedIndex(j);
+                            //PlayerBoardPanel playerBoardPanel = (PlayerBoardPanel) jTabbedPane.getSelectedComponent();
+                            //playerBoardPanel.setDisabledEntrance(true);
+                        }*/
+                        jTabbedPane.setSelectedIndex(0);
+                        islandFieldPanel.setActionType(ActionType.MOVESTUDENT, Optional.of(finalI));
+                    }
+               // }
+            });
         }
 
         ArrayList<JButton> assistantCardsButtonsToShow;
@@ -91,15 +143,18 @@ public class PlayerBoardPanel extends JPanel {
             JButton assistantCardButton = new JButton(assistantCardsIcon.get(i));
             int finalI = i+1;
             assistantCardButton.addActionListener(e -> {
-                int dialogButton = JOptionPane.YES_NO_OPTION;
-                int dialogResult = JOptionPane.showConfirmDialog(this, "Confirm to play assistant card with priority: "+finalI+"?", "PlayAssistant card confirmation", dialogButton);
-                if(dialogResult == 0) {
-                    PlayAssistantCard playAssistantCard = new PlayAssistantCard(pb.getId(), finalI);
-                    PlayerActionRequest playerAction = new PlayerActionRequest(playAssistantCard);
-                    try {
-                        socketWrapper.sendMessage(playerAction);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
+                if(guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0) {
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    int dialogResult = JOptionPane.showConfirmDialog(this, "Confirm to play assistant card with priority: " + finalI + "?", "PlayAssistant card confirmation", dialogButton);
+                    if (dialogResult == 0) {
+                        PlayAssistantCard playAssistantCard = new PlayAssistantCard(this.player.getId(), finalI);
+                        PlayerActionRequest playerAction = new PlayerActionRequest(playAssistantCard);
+                        this.guiReader.savePlayerActionRequest(playAssistantCard);
+                        try {
+                            socketWrapper.sendMessage(playerAction);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     }
                 }
             });
@@ -112,9 +167,9 @@ public class PlayerBoardPanel extends JPanel {
         JLabel greenTeacherLabel = new JLabel(GreenTeacher);
         JLabel yellowTeacherLabel = new JLabel(YellowTeacher);
         //add all assistantcardLabels to support ArrayList
-        assistantCardsButtons.forEach(assistantCardsLabels::add);
+        assistantCardsLabels.addAll(assistantCardsButtons);
         //get unused assistantCards
-        ArrayList<AssistantCard> availableAssistants = pb.getMutableAssistantCards()
+        ArrayList<AssistantCard> availableAssistants = this.player.getMutableAssistantCards()
                 .stream().filter(assistantCard -> !assistantCard.getUsed())
                 .collect(Collectors.toCollection(ArrayList::new));
         //from the unused cards, extract the card with a priority not selected before by other players
@@ -170,7 +225,7 @@ public class PlayerBoardPanel extends JPanel {
 
         int count = 0;
         int secondCount = 0;
-        for (int i = 0; i < pb.getEntranceSize(); i++) {
+        for (int i = 0; i < this.player.getEntranceSize(); i++) {
             if (i % 2 == 0) {
                 entranceStudentsButton.get(i).setBounds(90, 50 + 70 * count, 60, 45);
                 count++;
@@ -193,7 +248,7 @@ public class PlayerBoardPanel extends JPanel {
 
         for (PawnColour p : diningRoomButtons.keySet()) {
             count = 0;
-            for (int i = 0; i < pb.getDiningRoomCount(p); i++) {
+            for (int i = 0; i < this.player.getDiningRoomCount(p); i++) {
                 switch (p) {
                     case RED -> diningRoomButtons.get(p).get(i).setBounds(200 + 50 * count, 120, 50, 45);
                     case GREEN -> diningRoomButtons.get(p).get(i).setBounds(200 + 50 * count, 50, 50, 45);
@@ -234,7 +289,7 @@ public class PlayerBoardPanel extends JPanel {
      * Support method that, given an ArrayList of assistantCards, returns an arrayList containing the relative buttons
      * (example, given the assistantCard with priority 5, the method returns a JButton with the right assistantCard's image (image with number 5)
      *
-     * @param assistantCardsLabels ArrayList containing assistantCard's Jbutton (containing assistantCards' images)
+     * @param assistantCardsLabels ArrayList containing assistantCard's JButton (containing assistantCards' images)
      * @param assistantCards       ArrayList containing AssistantCards of interest
      * @return an arrayList containing AssistantCards' JButtons
      */
@@ -245,4 +300,17 @@ public class PlayerBoardPanel extends JPanel {
         }
         return assistantsToShow;
     }
+
+    public PlayerBoard getPlayer() {
+        return player;
+    }
+
+
+    /*protected void setDisabledEntrance(boolean enabled){
+        this.enableEntrance = enabled;
+    }*/
+
+
+
+
 }
