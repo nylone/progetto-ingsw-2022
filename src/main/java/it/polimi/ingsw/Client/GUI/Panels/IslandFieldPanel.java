@@ -37,6 +37,7 @@ public class IslandFieldPanel extends JPanel {
 
 
     public IslandFieldPanel(Model model, SocketWrapper sw, GUIReader guiReader) {
+        System.out.println("MOSSE STUDENTE:"+ guiReader.getSuccessfulRequestsByType(MoveStudent.class));
         if(guiReader.getSuccessfulRequestsByType(MoveMotherNature.class) == 1){
             this.setActionType(ActionType.NONE, Optional.empty());
         }else if(guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 3){

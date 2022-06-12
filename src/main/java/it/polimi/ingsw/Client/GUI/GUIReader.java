@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GUIReader implements Runnable{
 
@@ -53,6 +54,7 @@ public class GUIReader implements Runnable{
                         return;
                     }
                     case PlayerActionFeedback playerActionFeedback -> {
+                        System.out.println(playerActionFeedback +"  &&  "+playerActionFeedback.getStatusCode());
                         requestAndFeedback.add(new Pair<>(this.playerActionRequest, playerActionFeedback));
                         if (playerActionFeedback.getStatusCode() == StatusCode.Fail)
                             JOptionPane.showMessageDialog(null, playerActionFeedback.getReport());
@@ -75,8 +77,11 @@ public class GUIReader implements Runnable{
     }
 
     public int getSuccessfulRequestsByType(Class<?> playerActionClass){
-        return (int) requestAndFeedback.stream().
-                filter(pair -> pair.getFirst().getClass().equals(playerActionClass) && pair.getSecond().getStatusCode()== StatusCode.Success).count();
+        List<PlayerActionFeedback> actions =  requestAndFeedback.stream().
+                filter(pair -> pair.getFirst().getClass().equals(playerActionClass)).map(playerActionPlayerActionFeedbackPair -> playerActionPlayerActionFeedbackPair.getSecond())
+                .collect(Collectors.toList());
+
+        return (int) actions.stream().filter(playerActionFeedback -> playerActionFeedback.getStatusCode()==StatusCode.Success).count();
     }
 
     public void enableGUIComponents(JComponent jComponent, boolean enable){
