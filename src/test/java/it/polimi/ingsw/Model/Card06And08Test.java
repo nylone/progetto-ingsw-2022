@@ -16,7 +16,7 @@ public class Card06And08Test {
      * Card 06 should be able to set a flag in the model context
      *
      * @throws Exception @throws Exception is thrown when an invalid card activation happens, but this test should not error out
-     * (by definition)
+     *                   (by definition)
      */
     @Test
     public void checkUse06() throws Exception {
@@ -37,7 +37,7 @@ public class Card06And08Test {
      * Card 08 should be able to give 2 more influence points when activated
      *
      * @throws Exception @throws Exception is thrown when an invalid card activation happens, but this test should not error out
-     * (by definition)
+     *                   (by definition)
      */
     @Test
     public void checkUse08() throws Exception {

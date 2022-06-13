@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GUIReader implements Runnable{
+public class GUIReader implements Runnable {
 
     private GameInProgressPanel gameInProgressPanel;
 
-    private List<Pair<PlayerAction,PlayerActionFeedback>> requestAndFeedback = new ArrayList<>();
+    private List<Pair<PlayerAction, PlayerActionFeedback>> requestAndFeedback = new ArrayList<>();
 
     private PlayerAction playerActionRequest;
 
@@ -29,7 +29,7 @@ public class GUIReader implements Runnable{
     private SocketWrapper sw;
 
 
-    public GUIReader(GameInProgressPanel gameInProgressPanel, Context ctx){
+    public GUIReader(GameInProgressPanel gameInProgressPanel, Context ctx) {
         this.gameInProgressPanel = gameInProgressPanel;
         this.sw = ctx.getSocketWrapper();
         this.ctx = ctx;
@@ -47,23 +47,25 @@ public class GUIReader implements Runnable{
                         sw.close();
                         new StartPanel(ctx);
                     }
-                    case ClientDisconnected clientDisconnected -> new PopupMessage("Client " + clientDisconnected.getLastDisconnectedNickname() +
-                            "just disconnected.", "Client disconnected");
+                    case ClientDisconnected clientDisconnected ->
+                            new PopupMessage("Client " + clientDisconnected.getLastDisconnectedNickname() +
+                                    "just disconnected.", "Client disconnected");
                     case ModelUpdated modelUpdated -> {
                         ctx.getWindow().changeView(new GameInProgressPanel(ctx, modelUpdated.getModel(), this));
                         return;
                     }
                     case PlayerActionFeedback playerActionFeedback -> {
-                        System.out.println(playerActionFeedback +"  &&  "+playerActionFeedback.getStatusCode());
+                        System.out.println(playerActionFeedback + "  &&  " + playerActionFeedback.getStatusCode());
                         requestAndFeedback.add(new Pair<>(this.playerActionRequest, playerActionFeedback));
                         if (playerActionFeedback.getStatusCode() == StatusCode.Fail)
                             JOptionPane.showMessageDialog(null, playerActionFeedback.getReport());
                         enableGUIComponents(gameInProgressPanel, true);
-                        if(playerActionRequest.getClass().equals(EndTurnOfActionPhase.class) && playerActionFeedback.getStatusCode()==StatusCode.Success){
+                        if (playerActionRequest.getClass().equals(EndTurnOfActionPhase.class) && playerActionFeedback.getStatusCode() == StatusCode.Success) {
                             requestAndFeedback.clear();
                         }
                     }
-                    case InvalidRequest invalidRequest -> JOptionPane.showMessageDialog(null, "Your request has not been executed, probably you are trying to play out of turn");
+                    case InvalidRequest invalidRequest ->
+                            JOptionPane.showMessageDialog(null, "Your request has not been executed, probably you are trying to play out of turn");
                     default -> throw new IllegalStateException("Unexpected value: " + input.getClass());
                 }
             } catch (IOException e) {
@@ -72,19 +74,19 @@ public class GUIReader implements Runnable{
         }
     }
 
-    public void savePlayerActionRequest(PlayerAction playerActionRequest){
+    public void enableGUIComponents(JComponent jComponent, boolean enable) {
+        gameInProgressPanel.enableGUIComponents(jComponent, enable);
+    }
+
+    public void savePlayerActionRequest(PlayerAction playerActionRequest) {
         this.playerActionRequest = playerActionRequest;
     }
 
-    public int getSuccessfulRequestsByType(Class<?> playerActionClass){
-        List<PlayerActionFeedback> actions =  requestAndFeedback.stream().
+    public int getSuccessfulRequestsByType(Class<?> playerActionClass) {
+        List<PlayerActionFeedback> actions = requestAndFeedback.stream().
                 filter(pair -> pair.getFirst().getClass().equals(playerActionClass)).map(playerActionPlayerActionFeedbackPair -> playerActionPlayerActionFeedbackPair.getSecond())
                 .collect(Collectors.toList());
 
-        return (int) actions.stream().filter(playerActionFeedback -> playerActionFeedback.getStatusCode()==StatusCode.Success).count();
-    }
-
-    public void enableGUIComponents(JComponent jComponent, boolean enable){
-        gameInProgressPanel.enableGUIComponents(jComponent, enable);
+        return (int) actions.stream().filter(playerActionFeedback -> playerActionFeedback.getStatusCode() == StatusCode.Success).count();
     }
 }

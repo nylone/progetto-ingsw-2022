@@ -18,7 +18,7 @@ public class Card03Test {
      * Card 03 should be able to change influence on an island according to rules without moving mother nature on it
      *
      * @throws Exception is thrown when an invalid card activation happens, but this test should not error out
-     * (by definition)
+     *                   (by definition)
      */
     @Test
     public void checkUse() throws Exception {

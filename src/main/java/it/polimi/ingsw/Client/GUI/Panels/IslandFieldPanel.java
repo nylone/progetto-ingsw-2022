@@ -8,18 +8,20 @@ import it.polimi.ingsw.Client.GUI.GUIReader;
 import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
 import it.polimi.ingsw.Controller.Actions.MoveStudent;
 import it.polimi.ingsw.Controller.Enums.MoveDestination;
+import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.IslandGroup;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.Events.Requests.PlayerActionRequest;
-import it.polimi.ingsw.Misc.Optional;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 
 import static it.polimi.ingsw.Client.GUI.IconLoader.*;
 
@@ -37,10 +39,10 @@ public class IslandFieldPanel extends JPanel {
 
 
     public IslandFieldPanel(Model model, SocketWrapper sw, GUIReader guiReader) {
-        System.out.println("MOSSE STUDENTE:"+ guiReader.getSuccessfulRequestsByType(MoveStudent.class));
-        if(guiReader.getSuccessfulRequestsByType(MoveMotherNature.class) == 1){
+        System.out.println("MOSSE STUDENTE:" + guiReader.getSuccessfulRequestsByType(MoveStudent.class));
+        if (guiReader.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
             this.setActionType(ActionType.NONE, Optional.empty());
-        }else if(guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 3){
+        } else if (guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 3) {
             this.setActionType(ActionType.MOVEMOTHERNATURE, Optional.empty());
         }
         this.setOpaque(true);
@@ -74,37 +76,37 @@ public class IslandFieldPanel extends JPanel {
                     while (!(c instanceof JTabbedPane jTabbedPane)) {
                         c = c.getParent();
                     }*/
-                    switch (this.actionType) {
-                        case NONE -> {
-                        }
-                        case MOVESTUDENT -> {
-                            MoveStudent moveStudent = new MoveStudent(this.model.getMutableTurnOrder().getMutableCurrentPlayer().getId(), entrancePositionToMove.get(), MoveDestination.toIsland(islandGroups.get(finalI).getId())); //todo does it work?
-                            PlayerActionRequest playerAction = new PlayerActionRequest(moveStudent);
-                            this.guiReader.savePlayerActionRequest(moveStudent);
-                            try {
-                                sw.sendMessage(playerAction);
-                                this.setActionType(ActionType.NONE, Optional.empty());
+                switch (this.actionType) {
+                    case NONE -> {
+                    }
+                    case MOVESTUDENT -> {
+                        MoveStudent moveStudent = new MoveStudent(this.model.getMutableTurnOrder().getMutableCurrentPlayer().getId(), entrancePositionToMove.get(), MoveDestination.toIsland(islandGroups.get(finalI).getId())); //todo does it work?
+                        PlayerActionRequest playerAction = new PlayerActionRequest(moveStudent);
+                        this.guiReader.savePlayerActionRequest(moveStudent);
+                        try {
+                            sw.sendMessage(playerAction);
+                            this.setActionType(ActionType.NONE, Optional.empty());
                                 /*for (int j = 1; j <= model.getMutablePlayerBoards().size(); j++) {
                                     jTabbedPane.setSelectedIndex(j);
                                     //PlayerBoardPanel playerBoardPanel = (PlayerBoardPanel) jTabbedPane.getSelectedComponent();
                                     //playerBoardPanel.setDisabledEntrance(false);
                                 }*/
-                            } catch (IOException ex) {
-                                throw new RuntimeException(ex);
-                            }
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
                         }
-                        case MOVEMOTHERNATURE -> {
-                            MoveMotherNature moveMotherNature = new MoveMotherNature(this.model.getMutableTurnOrder().getMutableCurrentPlayer().getId(), model.getMutableIslandField().getMutableGroups().indexOf(model.getMutableIslandField().getMutableMotherNaturePosition()) - finalI);
-                            PlayerActionRequest playerAction = new PlayerActionRequest(moveMotherNature);
-                            this.guiReader.savePlayerActionRequest(moveMotherNature);
-                            try {
-                                sw.sendMessage(playerAction);
-                            } catch (IOException ex) {
-                                throw new RuntimeException(ex);
-                            }
-                        }
-
                     }
+                    case MOVEMOTHERNATURE -> {
+                        MoveMotherNature moveMotherNature = new MoveMotherNature(this.model.getMutableTurnOrder().getMutableCurrentPlayer().getId(), model.getMutableIslandField().getMutableGroups().indexOf(model.getMutableIslandField().getMutableMotherNaturePosition()) - finalI);
+                        PlayerActionRequest playerAction = new PlayerActionRequest(moveMotherNature);
+                        this.guiReader.savePlayerActionRequest(moveMotherNature);
+                        try {
+                            sw.sendMessage(playerAction);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+
+                }
             });
             islandButton.setPreferredSize(new Dimension(widthIsland, heightIsland));
             islandButton.setBorderPainted(false);
@@ -142,7 +144,7 @@ public class IslandFieldPanel extends JPanel {
                 tower.setPreferredSize(new Dimension(widthTower, heightTower));
                 islandButton.add(tower);
             }
-            islandButton.setToolTipText("<html><p width = 100px>ISLAND GROUP #"+islandGroups.get(i).getId()+"<br>"+
+            islandButton.setToolTipText("<html><p width = 100px>ISLAND GROUP #" + islandGroups.get(i).getId() + "<br>" +
                     "STUDENTS:<br>" +
                     "RED:" + pawnCountMap.get(PawnColour.RED) + "<br>" +
                     "BLUE:" + pawnCountMap.get(PawnColour.BLUE) + "<br>" +
@@ -154,8 +156,8 @@ public class IslandFieldPanel extends JPanel {
         }
     }
 
-    protected void setActionType(ActionType actionType, Optional<Integer> toRemove){
-        if(actionType == ActionType.MOVESTUDENT){
+    protected void setActionType(ActionType actionType, Optional<Integer> toRemove) {
+        if (actionType == ActionType.MOVESTUDENT) {
             this.actionType = actionType;
             this.entrancePositionToMove = toRemove;
             return;
