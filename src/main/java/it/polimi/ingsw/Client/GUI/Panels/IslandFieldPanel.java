@@ -8,6 +8,7 @@ import it.polimi.ingsw.Client.GUI.GUIReader;
 import it.polimi.ingsw.Controller.Actions.ChooseCloudTile;
 import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
 import it.polimi.ingsw.Controller.Actions.MoveStudent;
+import it.polimi.ingsw.Controller.Actions.PlayCharacterCard;
 import it.polimi.ingsw.Controller.Enums.MoveDestination;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -85,8 +86,27 @@ public class IslandFieldPanel extends JPanel {
                         case NONE -> {
                         }
                         case CHARACTERCARD -> {
+                            PlayerActionRequest playerActionRequest = null;
                             switch (this.selectedCharacterCard.get()){
-                                case 3:
+                                case 3: {
+                                    PlayCharacterCard playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
+                                            selectedCharacterCard.get(),Optional.of(islandGroups.get(finalI).getMutableIslands().get(0).getId())
+                                            ,Optional.empty(), Optional.empty());
+                                    playerActionRequest = new PlayerActionRequest(playCharacterCard);
+                                    this.setActionType(ActionType.NONE, Optional.empty());
+                                }
+                                case 5: {
+                                    PlayCharacterCard playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
+                                            selectedCharacterCard.get(),Optional.empty(), Optional.empty(), Optional.empty());
+                                    playerActionRequest = new PlayerActionRequest(playCharacterCard);
+                                    this.setActionType(ActionType.NONE, Optional.empty());
+                                }
+                            }
+                            try {
+                                sw.sendMessage(playerActionRequest);
+                                this.setActionType(ActionType.NONE, Optional.empty());
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
                             }
                         }
                         case MOVESTUDENT -> {
@@ -94,8 +114,8 @@ public class IslandFieldPanel extends JPanel {
                             PlayerActionRequest playerAction = new PlayerActionRequest(moveStudent);
                             this.guiReader.savePlayerActionRequest(moveStudent);
                             try {
-                                sw.sendMessage(playerAction);
                                 this.setActionType(ActionType.NONE, Optional.empty());
+                                sw.sendMessage(playerAction);
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }

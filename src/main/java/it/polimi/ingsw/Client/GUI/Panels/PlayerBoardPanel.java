@@ -119,12 +119,7 @@ public class PlayerBoardPanel extends JPanel {
                 } else if (returnValue == 1) {
                     jTabbedPane.setSelectedIndex(0);
                     IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
-                        /*for (int j = 1; j <= model.getMutablePlayerBoards().size(); j++) {
-                            jTabbedPane.setSelectedIndex(j);
-                            //PlayerBoardPanel playerBoardPanel = (PlayerBoardPanel) jTabbedPane.getSelectedComponent();
-                            //playerBoardPanel.setDisabledEntrance(true);
-                        }*/
-                    jTabbedPane.setSelectedIndex(0);
+                    //jTabbedPane.setSelectedIndex(0);
                     islandFieldPanel.setActionType(ActionType.MOVESTUDENT, Optional.of(finalI));
                 }
             });
@@ -300,14 +295,11 @@ public class PlayerBoardPanel extends JPanel {
         return assistantsToShow;
     }
 
-    public PlayerBoard getPlayer() {
-        return player;
+    private void CharacterCardEffect(int card, ArrayList<PawnColour> fromCard){
+
     }
 
 
-    /*protected void setDisabledEntrance(boolean enabled){
-        this.enableEntrance = enabled;
-    }*/
 
 
 }
