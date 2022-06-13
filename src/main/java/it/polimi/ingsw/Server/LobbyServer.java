@@ -193,15 +193,17 @@ public class LobbyServer {
                 try {
                     PlayerAction pa = playerActionRequest.getAction();
                     if (pa.getPlayerBoardID() == this.playerID) {
+                        PlayerActionFeedback feedback;
                         try {
                             this.currentLobby.executeAction(pa);
+                            feedback = PlayerActionFeedback.success();
                         } catch (InputValidationException e) {
-                            sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
+                            feedback = PlayerActionFeedback.fail(e.getMessage());
                         }
+                        sw.sendMessage(feedback);
                     } else {
                         sw.sendMessage(PlayerActionFeedback.fail("The action that was sent is malformed."));
                     }
-                    sw.sendMessage(PlayerActionFeedback.success());
                 } catch (OperationException e) {
                     Logger.severe("Supposedly unreachable statement was reached:\n" + e.getMessage());
                     sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
