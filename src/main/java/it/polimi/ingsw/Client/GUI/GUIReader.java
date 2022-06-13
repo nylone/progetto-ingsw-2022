@@ -55,7 +55,6 @@ public class GUIReader implements Runnable {
                         return;
                     }
                     case PlayerActionFeedback playerActionFeedback -> {
-                        System.out.println(playerActionFeedback + "  &&  " + playerActionFeedback.getStatusCode());
                         requestAndFeedback.add(new Pair<>(this.playerActionRequest, playerActionFeedback));
                         if (playerActionFeedback.getStatusCode() == StatusCode.Fail)
                             JOptionPane.showMessageDialog(null, playerActionFeedback.getReport());

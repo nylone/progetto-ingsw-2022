@@ -5,6 +5,7 @@ import it.polimi.ingsw.Client.GUI.CircleLayout;
 import it.polimi.ingsw.Client.GUI.Components.StudentButton;
 import it.polimi.ingsw.Client.GUI.Components.TowerComponent;
 import it.polimi.ingsw.Client.GUI.GUIReader;
+import it.polimi.ingsw.Controller.Actions.ChooseCloudTile;
 import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
 import it.polimi.ingsw.Controller.Actions.MoveStudent;
 import it.polimi.ingsw.Controller.Enums.MoveDestination;
@@ -29,9 +30,14 @@ public class IslandFieldPanel extends JPanel {
 
     private Optional<Integer> entrancePositionToMove = Optional.empty();
 
+    private Optional<Integer> selectedCharacterCard = Optional.empty();
+
+    private Optional<PawnColour> pawnFromCharacterCard = Optional.empty();
+
     private ActionType actionType = ActionType.NONE;
 
     private ArrayList<JButton> islandButtons;
+
 
     private Model model;
 
@@ -39,7 +45,6 @@ public class IslandFieldPanel extends JPanel {
 
 
     public IslandFieldPanel(Model model, SocketWrapper sw, GUIReader guiReader) {
-        System.out.println("MOSSE STUDENTE:" + guiReader.getSuccessfulRequestsByType(MoveStudent.class));
         if (guiReader.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
             this.setActionType(ActionType.NONE, Optional.empty());
         } else if (guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 3) {
@@ -76,27 +81,27 @@ public class IslandFieldPanel extends JPanel {
                     while (!(c instanceof JTabbedPane jTabbedPane)) {
                         c = c.getParent();
                     }*/
-                switch (this.actionType) {
-                    case NONE -> {
-                    }
-                    case MOVESTUDENT -> {
-                        MoveStudent moveStudent = new MoveStudent(this.model.getMutableTurnOrder().getMutableCurrentPlayer().getId(), entrancePositionToMove.get(), MoveDestination.toIsland(islandGroups.get(finalI).getId())); //todo does it work?
-                        PlayerActionRequest playerAction = new PlayerActionRequest(moveStudent);
-                        this.guiReader.savePlayerActionRequest(moveStudent);
-                        try {
-                            sw.sendMessage(playerAction);
-                            this.setActionType(ActionType.NONE, Optional.empty());
-                                /*for (int j = 1; j <= model.getMutablePlayerBoards().size(); j++) {
-                                    jTabbedPane.setSelectedIndex(j);
-                                    //PlayerBoardPanel playerBoardPanel = (PlayerBoardPanel) jTabbedPane.getSelectedComponent();
-                                    //playerBoardPanel.setDisabledEntrance(false);
-                                }*/
+                    switch (this.actionType) {
+                        case NONE -> {
+                        }
+                        case CHARACTERCARD -> {
+                            switch (this.selectedCharacterCard.get()){
+                                case 3:
+                            }
+                        }
+                        case MOVESTUDENT -> {
+                            MoveStudent moveStudent = new MoveStudent(this.model.getMutableTurnOrder().getMutableCurrentPlayer().getId(), entrancePositionToMove.get(), MoveDestination.toIsland(islandGroups.get(finalI).getId()));
+                            PlayerActionRequest playerAction = new PlayerActionRequest(moveStudent);
+                            this.guiReader.savePlayerActionRequest(moveStudent);
+                            try {
+                                sw.sendMessage(playerAction);
+                                this.setActionType(ActionType.NONE, Optional.empty());
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
                     }
                     case MOVEMOTHERNATURE -> {
-                        MoveMotherNature moveMotherNature = new MoveMotherNature(this.model.getMutableTurnOrder().getMutableCurrentPlayer().getId(), model.getMutableIslandField().getMutableGroups().indexOf(model.getMutableIslandField().getMutableMotherNaturePosition()) - finalI);
+                        MoveMotherNature moveMotherNature = new MoveMotherNature(this.model.getMutableTurnOrder().getMutableCurrentPlayer().getId(), getMotherNatureSteps(islandGroups, islandGroups.get(finalI)));
                         PlayerActionRequest playerAction = new PlayerActionRequest(moveMotherNature);
                         this.guiReader.savePlayerActionRequest(moveMotherNature);
                         try {
@@ -145,6 +150,7 @@ public class IslandFieldPanel extends JPanel {
                 islandButton.add(tower);
             }
             islandButton.setToolTipText("<html><p width = 100px>ISLAND GROUP #" + islandGroups.get(i).getId() + "<br>" +
+                    "BUTTON NUMBER:"+ i + "<br>"+
                     "STUDENTS:<br>" +
                     "RED:" + pawnCountMap.get(PawnColour.RED) + "<br>" +
                     "BLUE:" + pawnCountMap.get(PawnColour.BLUE) + "<br>" +
@@ -156,13 +162,31 @@ public class IslandFieldPanel extends JPanel {
         }
     }
 
-    protected void setActionType(ActionType actionType, Optional<Integer> toRemove) {
-        if (actionType == ActionType.MOVESTUDENT) {
+    public void setActionType(ActionType actionType, Optional<Integer> toRemove){
+        if(actionType == ActionType.MOVESTUDENT){
             this.actionType = actionType;
             this.entrancePositionToMove = toRemove;
             return;
         }
         this.actionType = actionType;
+    }
+
+    public void setCharacterCardAction(ActionType actionType, Optional<Integer> card, Optional<PawnColour> toMove){
+        this.actionType = actionType;
+        if(card.isEmpty()) return;
+        this.selectedCharacterCard = card;
+        if(toMove.isEmpty()) return;
+        this.pawnFromCharacterCard = toMove;
+    }
+
+    private int getMotherNatureSteps(ArrayList<IslandGroup> islandGroups, IslandGroup destinationIsland){
+        int motherNatureIndex = islandGroups.indexOf(model.getMutableIslandField().getMutableMotherNaturePosition());
+        int steps=0;
+        while(true){
+            if(islandGroups.get((motherNatureIndex+steps)%islandGroups.size()).equals(destinationIsland)) break;
+            steps = steps+1;
+        }
+        return steps;
     }
 
     private int getDimBoost(int IslandsNumbers) {
