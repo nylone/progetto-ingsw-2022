@@ -100,7 +100,6 @@ public class PlayerBoardPanel extends JPanel {
             entranceStudentsButton.get(i).setOpaque(false);
             int finalI = i;
             entranceStudentsButton.get(i).addActionListener(e -> {
-                //if(!enableEntrance) {
                 String[] buttons = {"DiningRoom", "Island"};
                 int returnValue = JOptionPane.showOptionDialog(null, "Where do you want to send this pawn?", "Destination ", JOptionPane.DEFAULT_OPTION,
                         JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
@@ -128,7 +127,6 @@ public class PlayerBoardPanel extends JPanel {
                     jTabbedPane.setSelectedIndex(0);
                     islandFieldPanel.setActionType(ActionType.MOVESTUDENT, Optional.of(finalI));
                 }
-                // }
             });
         }
 

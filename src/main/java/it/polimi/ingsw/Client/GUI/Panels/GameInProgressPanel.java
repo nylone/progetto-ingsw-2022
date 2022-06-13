@@ -3,6 +3,8 @@ package it.polimi.ingsw.Client.GUI.Panels;
 import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.GUIReader;
 import it.polimi.ingsw.Client.GUI.Window;
+import it.polimi.ingsw.Controller.Actions.ChooseCloudTile;
+import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -28,37 +30,6 @@ public class GameInProgressPanel extends JTabbedPane {
         this.window = ctx.getWindow();
         this.sw = ctx.getSocketWrapper();
         this.window.changeView(this);
-
-        // start socket listener task
-        /*new Thread(() -> {
-            while (true) {
-                try {
-                    Message input = sw.awaitMessage();
-                    switch (input) {
-                        case LobbyClosed ignored -> {
-                            new PopupMessage("Lobby was closed by the server.\n" +
-                                    "Client is disconnecting from the server.", "Lobby closed");
-                            sw.close();
-                            new StartPanel(ctx);
-                        }
-                        case ClientDisconnected clientDisconnected -> new PopupMessage("Client " + clientDisconnected.getLastDisconnectedNickname() +
-                                "just disconnected.", "Client disconnected");
-                        case ModelUpdated modelUpdated -> {
-                            this.window.changeView(new GameInProgressPanel(ctx, modelUpdated.getModel()));
-                            return;
-                        }
-                        case PlayerActionFeedback playerActionFeedback -> {
-                            if (playerActionFeedback.getStatusCode() == StatusCode.Fail)
-                                JOptionPane.showMessageDialog(null, playerActionFeedback.getReport());
-                        }
-                        case InvalidRequest invalidRequest -> JOptionPane.showMessageDialog(null, "Your request has not been executed, probably you are trying to play out of turn");
-                        default -> throw new IllegalStateException("Unexpected value: " + input.getClass());
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }).start();*/
         this.guiReader = new GUIReader(this, ctx);
         System.out.println(guiReader);
         Thread readerThread = new Thread(guiReader);
@@ -87,8 +58,12 @@ public class GameInProgressPanel extends JTabbedPane {
         }
         this.add("Clouds", new CloudPanel(model.getClouds(), model.getMutableTurnOrder().getMutableCurrentPlayer(), guiReader, sw));
         if (model.getGameMode() == GameMode.ADVANCED) {
-            final JPanel characterCardsPanel = new CharacterCardsPanel(model.getCharacterCards());
+            final JPanel characterCardsPanel = new CharacterCardsPanel(model, guiReader);
             this.add("CharacterCards", characterCardsPanel);
+        }
+        if(guiReader.getSuccessfulRequestsByType(MoveMotherNature.class)==1){
+            this.setSelectedIndex(this.getTabCount()-1);
+            this.getSelectedComponent();
         }
     }
 

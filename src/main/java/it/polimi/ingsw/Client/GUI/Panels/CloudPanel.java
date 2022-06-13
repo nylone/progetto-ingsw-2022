@@ -33,7 +33,7 @@ public class CloudPanel extends JPanel {
         backGroundLabel.setBounds(0, 0, 1080, 720);
         this.add(backGroundLabel);
         ArrayList<CloudComponent> cloudButtons = new ArrayList<>(clouds.size());
-        JButton endTurnButton = new JButton();
+        JButton endTurnButton = new JButton("END YOUR TURN");
         endTurnButton.setBackground(new Color(255, 153, 51));
         endTurnButton.setForeground(Color.BLACK);
         endTurnButton.setFocusPainted(false);
@@ -79,7 +79,7 @@ public class CloudPanel extends JPanel {
         cloudButtons.get(1).setBounds(700, 125, 200, 200);
         if (cloudButtons.size() == 3) cloudButtons.get(2).setBounds(300, 350, 200, 200);
         if (cloudButtons.size() == 4) cloudButtons.get(3).setBounds(700, 350, 200, 200);
-        endTurnButton.setBounds(450, 450, 100, 75);
+        endTurnButton.setBounds(550, 550, 150, 75);
         cloudButtons.forEach(backGroundLabel::add);
         backGroundLabel.add(endTurnButton);
     }

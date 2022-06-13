@@ -2,5 +2,5 @@ package it.polimi.ingsw.Client.GUI;
 
 public enum ActionType {
 
-    NONE, MOVESTUDENT, MOVEMOTHERNATURE
+    NONE, MOVESTUDENT, MOVEMOTHERNATURE, CHARACTERCARD
 }
