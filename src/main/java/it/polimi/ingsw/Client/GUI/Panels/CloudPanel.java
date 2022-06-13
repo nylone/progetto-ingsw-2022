@@ -5,7 +5,6 @@ import it.polimi.ingsw.Client.GUI.GUIReader;
 import it.polimi.ingsw.Controller.Actions.ChooseCloudTile;
 import it.polimi.ingsw.Controller.Actions.EndTurnOfActionPhase;
 import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
-import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Model.Cloud;
 import it.polimi.ingsw.Model.PlayerBoard;
 import it.polimi.ingsw.Network.SocketWrapper;
@@ -44,7 +43,7 @@ public class CloudPanel extends JPanel {
             endTurnButton.setVisible(false);
         }
         endTurnButton.addActionListener(e -> {
-            if(guiReader.getSuccessfulRequestsByType(ChooseCloudTile.class) == 1){
+            if (guiReader.getSuccessfulRequestsByType(ChooseCloudTile.class) == 1) {
                 EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(currentPlayer.getId());
                 PlayerActionRequest playerActionRequest = new PlayerActionRequest(endTurnOfActionPhase);
                 guiReader.savePlayerActionRequest(endTurnOfActionPhase);
@@ -55,11 +54,11 @@ public class CloudPanel extends JPanel {
                 }
             }
         });
-        for (int i=0; i<clouds.size(); i++) {
+        for (int i = 0; i < clouds.size(); i++) {
             cloudButtons.add(new CloudComponent(cloudIcon, clouds.get(i)));
             int finalI = i;
-            cloudButtons.get(cloudButtons.size()-1).addActionListener(e -> {
-                if(guiReader.getSuccessfulRequestsByType(MoveMotherNature.class) == 1){
+            cloudButtons.get(cloudButtons.size() - 1).addActionListener(e -> {
+                if (guiReader.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
                    /* Container c = this.getParent();
                     while (!(c instanceof JTabbedPane jTabbedPane)) {
                         c = c.getParent();

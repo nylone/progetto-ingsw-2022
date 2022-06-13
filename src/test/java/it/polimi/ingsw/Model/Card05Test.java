@@ -22,7 +22,7 @@ public class Card05Test {
      * If the island doesn't need it anymore the card should be able to receive the tile used
      *
      * @throws Exception is thrown when an invalid card activation happens, but this test should not error out
-     * (by definition)
+     *                   (by definition)
      */
     @Test
     public void checkUse() throws Exception {

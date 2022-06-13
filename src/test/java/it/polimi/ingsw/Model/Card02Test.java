@@ -11,8 +11,9 @@ public class Card02Test {
     /**
      * Character card 02 should leave the teachers control untouched except for the teachers of whom multiple players
      * hold same influence
+     *
      * @throws Exception is thrown when an invalid card activation happens, but this test should not error out
-     * (by definition)
+     *                   (by definition)
      */
     @Test
     public void checkEffectCard02IsWorking() throws Exception {

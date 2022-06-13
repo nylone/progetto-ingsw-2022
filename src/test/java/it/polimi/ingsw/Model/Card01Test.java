@@ -22,7 +22,7 @@ public class Card01Test {
      * student bag when it gets used (and loses 1 student)
      *
      * @throws Exception is thrown when an invalid card activation happens, but this test should not error out
-     * (by definition)
+     *                   (by definition)
      */
     @Test
     public void cardShouldAlwaysHave4Students() throws Exception {
@@ -51,7 +51,7 @@ public class Card01Test {
      * Character card 01 should move a student to the chosen island
      *
      * @throws Exception is thrown when an invalid card activation happens, but this test should not error out
-     * (by definition)
+     *                   (by definition)
      */
     @Test
     public void usingEffectShouldAddStudentToIsland() throws Exception {

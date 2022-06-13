@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Controller.Actions;
 
-import it.polimi.ingsw.Constants;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;

@@ -5,8 +5,8 @@ import it.polimi.ingsw.Client.GUI.Components.StudentButton;
 import it.polimi.ingsw.Client.GUI.GUIReader;
 import it.polimi.ingsw.Controller.Actions.MoveStudent;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
-import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Controller.Enums.MoveDestination;
+import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Network.SocketWrapper;
@@ -15,8 +15,8 @@ import it.polimi.ingsw.Server.Messages.Events.Requests.PlayerActionRequest;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.Client.GUI.IconLoader.*;
@@ -33,6 +33,7 @@ public class PlayerBoardPanel extends JPanel {
     //private boolean enableEntrance;
 
     private GUIReader guiReader;
+
     public PlayerBoardPanel(PlayerBoard pb, Model model, SocketWrapper socketWrapper, GUIReader guiReader) {
         this.player = pb;
         this.guiReader = guiReader;
@@ -79,7 +80,7 @@ public class PlayerBoardPanel extends JPanel {
         }
         //Draw students inside entrance
         for (int i = 0; i < this.player.getEntranceSize(); i++) {
-            if(this.player.getEntranceStudents().get(i).isEmpty()){
+            if (this.player.getEntranceStudents().get(i).isEmpty()) {
                 entranceStudentsButton.add(new JButton(""));
                 entranceStudentsButton.get(i).setVisible(false);
                 continue;
@@ -100,34 +101,34 @@ public class PlayerBoardPanel extends JPanel {
             int finalI = i;
             entranceStudentsButton.get(i).addActionListener(e -> {
                 //if(!enableEntrance) {
-                    String[] buttons = {"DiningRoom", "Island"};
-                    int returnValue = JOptionPane.showOptionDialog(null, "Where do you want to send this pawn?", "Destination ", JOptionPane.DEFAULT_OPTION,
-                            JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
-                    Container c = this.getParent();
-                    while (!(c instanceof JTabbedPane jTabbedPane)) {
-                        c = c.getParent();
+                String[] buttons = {"DiningRoom", "Island"};
+                int returnValue = JOptionPane.showOptionDialog(null, "Where do you want to send this pawn?", "Destination ", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
+                Container c = this.getParent();
+                while (!(c instanceof JTabbedPane jTabbedPane)) {
+                    c = c.getParent();
+                }
+                if (returnValue == 0) {
+                    MoveStudent moveStudent = new MoveStudent(this.player.getId(), finalI, MoveDestination.toDiningRoom());
+                    PlayerActionRequest playerAction = new PlayerActionRequest(moveStudent);
+                    this.guiReader.savePlayerActionRequest(moveStudent);
+                    try {
+                        socketWrapper.sendMessage(playerAction);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
                     }
-                    if (returnValue == 0) {
-                        MoveStudent moveStudent = new MoveStudent(this.player.getId(), finalI, MoveDestination.toDiningRoom());
-                        PlayerActionRequest playerAction = new PlayerActionRequest(moveStudent);
-                        this.guiReader.savePlayerActionRequest(moveStudent);
-                        try {
-                            socketWrapper.sendMessage(playerAction);
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    } else if (returnValue == 1) {
-                        jTabbedPane.setSelectedIndex(0);
-                        IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
+                } else if (returnValue == 1) {
+                    jTabbedPane.setSelectedIndex(0);
+                    IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
                         /*for (int j = 1; j <= model.getMutablePlayerBoards().size(); j++) {
                             jTabbedPane.setSelectedIndex(j);
                             //PlayerBoardPanel playerBoardPanel = (PlayerBoardPanel) jTabbedPane.getSelectedComponent();
                             //playerBoardPanel.setDisabledEntrance(true);
                         }*/
-                        jTabbedPane.setSelectedIndex(0);
-                        islandFieldPanel.setActionType(ActionType.MOVESTUDENT, Optional.of(finalI));
-                    }
-               // }
+                    jTabbedPane.setSelectedIndex(0);
+                    islandFieldPanel.setActionType(ActionType.MOVESTUDENT, Optional.of(finalI));
+                }
+                // }
             });
         }
 
@@ -139,11 +140,11 @@ public class PlayerBoardPanel extends JPanel {
         //----labels containing assistantCards----
         ArrayList<ImageIcon> assistantCardsIcon = new ArrayList<>(Arrays.asList(assistantCard1, assistantCard2, assistantCard3, assistantCard4, assistantCard5, assistantCard6, assistantCard7, assistantCard8, assistantCard9, assistantCard10));
         ArrayList<JButton> assistantCardsButtons = new ArrayList<>(10);
-        for(int i=0; i<10; i++){
+        for (int i = 0; i < 10; i++) {
             JButton assistantCardButton = new JButton(assistantCardsIcon.get(i));
-            int finalI = i+1;
+            int finalI = i + 1;
             assistantCardButton.addActionListener(e -> {
-                if(guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0) {
+                if (guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0) {
                     int dialogButton = JOptionPane.YES_NO_OPTION;
                     int dialogResult = JOptionPane.showConfirmDialog(this, "Confirm to play assistant card with priority: " + finalI + "?", "PlayAssistant card confirmation", dialogButton);
                     if (dialogResult == 0) {
@@ -309,8 +310,6 @@ public class PlayerBoardPanel extends JPanel {
     /*protected void setDisabledEntrance(boolean enabled){
         this.enableEntrance = enabled;
     }*/
-
-
 
 
 }
