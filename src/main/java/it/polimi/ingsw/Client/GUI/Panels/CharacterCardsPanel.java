@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.ActionType;
+import it.polimi.ingsw.Client.GUI.CheckBoxListener;
 import it.polimi.ingsw.Client.GUI.Components.NoEntryTileComponent;
 import it.polimi.ingsw.Client.GUI.Components.StudentButton;
 import it.polimi.ingsw.Client.GUI.GUIReader;
@@ -14,8 +15,6 @@ import it.polimi.ingsw.Server.Messages.Events.Requests.PlayerActionRequest;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -43,7 +42,7 @@ public class CharacterCardsPanel extends JPanel {
             coinLabels.get(i).setVisible(false);
             characterCardsStatelabes.add(new JLabel());
             characterCardsStatelabes.get(i).setVisible(false);
-            JButton button = null;
+            JButton button;
             switch (characterCards.get(i)) {
                 case Card01 ignored -> {
                     button = new JButton(card01);
@@ -93,8 +92,7 @@ public class CharacterCardsPanel extends JPanel {
                     button = new JButton(card12);
                     characterCardsButton.add(button);
                 }
-                default -> {
-                }
+                default -> button = new JButton();
             }
             button.setToolTipText(printCharacterCardInfo(characterCards.get(i)));
             ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
@@ -106,42 +104,47 @@ public class CharacterCardsPanel extends JPanel {
                 while (!(c instanceof JTabbedPane jTabbedPane)) {
                     c = c.getParent();
                 }
-                switch (characterCards.get(finalI)){
+                switch (characterCards.get(finalI)) {
                     case Card01 card01 -> {
-                        //setCharacterCardStateEnabled(characterCardsStatelabes.get(finalI), true);
-                        JList jList = new JList(card01.getState().toArray(new Object[0]));
-                        JOptionPane.showMessageDialog(
-                                null, jList, "Select PawnColour", JOptionPane.PLAIN_MESSAGE);
-
-
+                        PawnColour toMove;
+                        PawnColour[] options = card01.getState().toArray(new PawnColour[0]);
+                        int option = JOptionPane.showOptionDialog(this, "Select pawnColour to make it irrelevant", "Select PawnColour",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                                null, options, options[0]);
+                        toMove = PawnColour.getPawnColourFromText(options[option].toString().toLowerCase());
+                        jTabbedPane.setSelectedIndex(0);
+                        IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
+                        JOptionPane.showMessageDialog(this, "click on the island on which you want to move the pawn");
+                        islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, Optional.of(finalI), Optional.of(toMove));
+                        return;
                     }
                     case Card02 ignored2 -> {
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, Optional.empty(), Optional.empty(),Optional.empty());
+                                finalI, Optional.empty(), Optional.empty(), Optional.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
                     }
-                    case Card03 Card -> {
+                    case Card03 ignored3 -> {
                         jTabbedPane.setSelectedIndex(0);
                         IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
-                        JOptionPane.showMessageDialog(null, "click on the island on which you want to calculate the influence");
-                        islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, Optional.of(finalI),Optional.empty());
+                        JOptionPane.showMessageDialog(this, "click on the island on which you want to calculate the influence");
+                        islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, Optional.of(finalI), Optional.empty());
                         return;
                     }
                     case Card04 ignored4 -> {
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, Optional.empty(), Optional.empty(),Optional.empty());
+                                finalI, Optional.empty(), Optional.empty(), Optional.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
                     }
                     case Card05 ignored5 -> {
                         jTabbedPane.setSelectedIndex(0);
                         IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
-                        JOptionPane.showMessageDialog(null, "click on the island on which you want to move NoEntry tile");
+                        JOptionPane.showMessageDialog(this, "click on the island on which you want to move NoEntry tile");
                         islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, Optional.of(finalI), Optional.empty());
                         return;
                     }
                     case Card06 ignored6 -> {
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, Optional.empty(), Optional.empty(),Optional.empty());
+                                finalI, Optional.empty(), Optional.empty(), Optional.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
 
                     }
@@ -149,52 +152,64 @@ public class CharacterCardsPanel extends JPanel {
                         ArrayList<PawnColour> pawnsFromCard = card07.getState().stream().map(o -> (PawnColour) o).collect(Collectors.toCollection(ArrayList::new));
                         JCheckBox[] checkBoxes = new JCheckBox[((StatefulEffect) card07).getState().size()];
                         CheckBoxListener checkBoxListener = new CheckBoxListener(3, checkBoxes);
-                        for(int j=0; j<pawnsFromCard.size(); j++){
+                        JPanel optionPanel = new JPanel();
+                        for (int j = 0; j < pawnsFromCard.size(); j++) {
                             checkBoxes[j] = new JCheckBox(pawnsFromCard.get(j).toString());
                             checkBoxes[j].addItemListener(checkBoxListener);
+                            optionPanel.add(checkBoxes[j]);
                         }
-                        JPanel optionPanel = new JPanel();
-                        JOptionPane.showOptionDialog(optionPanel, "Select Pawns from card", "Pick pawns from card",JOptionPane.OK_OPTION,
-                                0, null, checkBoxes, null);
-
-
+                        int result = JOptionPane.showConfirmDialog(this, optionPanel,
+                                "Select pawns ", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                        if (result == -1 || result == 2) return;
+                        pawnsFromCard.clear();
+                        for (JCheckBox checkBox : checkBoxes) {
+                            if (checkBox.isSelected()) {
+                                pawnsFromCard.add(PawnColour.getPawnColourFromText(checkBox.getText().toLowerCase()));
+                            }
+                        }
+                        for (int h = 0; h < jTabbedPane.getTabCount(); h++) {
+                            Component component = jTabbedPane.getComponentAt(h);
+                            if ((component instanceof PlayerBoardPanel playerBoardPanel) && playerBoardPanel.getPlayerBoardNickname().equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {
+                                jTabbedPane.setSelectedIndex(h);
+                                playerBoardPanel.PlayCharacterCardEffect(7, finalI, Optional.of(pawnsFromCard));
+                            }
+                        }
+                        return;
                     }
                     case Card08 ignored8 -> {
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, Optional.empty(), Optional.empty(),Optional.empty());
+                                finalI, Optional.empty(), Optional.empty(), Optional.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
                     }
                     case Card09 ignored9 -> {
                         PawnColour toExclude;
-                        String[] options = new String[] {"RED", "PINK", "GREEN", "YELLOW", "BLUE"};
-                        int option =  JOptionPane.showOptionDialog(null, "Select pawnColour to make it irrelevant", "Select PawnColour",
+                        String[] options = new String[]{"RED", "PINK", "GREEN", "YELLOW", "BLUE"};
+                        int option = JOptionPane.showOptionDialog(this, "Select pawnColour to make it irrelevant", "Select PawnColour",
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                                 null, options, options[0]);
-                        System.out.println(option);
-                        switch(options[option]){
-                            case "RED" -> toExclude = PawnColour.RED;
-                            case "YELLOW" -> toExclude = PawnColour.YELLOW;
-                            case "PINK" -> toExclude = PawnColour.PINK;
-                            case "GREEN" -> toExclude = PawnColour.GREEN;
-                            case "BLUE" -> toExclude = PawnColour.BLUE;
-                            case default -> toExclude = null;
-
-                        }
+                        toExclude = PawnColour.getPawnColourFromText(options[option].toLowerCase());
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, Optional.empty(), Optional.of(toExclude),Optional.empty());
+                                finalI, Optional.empty(), Optional.of(toExclude), Optional.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
                     }
-                    case Card10 card10 -> {
-
+                    case Card10 ignored10 -> {
+                        for (int h = 0; h < jTabbedPane.getTabCount(); h++) {
+                            Component component = jTabbedPane.getComponentAt(h);
+                            if ((component instanceof PlayerBoardPanel playerBoardPanel) && playerBoardPanel.getPlayerBoardNickname().equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {
+                                jTabbedPane.setSelectedIndex(h);
+                                playerBoardPanel.PlayCharacterCardEffect(10, finalI, Optional.empty());
+                            }
+                        }
+                        return;
                     }
                     case Card11 card11 -> {
                         PawnColour toMove;
                         Object[] options = card11.getState().toArray(new Object[0]);
-                        int option =  JOptionPane.showOptionDialog(null, "Select the pawn to move", "Select PawnColour",
+                        int option = JOptionPane.showOptionDialog(this, "Select the pawn to move", "Select PawnColour",
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                                 null, options, options[0]);
-                        if(option == -1) return;
-                        switch((PawnColour) options[option]){
+                        if (option == -1) return;
+                        switch ((PawnColour) options[option]) {
                             case RED -> toMove = PawnColour.RED;
                             case YELLOW -> toMove = PawnColour.YELLOW;
                             case BLUE -> toMove = PawnColour.BLUE;
@@ -203,17 +218,17 @@ public class CharacterCardsPanel extends JPanel {
                             default -> toMove = null;
                         }
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, Optional.empty(), Optional.of(toMove),Optional.empty());
+                                finalI, Optional.empty(), Optional.of(toMove), Optional.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
                     }
                     case Card12 ignored12 -> {
                         PawnColour toRemove;
-                        String[] options = new String[] {"RED", "PINK", "GREEN", "YELLOW", "BLUE"};
-                        int option =  JOptionPane.showOptionDialog(null, "Title", "Message",
+                        String[] options = new String[]{"RED", "PINK", "GREEN", "YELLOW", "BLUE"};
+                        int option = JOptionPane.showOptionDialog(this, "Title", "Message",
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                                 null, options, options[0]);
-                        if(option == -1) return;
-                        switch(options[option]){
+                        if (option == -1) return;
+                        switch (options[option]) {
                             case "RED" -> toRemove = PawnColour.RED;
                             case "YELLOW" -> toRemove = PawnColour.YELLOW;
                             case "PINK" -> toRemove = PawnColour.PINK;
@@ -223,10 +238,11 @@ public class CharacterCardsPanel extends JPanel {
 
                         }
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, Optional.empty(), Optional.of(toRemove),Optional.empty());
+                                finalI, Optional.empty(), Optional.of(toRemove), Optional.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
                     }
-                    default -> {}
+                    default -> {
+                    }
                 }
                 guiReader.savePlayerActionRequest(playCharacterCard);
                 try {
@@ -306,8 +322,6 @@ public class CharacterCardsPanel extends JPanel {
         } else if (((StatefulEffect) characterCard).getStateType() == StateType.NOENTRY) {
             container.add(new NoEntryTileComponent(((StatefulEffect) characterCard).getState().size()));
         }
-        //container.add(new StudentButton(PawnColour.RED, 5));
-        System.out.println(container.getBounds());
     }
 
     private ArrayList<StudentButton> getStudentButton(List<PawnColour> pawns) {
@@ -322,56 +336,5 @@ public class CharacterCardsPanel extends JPanel {
         return studentButtons;
     }
 
-    private PawnColour getPawnColourFromText(String text){
-        switch (text){
-            case "red" -> {
-                return PawnColour.RED;
-            }
-            case "blue" -> {
-                return PawnColour.BLUE;
-            }
-            case "pink" -> {
-                return PawnColour.PINK;
-            }case "yellow" -> {
-                return PawnColour.YELLOW;
-            }
-            case "green" -> {
-                return PawnColour.GREEN;
-            }
-        }
-        return null;
-    }
 
-    private class CheckBoxListener implements ItemListener {
-        private final int maxCheckBoxesSelectable;
-
-        private int selectionCounter = 0;
-
-        private final JCheckBox[] checkBoxes;
-        private CheckBoxListener(int limit, JCheckBox[] checkBoxes){
-            this.maxCheckBoxesSelectable = limit;
-            this.checkBoxes = checkBoxes;
-        }
-
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            JCheckBox source = (JCheckBox) e.getSource();
-
-            if (source.isSelected()) {
-                selectionCounter++;
-                // check for max selections:
-                if (selectionCounter == maxCheckBoxesSelectable)
-                    for (JCheckBox box: checkBoxes)
-                        if (!box.isSelected())
-                            box.setEnabled(false);
-            }
-            else {
-                selectionCounter--;
-                // check for less than max selections:
-                if (selectionCounter < maxCheckBoxesSelectable)
-                    for (JCheckBox box: checkBoxes)
-                        box.setEnabled(true);
-            }
-        }
-    }
 }
