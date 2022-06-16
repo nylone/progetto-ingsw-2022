@@ -1,12 +1,15 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.ActionType;
+import it.polimi.ingsw.Client.GUI.CheckBoxListener;
 import it.polimi.ingsw.Client.GUI.Components.StudentButton;
 import it.polimi.ingsw.Client.GUI.GUIReader;
 import it.polimi.ingsw.Controller.Actions.MoveStudent;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
+import it.polimi.ingsw.Controller.Actions.PlayCharacterCard;
 import it.polimi.ingsw.Controller.Enums.MoveDestination;
 import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Network.SocketWrapper;
@@ -26,22 +29,50 @@ import static it.polimi.ingsw.Client.GUI.IconLoader.*;
  */
 public class PlayerBoardPanel extends JPanel {
 
-    private final ArrayList<JButton> entranceStudentsButton;
+    /**
+     * SocketWrapper necessary to send actions from GUI to server
+     */
+    private final SocketWrapper socketWrapper;
 
+    /**
+     * Contains player's PlayerBoard information
+     */
     private final PlayerBoard player;
 
-    //private boolean enableEntrance;
+    /**
+     * Contains game's information
+     */
+    private final Model model;
 
-    private GUIReader guiReader;
+    /**
+     * Contains GuiReader's information necessary to record user's requests during his turn
+     */
+    private final GUIReader guiReader;
 
+    /**
+     * Class containing all the elements necessary to graphically represent both the player’s playerBoard and the assistant cards still usable. It also implements
+     * some logic of characterCard's actions which require to interact with the playerboard in order to work properly.
+     * @param pb Player's playerboard to represent
+     * @param model Game's model
+     * @param socketWrapper socketWrapper to communicate with Server
+     * @param guiReader guiReader from GameInProgressPanel
+     */
     public PlayerBoardPanel(PlayerBoard pb, Model model, SocketWrapper socketWrapper, GUIReader guiReader) {
         this.player = pb;
         this.guiReader = guiReader;
+        this.socketWrapper = socketWrapper;
+        this.model = model;
+        //list containing teachers owned by the player
         List<PawnColour> teachers = model.getOwnTeachers(this.player);
+        //towerStorage owned by the player
         TowerStorage towerStorage = model.getTeamMapper().getMutableTowerStorage(this.player);
+        //Get current player
         TurnOrder turnOrder = model.getMutableTurnOrder();
+        //create List that will contain assistantCards' buttons
         ArrayList<JButton> assistantCardsLabels = new ArrayList<>(10);
-        this.entranceStudentsButton = new ArrayList<>(this.player.getEntranceSize());
+        //create List that will contain Entrance's students' buttons
+        ArrayList<JButton> entranceStudentsButton = new ArrayList<>(this.player.getEntranceSize());
+        //create List that will contain Towers' labels
         ArrayList<JLabel> towersLabels = new ArrayList<>(towerStorage.getTowerCount());
         //Map that associates every pawnColour to an arrayList of JButton
         Map<PawnColour, ArrayList<JButton>> diningRoomButtons = new EnumMap<>(PawnColour.class);
@@ -99,15 +130,21 @@ public class PlayerBoardPanel extends JPanel {
             entranceStudentsButton.get(i).setFocusPainted(false);
             entranceStudentsButton.get(i).setOpaque(false);
             int finalI = i;
+            //add on-click action listener to Entrance's students' buttons
             entranceStudentsButton.get(i).addActionListener(e -> {
+                //create options that will be displayed on JOptionPane
                 String[] buttons = {"DiningRoom", "Island"};
-                int returnValue = JOptionPane.showOptionDialog(null, "Where do you want to send this pawn?", "Destination ", JOptionPane.DEFAULT_OPTION,
+                //create and show JoptionPane
+                int returnValue = JOptionPane.showOptionDialog(this, "Where do you want to send this pawn?", "Destination ", JOptionPane.DEFAULT_OPTION,
                         JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
                 Container c = this.getParent();
                 while (!(c instanceof JTabbedPane jTabbedPane)) {
+                    //get JtabbedPane
                     c = c.getParent();
                 }
+                //if user clicked first button (DiningRoom)
                 if (returnValue == 0) {
+                    //create and send moveStudent action
                     MoveStudent moveStudent = new MoveStudent(this.player.getId(), finalI, MoveDestination.toDiningRoom());
                     PlayerActionRequest playerAction = new PlayerActionRequest(moveStudent);
                     this.guiReader.savePlayerActionRequest(moveStudent);
@@ -116,10 +153,12 @@ public class PlayerBoardPanel extends JPanel {
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
-                } else if (returnValue == 1) {
+                } else if (returnValue == 1) { //if the user clicked second button (Island)
+                    //switch jTabbedPane to first tab
                     jTabbedPane.setSelectedIndex(0);
+                    //get IslandFieldPanel
                     IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
-                    //jTabbedPane.setSelectedIndex(0);
+                    //Set correct actionType inside islandFieldPanel
                     islandFieldPanel.setActionType(ActionType.MOVESTUDENT, Optional.of(finalI));
                 }
             });
@@ -134,13 +173,18 @@ public class PlayerBoardPanel extends JPanel {
         ArrayList<ImageIcon> assistantCardsIcon = new ArrayList<>(Arrays.asList(assistantCard1, assistantCard2, assistantCard3, assistantCard4, assistantCard5, assistantCard6, assistantCard7, assistantCard8, assistantCard9, assistantCard10));
         ArrayList<JButton> assistantCardsButtons = new ArrayList<>(10);
         for (int i = 0; i < 10; i++) {
+            //create assistantCard's button
             JButton assistantCardButton = new JButton(assistantCardsIcon.get(i));
             int finalI = i + 1;
+            //add on-click actionListener to assistantCard's button
             assistantCardButton.addActionListener(e -> {
+                //enable button only if a playAssistantCard action has not been played
                 if (guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0) {
                     int dialogButton = JOptionPane.YES_NO_OPTION;
+                    //create optionPane for confirmation
                     int dialogResult = JOptionPane.showConfirmDialog(this, "Confirm to play assistant card with priority: " + finalI + "?", "PlayAssistant card confirmation", dialogButton);
                     if (dialogResult == 0) {
+                        //if the player clicked first button (YES) then create and send the playAssistantCard action
                         PlayAssistantCard playAssistantCard = new PlayAssistantCard(this.player.getId(), finalI);
                         PlayerActionRequest playerAction = new PlayerActionRequest(playAssistantCard);
                         this.guiReader.savePlayerActionRequest(playAssistantCard);
@@ -152,6 +196,7 @@ public class PlayerBoardPanel extends JPanel {
                     }
                 }
             });
+            //add assistantCard's button to assistantCardsButtons arrayList
             assistantCardsButtons.add(assistantCardButton);
         }
         //----labels containing Teachers----
@@ -280,6 +325,122 @@ public class PlayerBoardPanel extends JPanel {
     }
 
     /**
+     * get PlayerBoardNickname
+     * @return playerBoardPanel's playerBoard's nickname
+     */
+    public String getPlayerBoardNickname() {
+        return this.player.getNickname();
+    }
+
+    /**
+     * Executes characterCards' effects that interact directly with the playerBoard
+     * @param cardIndex card's priority
+     * @param cardPositionInGame card's position inside the game (0 to 2)
+     * @param fromCard Optional list containing pawnColour picked from characterCard
+     */
+    public void PlayCharacterCardEffect(int cardIndex, int cardPositionInGame, Optional<ArrayList<PawnColour>> fromCard) {
+        PlayCharacterCard playCharacterCard = null;
+        PlayerActionRequest playerActionRequest = null;
+        //create list that will contain chosen pawns from entrance
+        List<PawnColour> pawnsFromEntrance = new ArrayList<>();
+        //create checkboxes that will allow user to select pawns from entrance
+        JCheckBox[] checkBoxes = new JCheckBox[player.getEntranceSize() - player.getEntranceSpaceLeft()];
+        CheckBoxListener checkBoxListener;
+        //initialize checkboxes' limit basing on characterCard that has been selected
+        if(cardIndex == 7) {
+            checkBoxListener = new CheckBoxListener(fromCard.get().size(), checkBoxes);
+        }else {
+            checkBoxListener = new CheckBoxListener(2, checkBoxes);
+        }
+        int countboxes=0;
+        //create JPanel that will displayed by JoptionPane
+        JPanel optionPanel = new JPanel();
+        for (int j = 0; j < player.getEntranceSize(); j++) {
+            //scan entrance and add a new CheckBox for every present pawn
+            if (player.getEntranceStudents().get(j).isPresent()) {
+                //create and add a new checkBox containing PawnColour's string
+                checkBoxes[countboxes] = new JCheckBox(player.getEntranceStudents().get(j).get().toString());
+                //add checkBoxListener to the new checkBox
+                checkBoxes[countboxes].addItemListener(checkBoxListener);
+                optionPanel.add(checkBoxes[countboxes]);
+                countboxes++;
+            }
+        }
+        //create and show JOptionPane
+        int result = JOptionPane.showConfirmDialog(this, optionPanel,
+                "Select pawns from entrance", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        //if user selected 'cancel' or closed JOptionPane
+        if (result == -1 || result == 2) return;
+        for (JCheckBox checkBox : checkBoxes) {
+            if (checkBox.isSelected()) {
+                //add selected checBoxes pawn to pawnsFromEntrance list
+                pawnsFromEntrance.add(PawnColour.getPawnColourFromText(checkBox.getText().toLowerCase()));
+            }
+        }
+        switch (cardIndex) {
+            case 7 -> {
+                //list that will contain Pawns' pairs (from entrance and CharacterCard)
+                ArrayList<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>(fromCard.get().size());
+                for (int i = 0; i < pawnsFromEntrance.size(); i++) {
+                    //create and add a new Pair
+                    pairs.add(new Pair<>(pawnsFromEntrance.get(i), fromCard.get().get(i)));
+                }
+                //create a new PlayCharacterCard action and its playerActionRequest
+                playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
+                        cardPositionInGame, Optional.empty(), Optional.empty(), Optional.of(pairs));
+                playerActionRequest = new PlayerActionRequest(playCharacterCard);
+            }
+            case 10 -> {
+                //Map containing playerBoard's diningRoom
+                Map<PawnColour, Integer> diningRoomCount = player.getDiningRoom();
+                optionPanel = new JPanel();
+                optionPanel.setLayout(new FlowLayout());
+                //list containing JSpinners
+                ArrayList<JSpinner> jSpinners = new ArrayList<>(pawnsFromEntrance.size());
+                for (PawnColour pawnColour : diningRoomCount.keySet()) {
+                    //if diningRoom contains at least one pawn of that colour then create a JSpinner
+                    if(diningRoomCount.get(pawnColour)>0) {
+                        optionPanel.add(new JLabel(pawnColour.toString()));
+                        //create a new JSPinner that allows 0 as minimum, and as maximum the minimum between the number of pawns selected from entrance
+                        // and the number of pawns of that color present in the diningroom
+                        jSpinners.add(new JSpinner(new SpinnerNumberModel(0, 0, Math.min(pawnsFromEntrance.size(), diningRoomCount.get(pawnColour)), 1)));
+                        //set JSpinnerName (useful to create pairs)
+                        jSpinners.get(jSpinners.size() - 1).setName(pawnColour.toString());
+                        //add Jspinner to JoptionPane's panel
+                        optionPanel.add(jSpinners.get(jSpinners.size() - 1));
+                    }
+                }
+                //create and show JOptionPane
+                result = JOptionPane.showConfirmDialog(this, optionPanel,
+                        "Select pawns from diningRoom", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if (result == -1 || result == 2) return;
+                //create list of pairs
+                ArrayList<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>(pawnsFromEntrance.size());
+                OuterLoop:
+                for (JSpinner jSpinner : jSpinners) {
+                    for (int i = 0; i < (Integer) jSpinner.getValue(); i++) {
+                        //for every jSpinner create a new pair with firs element from entrance and the second one from diningRoom
+                        pairs.add(new Pair<>(pawnsFromEntrance.get(pairs.size()), PawnColour.getPawnColourFromText(jSpinner.getName().toLowerCase())));
+                        if (pairs.size() == 2) break OuterLoop;
+                    }
+                }
+                //create playCharacterCard action and its playerActionRequest
+                playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
+                        cardPositionInGame, Optional.empty(), Optional.empty(), Optional.of(pairs));
+                playerActionRequest = new PlayerActionRequest(playCharacterCard);
+            }
+        }
+        //save action inside guiReader's history
+        guiReader.savePlayerActionRequest(playCharacterCard);
+        //send playerActionRequest to Server
+        try {
+            socketWrapper.sendMessage(playerActionRequest);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
      * Support method that, given an ArrayList of assistantCards, returns an arrayList containing the relative buttons
      * (example, given the assistantCard with priority 5, the method returns a JButton with the right assistantCard's image (image with number 5)
      *
@@ -294,11 +455,6 @@ public class PlayerBoardPanel extends JPanel {
         }
         return assistantsToShow;
     }
-
-    private void CharacterCardEffect(int card, ArrayList<PawnColour> fromCard){
-
-    }
-
 
 
 
