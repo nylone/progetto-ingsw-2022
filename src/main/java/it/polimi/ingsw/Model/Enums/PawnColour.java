@@ -20,18 +20,18 @@ public enum PawnColour implements Serializable {
      */
     public static PawnColour getPawnColourFromText(String text){
         switch (text){
-            case "red" -> {
+            case "RED" -> {
                 return PawnColour.RED;
             }
-            case "blue" -> {
+            case "BLUE" -> {
                 return PawnColour.BLUE;
             }
-            case "pink" -> {
+            case "PINK" -> {
                 return PawnColour.PINK;
-            }case "yellow" -> {
+            }case "YELLOW" -> {
                 return PawnColour.YELLOW;
             }
-            case "green" -> {
+            case "GREEN" -> {
                 return PawnColour.GREEN;
             }
         }

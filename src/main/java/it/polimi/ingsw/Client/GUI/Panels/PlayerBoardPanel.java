@@ -374,7 +374,7 @@ public class PlayerBoardPanel extends JPanel {
         for (JCheckBox checkBox : checkBoxes) {
             if (checkBox.isSelected()) {
                 //add selected checBoxes pawn to pawnsFromEntrance list
-                pawnsFromEntrance.add(PawnColour.getPawnColourFromText(checkBox.getText().toLowerCase()));
+                pawnsFromEntrance.add(PawnColour.getPawnColourFromText(checkBox.getText()));
             }
         }
         switch (cardIndex) {
@@ -420,7 +420,7 @@ public class PlayerBoardPanel extends JPanel {
                 for (JSpinner jSpinner : jSpinners) {
                     for (int i = 0; i < (Integer) jSpinner.getValue(); i++) {
                         //for every jSpinner create a new pair with firs element from entrance and the second one from diningRoom
-                        pairs.add(new Pair<>(pawnsFromEntrance.get(pairs.size()), PawnColour.getPawnColourFromText(jSpinner.getName().toLowerCase())));
+                        pairs.add(new Pair<>(pawnsFromEntrance.get(pairs.size()), PawnColour.getPawnColourFromText(jSpinner.getName())));
                         if (pairs.size() == 2) break OuterLoop;
                     }
                 }

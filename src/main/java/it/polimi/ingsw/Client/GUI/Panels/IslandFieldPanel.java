@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.ActionType;
 import it.polimi.ingsw.Client.GUI.CircleLayout;
+import it.polimi.ingsw.Client.GUI.Components.NoEntryTileComponent;
 import it.polimi.ingsw.Client.GUI.Components.StudentButton;
 import it.polimi.ingsw.Client.GUI.Components.TowerComponent;
 import it.polimi.ingsw.Client.GUI.GUIReader;
@@ -181,7 +182,7 @@ public class IslandFieldPanel extends JPanel {
                 //add motherNature to islandGroup's button
                 islandButton.add(motherNatureLabel);
             }
-            //Drawing tower
+            //Drawing eventual tower
             if (islandGroups.get(i).getTowerColour().isPresent()) {
                 //scale and set tower's image
                 TowerComponent tower = new TowerComponent(islandGroups.get(i).getTowerColour().get(), islandGroups.get(i).getTowerCount());
@@ -195,6 +196,20 @@ public class IslandFieldPanel extends JPanel {
                 tower.setPreferredSize(new Dimension(widthTower, heightTower));
                 //add tower's image to IslandGroup's button
                 islandButton.add(tower);
+            }
+            //Drawing eventual NoEntryTile
+            if(islandGroups.get(i).getMutableNoEntryTiles().size()>0){
+                //scale and set NoEntryTile's image
+                NoEntryTileComponent noEntryTileComponent = new NoEntryTileComponent(islandGroups.get(i).getMutableNoEntryTiles().size());
+                newImg = iconToImage(noEntryTileComponent.getIcon()).getScaledInstance(40,35, java.awt.Image.SCALE_SMOOTH);
+                icon = new ImageIcon(newImg);
+                noEntryTileComponent.setIcon(icon);
+                noEntryTileComponent.setPreferredSize(new Dimension(40,35));
+                //add NoEntryTile component to island's button
+                islandButton.add(noEntryTileComponent);
+                //add same IslandGroups' actionListeners to noEntryTileComponent
+                noEntryTileComponent.addActionListener(e -> islandButton.doClick());
+
             }
             islandButton.setToolTipText("<html><p width = 100px>ISLAND GROUP #" + islandGroups.get(i).getId() + "<br>" +
                     "BUTTON NUMBER:" + i + "<br>" +
@@ -223,6 +238,12 @@ public class IslandFieldPanel extends JPanel {
         this.actionType = actionType;
     }
 
+    /**
+     * Basing on CharacterCard that has been activated, this method setup IslandFieldPanel for send the right PlayerActionRequest to Server
+     * @param actionType ActionType that IslandFieldPanel is going to switch to
+     * @param card  card's index inside game
+     * @param toMove possible pawn to move
+     */
     public void setCharacterCardAction(ActionType actionType, Optional<Integer> card, Optional<PawnColour> toMove) {
         this.actionType = actionType;
         if (card.isEmpty()) return;
@@ -231,15 +252,28 @@ public class IslandFieldPanel extends JPanel {
         this.pawnFromCharacterCard = toMove;
     }
 
+    /**
+     * Support method used to calculate difference between clicked islandGroup by user and actual motherNature's islandGroup
+     * @param islandGroups list of islandGroups present in game
+     * @param destinationIsland IslandGroup that has been clicked by player
+     * @return number of steps that motherNature should perform to reach wished IslandGroup
+     */
     private int getMotherNatureSteps(ArrayList<IslandGroup> islandGroups, IslandGroup destinationIsland) {
+        //get motherNature's islandGroup's index
         int motherNatureIndex = islandGroups.indexOf(model.getMutableIslandField().getMutableMotherNaturePosition());
         int steps = 0;
+        //repeat until found islandGroup with same id as the one clicked by user
         while (!islandGroups.get((motherNatureIndex + steps) % islandGroups.size()).equals(destinationIsland)) {
             steps = steps + 1;
         }
         return steps;
     }
 
+    /**
+     * Support method used to increase islands' dimensions when the amount of IslandGroups decreases
+     * @param IslandsNumbers number of IslandGroups to show
+     * @return boost to add to original icons' dimensions
+     */
     private int getDimBoost(int IslandsNumbers) {
         return switch (IslandsNumbers) {
             case 12 -> 0;
@@ -254,6 +288,11 @@ public class IslandFieldPanel extends JPanel {
         };
     }
 
+    /**
+     * Support method to extract Image from icon
+     * @param icon icon to convert
+     * @return image represented by icon
+     */
     private Image iconToImage(Icon icon) {
         if (icon instanceof ImageIcon) {
             return ((ImageIcon) icon).getImage();
