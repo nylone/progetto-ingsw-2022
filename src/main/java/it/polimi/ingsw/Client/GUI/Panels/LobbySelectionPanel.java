@@ -15,7 +15,15 @@ import java.awt.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * JTabbedPane that allows the user to create or connect to a lobby
+ */
 public class LobbySelectionPanel extends JTabbedPane {
+    /**
+     * Create a new LobbySelectionPanel
+     * @param ctx context that will be used by GUI's game's panels
+     * @param publicLobbies list of publicLobbies available at that moment
+     */
     public LobbySelectionPanel(Context ctx, List<LobbyInfo> publicLobbies) {
         // unwrapping context into useful variables
         Window window = ctx.getWindow();

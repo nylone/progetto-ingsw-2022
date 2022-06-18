@@ -29,19 +29,7 @@ public class CloudComponent extends JButton {
         this.setOpaque(false);
         this.setLayout(new GridLayout(2, 2));
         students.forEach(this::add);
-        /*
-        int offset = isDualPlayerGame ? 155 : 0;
-        students.get(0).setBounds(225, 152 + offset, 50, 50);
-        students.get(1).setBounds(290, 137 + offset, 50, 50);
-        students.get(2).setBounds(240, 221 + offset, 50, 50);
-        if (students.size() == 4) {
-            students.get(3).setBounds(308, 200, 50, 50);
-        }
-        */
 
-
-      /*  Rectangle clickable = new Rectangle(220, 120 ,150, 150);
-        this.addMouseListener(new ClickListener(this, clickable));*/
 
     }
 }

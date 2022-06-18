@@ -25,7 +25,8 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.Client.GUI.IconLoader.*;
 
 /**
- * Panel class that contains one playerBoard and all not-used assistantCards
+ *  Class containing all the elements necessary to graphically represent both the player’s playerBoard and the assistant cards still usable. It also implements
+ * some logic of characterCard's actions which require to interact with the playerboard in order to work properly.
  */
 public class PlayerBoardPanel extends JPanel {
 
@@ -50,8 +51,7 @@ public class PlayerBoardPanel extends JPanel {
     private final GUIReader guiReader;
 
     /**
-     * Class containing all the elements necessary to graphically represent both the player’s playerBoard and the assistant cards still usable. It also implements
-     * some logic of characterCard's actions which require to interact with the playerboard in order to work properly.
+     * Create a new PlayerBoardPanel
      * @param pb Player's playerboard to represent
      * @param model Game's model
      * @param socketWrapper socketWrapper to communicate with Server

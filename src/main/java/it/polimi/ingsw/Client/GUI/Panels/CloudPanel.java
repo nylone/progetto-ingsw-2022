@@ -19,33 +19,46 @@ import java.util.List;
 import static it.polimi.ingsw.Client.GUI.IconLoader.cloudIcon;
 import static it.polimi.ingsw.Client.GUI.IconLoader.sky;
 
+/**
+ * Class used for printing all game's clouds and their students. It also permits to end user's turn
+ */
 public class CloudPanel extends JPanel {
 
-    private GUIReader guiReader;
+    /**
+     * Contains GuiReader's information necessary to record user's requests during his turn
+     */
+    private final GUIReader guiReader;
 
-    private SocketWrapper sw;
-
+    /**
+     * Create a new JPanel and draw all clouds (and their students)
+     * @param clouds clouds from model that needs to be drawn
+     * @param currentPlayer current Player's playerBoard
+     * @param guiReader guiReader necessary for checking and saving actions requested by user
+     * @param sw socketWrapper to send messages to Server
+     */
     public CloudPanel(List<Cloud> clouds, PlayerBoard currentPlayer, GUIReader guiReader, SocketWrapper sw) {
         this.guiReader = guiReader;
-        this.sw = sw;
+        //create the label that contains all others components
         JLabel backGroundLabel = new JLabel(sky);
         backGroundLabel.setLayout(null);
         backGroundLabel.setBounds(0, 0, 1080, 720);
         this.add(backGroundLabel);
+        //list containing clouds' buttons
         ArrayList<CloudComponent> cloudButtons = new ArrayList<>(clouds.size());
+        //create endTurn's button and set its layout
         JButton endTurnButton = new JButton("END YOUR TURN");
         endTurnButton.setBackground(new Color(255, 153, 51));
         endTurnButton.setForeground(Color.BLACK);
         endTurnButton.setFocusPainted(false);
-        if (guiReader.getSuccessfulRequestsByType(ChooseCloudTile.class) == 1) {
-            endTurnButton.setVisible(true);
-        } else {
-            endTurnButton.setVisible(false);
-        }
+        //set visible only whether the player has played a chooseCloudTile action
+        endTurnButton.setVisible(guiReader.getSuccessfulRequestsByType(ChooseCloudTile.class) == 1);
+        //add on-click action listener to endTurnButton
         endTurnButton.addActionListener(e -> {
             if (guiReader.getSuccessfulRequestsByType(ChooseCloudTile.class) == 1) {
+                //create endTurn action and its playerActionRequest
                 EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(currentPlayer.getId());
                 PlayerActionRequest playerActionRequest = new PlayerActionRequest(endTurnOfActionPhase);
+                //save action inside guiReader
                 guiReader.savePlayerActionRequest(endTurnOfActionPhase);
                 try {
                     sw.sendMessage(playerActionRequest);
@@ -54,17 +67,18 @@ public class CloudPanel extends JPanel {
                 }
             }
         });
+        //for every cloud:
         for (int i = 0; i < clouds.size(); i++) {
+            //create a new CloudComponent and add it on cloudButtons list
             cloudButtons.add(new CloudComponent(cloudIcon, clouds.get(i)));
             int finalI = i;
+            //add on-click action listener to cloudComponent
             cloudButtons.get(cloudButtons.size() - 1).addActionListener(e -> {
                 if (guiReader.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
-                   /* Container c = this.getParent();
-                    while (!(c instanceof JTabbedPane jTabbedPane)) {
-                        c = c.getParent();
-                    }*/
+                    //create chooseCloudTile action and its playerActionRequest
                     ChooseCloudTile chooseCloudTile = new ChooseCloudTile(currentPlayer.getId(), finalI);
                     PlayerActionRequest playerActionRequest = new PlayerActionRequest(chooseCloudTile);
+                    //save action inside guiReader
                     this.guiReader.savePlayerActionRequest(chooseCloudTile);
                     try {
                         sw.sendMessage(playerActionRequest);
@@ -75,11 +89,13 @@ public class CloudPanel extends JPanel {
             });
 
         }
+        //--ABSOLUTE POSITIONING--
         cloudButtons.get(0).setBounds(300, 125, 200, 200);
         cloudButtons.get(1).setBounds(700, 125, 200, 200);
         if (cloudButtons.size() == 3) cloudButtons.get(2).setBounds(300, 350, 200, 200);
         if (cloudButtons.size() == 4) cloudButtons.get(3).setBounds(700, 350, 200, 200);
-        endTurnButton.setBounds(550, 550, 150, 75);
+        endTurnButton.setBounds(500, 550, 150, 75);
+        //add cloudButtons and endTurnButton to backgroundLabel
         cloudButtons.forEach(backGroundLabel::add);
         backGroundLabel.add(endTurnButton);
     }

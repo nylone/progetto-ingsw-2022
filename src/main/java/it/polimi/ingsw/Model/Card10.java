@@ -87,8 +87,6 @@ public class Card10 extends StatelessEffect {
             throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
                     CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
                             + "pawns");
-                    CONTAINER_NAME_ENTRANCE + " can't contain " + (playerBoard.getEntranceSpaceLeft() + pawnPairs.size())
-                            + " pawns");
         }
         // validate size of dining room
         for (PawnColour p : secondMap.keySet()) {

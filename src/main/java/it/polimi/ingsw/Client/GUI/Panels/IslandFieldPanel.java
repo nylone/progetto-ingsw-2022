@@ -50,9 +50,14 @@ public class IslandFieldPanel extends JPanel {
      */
     private ActionType actionType = ActionType.NONE;
 
-
+    /**
+     * Contains game's information
+     */
     private final Model model;
 
+    /**
+     * Contains GuiReader's information necessary to record user's requests during his turn
+     */
     private final GUIReader guiReader;
 
 
@@ -173,7 +178,7 @@ public class IslandFieldPanel extends JPanel {
             //Draw motherNature only if it's present in IslandGroup
             if (islandGroups.get(i).getMutableIslands().stream().anyMatch(island -> island.getId() == motherNaturePosition.getId())) {
                 //load and scale MotherNature's image
-                img = motherNature.getImage();
+                img = motherNature != null ? motherNature.getImage() : null;
                 newImg = img.getScaledInstance(widthMotherNature, heightMotherNature, java.awt.Image.SCALE_SMOOTH);
                 icon = new ImageIcon(newImg);
                 //create motherNature's label

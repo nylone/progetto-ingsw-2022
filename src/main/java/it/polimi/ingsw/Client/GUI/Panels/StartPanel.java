@@ -10,7 +10,14 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.Welcome;
 import javax.swing.*;
 import java.net.Socket;
 
+/**
+ * Panel that allows the user to connect to a Server by selecting ip address and port
+ */
 public class StartPanel extends JPanel {
+    /**
+     * Create a new StartPanel
+     * @param ctx Context that will be used by GUI's panels
+     */
     public StartPanel(Context ctx) {
         // unwrapping context into useful variables
         Window window = ctx.getWindow();

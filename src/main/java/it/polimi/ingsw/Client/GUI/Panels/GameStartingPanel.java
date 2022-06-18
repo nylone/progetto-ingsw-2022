@@ -15,7 +15,16 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ * Panel that allows lobby's admin to start the game (is also possible to select gameMode) after it has been filled
+ */
 public class GameStartingPanel extends JPanel {
+    /**
+     * Create a new GameStartingPanel
+     * @param ctx context that will be used by GUI's game's panels
+     * @param isAdmin GameStartingPanel has been created by lobby's admin
+     * @param lobbyID Lobby's UUID
+     */
     public GameStartingPanel(Context ctx, boolean isAdmin, UUID lobbyID) {
         // unwrapping context into useful variables
         Window window = ctx.getWindow();

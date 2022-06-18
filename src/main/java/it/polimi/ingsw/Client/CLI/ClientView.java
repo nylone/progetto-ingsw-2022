@@ -177,9 +177,12 @@ public class ClientView {
         //simple loop to print playerBoard and its Owner's nickname
         for (PlayerBoard pb : this.model.getMutablePlayerBoards()) {
             if (this.getNickname().equals(pb.getNickname())) {
-                System.out.println("Your Playerboard:");
+                System.out.print("Your Playerboard:");
             } else {
-                System.out.println(pb.getNickname() + "'s Playerboard");
+                System.out.print(pb.getNickname() + "'s Playerboard");
+            }
+            if(model.getMutableTurnOrder().getMutableSelectedCard(pb).isPresent()){
+                System.out.print("          played assistantCard with priority:"+model.getMutableTurnOrder().getMutableSelectedCard(pb).get().getPriority());
             }
             //print PlayerBoard
             System.out.println(PlayerBoardUI.drawPlayerBoard(pb, this.model));

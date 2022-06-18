@@ -11,7 +11,14 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusC
 import javax.swing.*;
 import java.io.IOException;
 
+/**
+ * Panel that allows user to choose his username
+ */
 public class UserCredentialsPanel extends JPanel {
+    /**
+     * Create a new UserCredentialsPanel
+     * @param ctx context received form StartPanel
+     */
     public UserCredentialsPanel(Context ctx) {
         // unwrapping context into useful variables
         Window window = ctx.getWindow();
@@ -54,6 +61,7 @@ public class UserCredentialsPanel extends JPanel {
                 try {
                     if (sw.awaitMessage() instanceof LobbyAccept lobbyAccept) {
                         if (lobbyAccept.getStatusCode() == StatusCode.Success) {
+                            //Switch to a new LobbySelectionPanel if user has been accepted by Server
                             new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies());
                         } else {
                             new PopupMessage("Server denied your login", "Failure :(");
@@ -65,7 +73,7 @@ public class UserCredentialsPanel extends JPanel {
             }).start();
         });
 
-        // layout object decleration and setup
+        // layout object declaration and setup
         SpringLayout layout = new SpringLayout();
 
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 20, SpringLayout.NORTH, this);

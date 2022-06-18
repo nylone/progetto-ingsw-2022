@@ -3,26 +3,26 @@ package it.polimi.ingsw.Misc;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 public class Symbols {
-    public static String BLACK = "\u001b[30m";
-    public static String WHITE = "\u001b[243m";
-    public static String GRAY = "\u001b[37m";
-    public static String BLUE = "\u001b[34m";
-    public static String GREEN = "\u001b[32m";
-    public static String PINK = "\u001b[35m";
-    public static String RED = "\u001b[31m";
-    public static String YELLOW = "\u001b[33m";
-    public static String GOLD = "\u001b[38;5;220m";
-    public static String RESET = "\u001b[00m";
-    public static String BACKGROUND = "\u001b[48;5;237m";
+    public static final String BLACK = "\u001b[30m";
+    public static final String WHITE = "\u001b[243m";
+    public static final String GRAY = "\u001b[37m";
+    public static final String BLUE = "\u001b[34m";
+    public static final String GREEN = "\u001b[32m";
+    public static final String PINK = "\u001b[35m";
+    public static final String RED = "\u001b[31m";
+    public static final String YELLOW = "\u001b[33m";
+    public static final String GOLD = "\u001b[38;5;220m";
+    public static final String RESET = "\u001b[00m";
+    public static final String BACKGROUND = "\u001b[48;5;237m";
 
 
-    public static String BOLD = "\u001b[1m";
-    public static String STRIKED = "\u001b[9m";
+    public static final String BOLD = "\u001b[1m";
+    public static final String STRIKED = "\u001b[9m";
     public static String UNDERLINED = "\u001b[4m";
 
-    public static String PAWN = BOLD + "■" + RESET + BACKGROUND;
-    public static String TOWER = BOLD + "≡" + RESET + BACKGROUND;
-    public static String COIN = GOLD + "¤" + RESET + BACKGROUND;
+    public static final String PAWN = BOLD + "■" + RESET + BACKGROUND;
+    public static final String TOWER = BOLD + "≡" + RESET + BACKGROUND;
+    public static final String COIN = GOLD + "¤" + RESET + BACKGROUND;
 
 
     public static String colorizeStudent(PawnColour p, String message) {

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Enums;
 
-import java.awt.*;
 import java.io.Serial;
 import java.io.Serializable;
 
