@@ -134,6 +134,7 @@ public class Card10 extends StatelessEffect {
         List<Pair<PawnColour, PawnColour>> pawnPairs = input.getTargetPawnPairs().get();
         List<PawnColour> fromEntrance = new ArrayList<>(pawnPairs.size());
         List<PawnColour> fromDiningRoom = new ArrayList<>(pawnPairs.size());
+        // get the playerboard to operate on
         PlayerBoard playerBoard = input.getCaller();
         for (Pair<PawnColour, PawnColour> p : pawnPairs) {
             fromEntrance.add(p.getFirst());
@@ -142,7 +143,6 @@ public class Card10 extends StatelessEffect {
             playerBoard.removeStudentsFromDiningRoom(p.getSecond(), 1);
 
         }
-        // get the playerboard to operate on
 
 
         // true effect happens here
