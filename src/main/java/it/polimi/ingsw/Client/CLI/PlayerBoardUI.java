@@ -121,7 +121,7 @@ public class PlayerBoardUI {
     public static String drawDiningRoomRow(PawnColour rowColour, PlayerBoard p, GameMode gameMode) {
         String diningRoom = "";
         // Fills the row with the 10 elements which could be students or empty spaces
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 10; i++) {
             if (i < p.getDiningRoomCount(rowColour)) { // prints a student if there is still any to print
                 diningRoom = diningRoom + Symbols.colorizeStudent(rowColour, Symbols.PAWN + " ");
             } else {
