@@ -83,7 +83,7 @@ public class Card10 extends StatelessEffect {
         }
 
         // validate size of entrance
-        if (playerBoard.getEntranceSpaceLeft() + pawnPairs.size() >= input.getCaller().getEntranceSize()) {
+        if (playerBoard.getEntranceSpaceLeft() + pawnPairs.size() > input.getCaller().getEntranceSize()) {
             throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
                     CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
                             + "pawns");
