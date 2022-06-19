@@ -8,24 +8,50 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * This test set verifies that character card 09 is able to change the way influence is calculated
+ * selecting a colour that will not be counted for the influence calculation
+ */
 public class Card09Test {
-    Model gb = new Model(GameMode.ADVANCED, "ari", "teo");
+    Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
     Card09 card09 = new Card09(gb);
 
+    /**
+     * Card 09 should be able to set a flag to deny a specific colour from influence calculation
+     *
+     * @throws Exception is thrown when an invalid card activation happens, but this test should not error out
+     *                   (by definition)
+     */
     @Test
     public void checkUse() throws Exception {
+        // arrange
+        // creates input to let the current player interact with card
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
-        PawnColour p = PawnColour.BLUE;
+        PawnColour p = PawnColour.BLUE; // select the blue student to be excluded
+        // input holds the selected student
         input.setTargetPawn(p);
 
+        // act
+        // activates the card to set the flag
         if (card09.checkInput(input)) card09.unsafeApplyEffect(input);
 
+        // assert
+        // check if the flag has been activated
         assertTrue(gb.getMutableEffects().isPawnColourDenied());
+        // verifies that the denied colour is the chosen one
         assertEquals(gb.getMutableEffects().getDeniedPawnColour().get(), p);
     }
 
+    /**
+     * An invalid player action should error out.
+     * <br>
+     * A colour has to be selected for the action to be working
+     *
+     * @throws Exception an invalid input has been used to activate the card
+     */
     @Test(expected = InputValidationException.class)
     public void checkInvalidInput() throws Exception {
+        // creates a wrong input which will not be filled with information (colour to be excluded)
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         if (card09.checkInput(input)) card09.unsafeApplyEffect(input);
     }
