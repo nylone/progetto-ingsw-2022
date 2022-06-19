@@ -1,15 +1,19 @@
 package it.polimi.ingsw.Controller.Actions;
 
+import it.polimi.ingsw.Controller.Enums.DestinationType;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.AssistantCard;
+import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.io.Serial;
 import java.util.List;
+
+import static it.polimi.ingsw.Constants.INPUT_NAME_ASSISTANT_CARD;
 
 public class MoveMotherNature extends PlayerAction {
     @Serial
@@ -22,16 +26,31 @@ public class MoveMotherNature extends PlayerAction {
         this.distanceToMove = distanceToMove;
     }
 
+    /**
+     * {@inheritDoc}
+     * <ul>
+     *     <li>The {@link GamePhase} must be {@link GamePhase#ACTION}</li>
+     *     <li>This action can be called only after having used all possible {@link MoveStudent} actions</li>
+     *     <li>The distance declared to move must be within acceptable ranges</li>
+     * </ul>
+     *
+     * @param history the controller stores a {@link List} of previous {@link PlayerAction}s related to the player taking
+     *                the current turn (at every new turn, the history is cleared).
+     *                Some actions may use this {@link List} to check for duplicates.
+     * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
+     *                the actions declares and what the Model offers.
+     * @return An empty {@link Optional} in case of a successful validation. Otherwise the returned {@link Optional}
+     * contains the related {@link InputValidationException}
+     */
     @Override
     protected Optional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
+        if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.ACTION) {
+            return Optional.of(new GenericInputValidationException("GamePhase", "the game is not in the correct phase"));
+        }
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         int maxCount = ctx.getMutablePlayerBoards().size() == 3 ? 4 : 3;
-        Optional<AssistantCard> optionalAssistantCard = ctx.getMutableTurnOrder()
-                .getMutableSelectedCard(currentPlayer);
-
-        if (
-                (!(history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count() == maxCount))
-        ) {
+        Optional<AssistantCard> optionalAssistantCard = ctx.getMutableTurnOrder().getMutableSelectedCard(currentPlayer);
+        if (!(super.countSimilarOccurrences(MoveStudent.class, history) == maxCount)) {
             return Optional.of(new GenericInputValidationException("History", "MotherNature can't be moved before having placed all " + maxCount + " pawns"));
         }
         if (!(history.get(history.size() - 1).getClass() == MoveStudent.class || (history.get(history.size() - 1).getClass() == PlayCharacterCard.class))) {

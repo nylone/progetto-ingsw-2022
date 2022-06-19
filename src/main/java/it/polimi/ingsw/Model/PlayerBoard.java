@@ -102,13 +102,8 @@ public class PlayerBoard implements Serializable {
         return diningRoom.get(colour);
     }
 
-    public boolean isDiningRoomFull(List<PawnColour> students) {
-        Map<PawnColour, Integer> inputCount = new HashMap<>(5);
-        students.forEach(s -> inputCount.merge(s, 1, Integer::sum));
-        for (Map.Entry<PawnColour, Integer> entry : inputCount.entrySet()) {
-            if (entry.getValue() + getDiningRoomCount(entry.getKey()) > 10) return true;
-        }
-        return false;
+    public boolean canDiningRoomFit(PawnColour student) {
+        return getDiningRoomCount(student) < 10;
     }
 
     public void addStudentsToEntrance(List<PawnColour> students) throws FullContainerException {

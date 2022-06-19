@@ -135,7 +135,7 @@ public class MoveStudentTest {
             gh.executeAction(moveStudent);
         } catch (InputValidationException exception) {
             assertEquals("An error occurred while validating: History\n" +
-                    "The error was: No PlayAssistantCard has been played", exception.getMessage());
+                    "The error was: the game is not in the correct phase", exception.getMessage());
         }
     }
 

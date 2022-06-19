@@ -24,7 +24,7 @@ public abstract class PlayerAction implements Serializable {
     /**
      * Package protected constructor used to initialize the playerBoardID.
      *
-     * @param playerBoardID the ID of the player that wishes to interact with the controller.
+     * @param playerBoardID the ID of the player who wishes to interact with the controller.
      * @param uniquePerTurn if set to false, the user can submit multiple actions of the same type during his turn.
      */
     protected PlayerAction(int playerBoardID, boolean uniquePerTurn) {
@@ -88,6 +88,10 @@ public abstract class PlayerAction implements Serializable {
             return Optional.empty();
         }
         return Optional.of(new GenericInputValidationException(this.getClass().getSimpleName(), "Too many similar actions have been executed"));
+    }
+
+    protected <E extends PlayerAction> int countSimilarOccurrences(Class<E> selected, List<PlayerAction> history) {
+        return (int) history.stream().filter(pa -> pa.getClass() == selected).count();
     }
 
     /**

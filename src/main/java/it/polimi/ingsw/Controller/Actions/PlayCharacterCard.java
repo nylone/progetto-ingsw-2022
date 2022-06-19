@@ -9,6 +9,7 @@ import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.CharacterCard;
 import it.polimi.ingsw.Model.CharacterCardInput;
 import it.polimi.ingsw.Model.Enums.GameMode;
+import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -19,6 +20,7 @@ import java.util.List;
 import static it.polimi.ingsw.Constants.*;
 
 public class PlayCharacterCard extends PlayerAction {
+    // todo why not use character card input? otherwise it's weird
     @Serial
     private static final long serialVersionUID = 207L; // convention: 2 for controller, (01 -> 99) for objects
 
@@ -55,7 +57,8 @@ public class PlayCharacterCard extends PlayerAction {
      *                Some actions may use this {@link List} to check for duplicates.
      * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
      *                the actions declares and what the Model offers.
-     * @return
+     * @return An empty {@link Optional} in case of a successful validation. Otherwise the returned {@link Optional}
+     * contains the related {@link InputValidationException}
      */
     @Override
     protected Optional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
@@ -63,8 +66,8 @@ public class PlayCharacterCard extends PlayerAction {
             return Optional.of(new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD, INPUT_NAME_CHARACTER_CARD + " can't be played in simple mode"));
         }
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
-        if (ctx.getMutableTurnOrder().getMutableSelectedCard(caller).isEmpty()) {
-            return Optional.of(new GenericInputValidationException(HISTORY, "No PlayAssistantCard has been played"));
+        if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.ACTION) {
+            return Optional.of(new GenericInputValidationException(HISTORY, "the game is not in the correct phase"));
         }
 
         // generate the input object before validation

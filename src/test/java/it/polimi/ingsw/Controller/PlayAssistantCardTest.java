@@ -75,7 +75,7 @@ public class PlayAssistantCardTest {
             gh.executeAction(action);
         } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: Assitant Card\n" +
-                    "The error was: Assitant Card has an already selected priority", exception.getMessage());
+                    "The error was: Assitant Card has already been selected by another player", exception.getMessage());
         }
 
 

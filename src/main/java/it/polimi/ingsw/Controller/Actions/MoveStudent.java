@@ -2,11 +2,13 @@ package it.polimi.ingsw.Controller.Actions;
 
 import it.polimi.ingsw.Controller.Enums.DestinationType;
 import it.polimi.ingsw.Controller.Enums.MoveDestination;
-import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Model.CharacterCardInput;
+import it.polimi.ingsw.Model.Enums.GameMode;
+import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -30,34 +32,41 @@ public class MoveStudent extends PlayerAction {
         this.destination = destination;
     }
 
+    /**
+     * {@inheritDoc}
+     * <ul>
+     *     <li>The {@link GamePhase} must be {@link GamePhase#ACTION}</li>
+     *     <li>Only a limited number of actions like this one can be played (3 or 4 depending on the players)</li>
+     *     <li>The student decleared to move must be part of the entrance on the {@link PlayerBoard}</li>
+     *     <li>If the destination is {@link DestinationType#ISLAND} then the island ID must be within bounds (0 to 12 excluded)</li>
+     *     <li>If the destination is {@link DestinationType#DININGROOM} then the dining room must be able to contain the pawn</li>
+     * </ul>
+     *
+     * @param history the controller stores a {@link List} of previous {@link PlayerAction}s related to the player taking
+     *                the current turn (at every new turn, the history is cleared).
+     *                Some actions may use this {@link List} to check for duplicates.
+     * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
+     *                the actions declares and what the Model offers.
+     * @return An empty {@link Optional} in case of a successful validation. Otherwise the returned {@link Optional}
+     * contains the related {@link InputValidationException}
+     */
     @Override
     protected Optional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
-        // super.validate(history, ctx)
-        // note: this method is not to be called as it fails if there are multiple actions of same type in history
-        // and this class will be present at least 3 times in the history as the turn is completed
-
         int maxCount = ctx.getMutablePlayerBoards().size() == 3 ? 4 : 3;
         int entranceSize = ctx.getMutablePlayerBoards().size() == 3 ? 9 : 7;
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
-        if (ctx.getMutableTurnOrder().getMutableSelectedCard(caller).isEmpty()) {
-            return Optional.of(new GenericInputValidationException(HISTORY, "No PlayAssistantCard has been played"));
+        if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.ACTION) {
+            return Optional.of(new GenericInputValidationException("GamePhase", "the game is not in the correct phase"));
         }
         if (history.size() > 0) {
             if (!(history.get(history.size() - 1).getClass() == MoveStudent.class || history.get(history.size() - 1).getClass() == PlayCharacterCard.class)) {
                 return Optional.of(new GenericInputValidationException(HISTORY, "MoveStudent can only be preceded by a PlayCharacterCard action or MoveStudent action"));
             }
         }
-        if (
-                !(history.stream().filter(playerAction -> playerAction.getClass() == MoveStudent.class).count() < maxCount)
-        ) {
+        if (super.countSimilarOccurrences(MoveStudent.class, history) >= maxCount) {
             return Optional.of(new GenericInputValidationException(HISTORY, "only " + maxCount + " pawns can be moved from entrance"));
         }
 
-        try {
-            caller = ctx.getMutablePlayerBoardById(this.getPlayerBoardID());
-        } catch (InvalidContainerIndexException e) {
-            return Optional.of(new InvalidElementException("Target Entrance Position"));
-        }
         if (!(this.selectedEntrancePosition >= 0 && this.selectedEntrancePosition < entranceSize)) {
             return Optional.of(new InvalidElementException("Index Target Entrance Position"));
         }
@@ -72,19 +81,13 @@ public class MoveStudent extends PlayerAction {
             } catch (Exception e) {
                 return Optional.of(new InvalidElementException("DestinationType not compatible with request"));
             }
-            try {
-                if (islandId < 0 || islandId > 12) {
-                    return Optional.of(new InvalidElementException(INPUT_NAME_TARGET_ISLAND)); // target ti out of bounds for id
-                }
-            } catch (Exception e) {
-                return Optional.of(new InvalidElementException("DestinationType not compatible with request"));
+            if (islandId < 0 || islandId > 12) {
+                return Optional.of(new InvalidElementException(INPUT_NAME_TARGET_ISLAND)); // target ti out of bounds for id
             }
-        }
-        // validate size of dining room
-        if (this.destination.getDestinationType() == DestinationType.DININGROOM) {
-            if (caller.isDiningRoomFull(List.of(caller.getEntranceStudents().get(this.selectedEntrancePosition).get()))) {
+        } else if (this.destination.getDestinationType() == DestinationType.DININGROOM) {
+            if (!caller.canDiningRoomFit(caller.getEntranceStudents().get(this.selectedEntrancePosition).get())) {
                 return Optional.of(new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
-                        CONTAINER_NAME_DININGROOM + "can't contain the pawn without overflowing on the lane."));
+                        CONTAINER_NAME_DININGROOM + "can't contain the pawn without overflowing."));
             }
         }
         return Optional.empty();

@@ -5,11 +5,8 @@ import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Misc.Optional;
-import it.polimi.ingsw.Model.AssistantCard;
+import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GamePhase;
-import it.polimi.ingsw.Model.Model;
-import it.polimi.ingsw.Model.PlayerBoard;
-import it.polimi.ingsw.Model.TurnOrder;
 
 import java.io.Serial;
 import java.util.List;
@@ -28,6 +25,24 @@ public class PlayAssistantCard extends PlayerAction {
         this.selectedAssistant = selectedAssistant - 1;
     }
 
+    /**
+     * {@inheritDoc}
+     * <ul>
+     *     <li>The {@link GamePhase} must be {@link GamePhase#SETUP}</li>
+     *     <li>The selected assistant card must be within bounds (always greater or equal to 0, always lesser or equal to the size of
+     *     the player's assistants deck</li>
+     *     <li>The player must play a card that has not been chosen by other players before (unless there are no other cards left to choose from)</li>
+     *     <li>The selected {@link AssistantCard} can only be used once by the player</li>
+     * </ul>
+     *
+     * @param history the controller stores a {@link List} of previous {@link PlayerAction}s related to the player taking
+     *                the current turn (at every new turn, the history is cleared).
+     *                Some actions may use this {@link List} to check for duplicates.
+     * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
+     *                the actions declares and what the Model offers.
+     * @return An empty {@link Optional} in case of a successful validation. Otherwise the returned {@link Optional}
+     * contains the related {@link InputValidationException}
+     */
     @Override
     protected Optional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
@@ -38,14 +53,12 @@ public class PlayAssistantCard extends PlayerAction {
         if (!(this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getMutableAssistantCards().size() - 1)) {
             return Optional.of(new InvalidElementException(INPUT_NAME_ASSISTANT_CARD));
         }
-        //assure that the player is not playing an assistant card with a priority 
-        for (PlayerBoard pb : turnOrder.getCurrentTurnOrder()) {
-            if (turnOrder.getMutableSelectedCard(pb).isPresent() && turnOrder.getMutableSelectedCard(pb).get().getPriority() == currentPlayer.getMutableAssistantCards().get(selectedAssistant).getPriority()) {
-                return Optional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " has an already selected priority"));
-            }
-        }
-        if (currentPlayer.getMutableAssistantCards().get(selectedAssistant).getUsed()) {
+        AssistantCard selectedCard = currentPlayer.getMutableAssistantCards().get(selectedAssistant);
+        if (selectedCard.getUsed()) {
             return Optional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + "can only be used once"));
+        }
+        if (ctx.getMutableTurnOrder().isAlreadyInSelection(selectedCard) && turnOrder.canPlayUniqueCard(currentPlayer)) {
+            return Optional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " has already been selected by another player"));
         }
         return Optional.empty();
     }

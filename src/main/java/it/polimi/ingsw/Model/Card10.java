@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
-import it.polimi.ingsw.Exceptions.Container.FullContainerException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
@@ -16,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import static it.polimi.ingsw.Constants.*;
-import static it.polimi.ingsw.Misc.Utils.canCollectionFit;
+import static it.polimi.ingsw.Misc.Utils.canMapFit;
 
 /**
  * EFFECT: You may exchange up to 2 Students between your entrance and your Dining Room
@@ -45,13 +43,12 @@ public class Card10 extends StatelessEffect {
         }
         // explode pawnpairs into respective arrays of elements
         List<Pair<PawnColour, PawnColour>> pawnPairs = optionalPawnPair.get();
-        List<PawnColour> fromEntrance = new ArrayList<>(pawnPairs.size());
         // first count how many students of each colour the user picked
-        Map<PawnColour, Integer> firstMap = new EnumMap<>(PawnColour.class); // counts user entrance selected colours
-        Map<PawnColour, Integer> secondMap = new EnumMap<>(PawnColour.class); // counts diningroom selected colours
+        Map<PawnColour, Integer> comingFromEntrance = new EnumMap<>(PawnColour.class); // counts user entrance selected colours
+        Map<PawnColour, Integer> comingFromDiningRoom = new EnumMap<>(PawnColour.class); // counts diningroom selected colours
         for (Pair<PawnColour, PawnColour> pair : pawnPairs) {
-            firstMap.merge(pair.getFirst(), 1, Integer::sum);
-            secondMap.merge(pair.getSecond(), 1, Integer::sum);
+            comingFromEntrance.merge(pair.getFirst(), 1, Integer::sum);
+            comingFromDiningRoom.merge(pair.getSecond(), 1, Integer::sum);
         }
 
         // get user entrance counts per colour
@@ -65,7 +62,7 @@ public class Card10 extends StatelessEffect {
         }
 
         // make sure the elements coming from user (first) are also mapped to entrance
-        if (!canCollectionFit(entranceMap, firstMap)) {
+        if (!canMapFit(entranceMap, comingFromEntrance)) {
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
         }
 
@@ -74,55 +71,19 @@ public class Card10 extends StatelessEffect {
             diningRoomMap.merge(pawn, playerBoard.getDiningRoomCount(pawn), Integer::sum);
         }
         // make sure the elements coming from diningRoom (second) are also mapped to the diningroom
-        if (!canCollectionFit(diningRoomMap, secondMap)) {
+        if (!canMapFit(diningRoomMap, comingFromDiningRoom)) {
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
         }
 
-        for (Pair<PawnColour, PawnColour> p : pawnPairs) {
-            fromEntrance.add(p.getFirst());
-        }
-
-        // validate size of entrance
-        if (playerBoard.getEntranceSpaceLeft() + pawnPairs.size() > input.getCaller().getEntranceSize()) {
-            throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
-                    CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
-                            + "pawns");
-        }
         // validate size of dining room
-        for (PawnColour p : secondMap.keySet()) {
-            try {
-                playerBoard.removeStudentsFromDiningRoom(p, secondMap.get(p));
-            } catch (EmptyContainerException e) {
+        for (PawnColour p : comingFromEntrance.keySet()) {
+            if (playerBoard.getDiningRoomCount(p) - comingFromDiningRoom.getOrDefault(p, 0) + comingFromEntrance.getOrDefault(p, 0) > 10) {
                 throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
-                        CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
-                                + "pawns");
+                        CONTAINER_NAME_DININGROOM + "can't contain " + pawnPairs.size()
+                                + "elements without overflowing on one of its lanes.");
             }
         }
-        if (playerBoard.isDiningRoomFull(fromEntrance)) {
-            for (PawnColour p : secondMap.keySet()) {
-                try {
-                    for (int i = 0; i < secondMap.get(p); i++)
-                        playerBoard.addStudentToDiningRoom(p);
-                } catch (FullContainerException e) {
-                    throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
-                            CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
-                                    + "pawns");
-                }
-            }
-            throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
-                    CONTAINER_NAME_DININGROOM + "can't contain " + pawnPairs.size()
-                            + "elements without overflowing on one of its lanes.");
-        }
-        for (PawnColour p : secondMap.keySet()) {
-            try {
-                for (int i = 0; i < secondMap.get(p); i++)
-                    playerBoard.addStudentToDiningRoom(p);
-            } catch (FullContainerException e) {
-                throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
-                        CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
-                                + "pawns");
-            }
-        }
+        
         return true; // all checks passed, return true
     }
 
@@ -139,10 +100,7 @@ public class Card10 extends StatelessEffect {
             fromDiningRoom.add(p.getSecond());
             playerBoard.removeStudentFromEntrance(p.getFirst());
             playerBoard.removeStudentsFromDiningRoom(p.getSecond(), 1);
-
         }
-
-
         // true effect happens here
         playerBoard.addStudentsToEntrance(fromDiningRoom);
         for (PawnColour student : fromEntrance) {

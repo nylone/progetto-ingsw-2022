@@ -68,7 +68,7 @@ public class TurnOrder implements Serializable {
         if (ac.getUsed()) { // no reuse card contract
             throw new ForbiddenOperationException(OPERATION_NAME_PLAY_ASSISTANT);
         }
-        if (isAlreadyInSelection(ac) && !canOnlyPlayDuplicates(pb)) { // no duplicate cards contract
+        if (isAlreadyInSelection(ac) && canPlayUniqueCard(pb)) { // no duplicate cards contract
             throw new DuplicateElementException("AssistantCard ac");
         }
 
@@ -85,13 +85,13 @@ public class TurnOrder implements Serializable {
         return getMutableCurrentPlayer() == pb;
     }
 
-    private boolean isAlreadyInSelection(AssistantCard ac) {
+    public boolean isAlreadyInSelection(AssistantCard ac) {
         return getSelectedCards().stream()
                 .anyMatch(selected -> selected.getPriority() == ac.getPriority());
     }
 
-    private boolean canOnlyPlayDuplicates(PlayerBoard pb) {
-        return pb.getMutableAssistantCards().stream().allMatch(this::isAlreadyInSelection);
+    public boolean canPlayUniqueCard(PlayerBoard pb) {
+        return !pb.getMutableAssistantCards().stream().allMatch(this::isAlreadyInSelection);
     }
 
     public PlayerBoard getMutableCurrentPlayer() {

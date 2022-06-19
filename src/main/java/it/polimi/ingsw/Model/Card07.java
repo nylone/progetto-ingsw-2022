@@ -13,7 +13,7 @@ import java.util.*;
 
 import static it.polimi.ingsw.Constants.CONTAINER_NAME_ENTRANCE;
 import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_PAIRS;
-import static it.polimi.ingsw.Misc.Utils.canCollectionFit;
+import static it.polimi.ingsw.Misc.Utils.canMapFit;
 
 /**
  * In Setup, draw 6 Students and place them on this card <br>
@@ -77,7 +77,7 @@ public class Card07 extends StatefulEffect {
             entranceMap.merge(pawn, 1, Integer::sum);
         }
         // make sure the elements coming from user (first) are also mapped to entrance
-        if (!canCollectionFit(entranceMap, firstMap)) {
+        if (!canMapFit(entranceMap, firstMap)) {
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
         }
 
@@ -87,7 +87,7 @@ public class Card07 extends StatefulEffect {
             cardMap.merge(pawn, 1, Integer::sum);
         }
         // make sure the elements coming from card (second) are also mapped to the card state
-        if (!canCollectionFit(cardMap, secondMap)) {
+        if (!canMapFit(cardMap, secondMap)) {
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
         }
         if (playerBoard.getEntranceSpaceLeft() + pawnPairs.size() >= input.getCaller().getEntranceSize()) {

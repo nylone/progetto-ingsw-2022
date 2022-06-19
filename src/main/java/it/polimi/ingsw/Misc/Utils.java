@@ -33,11 +33,11 @@ public class Utils {
         return group.get((index + group.size() + movement) % group.size());
     }
 
-    public static <T, C extends Integer> boolean canCollectionFit(Map<T, C> originalSet, Map<T, C> possibleSubset) {
+    public static <T, C extends Integer> boolean canMapFit(Map<T, C> originalSet, Map<T, C> possibleSubset) {
         for (Map.Entry<T, C> entry : possibleSubset.entrySet()) {
-            T colour = entry.getKey();
+            T key = entry.getKey();
             int count = entry.getValue();
-            if ((int) originalSet.get(colour) - count < 0) {
+            if ((int) originalSet.get(key) - count < 0) {
                 return false;
             }
         }
