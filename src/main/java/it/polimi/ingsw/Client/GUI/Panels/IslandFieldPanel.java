@@ -160,7 +160,7 @@ public class IslandFieldPanel extends JPanel {
             islandButton.setContentAreaFilled(false);
             islandButton.setFocusPainted(false);
             islandButton.setOpaque(false);
-            islandButton.setLayout(new GridLayout(3, 1, -10, 0));
+            islandButton.setLayout(new GridLayout(3, 1, -24, 0));
             for (PawnColour p : pawnCountMap.keySet()) {
                 if (pawnCountMap.get(p) > 0) {
                     //create new StudentButton
