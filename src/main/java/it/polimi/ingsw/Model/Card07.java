@@ -1,8 +1,10 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import it.polimi.ingsw.Logger;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -11,8 +13,8 @@ import it.polimi.ingsw.Model.Enums.StateType;
 import java.io.Serial;
 import java.util.*;
 
-import static it.polimi.ingsw.Constants.CONTAINER_NAME_ENTRANCE;
-import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_PAIRS;
+import static it.polimi.ingsw.Constants.*;
+import static it.polimi.ingsw.Constants.CONTAINER_NAME_STUDENT_BAG;
 import static it.polimi.ingsw.Misc.Utils.canMapFit;
 
 /**
@@ -29,7 +31,14 @@ public class Card07 extends StatefulEffect {
     public Card07(Model ctx) {
         super(7, 1, StateType.PAWNCOLOUR, ctx);
         for (int i = 0; i < 6; i++) {
-            this.students[i] = ctx.getMutableStudentBag().extract();
+            try {
+                this.students[i] = ctx.getMutableStudentBag().extract();
+            } catch (EmptyContainerException e) {
+                // should never happen
+                Logger.severe("student bag was found empty while adding a student Card07. Critical, unrecoverable, error");
+                throw new RuntimeException(e);
+            }
+
         }
     }
 
@@ -94,6 +103,9 @@ public class Card07 extends StatefulEffect {
             throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
                     CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
                             + "pawns");
+        }
+        if(context.getMutableStudentBag().getSize()==0){
+            throw new GenericInputValidationException(CONTAINER_NAME_STUDENT_BAG, CONTAINER_NAME_STUDENT_BAG + "is empty");
         }
 
         return true;

@@ -1,9 +1,11 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
+import it.polimi.ingsw.Logger;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
 
@@ -29,7 +31,13 @@ public class Card11 extends StatefulEffect {
     public Card11(Model ctx) {
         super(11, 2, StateType.PAWNCOLOUR, ctx);
         for (int i = 0; i < 4; i++) {
-            this.students[i] = ctx.getMutableStudentBag().extract();
+            try {
+                this.students[i] = ctx.getMutableStudentBag().extract();
+            } catch (EmptyContainerException e) {
+                // should never happen
+                Logger.severe("student bag was found empty while adding a student Card11. Critical, unrecoverable, error");
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -57,6 +65,9 @@ public class Card11 extends StatefulEffect {
             throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
                     CONTAINER_NAME_DININGROOM + "can't contain " + input.getTargetPawn().get()
                             + "without overflowing.");
+        }
+        if(context.getMutableStudentBag().getSize()==0){
+            throw new GenericInputValidationException(CONTAINER_NAME_STUDENT_BAG, CONTAINER_NAME_STUDENT_BAG + "is empty");
         }
         //all tests passed
         return true;
