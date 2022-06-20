@@ -209,11 +209,12 @@ public class Model implements Serializable {
                 .allMatch(AssistantCard::getUsed);
         // Check if bag is empty
         boolean emptyBag = this.getMutableStudentBag().isEmpty();
+        boolean noViableCloudTiles = this.getClouds().stream().allMatch(cloud -> cloud.getContents().size() == 0);
 
         return noTowersLeft ||
                 onlyThreeIslands ||
                 this.getMutableTurnOrder().getGamePhase() == GamePhase.SETUP &&
-                        (allCardsUsed || emptyBag);
+                        (allCardsUsed || (emptyBag && noViableCloudTiles));
     }
 
     public TurnOrder getMutableTurnOrder() {
