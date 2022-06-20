@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Controller.Actions;
 
-import it.polimi.ingsw.Controller.Enums.DestinationType;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
@@ -13,7 +12,7 @@ import it.polimi.ingsw.Model.PlayerBoard;
 import java.io.Serial;
 import java.util.List;
 
-import static it.polimi.ingsw.Constants.INPUT_NAME_ASSISTANT_CARD;
+import static it.polimi.ingsw.Misc.Utils.countSimilarClassOccurrences;
 
 public class MoveMotherNature extends PlayerAction {
     @Serial
@@ -29,8 +28,8 @@ public class MoveMotherNature extends PlayerAction {
     /**
      * {@inheritDoc}
      * <ul>
-     *     <li>The {@link GamePhase} must be {@link GamePhase#ACTION}</li>
      *     <li>This action can be called only after having used all possible {@link MoveStudent} actions</li>
+     *     <li>The previous {@link PlayerAction}s must be either {@link MoveStudent} or {@link PlayCharacterCard}</li>
      *     <li>The distance declared to move must be within acceptable ranges</li>
      * </ul>
      *
@@ -44,13 +43,10 @@ public class MoveMotherNature extends PlayerAction {
      */
     @Override
     protected Optional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
-        if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.ACTION) {
-            return Optional.of(new GenericInputValidationException("GamePhase", "the game is not in the correct phase"));
-        }
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         int maxCount = ctx.getMutablePlayerBoards().size() == 3 ? 4 : 3;
         Optional<AssistantCard> optionalAssistantCard = ctx.getMutableTurnOrder().getMutableSelectedCard(currentPlayer);
-        if (!(super.countSimilarOccurrences(MoveStudent.class, history) == maxCount)) {
+        if (!(countSimilarClassOccurrences(MoveStudent.class, history) == maxCount)) {
             return Optional.of(new GenericInputValidationException("History", "MotherNature can't be moved before having placed all " + maxCount + " pawns"));
         }
         if (!(history.get(history.size() - 1).getClass() == MoveStudent.class || (history.get(history.size() - 1).getClass() == PlayCharacterCard.class))) {

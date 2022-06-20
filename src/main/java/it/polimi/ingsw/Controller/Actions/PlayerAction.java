@@ -90,13 +90,9 @@ public abstract class PlayerAction implements Serializable {
         return Optional.of(new GenericInputValidationException(this.getClass().getSimpleName(), "Too many similar actions have been executed"));
     }
 
-    protected <E extends PlayerAction> int countSimilarOccurrences(Class<E> selected, List<PlayerAction> history) {
-        return (int) history.stream().filter(pa -> pa.getClass() == selected).count();
-    }
-
     /**
      * This function is used by {@link #validate(List, Model)} to check whether or not the declared {@link PlayerAction} is possible.<br>
-     * This function will check for:
+     * This function will check for the following requirements:
      *
      * @param history the controller stores a {@link List} of previous {@link PlayerAction}s related to the player taking
      *                the current turn (at every new turn, the history is cleared).
@@ -112,5 +108,16 @@ public abstract class PlayerAction implements Serializable {
         return playerBoardID;
     }
 
+    /**
+     * Every class extending {@link PlayerAction} must implement the following method, which takes a {@link Model} reference and
+     * applies the concrete effect of the action. <br>
+     * Warning: this function, as implied by the name, is unsafe. it should never be called by called outside the scope
+     * of the class {@link it.polimi.ingsw.Controller.Controller}, which takes adequate precautions in order to guarantee
+     * a coherent execution of the method.
+     * @param ctx the {@link Model} reference, once the method finishes running the game state will be altered.
+     * @throws Exception Should an error occur during the execution of the method, such error will be reported through the
+     * thrown {@link Exception}. Note that any {@link PlayerAction} inheritor should guarantee the absence of Exceptions
+     * for any positive return value yielded by {@link #validate(List, Model)}
+     */
     public abstract void unsafeExecute(Model ctx) throws Exception;
 }

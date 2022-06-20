@@ -6,8 +6,6 @@ import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Misc.Optional;
-import it.polimi.ingsw.Model.CharacterCardInput;
-import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Model;
@@ -17,6 +15,7 @@ import java.io.Serial;
 import java.util.List;
 
 import static it.polimi.ingsw.Constants.*;
+import static it.polimi.ingsw.Misc.Utils.countSimilarClassOccurrences;
 
 
 public class MoveStudent extends PlayerAction {
@@ -36,6 +35,7 @@ public class MoveStudent extends PlayerAction {
      * {@inheritDoc}
      * <ul>
      *     <li>The {@link GamePhase} must be {@link GamePhase#ACTION}</li>
+     *     <li>The previous {@link PlayerAction}s must be either {@link MoveStudent} or {@link PlayCharacterCard} or the history must be empty</li>
      *     <li>Only a limited number of actions like this one can be played (3 or 4 depending on the players)</li>
      *     <li>The student decleared to move must be part of the entrance on the {@link PlayerBoard}</li>
      *     <li>If the destination is {@link DestinationType#ISLAND} then the island ID must be within bounds (0 to 12 excluded)</li>
@@ -63,7 +63,7 @@ public class MoveStudent extends PlayerAction {
                 return Optional.of(new GenericInputValidationException(HISTORY, "MoveStudent can only be preceded by a PlayCharacterCard action or MoveStudent action"));
             }
         }
-        if (super.countSimilarOccurrences(MoveStudent.class, history) >= maxCount) {
+        if (countSimilarClassOccurrences(MoveStudent.class, history) >= maxCount) {
             return Optional.of(new GenericInputValidationException(HISTORY, "only " + maxCount + " pawns can be moved from entrance"));
         }
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.FullContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import it.polimi.ingsw.Logger;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
@@ -38,7 +39,13 @@ public class PlayerBoard implements Serializable {
         this.entrance = new ArrayList<>(numOfPlayers == 3 ? 9 : 7);
         if (numOfPlayers >= 2 && numOfPlayers <= 4) {
             for (int i = 0; i < (numOfPlayers == 3 ? 9 : 7); i++) {
-                entrance.add(Optional.of(studentBag.extract()));
+                try {
+                    entrance.add(Optional.of(studentBag.extract()));
+                } catch (EmptyContainerException e) {
+                    // should never happen
+                    Logger.severe("student bag was found empty while adding a student to an student entrance. Critical, unrecoverable, error");
+                    throw new RuntimeException(e);
+                }
             }
         } else {
             throw new RuntimeException("Inconsistent number of players");

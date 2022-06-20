@@ -46,7 +46,7 @@ public class PlayCharacterCard extends PlayerAction {
      * {@inheritDoc}
      * <ul>
      *     <li>The {@link GameMode} must be {@link GameMode#ADVANCED}</li>
-     *     <li>The player must have played a {@link PlayAssistantCard} action before</li>
+     *     <li>The {@link GamePhase} must be {@link GamePhase#ACTION}</li>
      *     <li>The selected character card must be within bounds (index 0 to 2 included)</li>
      *     <li>The player needs to have enough coins to by the card</li>
      *     <li>The {@link CharacterCardInput} generated from the attributes must be correct</li>
@@ -62,7 +62,7 @@ public class PlayCharacterCard extends PlayerAction {
      */
     @Override
     protected Optional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
-        if (ctx.getGameMode() == GameMode.SIMPLE) {
+        if (ctx.getGameMode() != GameMode.ADVANCED) {
             return Optional.of(new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD, INPUT_NAME_CHARACTER_CARD + " can't be played in simple mode"));
         }
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();

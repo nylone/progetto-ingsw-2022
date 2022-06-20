@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
+import it.polimi.ingsw.Logger;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TowerColour;
@@ -15,21 +17,15 @@ public class Island implements Serializable {
     private final int id;
     private final ArrayList<PawnColour> students;
     private Tower tower;
-    private boolean locked;
 
     public Island(int id) {
         this.id = id;
         this.students = new ArrayList<>();
         this.tower = null;
-        this.locked = false;
     }
 
     public int getId() {
         return id;
-    }
-
-    public boolean isLocked() {
-        return this.locked;
     }
 
     public ArrayList<PawnColour> getStudents() {
@@ -41,16 +37,14 @@ public class Island implements Serializable {
         else return Optional.of(this.tower.getColour());
     }
 
-    public void enableLock() {
-        this.locked = true;
-    }
-
-    public void disableLock() {
-        this.locked = false;
-    }
-
     public void addStudent(StudentBag bag) {
-        students.add(bag.extract());
+        try {
+            students.add(bag.extract());
+        } catch (EmptyContainerException e) {
+            // should never happen
+            Logger.severe("student bag was found empty while adding a student to an island. Critical, unrecoverable, error");
+            throw new RuntimeException(e);
+        }
     }
 
     public void addStudent(PawnColour p) {
@@ -70,7 +64,6 @@ public class Island implements Serializable {
                 "id=" + id +
                 ", students=" + students +
                 ", tower=" + tower +
-                "isLocked" + locked +
                 '}';
     }
 }

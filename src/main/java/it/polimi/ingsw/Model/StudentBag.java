@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
@@ -32,11 +33,19 @@ public class StudentBag implements Serializable {
 
     public List<PawnColour> multipleExtraction(int extractions) {
         List<PawnColour> extracted = new ArrayList<>();
-        for (int i = 0; i < extractions; i++) extracted.add(this.extract());
+        for (int i = 0; i < extractions && !this.isEmpty; i++) {
+            try {
+                extracted.add(this.extract());
+            } catch (EmptyContainerException e) {
+                // this catch clause should never be executed
+                throw new RuntimeException(e);
+            }
+        }
         return extracted;
     }
 
-    public PawnColour extract() {
+    public PawnColour extract() throws EmptyContainerException {
+        if (this.isEmpty) throw new EmptyContainerException("StudentBag");
         if (this.getSize() == 1) this.isEmpty = true;
         return this.studentBag.remove(this.studentBag.size() - 1);
     }

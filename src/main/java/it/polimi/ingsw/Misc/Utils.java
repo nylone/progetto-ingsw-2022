@@ -44,6 +44,10 @@ public class Utils {
         return true;
     }
 
+    public static <T, E extends T> int countSimilarClassOccurrences(Class<E> selected, List<T> history) {
+        return (int) history.stream().filter(pa -> pa.getClass() == selected).count();
+    }
+
     public static <T> ArrayList<T> sortByFrequency(List<T> array) {
         Map<T, ArrayList<T>> frequencyMap = new HashMap<>();
         for (T current : array) {
