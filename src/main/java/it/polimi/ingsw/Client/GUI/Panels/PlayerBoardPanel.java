@@ -139,7 +139,7 @@ public class PlayerBoardPanel extends JPanel {
                         JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
                 Container c = this.getParent();
                 while (!(c instanceof JTabbedPane jTabbedPane)) {
-                    //get JtabbedPane
+                    //get JTabbedPane
                     c = c.getParent();
                 }
                 //if user clicked first button (DiningRoom)

@@ -99,7 +99,6 @@ public class CliWriter implements Runnable {
             this.clientView.setNickname(nickname);
             String input;
             if (!this.clientView.isConnected()) Thread.currentThread().interrupt();
-            //noinspection InfiniteLoopStatement
             while (true) {
                 //acquire command from stdIn
                 input = stdIn.readLine();

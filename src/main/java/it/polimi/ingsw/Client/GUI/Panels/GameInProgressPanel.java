@@ -4,6 +4,8 @@ import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.GUIReader;
 import it.polimi.ingsw.Client.GUI.Window;
 import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
+import it.polimi.ingsw.Controller.Actions.MoveStudent;
+import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Model;
@@ -79,62 +81,75 @@ public class GameInProgressPanel extends JTabbedPane {
     public GameInProgressPanel(Context ctx, Model model, GUIReader guiReader) {
         this(ctx, guiReader);
         this.removeAll();
-        //add IslandFieldPanel to JTabbedPane
-        this.add("Islands", new IslandFieldPanel(model, sw, guiReader));
-        Map<String, PlayerBoardPanel> playerTabs = new HashMap<>();
-        ArrayList<String> tooltips = new ArrayList<>(model.getMutablePlayerBoards().size());
-        for (PlayerBoard pb : model.getMutablePlayerBoards()) {
-            //for all playerBoards create and add a PlayerBoardPanel to JTabbedPane
-            playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb, model, this.sw, guiReader));
-        }
-        for (Map.Entry<String, PlayerBoardPanel> pbp : playerTabs.entrySet()) {
-            //set a proper name to playerBoardPanel's tab inside jTabbedPane
-            if (pbp.getKey().equals(this.ownNickname)) {
-                if (pbp.getKey().equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname()))
-                    this.add("Your board (current player)", pbp.getValue());
-                else
-                    this.add("Your board", pbp.getValue());
-            } else {
-                if (pbp.getKey().equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname()))
-                    this.add(pbp.getKey() + "'s PlayerBoard (current player)", pbp.getValue());
-                else
-                    this.add(pbp.getKey() + "'s PlayerBoard", pbp.getValue());
-            }
-            PlayerBoard pb = null;
+        if(!model.isGameOver()) {
+            //add IslandFieldPanel to JTabbedPane
+            this.add("Islands", new IslandFieldPanel(model, sw, guiReader));
+            Map<String, PlayerBoardPanel> playerTabs = new HashMap<>();
+            ArrayList<String> tooltips = new ArrayList<>(model.getMutablePlayerBoards().size());
             //set ToolTip font
-            //UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 15));
-            try {
-                pb = model.getMutablePlayerBoardByNickname(pbp.getValue().getPlayerBoardNickname());
-            } catch (InvalidContainerIndexException e) {
-                e.printStackTrace();
+            UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 15));
+            for (PlayerBoard pb : model.getMutablePlayerBoards()) {
+                //for all playerBoards create and add a PlayerBoardPanel to JTabbedPane
+                playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb, model, this.sw, guiReader));
             }
-            String tooltip;
-            //create ToolTip's string for all playerBoardPanels' tabs (containing assistantCard that has been played and eventual coin balance)
-            if(model.getMutableTurnOrder().getMutableSelectedCard(pb).isPresent()){
-                tooltip = "<html>Assistant card played: #"+ model.getMutableTurnOrder().getMutableSelectedCard(pb).get().getPriority()+"<br>";
-            }else{
-                tooltip = "<html>No assistant card has been played<br>";
+            for (Map.Entry<String, PlayerBoardPanel> pbp : playerTabs.entrySet()) {
+                //set a proper name to playerBoardPanel's tab inside jTabbedPane
+                if (pbp.getKey().equals(this.ownNickname)) {
+                    if (pbp.getKey().equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname()))
+                        this.add("Your board (current player)", pbp.getValue());
+                    else
+                        this.add("Your board", pbp.getValue());
+                } else {
+                    if (pbp.getKey().equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname()))
+                        this.add(pbp.getKey() + "'s PlayerBoard (current player)", pbp.getValue());
+                    else
+                        this.add(pbp.getKey() + "'s PlayerBoard", pbp.getValue());
+                }
+                PlayerBoard pb = null;
+                try {
+                    pb = model.getMutablePlayerBoardByNickname(pbp.getValue().getPlayerBoardNickname());
+                } catch (InvalidContainerIndexException e) {
+                    e.printStackTrace();
+                }
+                String tooltip;
+                //create ToolTip's string for all playerBoardPanels' tabs (containing assistantCard that has been played and eventual coin balance)
+                if (model.getMutableTurnOrder().getMutableSelectedCard(pb).isPresent()) {
+                    tooltip = "<html>Played assistant card: #" + model.getMutableTurnOrder().getMutableSelectedCard(pb).get().getPriority() + "<br>";
+                } else {
+                    tooltip = "<html>No assistant card has been played<br>";
+                }
+                if (model.getGameMode() == GameMode.ADVANCED)
+                    tooltip = tooltip + "Available coins:" + (pb != null ? pb.getCoinBalance() : 0);
+                tooltip = tooltip + "</html>";
+                tooltips.add(tooltip);
             }
-            if(model.getGameMode() == GameMode.ADVANCED)
-                tooltip = tooltip+ "Available coins:"+ (pb != null ? pb.getCoinBalance() : 0);
-            tooltip = tooltip + "</html>";
-            tooltips.add(tooltip);
-        }
-        //add ToolTip to all playerBoardPanels' tabs
-        for(int i=1; i<=tooltips.size(); i++){
-            this.setToolTipTextAt(i,tooltips.get(i-1));
-        }
-        //If the game is an advanced game then create and add a new CharacterCardsPanel to JTabbedPane
-        if (model.getGameMode() == GameMode.ADVANCED) {
-            final JPanel characterCardsPanel = new CharacterCardsPanel(model, sw, guiReader);
-            this.add("CharacterCards", characterCardsPanel);
-        }
-        //create and add CloudPanel to JTabbedPane
-        this.add("Clouds", new CloudPanel(model.getClouds(), model.getMutableTurnOrder().getMutableCurrentPlayer(), guiReader, sw));
-        //set JTabbedPane to last tab whether the user has moved MotherNature (las tab is always the CloudPanel)
-        if(guiReader.getSuccessfulRequestsByType(MoveMotherNature.class)==1){
-            this.setSelectedIndex(this.getTabCount()-1);
-            this.getSelectedComponent();
+            //add ToolTip to all playerBoardPanels' tabs
+            for (int i = 1; i <= tooltips.size(); i++) {
+                this.setToolTipTextAt(i, tooltips.get(i - 1));
+            }
+            //If the game is an advanced game then create and add a new CharacterCardsPanel to JTabbedPane
+            if (model.getGameMode() == GameMode.ADVANCED) {
+                final JPanel characterCardsPanel = new CharacterCardsPanel(model, sw, guiReader);
+                this.add("CharacterCards", characterCardsPanel);
+            }
+            //create and add CloudPanel to JTabbedPane
+            this.add("Clouds", new CloudPanel(model.getClouds(), model.getMutableTurnOrder().getMutableCurrentPlayer(), guiReader, sw));
+            //set JTabbedPane to last tab whether the user has moved MotherNature (las tab is always the CloudPanel)
+            if (guiReader.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
+                this.setSelectedIndex(this.getTabCount() - 1);
+                this.getSelectedComponent();
+            }
+            if (model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname().equals(ownNickname)) {
+                if (guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0
+                        || (guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1 && guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 0)
+                ) {
+                    JLabel resLabel = new JLabel("It's your turn!!");
+                    resLabel.setFont(new Font("Monospaced", Font.BOLD, 22));
+                    JOptionPane.showMessageDialog(this.getParent(), resLabel, "Turn change", JOptionPane.PLAIN_MESSAGE);
+                }
+            }
+        }else{
+            this.add("WINNERS", new EndGamePanel(model.getWinners().get(), ctx));
         }
     }
 

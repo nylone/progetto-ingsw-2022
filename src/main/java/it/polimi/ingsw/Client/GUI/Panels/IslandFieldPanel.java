@@ -217,7 +217,6 @@ public class IslandFieldPanel extends JPanel {
 
             }
             islandButton.setToolTipText("<html><p width = 100px>ISLAND GROUP #" + islandGroups.get(i).getId() + "<br>" +
-                    "BUTTON NUMBER:" + i + "<br>" +
                     "STUDENTS:<br>" +
                     "RED:" + pawnCountMap.get(PawnColour.RED) + "<br>" +
                     "BLUE:" + pawnCountMap.get(PawnColour.BLUE) + "<br>" +

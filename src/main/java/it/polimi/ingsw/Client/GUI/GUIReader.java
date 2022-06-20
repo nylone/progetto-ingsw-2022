@@ -73,10 +73,11 @@ public class GUIReader implements Runnable {
                         //close socket and return to StartPanel
                         sw.close();
                         new StartPanel(ctx);
+                        return;
                     }
                     case ClientDisconnected clientDisconnected ->
                             new PopupMessage("Client " + clientDisconnected.getLastDisconnectedNickname() +
-                                    "just disconnected.", "Client disconnected");
+                                    " just disconnected.", "Client disconnected");
                     case ModelUpdated modelUpdated -> {
                         //create a new GameInProgressPanel with updated model
                         ctx.getWindow().changeView(new GameInProgressPanel(ctx, modelUpdated.getModel(), this));
@@ -94,6 +95,9 @@ public class GUIReader implements Runnable {
                         if (playerActionRequest.getClass().equals(EndTurnOfActionPhase.class) && playerActionFeedback.getStatusCode() == StatusCode.Success) {
                             requestAndFeedback.clear();
                         }
+                    }
+                    case GameOver gameOver -> {
+                        return;
                     }
                     case InvalidRequest ignored ->
                             JOptionPane.showMessageDialog(null, "Your request has not been executed, probably you are trying to play out of turn");
