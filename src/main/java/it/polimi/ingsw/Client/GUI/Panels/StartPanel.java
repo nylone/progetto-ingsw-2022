@@ -16,6 +16,7 @@ import java.net.Socket;
 public class StartPanel extends JPanel {
     /**
      * Create a new StartPanel
+     *
      * @param ctx Context that will be used by GUI's panels
      */
     public StartPanel(Context ctx) {

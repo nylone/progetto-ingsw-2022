@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.Client.GUI.IconLoader.*;
 
 /**
- *  Class containing all the elements necessary to graphically represent both the player’s playerBoard and the assistant cards still usable. It also implements
+ * Class containing all the elements necessary to graphically represent both the player’s playerBoard and the assistant cards still usable. It also implements
  * some logic of characterCard's actions which require to interact with the playerboard in order to work properly.
  */
 public class PlayerBoardPanel extends JPanel {
@@ -52,10 +52,11 @@ public class PlayerBoardPanel extends JPanel {
 
     /**
      * Create a new PlayerBoardPanel
-     * @param pb Player's playerboard to represent
-     * @param model Game's model
+     *
+     * @param pb            Player's playerboard to represent
+     * @param model         Game's model
      * @param socketWrapper socketWrapper to communicate with Server
-     * @param guiReader guiReader from GameInProgressPanel
+     * @param guiReader     guiReader from GameInProgressPanel
      */
     public PlayerBoardPanel(PlayerBoard pb, Model model, SocketWrapper socketWrapper, GUIReader guiReader) {
         this.player = pb;
@@ -326,6 +327,7 @@ public class PlayerBoardPanel extends JPanel {
 
     /**
      * get PlayerBoardNickname
+     *
      * @return playerBoardPanel's playerBoard's nickname
      */
     public String getPlayerBoardNickname() {
@@ -334,9 +336,10 @@ public class PlayerBoardPanel extends JPanel {
 
     /**
      * Executes characterCards' effects that interact directly with the playerBoard
-     * @param cardIndex card's priority
+     *
+     * @param cardIndex          card's priority
      * @param cardPositionInGame card's position inside the game (0 to 2)
-     * @param fromCard Optional list containing pawnColour picked from characterCard
+     * @param fromCard           Optional list containing pawnColour picked from characterCard
      */
     public void PlayCharacterCardEffect(int cardIndex, int cardPositionInGame, Optional<ArrayList<PawnColour>> fromCard) {
         PlayCharacterCard playCharacterCard = null;
@@ -347,12 +350,12 @@ public class PlayerBoardPanel extends JPanel {
         JCheckBox[] checkBoxes = new JCheckBox[player.getEntranceSize() - player.getEntranceSpaceLeft()];
         CheckBoxListener checkBoxListener;
         //initialize checkboxes' limit basing on characterCard that has been selected
-        if(cardIndex == 7) {
+        if (cardIndex == 7) {
             checkBoxListener = new CheckBoxListener(fromCard.get().size(), checkBoxes);
-        }else {
+        } else {
             checkBoxListener = new CheckBoxListener(2, checkBoxes);
         }
-        int countboxes=0;
+        int countboxes = 0;
         //create JPanel that will displayed by JoptionPane
         JPanel optionPanel = new JPanel();
         for (int j = 0; j < player.getEntranceSize(); j++) {
@@ -399,7 +402,7 @@ public class PlayerBoardPanel extends JPanel {
                 ArrayList<JSpinner> jSpinners = new ArrayList<>(pawnsFromEntrance.size());
                 for (PawnColour pawnColour : diningRoomCount.keySet()) {
                     //if diningRoom contains at least one pawn of that colour then create a JSpinner
-                    if(diningRoomCount.get(pawnColour)>0) {
+                    if (diningRoomCount.get(pawnColour) > 0) {
                         optionPanel.add(new JLabel(pawnColour.toString()));
                         //create a new JSPinner that allows 0 as minimum, and as maximum the minimum between the number of pawns selected from entrance
                         // and the number of pawns of that color present in the diningroom
@@ -455,7 +458,6 @@ public class PlayerBoardPanel extends JPanel {
         }
         return assistantsToShow;
     }
-
 
 
 }

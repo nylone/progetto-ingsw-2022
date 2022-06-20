@@ -32,6 +32,14 @@ import static it.polimi.ingsw.Client.GUI.IconLoader.*;
  */
 public class IslandFieldPanel extends JPanel {
     /**
+     * Contains game's information
+     */
+    private final Model model;
+    /**
+     * Contains GuiReader's information necessary to record user's requests during his turn
+     */
+    private final GUIReader guiReader;
+    /**
      * Optional Integer containing student's index inside player's PlayerBoard's entrance (necessary when sending MoveStudentAction to Server)
      */
     private Optional<Integer> entrancePositionToMove = Optional.empty();
@@ -39,26 +47,14 @@ public class IslandFieldPanel extends JPanel {
      * Optional Integer containing card's index inside game (0 to 2), it can be empty if no characterCard has been played
      */
     private Optional<Integer> selectedCharacterCard = Optional.empty();
-
     /**
      * Pawn from character card that player wants to move inside an island
      */
     private Optional<PawnColour> pawnFromCharacterCard = Optional.empty();
-
     /**
      * Status of islandField
      */
     private ActionType actionType = ActionType.NONE;
-
-    /**
-     * Contains game's information
-     */
-    private final Model model;
-
-    /**
-     * Contains GuiReader's information necessary to record user's requests during his turn
-     */
-    private final GUIReader guiReader;
 
 
     public IslandFieldPanel(Model model, SocketWrapper sw, GUIReader guiReader) {
@@ -203,13 +199,13 @@ public class IslandFieldPanel extends JPanel {
                 islandButton.add(tower);
             }
             //Drawing eventual NoEntryTile
-            if(islandGroups.get(i).getMutableNoEntryTiles().size()>0){
+            if (islandGroups.get(i).getMutableNoEntryTiles().size() > 0) {
                 //scale and set NoEntryTile's image
                 NoEntryTileComponent noEntryTileComponent = new NoEntryTileComponent(islandGroups.get(i).getMutableNoEntryTiles().size());
-                newImg = iconToImage(noEntryTileComponent.getIcon()).getScaledInstance(40,35, java.awt.Image.SCALE_SMOOTH);
+                newImg = iconToImage(noEntryTileComponent.getIcon()).getScaledInstance(40, 35, java.awt.Image.SCALE_SMOOTH);
                 icon = new ImageIcon(newImg);
                 noEntryTileComponent.setIcon(icon);
-                noEntryTileComponent.setPreferredSize(new Dimension(40,35));
+                noEntryTileComponent.setPreferredSize(new Dimension(40, 35));
                 //add NoEntryTile component to island's button
                 islandButton.add(noEntryTileComponent);
                 //add same IslandGroups' actionListeners to noEntryTileComponent
@@ -230,8 +226,9 @@ public class IslandFieldPanel extends JPanel {
 
     /**
      * Method used for setting IslandFieldPanel's actionType from external panels
+     *
      * @param actionType actionType that IslandFieldPanel will assume
-     * @param toRemove PlayerBoard's entrance's index containing the student to move (Optional.empty if action type is not MOVESTUDENT)
+     * @param toRemove   PlayerBoard's entrance's index containing the student to move (Optional.empty if action type is not MOVESTUDENT)
      */
     public void setActionType(ActionType actionType, Optional<Integer> toRemove) {
         if (actionType == ActionType.MOVESTUDENT) {
@@ -244,9 +241,10 @@ public class IslandFieldPanel extends JPanel {
 
     /**
      * Basing on CharacterCard that has been activated, this method setup IslandFieldPanel for send the right PlayerActionRequest to Server
+     *
      * @param actionType ActionType that IslandFieldPanel is going to switch to
-     * @param card  card's index inside game
-     * @param toMove possible pawn to move
+     * @param card       card's index inside game
+     * @param toMove     possible pawn to move
      */
     public void setCharacterCardAction(ActionType actionType, Optional<Integer> card, Optional<PawnColour> toMove) {
         this.actionType = actionType;
@@ -258,7 +256,8 @@ public class IslandFieldPanel extends JPanel {
 
     /**
      * Support method used to calculate difference between clicked islandGroup by user and actual motherNature's islandGroup
-     * @param islandGroups list of islandGroups present in game
+     *
+     * @param islandGroups      list of islandGroups present in game
      * @param destinationIsland IslandGroup that has been clicked by player
      * @return number of steps that motherNature should perform to reach wished IslandGroup
      */
@@ -275,6 +274,7 @@ public class IslandFieldPanel extends JPanel {
 
     /**
      * Support method used to increase islands' dimensions when the amount of IslandGroups decreases
+     *
      * @param IslandsNumbers number of IslandGroups to show
      * @return boost to add to original icons' dimensions
      */
@@ -294,6 +294,7 @@ public class IslandFieldPanel extends JPanel {
 
     /**
      * Support method to extract Image from icon
+     *
      * @param icon icon to convert
      * @return image represented by icon
      */

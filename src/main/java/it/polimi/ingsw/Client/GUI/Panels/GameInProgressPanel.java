@@ -43,6 +43,7 @@ public class GameInProgressPanel extends JTabbedPane {
 
     /**
      * Constructor that should be called only upon the creation of first GameInProgressPanel
+     *
      * @param ctx Context to use during the game
      */
     public GameInProgressPanel(Context ctx) {
@@ -59,7 +60,8 @@ public class GameInProgressPanel extends JTabbedPane {
 
     /**
      * Should be used upon the second creation of GameInProgressPanel
-     * @param ctx Context to use during the game
+     *
+     * @param ctx       Context to use during the game
      * @param guiReader created upon first gameInProgressPanel creation
      */
     private GameInProgressPanel(Context ctx, GUIReader guiReader) {
@@ -74,14 +76,15 @@ public class GameInProgressPanel extends JTabbedPane {
 
     /**
      * Public constructor to create GameInProgressPanel's object starting from the second creation; it should never be called the first time
-     * @param ctx Context to use during the game
-     * @param model Model containing all game's information
-     * @param guiReader  created upon first gameInProgressPanel creation
+     *
+     * @param ctx       Context to use during the game
+     * @param model     Model containing all game's information
+     * @param guiReader created upon first gameInProgressPanel creation
      */
     public GameInProgressPanel(Context ctx, Model model, GUIReader guiReader) {
         this(ctx, guiReader);
         this.removeAll();
-        if(!model.isGameOver()) {
+        if (!model.isGameOver()) {
             //add IslandFieldPanel to JTabbedPane
             this.add("Islands", new IslandFieldPanel(model, sw, guiReader));
             Map<String, PlayerBoardPanel> playerTabs = new HashMap<>();
@@ -148,16 +151,17 @@ public class GameInProgressPanel extends JTabbedPane {
                     JOptionPane.showMessageDialog(this.getParent(), resLabel, "Turn change", JOptionPane.PLAIN_MESSAGE);
                 }
             }
-        }else{
+        } else {
             this.add("WINNERS", new EndGamePanel(model.getWinners().get(), ctx));
         }
     }
 
     /**
      * Method to disable/enable all GUI's components; necessary for blocking GUI while waiting for Server's response
+     *
      * @param container Container to disable/enable
-     * @param enable <p>TRUE --> enable all Container's components</p>
-     *               <p>FALSE --> disable all Container's components</p>
+     * @param enable    <p>TRUE --> enable all Container's components</p>
+     *                  <p>FALSE --> disable all Container's components</p>
      */
     public void enableGUIComponents(Container container, boolean enable) {
         Component[] components = container.getComponents();

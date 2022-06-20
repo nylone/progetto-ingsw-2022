@@ -21,7 +21,8 @@ import java.util.UUID;
 public class GameStartingPanel extends JPanel {
     /**
      * Create a new GameStartingPanel
-     * @param ctx context that will be used by GUI's game's panels
+     *
+     * @param ctx     context that will be used by GUI's game's panels
      * @param isAdmin GameStartingPanel has been created by lobby's admin
      * @param lobbyID Lobby's UUID
      */

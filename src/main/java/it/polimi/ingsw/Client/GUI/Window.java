@@ -25,6 +25,7 @@ public class Window {
 
     /**
      * Remove all previous frame's contents and add a new JComponent
+     *
      * @param newView Component that will be drawn inside the frame
      */
     public void changeView(JComponent newView) {

@@ -29,27 +29,25 @@ public class GUIReader implements Runnable {
      * List of actions executed by current player and their feedbacks
      */
     private final List<Pair<PlayerAction, PlayerActionFeedback>> requestAndFeedback = new ArrayList<>();
-
+    /**
+     * Context received from GameInProgressPanel
+     */
+    private final Context ctx;
+    /**
+     * SocketWrapper used to communicate with Server
+     */
+    private final SocketWrapper sw;
     /**
      * Last player's request send to Server
      */
     private PlayerAction playerActionRequest;
 
-    /**
-     * Context received from GameInProgressPanel
-     */
-    private final Context ctx;
-
-    /**
-     * SocketWrapper used to communicate with Server
-     */
-    private final SocketWrapper sw;
-
 
     /**
      * Create a new GUIReader
+     *
      * @param gameInProgressPanel GameInProgressPanel that call the constructor
-     * @param ctx Context containing socket and GUI's window
+     * @param ctx                 Context containing socket and GUI's window
      */
     public GUIReader(GameInProgressPanel gameInProgressPanel, Context ctx) {
         this.gameInProgressPanel = gameInProgressPanel;
@@ -111,6 +109,7 @@ public class GUIReader implements Runnable {
 
     /**
      * Save user's request that will be added in history after receiving its feedback
+     *
      * @param playerActionRequest playerActionRequest to save
      */
     public void savePlayerActionRequest(PlayerAction playerActionRequest) {
@@ -119,6 +118,7 @@ public class GUIReader implements Runnable {
 
     /**
      * Count PlayerActions that have received a successful response from Server
+     *
      * @param playerActionClass PlayerAction's class that will be counted
      * @return PlayerAction amount that received a successful response from Server
      */

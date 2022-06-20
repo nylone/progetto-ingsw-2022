@@ -9,11 +9,19 @@ import java.util.ArrayList;
 
 import static it.polimi.ingsw.Client.GUI.IconLoader.*;
 
+
 public class CloudComponent extends JButton {
 
-    public CloudComponent(ImageIcon cloudImage, Cloud cloud/*, boolean isDualPlayerGame*/) {
+    /**
+     * Create a new JButton with cloud as icon and draw students inside it
+     *
+     * @param cloudImage Cloud's icon to display
+     * @param cloud      Cloud that will be represented by button
+     */
+    public CloudComponent(ImageIcon cloudImage, Cloud cloud) {
         super(cloudImage);
         ArrayList<JLabel> students = new ArrayList<>(cloud.getContents().size());
+        //create labels basing on pawnColour
         for (PawnColour studentOnCloud : cloud.getContents()) {
             switch (studentOnCloud) {
                 case RED -> students.add(new JLabel(RedStudent));
@@ -23,11 +31,13 @@ public class CloudComponent extends JButton {
                 case PINK -> students.add(new JLabel(PinkStudent));
             }
         }
+        //remove border from CloudComponent button
         this.setBorderPainted(false);
         this.setContentAreaFilled(false);
         this.setFocusPainted(false);
         this.setOpaque(false);
         this.setLayout(new GridLayout(2, 2));
+        //add students' labels to CloudComponent
         students.forEach(this::add);
 
 

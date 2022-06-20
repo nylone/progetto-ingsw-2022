@@ -17,6 +17,7 @@ import java.io.IOException;
 public class UserCredentialsPanel extends JPanel {
     /**
      * Create a new UserCredentialsPanel
+     *
      * @param ctx context received form StartPanel
      */
     public UserCredentialsPanel(Context ctx) {

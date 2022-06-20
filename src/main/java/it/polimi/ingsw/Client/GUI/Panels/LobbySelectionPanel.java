@@ -21,7 +21,8 @@ import java.util.UUID;
 public class LobbySelectionPanel extends JTabbedPane {
     /**
      * Create a new LobbySelectionPanel
-     * @param ctx context that will be used by GUI's game's panels
+     *
+     * @param ctx           context that will be used by GUI's game's panels
      * @param publicLobbies list of publicLobbies available at that moment
      */
     public LobbySelectionPanel(Context ctx, List<LobbyInfo> publicLobbies) {

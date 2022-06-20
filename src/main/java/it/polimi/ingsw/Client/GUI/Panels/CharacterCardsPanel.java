@@ -313,6 +313,7 @@ public class CharacterCardsPanel extends JPanel {
 
     /**
      * Support method for printing characterCard's info
+     *
      * @param characterCard CharacterCard desired by the player
      * @return String containing all card's information
      */
@@ -359,8 +360,9 @@ public class CharacterCardsPanel extends JPanel {
 
     /**
      * Support method, responsible for checking whether the characterCard contains some elements (statefulEffect)
+     *
      * @param characterCard CharacterCard to check
-     * @param container Container that will contain eventual characterCard's state
+     * @param container     Container that will contain eventual characterCard's state
      */
     private void checkStatefulCard(CharacterCard characterCard, JLabel container) {
         //continue only if characterCard has a state
@@ -383,6 +385,7 @@ public class CharacterCardsPanel extends JPanel {
 
     /**
      * Support method used for getting a list of StudentButtons starting from a list of PawnColours
+     *
      * @param pawns List of pawnColours that will be used for creating the studentButtons
      * @return list of StudentButton
      */
