@@ -25,18 +25,10 @@ public class CharacterDeckGenerator {
                 Card12::new);
         Collections.shuffle(deck, new Random(System.currentTimeMillis()));
         return deck.subList(0, 3).stream()
-                .map(gen -> {
-                    try {
-                        return gen.build(context);
-                    } catch (EmptyContainerException e) {
-                        // should never happen
-                        Logger.severe("student bag was found empty during game initialization. Critical, unrecoverable, error");
-                        throw new RuntimeException(e);
-                    }
-                }).toList();
+                .map(gen -> gen.build(context)).toList();
     }
 
     private interface CharacterCardGenerator {
-        CharacterCard build(Model ctx) throws EmptyContainerException;
+        CharacterCard build(Model ctx);
     }
 }
