@@ -449,4 +449,19 @@ public class PlayCharacterCardTest {
                     "The error was: Character Card can't be played due to insufficient coin balance", exception.getMessage());
         }
     }
+
+    @Test
+    public void CharacterCardActionOutOfPhase() throws Exception{
+        Model model = initializeGameBoard(40, 2, 2);
+        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
+        Controller controller = new Controller(new ModelWrapper(model, null), new ArrayList<>());
+        PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.empty());
+
+        try {
+            controller.executeAction(playCharacterCard);
+        } catch (GenericInputValidationException exception) {
+            assertEquals("An error occurred while validating: History\n" +
+                    "The error was: the game is not in the correct phase", exception.getMessage());
+        }
+    }
 }

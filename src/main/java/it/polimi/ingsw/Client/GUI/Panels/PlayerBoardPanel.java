@@ -372,7 +372,7 @@ public class PlayerBoardPanel extends JPanel {
             checkBoxListener = new CheckBoxListener(2, checkBoxes);
         }
         int countboxes = 0;
-        //create JPanel that will displayed by JoptionPane
+        //create JPanel that will be displayed by JoptionPane
         JPanel optionPanel = new JPanel();
         for (int j = 0; j < player.getEntranceSize(); j++) {
             //scan entrance and add a new CheckBox for every present pawn

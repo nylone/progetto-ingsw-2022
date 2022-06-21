@@ -32,11 +32,11 @@ public class IslandUI {
         // Adds an identifier if the island contains MotherNature
         String mn = ctx.getMutableIslandField().getMutableMotherNaturePosition().equals(i) ? "*" : "";
 
-        String students = "";
+        StringBuilder students = new StringBuilder();
         // Prints each student on the island
         ArrayList<PawnColour> sortedStudents = Utils.sortByFrequency(i.getStudents());
         for (PawnColour p : sortedStudents) {
-            students = students + Symbols.colorizeStudent(p, Symbols.PAWN + " ");
+            students.append(Symbols.colorizeStudent(p, Symbols.PAWN + " "));
         }
 
         // Adds padding if the current island doesn't hold the most students
@@ -45,7 +45,7 @@ public class IslandUI {
             maxStudents = Math.max(maxStudents, ig.getStudents().size());
         }
         if (i.getStudents().size() < maxStudents) {
-            students = students + "  ".repeat(maxStudents - i.getStudents().size()); // padding
+            students.append("  ".repeat(maxStudents - i.getStudents().size())); // padding
         }
 
         // Prints the tower representation accounting for team and quantity

@@ -23,32 +23,32 @@ public class PlayerBoardUI {
      * @return the complete player board UI component
      */
     public static String drawPlayerBoard(PlayerBoard playerBoard, Model ctx) {
-        String screen = "";
+        StringBuilder screen = new StringBuilder();
         // Playerboard sections' titles. Change the argument of repeat() to further separate islands from playerboards
-        screen = screen + "\n".repeat(1) + "Entrance:\t" + "Dining Room:\t\t" + "Teachers:\t" + "Towers:\t\t";
+        screen.append("\n".repeat(1)).append("Entrance:\t").append("Dining Room:\t\t").append("Teachers:\t").append("Towers:\t\t");
         // Coins should be printed only if game mode is advanced
         if (ctx.getGameMode() == GameMode.ADVANCED) {
-            screen = screen + "Coins available:" + playerBoard.getCoinBalance() + "\n";
+            screen.append("Coins available:").append(playerBoard.getCoinBalance()).append("\n");
         } else {
-            screen = screen + "\n";
+            screen.append("\n");
         }
 
         String entrance = PlayerBoardUI.drawEntrance(playerBoard, ctx);
         String towers = PlayerBoardUI.drawTowers(playerBoard, ctx);
         for (PawnColour p : PawnColour.values()) {
             // This will print just one line of the entrance UI component
-            screen = screen + entrance.substring(0, entrance.indexOf('\n'));
+            screen.append(entrance, 0, entrance.indexOf('\n'));
             entrance = entrance.substring(entrance.indexOf('\n') + 1);
             // This will print one row of the dining room
-            screen = screen + "\t\t" + PlayerBoardUI.drawDiningRoomRow(p, playerBoard, ctx.getGameMode());
+            screen.append("\t\t").append(PlayerBoardUI.drawDiningRoomRow(p, playerBoard, ctx.getGameMode()));
             // This will print one teacher per row if present
-            screen = screen + "\t   " + PlayerBoardUI.drawTeacher(p, playerBoard, ctx);
+            screen.append("\t   ").append(PlayerBoardUI.drawTeacher(p, playerBoard, ctx));
 
             // This will print just one line of the towers UI component
-            screen = screen + "\t\t  " + towers.substring(0, towers.indexOf('\n') + 1);
+            screen.append("\t\t  ").append(towers, 0, towers.indexOf('\n') + 1);
             towers = towers.substring(towers.indexOf("\n") + 1);
         }
-        return screen;
+        return screen.toString();
     }
 
     /**
@@ -119,19 +119,19 @@ public class PlayerBoardUI {
      * @return a fixed length line containing all the students on the specific dining room's row
      */
     public static String drawDiningRoomRow(PawnColour rowColour, PlayerBoard p, GameMode gameMode) {
-        String diningRoom = "";
+        StringBuilder diningRoom = new StringBuilder();
         // Fills the row with the 10 elements which could be students or empty spaces
         for (int i = 0; i < 10; i++) {
             if (i < p.getDiningRoomCount(rowColour)) { // prints a student if there is still any to print
-                diningRoom = diningRoom + Symbols.colorizeStudent(rowColour, Symbols.PAWN + " ");
+                diningRoom.append(Symbols.colorizeStudent(rowColour, Symbols.PAWN + " "));
             } else {
                 // It adds coins in the III, VI and IX positions if the game mode is advanced
                 if (gameMode.equals(GameMode.ADVANCED) && (i + 1) % 3 == 0) {
-                    diningRoom = diningRoom + Symbols.COIN + " ";
-                } else diningRoom = diningRoom + "  "; // adds whitespaces in the remaining empty places
+                    diningRoom.append(Symbols.COIN).append(" ");
+                } else diningRoom.append("  "); // adds whitespaces in the remaining empty places
             }
         }
-        return diningRoom;
+        return diningRoom.toString();
     }
 
     /**

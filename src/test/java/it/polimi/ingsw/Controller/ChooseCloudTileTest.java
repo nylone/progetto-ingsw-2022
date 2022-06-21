@@ -129,17 +129,8 @@ public class ChooseCloudTileTest {
         }
     }
 
-    /**
-     * We use the debug version of
-     * GameBoard and GameHandler
-     * <p>
-     * activating PlayCharacterCard action before the second chooseCloudTile action assure to not satisfy the condition
-     * checked on PreviousActionNotValid method.
-     *
-     * @throws Exception
-     */
     @Test
-    public void FullEntranceExceptionTest() throws Exception {
+    public void RepeatedActionException() throws Exception {
         StudentBag studentBag = new StudentBag(24);
         List<PlayerBoard> players = new ArrayList<>(2);
         players.add(new PlayerBoard(0, 2, "Rouge", studentBag));
@@ -261,7 +252,7 @@ public class ChooseCloudTileTest {
     }
 
     @Test
-    public void outOfTurnException() throws Exception {
+    public void FullEntranceExceptionTest() throws Exception {
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());

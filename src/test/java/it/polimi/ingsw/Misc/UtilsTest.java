@@ -20,8 +20,6 @@ public class UtilsTest {
         // execution of the random method
         String randomValue = Utils.random(list);
 
-        System.out.println(randomValue);
-
         // verify correctness of random implementation
         assertTrue(list.contains(randomValue));
 
@@ -35,8 +33,6 @@ public class UtilsTest {
         Collections.addAll(list, 1, 5, 10, 13);
 
         int generatedNumber = Utils.random(list);
-
-        System.out.println(generatedNumber);
 
         assertTrue(list.contains(generatedNumber));
 

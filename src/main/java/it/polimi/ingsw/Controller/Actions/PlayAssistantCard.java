@@ -51,14 +51,14 @@ public class PlayAssistantCard extends PlayerAction {
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         TurnOrder turnOrder = ctx.getMutableTurnOrder();
         if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.SETUP) {
-            return Optional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + "may only be used during the setup phase"));
+            return Optional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " may only be used during the setup phase"));
         }
         if (!(this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getMutableAssistantCards().size() - 1)) {
             return Optional.of(new InvalidElementException(INPUT_NAME_ASSISTANT_CARD));
         }
         AssistantCard selectedCard = currentPlayer.getMutableAssistantCards().get(selectedAssistant);
         if (selectedCard.getUsed()) {
-            return Optional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + "can only be used once"));
+            return Optional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " can only be used once"));
         }
         if (ctx.getMutableTurnOrder().isAlreadyInSelection(selectedCard) && turnOrder.canPlayUniqueCard(currentPlayer)) {
             return Optional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " has already been selected by another player"));

@@ -41,7 +41,7 @@ public class EndTurnOfActionPhase extends PlayerAction {
             return Optional.of(new GenericInputValidationException("History", "ChooseCloudTile action has not been executed"));
         }
         if (!(history.get(history.size() - 1).getClass() == ChooseCloudTile.class || (history.get(history.size() - 1).getClass() == PlayCharacterCard.class))) {
-            return Optional.of(new GenericInputValidationException("History", "his action can only be executed after a ChooseCloudTile action or PlayCharacterCard action"));
+            return Optional.of(new GenericInputValidationException("History", "this action can only be executed after a ChooseCloudTile action or PlayCharacterCard action"));
         }
 
         return Optional.empty();

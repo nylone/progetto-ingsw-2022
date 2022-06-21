@@ -97,18 +97,6 @@ public class MoveMotherNatureTest {
         }
     }
 
-    @Test(expected = InputValidationException.class)
-    public void duplicateMoveMotherNatureException() throws Exception {
-        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        AssistantCard card = Utils.random(player.getMutableAssistantCards());
-        model.getMutableTurnOrder().setSelectedCard(player, card);
-        int randomMovement = new Random().nextInt(model.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement());
-        randomMovement = randomMovement == 0 ? 1 : randomMovement;
-        PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
-        // act
-        gh.executeAction(action);
-        gh.executeAction(action); //exception, duplicate action
-    }
 
     @Test(expected = InputValidationException.class)
     public void NoAssistantCardException() throws Exception {

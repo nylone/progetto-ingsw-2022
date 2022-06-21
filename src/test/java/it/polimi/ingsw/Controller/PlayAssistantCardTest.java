@@ -3,6 +3,7 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.AssistantCard;
@@ -51,17 +52,6 @@ public class PlayAssistantCardTest {
         assertEquals(model.getMutableTurnOrder().getMutableSelectedCard(player).get().getPriority(), player.getMutableAssistantCards().stream().filter(AssistantCard::getUsed).findFirst().get().getPriority());
     }
 
-    @Test(expected = InputValidationException.class)
-    public void SelectedAlreadyUsedCardException() throws Exception {
-        ModelWrapper modelWrapper = new ModelWrapper(GameMode.SIMPLE, Optional.empty(), "ale", "teo");
-        Controller gh = new Controller(modelWrapper, new ArrayList<>(6));
-        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        PlayAssistantCard action = new PlayAssistantCard(player.getId(), 3);
-        // act
-        gh.executeAction(action);
-        gh.executeAction(action);
-    }
-
     @Test
     public void SelectedSamePriorityCardException() throws InputValidationException {
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
@@ -81,17 +71,53 @@ public class PlayAssistantCardTest {
 
     }
 
-    @Test(expected = InputValidationException.class)
-    public void OutOfTurnAccessException() throws Exception {
+    @Test
+    public void PlayerBoardIndexOutOfBoundException() throws Exception {
         PlayAssistantCard action = new PlayAssistantCard(3, 3);
         // act
-        gh.executeAction(action);
+        try {
+            gh.executeAction(action);
+        } catch (InvalidElementException exception) {
+            assertEquals("An error occurred while validating: PlayerBoardID out of range\n" +
+                    "The error was: element PlayerBoardID out of range was found to be invalid (eg: null, out of bounds or otherwise incorrect).", exception.getMessage());
+        }
     }
 
-    @Test(expected = InputValidationException.class)
+    @Test
     public void AssistantCardIndexOutOfBound() throws Exception {
-        PlayAssistantCard action = new PlayAssistantCard(3, 13);
+        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
+        PlayAssistantCard action = new PlayAssistantCard(player.getId(), 13);
         // act
-        gh.executeAction(action);
+        try {
+            gh.executeAction(action);
+        } catch (InvalidElementException exception) {
+            assertEquals("An error occurred while validating: Assitant Card\n" +
+                    "The error was: element Assitant Card was found to be invalid (eg: null, out of bounds or otherwise incorrect).", exception.getMessage());
+        }
+    }
+
+    @Test
+    public void playAssistantCardOutOfSetupPhase() throws Exception{
+        //first player assistantCard action
+        PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
+        AssistantCard card = player.getMutableAssistantCards().get(0);
+        PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
+        gh.executeAction(playAssistantCard);
+        //second player assistantcard action
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
+        card = player.getMutableAssistantCards().get(9);
+        PlayAssistantCard playAssistantCard1 = new PlayAssistantCard(player.getId(), card.getPriority());
+        gh.executeAction(playAssistantCard1);
+
+        //repeated assistantCard action not valid
+        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
+        card = player.getMutableAssistantCards().get(1);
+        playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
+        try {
+            gh.executeAction(playAssistantCard);
+        }catch (GenericInputValidationException e){
+            assertEquals("An error occurred while validating: Assitant Card\n" +
+                    "The error was: Assitant Card may only be used during the setup phase", e.getMessage());
+        }
     }
 }

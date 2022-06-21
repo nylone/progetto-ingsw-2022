@@ -22,7 +22,7 @@ public class GameUI {
      */
     public static String draw(Model ctx) {
         // The background colour helpful to enhance contrast between black towers and the default black background console
-        String screen = Symbols.BACKGROUND;
+        StringBuilder screen = new StringBuilder(Symbols.BACKGROUND);
 
         String clouds = CloudUI.draw(ctx); // draws the cloud component which will be stripped and printed line by line
         int groupsSize = ctx.getMutableIslandField().getMutableGroups().size();
@@ -36,14 +36,14 @@ public class GameUI {
             // an empty line
             if (i < ctx.getMutableIslandField().getMutableGroups().size()) {
                 String currentIsland = IslandUI.draw(ctx.getMutableIslandField().getMutableGroups().get(i), ctx);
-                screen = screen + currentIsland + "\t".repeat(2); // '\t' is used for horizontal separation between islands and clouds
-            } else screen = screen + IslandUI.drawEmptyRow(ctx) + "\t".repeat(2);
+                screen.append(currentIsland).append("\t".repeat(2)); // '\t' is used for horizontal separation between islands and clouds
+            } else screen.append(IslandUI.drawEmptyRow(ctx)).append("\t".repeat(2));
 
             // This will print just one line of the clouds UI component
-            screen = screen + clouds.substring(0, clouds.indexOf('\n') + 1);
+            screen.append(clouds, 0, clouds.indexOf('\n') + 1);
             clouds = clouds.substring(clouds.indexOf('\n') + 1);
         }
 
-        return screen;
+        return screen.toString();
     }
 }
