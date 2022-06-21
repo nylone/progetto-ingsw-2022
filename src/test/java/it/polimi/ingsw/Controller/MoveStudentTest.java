@@ -134,7 +134,7 @@ public class MoveStudentTest {
         try {
             gh.executeAction(moveStudent);
         } catch (InputValidationException exception) {
-            assertEquals("An error occurred while validating: History\n" +
+            assertEquals("An error occurred while validating: GamePhase\n" +
                     "The error was: the game is not in the correct phase", exception.getMessage());
         }
     }
