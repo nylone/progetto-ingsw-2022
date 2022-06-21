@@ -12,7 +12,6 @@ import it.polimi.ingsw.Model.Enums.StateType;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static it.polimi.ingsw.Constants.*;
 
@@ -66,7 +65,7 @@ public class Card11 extends StatefulEffect {
                     CONTAINER_NAME_DININGROOM + "can't contain " + input.getTargetPawn().get()
                             + "without overflowing.");
         }
-        if(context.getMutableStudentBag().getSize()==0){
+        if (context.getMutableStudentBag().getSize() == 0) {
             throw new GenericInputValidationException(CONTAINER_NAME_STUDENT_BAG, CONTAINER_NAME_STUDENT_BAG + "is empty");
         }
         //all tests passed

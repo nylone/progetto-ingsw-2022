@@ -13,7 +13,8 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import static it.polimi.ingsw.Constants.*;
+import static it.polimi.ingsw.Constants.CONTAINER_NAME_DININGROOM;
+import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_PAIRS;
 import static it.polimi.ingsw.Misc.Utils.canMapFit;
 
 /**
@@ -83,7 +84,7 @@ public class Card10 extends StatelessEffect {
                                 + "elements without overflowing on one of its lanes.");
             }
         }
-        
+
         return true; // all checks passed, return true
     }
 

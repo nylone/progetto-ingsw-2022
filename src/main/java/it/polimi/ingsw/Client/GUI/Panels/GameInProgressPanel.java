@@ -59,22 +59,6 @@ public class GameInProgressPanel extends JTabbedPane {
     }
 
     /**
-     * Should be used upon the second creation of GameInProgressPanel
-     *
-     * @param ctx       Context to use during the game
-     * @param guiReader created upon first gameInProgressPanel creation
-     */
-    private GameInProgressPanel(Context ctx, GUIReader guiReader) {
-        this.ownNickname = ctx.getNickname();
-        this.window = ctx.getWindow();
-        this.sw = ctx.getSocketWrapper();
-        this.window.changeView(this);
-        this.guiReader = guiReader;
-        Thread readerThread = new Thread(guiReader);
-        readerThread.start();
-    }
-
-    /**
      * Public constructor to create GameInProgressPanel's object starting from the second creation; it should never be called the first time
      *
      * @param ctx       Context to use during the game
@@ -154,6 +138,22 @@ public class GameInProgressPanel extends JTabbedPane {
         } else {
             this.add("WINNERS", new EndGamePanel(model.getWinners().get(), ctx));
         }
+    }
+
+    /**
+     * Should be used upon the second creation of GameInProgressPanel
+     *
+     * @param ctx       Context to use during the game
+     * @param guiReader created upon first gameInProgressPanel creation
+     */
+    private GameInProgressPanel(Context ctx, GUIReader guiReader) {
+        this.ownNickname = ctx.getNickname();
+        this.window = ctx.getWindow();
+        this.sw = ctx.getSocketWrapper();
+        this.window.changeView(this);
+        this.guiReader = guiReader;
+        Thread readerThread = new Thread(guiReader);
+        readerThread.start();
     }
 
     /**

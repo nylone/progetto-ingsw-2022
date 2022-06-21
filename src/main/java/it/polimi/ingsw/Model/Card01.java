@@ -59,7 +59,7 @@ public class Card01 extends StatefulEffect {
         if (Arrays.stream(this.students).noneMatch(cell -> cell == input.getTargetPawn().get())) {
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
         }
-        if(context.getMutableStudentBag().getSize()==0){
+        if (context.getMutableStudentBag().getSize() == 0) {
             throw new GenericInputValidationException(CONTAINER_NAME_STUDENT_BAG, CONTAINER_NAME_STUDENT_BAG + "is empty");
         }
         return true;

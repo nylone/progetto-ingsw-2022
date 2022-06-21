@@ -86,7 +86,7 @@ public class Model implements Serializable {
     public void refillClouds() {
         for (Cloud cloud : this.clouds) {
             try {
-                cloud.fill((ArrayList<PawnColour>) studentBag.multipleExtraction(this.playerBoards.size() == 3 ? 4 : 3));
+                cloud.fill(studentBag.multipleExtraction(this.playerBoards.size() == 3 ? 4 : 3));
             } catch (FullContainerException e) {
                 System.out.println(e.getMessage());
             }
@@ -127,10 +127,6 @@ public class Model implements Serializable {
 
     public int getCoinReserve() {
         return coinReserve;
-    }
-
-    public List<Cloud> getClouds() {
-        return List.copyOf(this.clouds);
     }
 
     public List<CharacterCard> getCharacterCards() {
@@ -247,6 +243,10 @@ public class Model implements Serializable {
         return studentBag;
     }
 
+    public List<Cloud> getClouds() {
+        return List.copyOf(this.clouds);
+    }
+
     private int getOwnTeamTeacherCount(TeamID teamID) {
         return this.getMutablePlayerBoardsByTeamID(teamID).stream()
                 .map(this::getOwnTeachers)
@@ -341,16 +341,19 @@ public class Model implements Serializable {
         }
         // trigger calculation of new teacher placements
         PlayerBoard owner = this.teachers.get(colour);
-        if (owner == null ||
-                owner.getDiningRoomCount(colour) < me.getDiningRoomCount(colour) ||
-                (this.effects.isAlternativeTeacherAssignmentEnabled() &&
-                        owner.getDiningRoomCount(colour) == me.getDiningRoomCount(colour))
+        if (
+                owner == null ||
+                        owner.getDiningRoomCount(colour) < me.getDiningRoomCount(colour) ||
+                        (
+                                this.effects.isAlternativeTeacherAssignmentEnabled() &&
+                                        owner.getDiningRoomCount(colour) == me.getDiningRoomCount(colour)
+                        )
         ) {
             this.setTeacher(colour, me);
         }
     }
 
-    public void setTeacher(PawnColour teacher, PlayerBoard player) {
+    protected void setTeacher(PawnColour teacher, PlayerBoard player) {
         teachers.put(teacher, player);
     }
 

@@ -181,8 +181,8 @@ public class ClientView {
             } else {
                 System.out.print(pb.getNickname() + "'s Playerboard");
             }
-            if(model.getMutableTurnOrder().getMutableSelectedCard(pb).isPresent()){
-                System.out.print("          played assistantCard with priority:"+model.getMutableTurnOrder().getMutableSelectedCard(pb).get().getPriority());
+            if (model.getMutableTurnOrder().getMutableSelectedCard(pb).isPresent()) {
+                System.out.print("          played assistantCard with priority:" + model.getMutableTurnOrder().getMutableSelectedCard(pb).get().getPriority());
             }
             //print PlayerBoard
             System.out.println(PlayerBoardUI.drawPlayerBoard(pb, this.model));

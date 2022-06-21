@@ -14,11 +14,12 @@ public enum PawnColour implements Serializable {
 
     /**
      * Convert a string to a valid PawnColour
+     *
      * @param text string containing presumably a pawnColour
      * @return PawnColour or null whether the string does not represent a valid pawnColour
      */
-    public static PawnColour getPawnColourFromText(String text){
-        switch (text){
+    public static PawnColour getPawnColourFromText(String text) {
+        switch (text) {
             case "RED" -> {
                 return PawnColour.RED;
             }
@@ -27,7 +28,8 @@ public enum PawnColour implements Serializable {
             }
             case "PINK" -> {
                 return PawnColour.PINK;
-            }case "YELLOW" -> {
+            }
+            case "YELLOW" -> {
                 return PawnColour.YELLOW;
             }
             case "GREEN" -> {

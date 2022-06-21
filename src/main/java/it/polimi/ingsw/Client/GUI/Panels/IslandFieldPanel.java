@@ -240,18 +240,23 @@ public class IslandFieldPanel extends JPanel {
     }
 
     /**
-     * Basing on CharacterCard that has been activated, this method setup IslandFieldPanel for send the right PlayerActionRequest to Server
+     * Support method used to increase islands' dimensions when the amount of IslandGroups decreases
      *
-     * @param actionType ActionType that IslandFieldPanel is going to switch to
-     * @param card       card's index inside game
-     * @param toMove     possible pawn to move
+     * @param IslandsNumbers number of IslandGroups to show
+     * @return boost to add to original icons' dimensions
      */
-    public void setCharacterCardAction(ActionType actionType, Optional<Integer> card, Optional<PawnColour> toMove) {
-        this.actionType = actionType;
-        if (card.isEmpty()) return;
-        this.selectedCharacterCard = card;
-        if (toMove.isEmpty()) return;
-        this.pawnFromCharacterCard = toMove;
+    private int getDimBoost(int IslandsNumbers) {
+        return switch (IslandsNumbers) {
+            case 12 -> 0;
+            case 11 -> 10;
+            case 10 -> 20;
+            case 9 -> 30;
+            case 8 -> 40;
+            case 7 -> 50;
+            case 6 -> 60;
+            case 5 -> 70;
+            case default -> 70;
+        };
     }
 
     /**
@@ -270,26 +275,6 @@ public class IslandFieldPanel extends JPanel {
             steps = steps + 1;
         }
         return steps;
-    }
-
-    /**
-     * Support method used to increase islands' dimensions when the amount of IslandGroups decreases
-     *
-     * @param IslandsNumbers number of IslandGroups to show
-     * @return boost to add to original icons' dimensions
-     */
-    private int getDimBoost(int IslandsNumbers) {
-        return switch (IslandsNumbers) {
-            case 12 -> 0;
-            case 11 -> 10;
-            case 10 -> 20;
-            case 9 -> 30;
-            case 8 -> 40;
-            case 7 -> 50;
-            case 6 -> 60;
-            case 5 -> 70;
-            case default -> 70;
-        };
     }
 
     /**
@@ -313,5 +298,20 @@ public class IslandFieldPanel extends JPanel {
             g.dispose();
             return image;
         }
+    }
+
+    /**
+     * Basing on CharacterCard that has been activated, this method setup IslandFieldPanel for send the right PlayerActionRequest to Server
+     *
+     * @param actionType ActionType that IslandFieldPanel is going to switch to
+     * @param card       card's index inside game
+     * @param toMove     possible pawn to move
+     */
+    public void setCharacterCardAction(ActionType actionType, Optional<Integer> card, Optional<PawnColour> toMove) {
+        this.actionType = actionType;
+        if (card.isEmpty()) return;
+        this.selectedCharacterCard = card;
+        if (toMove.isEmpty()) return;
+        this.pawnFromCharacterCard = toMove;
     }
 }

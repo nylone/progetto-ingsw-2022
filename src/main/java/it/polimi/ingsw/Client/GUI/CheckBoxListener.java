@@ -23,7 +23,8 @@ public class CheckBoxListener implements ItemListener {
 
     /**
      * Create a new checkBoxListener
-     * @param limit maximum number of selectable checkBoxes
+     *
+     * @param limit      maximum number of selectable checkBoxes
      * @param checkBoxes checkboxes that will be listened by this listener
      */
     public CheckBoxListener(int limit, JCheckBox[] checkBoxes) {
@@ -33,6 +34,7 @@ public class CheckBoxListener implements ItemListener {
 
     /**
      * As soon as one checkbox has been selected, verify that selected checkBoxes are less than maximum
+     *
      * @param e the event to be processed
      */
     @Override

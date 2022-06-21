@@ -14,7 +14,6 @@ import java.io.Serial;
 import java.util.*;
 
 import static it.polimi.ingsw.Constants.*;
-import static it.polimi.ingsw.Constants.CONTAINER_NAME_STUDENT_BAG;
 import static it.polimi.ingsw.Misc.Utils.canMapFit;
 
 /**
@@ -104,7 +103,7 @@ public class Card07 extends StatefulEffect {
                     CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
                             + "pawns");
         }
-        if(context.getMutableStudentBag().getSize()==0){
+        if (context.getMutableStudentBag().getSize() == 0) {
             throw new GenericInputValidationException(CONTAINER_NAME_STUDENT_BAG, CONTAINER_NAME_STUDENT_BAG + "is empty");
         }
 

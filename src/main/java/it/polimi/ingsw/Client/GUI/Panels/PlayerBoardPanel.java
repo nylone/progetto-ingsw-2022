@@ -326,6 +326,22 @@ public class PlayerBoardPanel extends JPanel {
     }
 
     /**
+     * Support method that, given an ArrayList of assistantCards, returns an arrayList containing the relative buttons
+     * (example, given the assistantCard with priority 5, the method returns a JButton with the right assistantCard's image (image with number 5)
+     *
+     * @param assistantCardsLabels ArrayList containing assistantCard's JButton (containing assistantCards' images)
+     * @param assistantCards       ArrayList containing AssistantCards of interest
+     * @return an arrayList containing AssistantCards' JButtons
+     */
+    private ArrayList<JButton> GetCardsToShow(ArrayList<JButton> assistantCardsLabels, ArrayList<AssistantCard> assistantCards) {
+        ArrayList<JButton> assistantsToShow = new ArrayList<>(assistantCards.size());
+        for (AssistantCard assistantCard : assistantCards) {
+            assistantsToShow.add(assistantCardsLabels.get(assistantCard.getPriority() - 1));
+        }
+        return assistantsToShow;
+    }
+
+    /**
      * get PlayerBoardNickname
      *
      * @return playerBoardPanel's playerBoard's nickname
@@ -441,22 +457,6 @@ public class PlayerBoardPanel extends JPanel {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-    }
-
-    /**
-     * Support method that, given an ArrayList of assistantCards, returns an arrayList containing the relative buttons
-     * (example, given the assistantCard with priority 5, the method returns a JButton with the right assistantCard's image (image with number 5)
-     *
-     * @param assistantCardsLabels ArrayList containing assistantCard's JButton (containing assistantCards' images)
-     * @param assistantCards       ArrayList containing AssistantCards of interest
-     * @return an arrayList containing AssistantCards' JButtons
-     */
-    private ArrayList<JButton> GetCardsToShow(ArrayList<JButton> assistantCardsLabels, ArrayList<AssistantCard> assistantCards) {
-        ArrayList<JButton> assistantsToShow = new ArrayList<>(assistantCards.size());
-        for (AssistantCard assistantCard : assistantCards) {
-            assistantsToShow.add(assistantCardsLabels.get(assistantCard.getPriority() - 1));
-        }
-        return assistantsToShow;
     }
 
 

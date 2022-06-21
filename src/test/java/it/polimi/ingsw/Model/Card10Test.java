@@ -1,19 +1,14 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Client.CLI.PlayerBoardUI;
 import it.polimi.ingsw.Exceptions.Container.ContainerException;
-import it.polimi.ingsw.Exceptions.Container.FullContainerException;
-import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Pair;
-import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
-import javax.swing.plaf.PanelUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +25,8 @@ public class Card10Test {
     /**
      * Card 10 should be able to move students from entrance to dining room and vice-versa
      *
-     * @throws ContainerException is thrown when you try to add a student to a full dining room,
-     *                            but this test should not error out (by definition)
+     * @throws ContainerException       is thrown when you try to add a student to a full dining room,
+     *                                  but this test should not error out (by definition)
      * @throws InputValidationException is thrown when an invalid card activation happens, but this test
      *                                  should not error out (by definition)
      */

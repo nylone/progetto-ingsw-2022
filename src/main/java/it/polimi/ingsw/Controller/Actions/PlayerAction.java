@@ -114,10 +114,11 @@ public abstract class PlayerAction implements Serializable {
      * Warning: this function, as implied by the name, is unsafe. it should never be called by called outside the scope
      * of the class {@link it.polimi.ingsw.Controller.Controller}, which takes adequate precautions in order to guarantee
      * a coherent execution of the method.
+     *
      * @param ctx the {@link Model} reference, once the method finishes running the game state will be altered.
      * @throws Exception Should an error occur during the execution of the method, such error will be reported through the
-     * thrown {@link Exception}. Note that any {@link PlayerAction} inheritor should guarantee the absence of Exceptions
-     * for any positive return value yielded by {@link #validate(List, Model)}
+     *                   thrown {@link Exception}. Note that any {@link PlayerAction} inheritor should guarantee the absence of Exceptions
+     *                   for any positive return value yielded by {@link #validate(List, Model)}
      */
     public abstract void unsafeExecute(Model ctx) throws Exception;
 }
