@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Optional;
@@ -206,7 +207,15 @@ public class ModelTest {
         Model gb = new Model(GameMode.SIMPLE, "ale", "teo", "ari");
         PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         gb.setTeacher(PawnColour.RED, currentPlayer);
-        gb.getMutableStudentBag().multipleExtraction(gb.getMutableStudentBag().getSize()); // ends game
+        // ends game
+        gb.getMutableStudentBag().multipleExtraction(gb.getMutableStudentBag().getSize());
+        gb.getClouds().forEach(cloud -> {
+            try {
+                cloud.extractContents();
+            } catch (EmptyContainerException e) {
+                throw new RuntimeException(e);
+            }
+        });
         // assert
         assertEquals(currentPlayer, gb.getWinners().get().get(0));
     }
@@ -216,7 +225,15 @@ public class ModelTest {
         // arrange & act
         Model gb = new Model(GameMode.SIMPLE, "ale", "teo", "ari");
         PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
-        gb.getMutableStudentBag().multipleExtraction(gb.getMutableStudentBag().getSize()); // ends game
+        // ends game
+        gb.getMutableStudentBag().multipleExtraction(gb.getMutableStudentBag().getSize());
+        gb.getClouds().forEach(cloud -> {
+            try {
+                cloud.extractContents();
+            } catch (EmptyContainerException e) {
+                throw new RuntimeException(e);
+            }
+        });
         // assert
         assertTrue(gb.getWinners().get().size() == 3);
     }
