@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -48,7 +49,7 @@ public class CloudTest {
         expected.add(PawnColour.GREEN);
         cloud.fill(expected);
         // act
-        ArrayList<PawnColour> actual = cloud.extractContents();
+        List<PawnColour> actual = cloud.extractContents();
         // assert
         assertEquals(expected, actual);
 

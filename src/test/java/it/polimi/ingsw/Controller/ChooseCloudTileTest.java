@@ -10,10 +10,7 @@ import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -217,6 +214,7 @@ public class ChooseCloudTileTest {
         List<Cloud> clouds = new ArrayList<>(2);
         clouds.add(new Cloud(1));
         clouds.add(new Cloud(2));
+        clouds.get(1).fill(Arrays.asList(PawnColour.BLUE));
         List<CharacterCard> characterCards = new ArrayList<>();
         Model model = new Model(new IslandField(), GameMode.SIMPLE, studentBag, players, new EnumMap<>(PawnColour.class),
                 new TeamMapper(players), new TurnOrder(players), new EffectTracker(), clouds,

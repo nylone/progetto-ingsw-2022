@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import static it.polimi.ingsw.Constants.CONTAINER_NAME_CLOUD;
 
@@ -26,7 +27,7 @@ public class Cloud implements Serializable {
         return id;
     }
 
-    public ArrayList<PawnColour> extractContents() throws EmptyContainerException {
+    public List<PawnColour> extractContents() throws EmptyContainerException {
         if (contents.size() > 0) {
             ArrayList<PawnColour> toReturn = new ArrayList<>(this.contents);
             this.contents = new ArrayList<>(3);
@@ -40,7 +41,7 @@ public class Cloud implements Serializable {
         return new ArrayList<>(contents);
     }
 
-    public void fill(ArrayList<PawnColour> colours) throws FullContainerException {
+    public void fill(List<PawnColour> colours) throws FullContainerException {
         if (contents.isEmpty()) {
             contents.addAll(colours);
         } else {
