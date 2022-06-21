@@ -451,7 +451,7 @@ public class PlayCharacterCardTest {
     }
 
     @Test
-    public void CharacterCardActionOutOfPhase() throws Exception{
+    public void CharacterCardActionOutOfPhase() throws Exception {
         Model model = initializeGameBoard(40, 2, 2);
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         Controller controller = new Controller(new ModelWrapper(model, null), new ArrayList<>());

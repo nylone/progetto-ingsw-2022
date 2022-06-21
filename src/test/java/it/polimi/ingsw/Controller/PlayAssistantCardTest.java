@@ -4,7 +4,6 @@ import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
-import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -97,7 +96,7 @@ public class PlayAssistantCardTest {
     }
 
     @Test
-    public void playAssistantCardOutOfSetupPhase() throws Exception{
+    public void playAssistantCardOutOfSetupPhase() throws Exception {
         //first player assistantCard action
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = player.getMutableAssistantCards().get(0);
@@ -115,7 +114,7 @@ public class PlayAssistantCardTest {
         playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
         try {
             gh.executeAction(playAssistantCard);
-        }catch (GenericInputValidationException e){
+        } catch (GenericInputValidationException e) {
             assertEquals("An error occurred while validating: Assitant Card\n" +
                     "The error was: Assitant Card may only be used during the setup phase", e.getMessage());
         }

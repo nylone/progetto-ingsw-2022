@@ -354,6 +354,10 @@ public class Model implements Serializable {
         }
     }
 
+    protected void setTeacher(PawnColour teacher, PlayerBoard player) {
+        teachers.put(teacher, player);
+    }
+
     public void removeStudentFromDiningRoom(PawnColour colour, PlayerBoard me) throws EmptyContainerException {
         me.unsafeRemoveStudentFromDiningRoom(colour);
 
@@ -361,15 +365,11 @@ public class Model implements Serializable {
         PlayerBoard owner = this.teachers.get(colour);
         // if we were the owner of teacher, we need to find the correct teacher owner
         if (owner != null && owner.equals(me)) {
-            for (PlayerBoard player: this.playerBoards) {
+            for (PlayerBoard player : this.playerBoards) {
                 if (player.getDiningRoomCount(colour) > owner.getDiningRoomCount(colour)) owner = player;
             }
         }
         this.setTeacher(colour, owner);
-    }
-
-    protected void setTeacher(PawnColour teacher, PlayerBoard player) {
-        teachers.put(teacher, player);
     }
 
     public void addCoinToReserve(int amount) {
