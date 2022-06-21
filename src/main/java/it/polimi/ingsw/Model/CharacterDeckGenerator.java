@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
+import it.polimi.ingsw.Logger;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -22,10 +25,18 @@ public class CharacterDeckGenerator {
                 Card12::new);
         Collections.shuffle(deck, new Random(System.currentTimeMillis()));
         return deck.subList(0, 3).stream()
-                .map(gen -> gen.build(context)).toList();
+                .map(gen -> {
+                    try {
+                        return gen.build(context);
+                    } catch (EmptyContainerException e) {
+                        // should never happen
+                        Logger.severe("student bag was found empty during game initialization. Critical, unrecoverable, error");
+                        throw new RuntimeException(e);
+                    }
+                }).toList();
     }
 
     private interface CharacterCardGenerator {
-        CharacterCard build(Model ctx);
+        CharacterCard build(Model ctx) throws EmptyContainerException;
     }
 }

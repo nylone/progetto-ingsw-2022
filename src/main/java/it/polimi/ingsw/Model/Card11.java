@@ -28,7 +28,7 @@ public class Card11 extends StatefulEffect {
 
     private final PawnColour[] students = new PawnColour[4];
 
-    public Card11(Model ctx) {
+    public Card11(Model ctx) throws EmptyContainerException {
         super(11, 2, StateType.PAWNCOLOUR, ctx);
         for (int i = 0; i < 4; i++) {
             try {

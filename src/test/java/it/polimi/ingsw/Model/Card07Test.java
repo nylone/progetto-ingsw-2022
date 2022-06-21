@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Optional;
@@ -21,7 +22,6 @@ import static org.junit.Assert.*;
  */
 public class Card07Test {
     Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
-    Card07 card = new Card07(gb);
 
     /**
      * Card 07 should be able to hold 6 students and when activated to put one tile on the chosen island.
@@ -32,6 +32,7 @@ public class Card07Test {
      */
     @Test
     public void checkUse() throws Exception {
+        Card07 card = new Card07(gb);
         assertEquals(6, card.getState().size()); // check whether the card contains 6 items initially
         assertSame(card.getStateType(), StateType.PAWNCOLOUR); // check whether the card contains students specifically
 
@@ -65,7 +66,8 @@ public class Card07Test {
      * @throws Exception an invalid input has been used to activate the card
      */
     @Test(expected = InputValidationException.class)
-    public void checkExceptionUse() throws InvalidContainerIndexException, InputValidationException {
+    public void checkExceptionUse() throws InvalidContainerIndexException, InputValidationException, EmptyContainerException {
+        Card07 card = new Card07(gb);
         PlayerBoard pb = gb.getMutablePlayerBoardByNickname("ari");
         // creates a wrong input which will not be filled with information
         CharacterCardInput input = new CharacterCardInput(pb);
@@ -80,7 +82,8 @@ public class Card07Test {
      * @throws Exception an invalid input has been used to activate the card
      */
     @Test(expected = InputValidationException.class)
-    public void checkUse4Pawns() throws InvalidContainerIndexException, InputValidationException {
+    public void checkUse4Pawns() throws InvalidContainerIndexException, InputValidationException, EmptyContainerException {
+        Card07 card = new Card07(gb);
         PlayerBoard pb = gb.getMutablePlayerBoardByNickname("ari");
         // creates a wrong input which will be filled with too much information
         CharacterCardInput input = new CharacterCardInput(pb);

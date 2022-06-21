@@ -10,10 +10,10 @@ import static org.junit.Assert.*;
 
 public class Card11Test {
     Model gb = new Model(GameMode.ADVANCED, "ari", "teo");
-    Card11 card11 = new Card11(gb);
 
     @Test
     public void checkUse() throws Exception {
+        Card11 card11 = new Card11(gb);
         assertEquals(4, card11.getState().size());
         assertSame(card11.getStateType(), StateType.PAWNCOLOUR);
 
@@ -30,6 +30,7 @@ public class Card11Test {
 
     @Test(expected = InputValidationException.class)
     public void checkExceptionInput() throws Exception {
+        Card11 card11 = new Card11(gb);
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCardInput input = new CharacterCardInput(pb);
         if (card11.checkInput(input)) card11.unsafeApplyEffect(input);
@@ -37,6 +38,7 @@ public class Card11Test {
 
     @Test
     public void checkFullDiningRoom() throws Exception {
+        Card11 card11 = new Card11(gb);
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
 
         CharacterCardInput input = new CharacterCardInput(pb);
