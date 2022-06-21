@@ -26,14 +26,14 @@ public class Card01 extends StatefulEffect {
     private static final long serialVersionUID = 103L; // convention: 1 for model, (01 -> 99) for objects
     private final PawnColour[] students = new PawnColour[4];
 
-    public Card01(Model ctx) throws EmptyContainerException {
+    public Card01(Model ctx) {
         super(1, 1, StateType.PAWNCOLOUR, ctx);
         for (int i = 0; i < 4; i++) {
             try {
                 this.students[i] = ctx.getMutableStudentBag().extract();
             } catch (EmptyContainerException e) {
                 // should never happen
-                Logger.severe("student bag was found empty while adding a student Card01. Critical, unrecoverable, error");
+                Logger.severe("student bag was found empty while adding a student to Card01. Critical, unrecoverable, error");
                 throw new RuntimeException(e);
             }
         }
