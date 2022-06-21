@@ -100,12 +100,12 @@ public class Card10 extends StatelessEffect {
             fromEntrance.add(p.getFirst());
             fromDiningRoom.add(p.getSecond());
             playerBoard.removeStudentFromEntrance(p.getFirst());
-            playerBoard.removeStudentsFromDiningRoom(p.getSecond(), 1);
+            this.context.removeStudentFromDiningRoom(p.getSecond(), playerBoard);
         }
         // true effect happens here
         playerBoard.addStudentsToEntrance(fromDiningRoom);
         for (PawnColour student : fromEntrance) {
-            playerBoard.addStudentToDiningRoom(student);
+            this.context.addStudentToDiningRoom(student, playerBoard);
         }
     }
 

@@ -87,7 +87,7 @@ public class PlayerBoard implements Serializable {
     }
 
     // SETTERS AND THE LIKE //
-    protected boolean addStudentToDiningRoom(PawnColour colour) throws FullContainerException {
+    protected boolean unsafeAddStudentToDiningRoom(PawnColour colour) throws FullContainerException {
         if (this.diningRoom.get(colour) == 10) {
             throw new FullContainerException(CONTAINER_NAME_DININGROOM);
         }
@@ -95,13 +95,11 @@ public class PlayerBoard implements Serializable {
         return this.diningRoom.get(colour) % 3 == 0; // returns true when a coin should be added
     }
 
-    public void removeStudentsFromDiningRoom(PawnColour colour, int amount) throws EmptyContainerException {
-        if (amount > 0) {
-            if (this.getDiningRoomCount(colour) == 0) {
-                throw new EmptyContainerException(CONTAINER_NAME_DININGROOM);
-            } else {
-                this.diningRoom.merge(colour, -amount, Integer::sum);
-            }
+    public void unsafeRemoveStudentFromDiningRoom(PawnColour colour) throws EmptyContainerException {
+        if (this.getDiningRoomCount(colour) == 0) {
+            throw new EmptyContainerException(CONTAINER_NAME_DININGROOM);
+        } else {
+            this.diningRoom.merge(colour, -1, Integer::sum);
         }
     }
 

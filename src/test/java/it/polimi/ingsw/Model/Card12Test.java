@@ -16,7 +16,7 @@ public class Card12Test {
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCardInput input = new CharacterCardInput(pb);
 
-        for (int i = 0; i <= 4; i++) pb.addStudentToDiningRoom(PawnColour.RED);
+        for (int i = 0; i <= 4; i++) pb.unsafeAddStudentToDiningRoom(PawnColour.RED);
         input.setTargetPawn(PawnColour.RED);
         if (card.checkInput(input)) card.unsafeApplyEffect(input);
 

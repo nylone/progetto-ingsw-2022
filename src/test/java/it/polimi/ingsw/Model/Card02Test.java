@@ -20,8 +20,8 @@ public class Card02Test {
         // arrange
         Model gb = new Model(GameMode.ADVANCED, "ale", "teo"); // advanced mode needed for character cards
         // giving the same influence over a common teacher (BLUE) to both players
-        gb.getMutablePlayerBoardById(0).addStudentToDiningRoom(PawnColour.BLUE);
-        gb.getMutablePlayerBoardById(1).addStudentToDiningRoom(PawnColour.BLUE);
+        gb.getMutablePlayerBoardById(0).unsafeAddStudentToDiningRoom(PawnColour.BLUE);
+        gb.getMutablePlayerBoardById(1).unsafeAddStudentToDiningRoom(PawnColour.BLUE);
         // assigning blue teacher to one player
         gb.setTeacher(PawnColour.BLUE, gb.getMutablePlayerBoardByNickname("teo"));
         // saving information about initial teachers' control situation

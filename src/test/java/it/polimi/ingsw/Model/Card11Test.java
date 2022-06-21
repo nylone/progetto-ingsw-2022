@@ -44,7 +44,7 @@ public class Card11Test {
         CharacterCardInput input = new CharacterCardInput(pb);
         input.setTargetPawn((PawnColour) card11.getState().get(2));
         for (int i = 0; i < 10; i++) {
-            pb.addStudentToDiningRoom(input.getTargetPawn().get());
+            pb.unsafeAddStudentToDiningRoom(input.getTargetPawn().get());
         }
         InputValidationException exception = assertThrows(InputValidationException.class, () -> {
             if (card11.checkInput(input)) card11.unsafeApplyEffect(input);

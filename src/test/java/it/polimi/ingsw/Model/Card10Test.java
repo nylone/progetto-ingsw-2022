@@ -36,8 +36,8 @@ public class Card10Test {
         // creates input to let the current player interact with card
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
-        pb.addStudentToDiningRoom(PawnColour.RED);
-        pb.addStudentToDiningRoom(PawnColour.YELLOW);
+        pb.unsafeAddStudentToDiningRoom(PawnColour.RED);
+        pb.unsafeAddStudentToDiningRoom(PawnColour.YELLOW);
         // selects the first and second students from both the dining room and the entrance and links them together
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
         pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.RED));
@@ -79,8 +79,8 @@ public class Card10Test {
     public void asymmetricInput() throws Exception {
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCardInput input = new CharacterCardInput(pb);
-        pb.addStudentToDiningRoom(PawnColour.RED);
-        pb.addStudentToDiningRoom(PawnColour.YELLOW);
+        pb.unsafeAddStudentToDiningRoom(PawnColour.RED);
+        pb.unsafeAddStudentToDiningRoom(PawnColour.YELLOW);
 
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
         pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.RED));
@@ -101,8 +101,8 @@ public class Card10Test {
         // creates a wrong input which will be filled with too much information
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
-        pb.addStudentToDiningRoom(PawnColour.RED);
-        pb.addStudentToDiningRoom(PawnColour.YELLOW);
+        pb.unsafeAddStudentToDiningRoom(PawnColour.RED);
+        pb.unsafeAddStudentToDiningRoom(PawnColour.YELLOW);
         // removes every student from entrance except the first
         for (int i = 1; i < pb.getEntranceSize(); i++) {
             pb.removeStudentFromEntrance(i);
@@ -138,9 +138,9 @@ public class Card10Test {
 
         // completely fill the red row in dining room
         for (int i = 0; i < 10; i++)
-            pb.addStudentToDiningRoom(pb.getEntranceStudents().get(0).get());
+            pb.unsafeAddStudentToDiningRoom(pb.getEntranceStudents().get(0).get());
         // add one blue student to dining room to be swapped with the red one in the entrance
-        pb.addStudentToDiningRoom(PawnColour.BLUE);
+        pb.unsafeAddStudentToDiningRoom(PawnColour.BLUE);
 
         // selects red student from entrance and blue colour (representing student from dining room)
         // and links them together

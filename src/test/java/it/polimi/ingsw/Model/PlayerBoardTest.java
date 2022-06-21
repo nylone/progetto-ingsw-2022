@@ -19,7 +19,7 @@ public class PlayerBoardTest {
         PlayerBoard playerBoard = new PlayerBoard(2, 3, "ari", new StudentBag(20));
         int expected = playerBoard.getDiningRoomCount(PawnColour.RED);
         // act
-        playerBoard.addStudentToDiningRoom(PawnColour.RED);
+        playerBoard.unsafeAddStudentToDiningRoom(PawnColour.RED);
         // assert
         assertEquals(playerBoard.getDiningRoomCount(PawnColour.RED), expected + 1);
     }
@@ -29,10 +29,10 @@ public class PlayerBoardTest {
         // arrange
         PlayerBoard playerBoard = new PlayerBoard(1, 2, "alessandro", new StudentBag(50));
         for (int i = 0; i < 10; i++) {
-            playerBoard.addStudentToDiningRoom(PawnColour.YELLOW);
+            playerBoard.unsafeAddStudentToDiningRoom(PawnColour.YELLOW);
         }
         try {
-            playerBoard.addStudentToDiningRoom(PawnColour.YELLOW);
+            playerBoard.unsafeAddStudentToDiningRoom(PawnColour.YELLOW);
             fail();
         } catch (FullContainerException e) {
             assertEquals("An error occurred on: DiningRoom\nThe error was: DiningRoom was found full.", e.getMessage());
@@ -43,11 +43,12 @@ public class PlayerBoardTest {
     public void sizeDecreasedAfterRemovingStudent() throws FullContainerException, EmptyContainerException {
         // arrange
         PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
-        playerBoard.addStudentToDiningRoom(PawnColour.BLUE);
-        playerBoard.addStudentToDiningRoom(PawnColour.BLUE);
+        playerBoard.unsafeAddStudentToDiningRoom(PawnColour.BLUE);
+        playerBoard.unsafeAddStudentToDiningRoom(PawnColour.BLUE);
         int expected = playerBoard.getDiningRoomCount(PawnColour.BLUE);
         // act
-        playerBoard.removeStudentsFromDiningRoom(PawnColour.BLUE, 2);
+        playerBoard.unsafeRemoveStudentFromDiningRoom(PawnColour.BLUE);
+        playerBoard.unsafeRemoveStudentFromDiningRoom(PawnColour.BLUE);
         // assert
         assertEquals(playerBoard.getDiningRoomCount(PawnColour.BLUE), expected - 2);
     }
@@ -55,7 +56,7 @@ public class PlayerBoardTest {
     @Test(expected = EmptyContainerException.class)
     public void removeStudentException() throws EmptyContainerException {
         PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
-        playerBoard.removeStudentsFromDiningRoom(PawnColour.RED, 1);
+        playerBoard.unsafeRemoveStudentFromDiningRoom(PawnColour.RED);
     }
 
 

@@ -35,7 +35,9 @@ public class Card12 extends StatelessEffect {
             //If any player has fewer than 3 Students of that type, return as many Students as they have.
             int amountToRemove = Math.min(3, p.getDiningRoomCount(input.getTargetPawn().get()));
 
-            p.removeStudentsFromDiningRoom(input.getTargetPawn().get(), amountToRemove);
+            for (int i = 0; i < amountToRemove; i++) {
+                this.context.removeStudentFromDiningRoom(input.getTargetPawn().get(), p);
+            }
 
             for (int i = 0; i < amountToRemove; i++) {
                 this.context.getMutableStudentBag().appendAndShuffle(input.getTargetPawn().get());

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.FullContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Misc.Optional;
@@ -334,7 +335,7 @@ public class Model implements Serializable {
 
 
     public void addStudentToDiningRoom(PawnColour colour, PlayerBoard me) throws FullContainerException {
-        boolean shouldGiveCoin = me.addStudentToDiningRoom(colour);
+        boolean shouldGiveCoin = me.unsafeAddStudentToDiningRoom(colour);
         if (shouldGiveCoin && this.coinReserve > 0) {
             this.coinReserve -= 1;
             me.addCoin();
@@ -351,6 +352,20 @@ public class Model implements Serializable {
         ) {
             this.setTeacher(colour, me);
         }
+    }
+
+    public void removeStudentFromDiningRoom(PawnColour colour, PlayerBoard me) throws EmptyContainerException {
+        me.unsafeRemoveStudentFromDiningRoom(colour);
+
+        // trigger calculation of new teacher placements
+        PlayerBoard owner = this.teachers.get(colour);
+        // if we were the owner of teacher, we need to find the correct teacher owner
+        if (owner != null && owner.equals(me)) {
+            for (PlayerBoard player: this.playerBoards) {
+                if (player.getDiningRoomCount(colour) > owner.getDiningRoomCount(colour)) owner = player;
+            }
+        }
+        this.setTeacher(colour, owner);
     }
 
     protected void setTeacher(PawnColour teacher, PlayerBoard player) {
