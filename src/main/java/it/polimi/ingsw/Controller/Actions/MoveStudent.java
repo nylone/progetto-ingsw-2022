@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Controller.Actions;
 
-import it.polimi.ingsw.Controller.Enums.DestinationType;
-import it.polimi.ingsw.Controller.Enums.MoveDestination;
+import it.polimi.ingsw.Controller.DestinationType;
+import it.polimi.ingsw.Controller.MoveDestination;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
@@ -75,12 +75,7 @@ public class MoveStudent extends PlayerAction {
         }
 
         if (this.destination.getDestinationType() == DestinationType.ISLAND) {
-            int islandId;
-            try {
-                islandId = this.destination.getIslandID();
-            } catch (Exception e) {
-                return Optional.of(new InvalidElementException("DestinationType not compatible with request"));
-            }
+            int islandId = this.destination.getIslandID();
             if (islandId < 0 || islandId > 12) {
                 return Optional.of(new InvalidElementException(INPUT_NAME_TARGET_ISLAND)); // target ti out of bounds for id
             }

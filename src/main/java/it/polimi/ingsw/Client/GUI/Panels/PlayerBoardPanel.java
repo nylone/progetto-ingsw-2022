@@ -7,7 +7,7 @@ import it.polimi.ingsw.Client.GUI.GUIReader;
 import it.polimi.ingsw.Controller.Actions.MoveStudent;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Controller.Actions.PlayCharacterCard;
-import it.polimi.ingsw.Controller.Enums.MoveDestination;
+import it.polimi.ingsw.Controller.MoveDestination;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.*;

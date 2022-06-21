@@ -1,8 +1,5 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
-import it.polimi.ingsw.Logger;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

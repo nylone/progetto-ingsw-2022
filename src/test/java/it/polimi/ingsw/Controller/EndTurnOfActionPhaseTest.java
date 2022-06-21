@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Actions.*;
-import it.polimi.ingsw.Controller.Enums.MoveDestination;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.AssistantCard;

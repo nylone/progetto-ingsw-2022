@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.CLI;
 
 import it.polimi.ingsw.Controller.Actions.*;
-import it.polimi.ingsw.Controller.Enums.MoveDestination;
+import it.polimi.ingsw.Controller.MoveDestination;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Pair;
