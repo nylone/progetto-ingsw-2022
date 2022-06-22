@@ -156,7 +156,7 @@ public class IslandFieldPanel extends JPanel {
             islandButton.setContentAreaFilled(false);
             islandButton.setFocusPainted(false);
             islandButton.setOpaque(false);
-            islandButton.setLayout(new GridLayout(3, 1, -24, 0));
+            islandButton.setLayout(new GridLayout(3, 1, -45, 0));
             for (PawnColour p : pawnCountMap.keySet()) {
                 if (pawnCountMap.get(p) > 0) {
                     //create new StudentButton
@@ -195,6 +195,7 @@ public class IslandFieldPanel extends JPanel {
                 tower.setContentAreaFilled(false);
                 tower.setFocusPainted(false);
                 tower.setPreferredSize(new Dimension(widthTower, heightTower));
+                tower.addActionListener(e -> islandButton.doClick());
                 //add tower's image to IslandGroup's button
                 islandButton.add(tower);
             }
