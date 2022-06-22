@@ -76,7 +76,7 @@ public class Card11 extends StatefulEffect {
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         PawnColour movedPawn = input.getTargetPawn().get();
         //add target pawn to caller's dining room
-        input.getCaller().unsafeAddStudentToDiningRoom(movedPawn);
+        this.context.addStudentToDiningRoom(movedPawn, input.getCaller());
         // find first occurrence of same target pawn in card state and swap it with a new pawn
         for (int i = 0; i < 4; i++) {
             if (this.students[i] == movedPawn) {
