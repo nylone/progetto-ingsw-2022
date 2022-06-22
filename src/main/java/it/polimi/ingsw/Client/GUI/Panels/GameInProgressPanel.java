@@ -130,8 +130,20 @@ public class GameInProgressPanel extends JTabbedPane {
                 if (guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0
                         || (guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1 && guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 0)
                 ) {
-                    JLabel resLabel = new JLabel("It's your turn!!");
-                    resLabel.setFont(new Font("Monospaced", Font.BOLD, 22));
+                    StringBuilder text;
+                    if(guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1) {
+                        text = new StringBuilder("It's your turn!!");
+                    }
+                    else {
+                        text = new StringBuilder("<html>It's your turn!!<br>");
+                        for(PlayerBoard playerBoard : model.getMutableTurnOrder().getCurrentTurnOrder()){
+                            if(playerBoard.getNickname().equals(ownNickname)) break;
+                            text.append(playerBoard.getNickname()).append(" has played assistantCard: #").append(model.getMutableTurnOrder().getMutableSelectedCard(playerBoard).get().getPriority()).append("<br>");
+                        }
+                        text.append("</html>");
+                    }
+                    JLabel resLabel = new JLabel(text.toString());
+                    resLabel.setFont(new Font("Monospaced", Font.BOLD, 17));
                     JOptionPane.showMessageDialog(this.getParent(), resLabel, "Turn change", JOptionPane.PLAIN_MESSAGE);
                 }
             }

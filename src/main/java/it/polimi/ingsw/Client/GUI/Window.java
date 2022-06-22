@@ -34,4 +34,11 @@ public class Window {
         frame.pack();
         frame.setIconImage(logo.getImage());
     }
+
+    /**
+     * @return GUI'S frame
+     */
+    public JFrame getFrame() {
+        return frame;
+    }
 }

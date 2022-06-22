@@ -11,6 +11,7 @@ import it.polimi.ingsw.Controller.MoveDestination;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.Events.Requests.PlayerActionRequest;
@@ -80,6 +81,8 @@ public class PlayerBoardPanel extends JPanel {
         //Contains assistantCards' buttons
         JPanel assistantCardsPanel = new JPanel();
         assistantCardsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        //create label containing coin amount
+
         //initialize diningRoomButtons' map
         for (PawnColour p : PawnColour.values()) {
             diningRoomButtons.put(p, new ArrayList<>(this.player.getDiningRoomCount(p)));
@@ -262,7 +265,22 @@ public class PlayerBoardPanel extends JPanel {
         yellowTeacherLabel.setBounds(765, 185, 50, 45);
         pinkTeacherLabel.setBounds(765, 257, 50, 45);
         blueTeacherLabel.setBounds(765, 325, 50, 45);
-
+        //create and place a label containing player balance (only if the game is an advanced game)
+        if(model.getGameMode() == GameMode.ADVANCED) {
+            JLabel coinAmountLabel = new JLabel();
+            String text;
+            if (pb.getCoinBalance() > 1) {
+                text = "available coins:" + pb.getCoinBalance();
+            } else {
+                text = "Available coin:" + pb.getCoinBalance();
+            }
+            coinAmountLabel.setText(text);
+            coinAmountLabel.setOpaque(true);
+            coinAmountLabel.setBackground(new Color(195, 193, 204));
+            coinAmountLabel.setBounds(850, 10, 200, 25);
+            coinAmountLabel.setFont(new Font("Monospaced", Font.BOLD, 17));
+            playerBoardLabel.add(coinAmountLabel);
+        }
         int count = 0;
         int secondCount = 0;
         for (int i = 0; i < this.player.getEntranceSize(); i++) {

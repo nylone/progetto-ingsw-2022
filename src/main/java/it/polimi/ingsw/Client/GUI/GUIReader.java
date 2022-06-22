@@ -86,7 +86,7 @@ public class GUIReader implements Runnable {
                         requestAndFeedback.add(new Pair<>(this.playerActionRequest, playerActionFeedback));
                         //show eventual fail report
                         if (playerActionFeedback.getStatusCode() == StatusCode.Fail)
-                            JOptionPane.showMessageDialog(null, playerActionFeedback.getReport());
+                            JOptionPane.showMessageDialog(ctx.getWindow().getFrame(), playerActionFeedback.getReport());
                         //enable all GUI components
                         gameInProgressPanel.enableGUIComponents(gameInProgressPanel, true);
                         //clear history when endTurn action has been performed by user
