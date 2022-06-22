@@ -199,7 +199,7 @@ public class Model implements Serializable {
         PlayerBoard currentPlayer = this.getMutableTurnOrder().getMutableCurrentPlayer();
         boolean noTowersLeft = this.getTeamMapper().getMutableTowerStorage(currentPlayer).getTowerCount() == 0;
         // Check if only three island groups remain
-        boolean onlyThreeIslands = this.getMutableIslandField().getMutableGroups().size() == 3;
+        boolean threeIslandsLeft = this.getMutableIslandField().getMutableGroups().size() <= 3;
         // Check if all assistant cards have been used
         boolean allCardsUsed = this.getMutableTurnOrder().getMutableCurrentPlayer()
                 .getMutableAssistantCards().stream()
@@ -209,7 +209,7 @@ public class Model implements Serializable {
         boolean noViableCloudTiles = this.getClouds().stream().allMatch(cloud -> cloud.getContents().size() == 0);
 
         return noTowersLeft ||
-                onlyThreeIslands ||
+                threeIslandsLeft ||
                 this.getMutableTurnOrder().getGamePhase() == GamePhase.SETUP &&
                         (allCardsUsed || (emptyBag && noViableCloudTiles));
     }
