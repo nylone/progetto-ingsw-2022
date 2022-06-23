@@ -19,6 +19,13 @@ public class Card09 extends StatelessEffect {
         super(9, 3, ctx);
     }
 
+    /**
+     * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     * @param input CharacterCardInput should contain:
+     *<ul>
+     *  <li>A valid PawnColour</li>>
+     * </ul>
+     */
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetPawn().isEmpty()) {
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
@@ -26,13 +33,16 @@ public class Card09 extends StatelessEffect {
         return true;
     }
 
+    /**
+     * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
+     */
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) {
         this.context.getMutableEffects().setDeniedPawnColour(input.getTargetPawn().get());
     }
 
     //test purpose only
-    @Override
+    /*@Override
     public String toString() {
         return "Card09{" +
                 "id=" + id +
@@ -40,5 +50,5 @@ public class Card09 extends StatelessEffect {
                 ", timeUsed=" + timeUsed +
                 ", context=" + context +
                 '}';
-    }
+    }*/
 }

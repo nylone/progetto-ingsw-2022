@@ -15,16 +15,23 @@ public class Card06 extends StatelessEffect {
         super(6, 3, ctx);
     }
 
+    /**
+     * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     * @param input No extra parameters required
+     */
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         return true; // nothing to check
     }
 
+    /**
+     * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
+     */
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         context.getMutableEffects().enableDenyTowerInfluence();
     }
 
-    //test purpose only
+    /*//test purpose only
     @Override
     public String toString() {
         return "Card06{" +
@@ -33,5 +40,5 @@ public class Card06 extends StatelessEffect {
                 ", timeUsed=" + timeUsed +
                 ", context=" + context +
                 '}';
-    }
+    }*/
 }

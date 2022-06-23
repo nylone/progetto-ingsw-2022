@@ -37,7 +37,7 @@ public class Utils {
         for (Map.Entry<T, C> entry : possibleSubset.entrySet()) {
             T key = entry.getKey();
             int count = entry.getValue();
-            if ((int) originalSet.get(key) - count < 0) {
+            if (!originalSet.containsKey(key) || ((int) originalSet.get(key) - count < 0)) {
                 return false;
             }
         }

@@ -1,11 +1,16 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.EnumMap;
 
 import static org.junit.Assert.*;
 
@@ -86,8 +91,8 @@ public class Card01Test {
      *
      * @throws Exception an invalid input has been used to activate the card
      */
-    @Test(expected = InputValidationException.class)
-    public void checkUseException() throws Exception {
+    @Test
+    public void NoIslandException() throws Exception {
         // arrange
         Model g = new Model(GameMode.ADVANCED, "ari", "teo");
         // creates a wrong input which will not be filled with information
@@ -95,6 +100,111 @@ public class Card01Test {
         Card01 card = new Card01(g);
 
         // act
-        if (card.checkInput(input)) card.unsafeApplyEffect(input);
+        try {
+            card.checkInput(input);
+        }catch (InvalidElementException e){
+            Assert.assertEquals("An error occurred while validating: Target Island\n" +
+                    "The error was: element Target Island was found to be invalid (eg: null, out of bounds or otherwise incorrect).",e.getMessage());
+        }
     }
+    @Test
+    public void EmptyPawnException() throws Exception{
+        Model g = new Model(GameMode.ADVANCED, "ari", "teo");
+        // creates a wrong input which will not be filled with information
+        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
+        Card01 card = new Card01(g);
+        input.setTargetIsland(g.getMutableIslandField().getMutableIslandById(0));
+        try {
+              card.checkInput(input);
+        }catch (InvalidElementException e){
+            Assert.assertEquals("An error occurred while validating: Target Pawn Colour\n" +
+                    "The error was: element Target Pawn Colour was found to be invalid (eg: null, out of bounds or otherwise incorrect).",e.getMessage());
+        }
+    }
+
+    @Test
+    public void PawnNotPresentInCard() throws Exception{
+        Model g = new Model(GameMode.ADVANCED, "ari", "teo");
+        // creates a wrong input which will not be filled with information
+        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
+        Card01 card = new Card01(g);
+        input.setTargetIsland(g.getMutableIslandField().getMutableIslandById(0));
+        EnumMap<PawnColour, Integer> pawnColourIntegerEnumMap = new EnumMap<>(PawnColour.class);
+        for(PawnColour p : card.getState().stream().map(o -> (PawnColour) o).toList()){
+            pawnColourIntegerEnumMap.merge(p,1,Integer::sum);
+        }
+        for(PawnColour p : PawnColour.values()){
+            if(!pawnColourIntegerEnumMap.containsKey(p)){
+                input.setTargetPawn(p);
+                break;
+            }
+        }
+        try {
+            card.checkInput(input);
+        }catch (InvalidElementException e){
+            Assert.assertEquals("An error occurred while validating: Target Pawn Colour\n" +
+                    "The error was: element Target Pawn Colour was found to be invalid (eg: null, out of bounds or otherwise incorrect).",e.getMessage());
+        }
+    }
+
+    @Test(expected = InputValidationException.class)
+    public void checkInvalidIslandInput() throws Exception {
+        Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
+        Card01 card = new Card01(gb);
+        // creates a wrong input (player will select an invalid island)
+        CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
+        Island island = new Island(13);
+        input.setTargetPawn((PawnColour) card.getState().get(0));
+        input.setTargetIsland(island);
+        if (card.checkInput(input));
+    }
+
+    @Test(expected = InputValidationException.class)
+    public void checkIslandNotInField() throws Exception {
+        Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
+        Card05 card05 = new Card05(gb);
+        // creates a wrong input (player will select an invalid island)
+        CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
+        Island island = new Island(8);
+        input.setTargetIsland(island);
+        if (card05.checkInput(input)) card05.unsafeApplyEffect(input);
+    }
+
+    @Test
+    public void EmptyStudentBagCardUse() throws Exception {
+        Model g = new Model(GameMode.ADVANCED, "ari", "teo");
+        // creates a wrong input which will not be filled with information
+        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
+        // selects the first and second students from both the card and the entrance and links them together
+        Card01 card = new Card01(g);
+        input.setTargetIsland(Utils.random(g.getMutableIslandField().getMutableGroups()).getMutableIslands().get(0));
+        input.setTargetPawn((PawnColour) card.getState().get(1));
+        while(!g.getMutableStudentBag().isEmpty()){
+            g.getMutableStudentBag().extract();
+        }
+        try {
+            card.checkInput(input);
+        }catch (GenericInputValidationException e){
+            Assert.assertEquals("An error occurred while validating: Student Bag\n" +
+                    "The error was: Student Bag is empty",e.getMessage());
+        }
+    }
+
+    @Test
+    public void EmptyStudentBagExceptionCardConstructor(){
+        Model g = new Model(GameMode.ADVANCED, "ari", "teo");
+        // creates a wrong input which will not be filled with information
+        Card01 card;
+        //create a new Card until student bag has 5 students or fewer
+        do{
+            card = new Card01(g);
+        }while (g.getMutableStudentBag().getSize()>=4);
+        try {
+            card = new Card01(g);
+        }catch (RuntimeException e){
+            assertEquals("it.polimi.ingsw.Exceptions.Container.EmptyContainerException: An error occurred on: StudentBag\n" +
+                    "The error was: StudentBag was found empty.", e.getMessage());
+        }
+    }
+
 }

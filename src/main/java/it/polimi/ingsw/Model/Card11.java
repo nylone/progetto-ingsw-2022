@@ -48,6 +48,13 @@ public class Card11 extends StatefulEffect {
         return stateType;
     }
 
+    /**
+     * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     * @param input CharacterCardInput should contain:
+     *<ul>
+     *  <li>A valid pawnColour from card's state </li>
+     * </ul>
+     */
     @Override
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetPawn().isEmpty()) {
@@ -62,16 +69,19 @@ public class Card11 extends StatefulEffect {
         // validate size of dining room
         if (!playerBoard.canDiningRoomFit(input.getTargetPawn().get())) {
             throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
-                    CONTAINER_NAME_DININGROOM + "can't contain " + input.getTargetPawn().get()
+                    CONTAINER_NAME_DININGROOM + " can't contain " + input.getTargetPawn().get()
                             + "without overflowing.");
         }
         if (context.getMutableStudentBag().getSize() == 0) {
-            throw new GenericInputValidationException(CONTAINER_NAME_STUDENT_BAG, CONTAINER_NAME_STUDENT_BAG + "is empty");
+            throw new GenericInputValidationException(CONTAINER_NAME_STUDENT_BAG, CONTAINER_NAME_STUDENT_BAG + " is empty");
         }
         //all tests passed
         return true;
     }
 
+    /**
+     * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
+     */
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         PawnColour movedPawn = input.getTargetPawn().get();
@@ -88,7 +98,7 @@ public class Card11 extends StatefulEffect {
     }
 
     //test-purpose only
-    @Override
+   /* @Override
     public String toString() {
         return "Card11{" +
                 "id=" + id +
@@ -96,5 +106,5 @@ public class Card11 extends StatefulEffect {
                 ", timeUsed=" + timeUsed +
                 ", context=" + context +
                 '}';
-    }
+    }*/
 }

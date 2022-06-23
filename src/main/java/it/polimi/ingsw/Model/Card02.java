@@ -19,11 +19,18 @@ public class Card02 extends StatelessEffect {
         super(2, 2, ctx);
     }
 
+    /**
+     * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     * @param input No extra parameters required
+     */
     @Override
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         return true;
     }
 
+    /**
+     * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
+     */
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         Map<PawnColour, PlayerBoard> teachers = this.context.getTeachers();
@@ -36,7 +43,7 @@ public class Card02 extends StatelessEffect {
         });
     }
 
-    //test purpose only
+    /*//test purpose only
     @Override
     public String toString() {
         return "Card02{" +
@@ -45,5 +52,5 @@ public class Card02 extends StatelessEffect {
                 ", timeUsed=" + timeUsed +
                 ", context=" + context +
                 '}';
-    }
+    }*/
 }

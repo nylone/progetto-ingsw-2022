@@ -58,12 +58,18 @@ public abstract class CharacterCard implements Serializable {
      * NOTE: checkInput(input) by default checks whether the correct player has called the card, then relays all other
      * checks to this function. So don't check the correct user in this function as it is pointless.
      *
-     * @param input
+     * @param input user's input
      * @return can only return true as a value, only returns it when the input is correct
      * @throws InputValidationException whenever the input is invalid
      */
     protected abstract boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException;
 
+
+    /**
+     * This method must be called after checking user's input
+     * Play
+     * @param input
+     */
     public final void unsafeUseCard(CharacterCardInput input) {
         try { // we should never get an exception now, if we do we crash
             unsafeApplyEffect(input);
@@ -73,6 +79,12 @@ public abstract class CharacterCard implements Serializable {
         addUse();
     }
 
+    /**
+     * This method must be called after {@link  #checkInput(CharacterCardInput)}
+     * Execute CharacterCard's effect (NOTE: keep in mind this funcion DOES ALTERATE the gamestate)
+     * @param input verified user's input
+     * @throws Exception not related to user's input and not recoverable
+     */
     protected abstract void unsafeApplyEffect(CharacterCardInput input) throws Exception;
 
     private void addUse() {

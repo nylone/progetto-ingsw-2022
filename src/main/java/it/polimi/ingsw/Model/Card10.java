@@ -28,9 +28,25 @@ public class Card10 extends StatelessEffect {
         super(10, 1, ctx);
     }
 
+    /**
+     * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     * @param input CharacterCardInput should contain:
+     *<ul>
+     *  <li>A valid list of pair having following properties: </li>
+     *              <ul>
+     *                  No more than two pairs<br>
+     *                  No null values inside pairs
+     *              </ul>
+     *  <li>Every pairs must follow this format:</li>
+     *            <ul>
+     *              first element from entrance and second from diningRoom
+     *            </ul>
+     *  <li>a valid PawnColour from card</li>
+     * </ul>
+     */
     @Override
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
-        //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from diningroom
+        //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from diningRoom
         Optional<List<Pair<PawnColour, PawnColour>>> optionalPawnPair = input.getTargetPawnPairs();
         // make sure that:
         if (
@@ -88,6 +104,9 @@ public class Card10 extends StatelessEffect {
         return true; // all checks passed, return true
     }
 
+    /**
+     * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
+     */
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         // explode pawnpairs into respective arrays of elements
@@ -110,7 +129,7 @@ public class Card10 extends StatelessEffect {
     }
 
     //test purpose only
-    @Override
+   /* @Override
     public String toString() {
         return "Card10{" +
                 "id=" + id +
@@ -118,5 +137,5 @@ public class Card10 extends StatelessEffect {
                 ", timeUsed=" + timeUsed +
                 ", context=" + context +
                 '}';
-    }
+    }*/
 }

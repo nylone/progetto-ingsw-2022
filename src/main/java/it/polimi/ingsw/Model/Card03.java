@@ -23,6 +23,13 @@ public class Card03 extends StatelessEffect {
         super(3, 3, ctx);
     }
 
+    /**
+     * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     * @param input CharacterCardInput should contain:
+     *<ul>
+     *  <li>A valid island's ID </li>
+     * </ul>
+     */
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetIsland().isEmpty()) {
             throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not set
@@ -37,6 +44,9 @@ public class Card03 extends StatelessEffect {
         return true;
     }
 
+    /**
+     * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
+     */
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         Island ti = input.getTargetIsland().get();
@@ -50,7 +60,7 @@ public class Card03 extends StatelessEffect {
     }
 
     //test purpose only
-    @Override
+    /*@Override
     public String toString() {
         return "Card03{" +
                 "id=" + id +
@@ -58,5 +68,5 @@ public class Card03 extends StatelessEffect {
                 ", timeUsed=" + timeUsed +
                 ", context=" + context +
                 '}';
-    }
+    }*/
 }

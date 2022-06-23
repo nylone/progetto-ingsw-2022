@@ -5,8 +5,9 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class Card02Test {
+public class Card02And04Test {
 
     /**
      * Character card 02 should leave the teachers control untouched except for the teachers of whom multiple players
@@ -36,7 +37,8 @@ public class Card02Test {
 
         // act
         // activates the card to validate teachers control
-        card.unsafeApplyEffect(activateCardAction);
+        if(card.overridableCheckInput(new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer())))
+            card.unsafeApplyEffect(activateCardAction);
 
         // assert
         // blue teacher should have been assigned to the player who used the card 02
@@ -46,5 +48,17 @@ public class Card02Test {
         assertEquals(pinkOwner, gb.getTeachers().get(PawnColour.PINK));
         assertEquals(redOwner, gb.getTeachers().get(PawnColour.RED));
         assertEquals(yellowOwner, gb.getTeachers().get(PawnColour.YELLOW));
+    }
+
+    @Test
+    public void checkEffectCard04IsWorking() throws Exception{
+        Model gb = new Model(GameMode.ADVANCED, "ale", "teo"); // advanced mode needed for character cards
+        Card04 card04 = new Card04(gb);
+        CharacterCardInput activateCardAction = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
+
+        if(card04.overridableCheckInput(activateCardAction))
+            card04.unsafeUseCard(activateCardAction);
+
+        assertTrue(gb.getMutableEffects().isMotherNatureMovementIncreased());
     }
 }

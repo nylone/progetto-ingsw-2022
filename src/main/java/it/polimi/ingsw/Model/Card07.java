@@ -49,6 +49,22 @@ public class Card07 extends StatefulEffect {
         return stateType;
     }
 
+    /**
+     * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     * @param input CharacterCardInput should contain:
+     *<ul>
+     *  <li>A valid list of pair having following properties: </li>
+     *              <ul>
+     *                  No more than three pairs<br>
+     *                  No null values inside pairs
+     *              </ul>
+     *  <li>Every pairs must follow this format:</li>
+     *            <ul>
+     *              first element from entrance and second from card
+     *            </ul>
+     *  <li>a valid PawnColour from card</li>
+     * </ul>
+     */
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from card
         Optional<List<Pair<PawnColour, PawnColour>>> optionalPawnPair = input.getTargetPawnPairs();
@@ -56,7 +72,7 @@ public class Card07 extends StatefulEffect {
         // make sure the pair is formatted properly
         if (
                 optionalPawnPair.isEmpty() || // target pawn pairs was set as parameter
-                        optionalPawnPair.get().size() == 0 || // target pawn pairs is not empty
+                        //optionalPawnPair.get().size() == 0 || /target pawn pairs is not empty (technically allowed)
                         optionalPawnPair.get().size() > 3 || // target pawn pairs are not over the pair limit of 2 swaps
                         optionalPawnPair.get().stream().anyMatch(p -> p.getFirst() == null || p.getSecond() == null) // no null values in pair
         ) {
@@ -98,18 +114,21 @@ public class Card07 extends StatefulEffect {
         if (!canMapFit(cardMap, secondMap)) {
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
         }
-        if (playerBoard.getEntranceSpaceLeft() + pawnPairs.size() >= input.getCaller().getEntranceSize()) {
+        if (playerBoard.getEntranceSpaceLeft() + pawnPairs.size() >= playerBoard.getEntranceSize()) {
             throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
-                    CONTAINER_NAME_ENTRANCE + "does not contain " + pawnPairs.size()
-                            + "pawns");
+                    CONTAINER_NAME_ENTRANCE + " does not contain " + pawnPairs.size()
+                            + " pawns");
         }
         if (context.getMutableStudentBag().getSize() == 0) {
-            throw new GenericInputValidationException(CONTAINER_NAME_STUDENT_BAG, CONTAINER_NAME_STUDENT_BAG + "is empty");
+            throw new GenericInputValidationException(CONTAINER_NAME_STUDENT_BAG, CONTAINER_NAME_STUDENT_BAG + " is empty");
         }
 
         return true;
     }
 
+    /**
+     * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
+     */
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         PlayerBoard me = input.getCaller();
@@ -131,7 +150,7 @@ public class Card07 extends StatefulEffect {
     }
 
     //test-purpose only
-    @Override
+   /* @Override
     public String toString() {
         return "Card07{" +
                 "id=" + id +
@@ -139,5 +158,5 @@ public class Card07 extends StatefulEffect {
                 ", timeUsed=" + timeUsed +
                 ", context=" + context +
                 '}';
-    }
+    }*/
 }

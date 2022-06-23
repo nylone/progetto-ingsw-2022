@@ -4,6 +4,7 @@ import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
+import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
 
 import java.io.Serial;
@@ -21,6 +22,7 @@ public class Card05 extends StatefulEffect {
     @Serial
     private static final long serialVersionUID = 107L; // convention: 1 for model, (01 -> 99) for objects
 
+    //List containing card's tiles
     private final ArrayList<NoEntryTile> tiles;
 
     public Card05(Model ctx) {
@@ -31,14 +33,29 @@ public class Card05 extends StatefulEffect {
         }
     }
 
+    /**
+     * Get card's content
+     * @return ArrayList of Objects with noEntryTile (Can be casted to {@link NoEntryTile})
+     */
     public ArrayList<Object> getState() {
         return new ArrayList<>(tiles);
     }
 
+    /**
+     * Get card's stateType
+     * @return card's stateType
+     */
     public StateType getStateType() {
         return stateType;
     }
 
+    /**
+     * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     * @param input CharacterCardInput should contain:
+     *<ul>
+     *  <li>A valid island's ID </li>
+     * </ul>
+     */
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetIsland().isEmpty()) {
             throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not set
@@ -58,6 +75,9 @@ public class Card05 extends StatefulEffect {
         return true;
     }
 
+    /**
+     * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
+     */
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         Island ti = input.getTargetIsland().get();
@@ -70,12 +90,16 @@ public class Card05 extends StatefulEffect {
         throw new FailedOperationException(OPERATION_NAME_CARD05_APPLY_EFFECT, "Target Island was not contained in any IslandGroup");
     }
 
+    /**
+     * Add NoEntryTile to card
+     * @param tile tile to add
+     */
     public void tileReset(NoEntryTile tile) {
         this.tiles.add(tile);
     }
 
     //test-purpose only
-    @Override
+    /*@Override
     public String toString() {
         return "Card05{" +
                 "id=" + id +
@@ -83,5 +107,5 @@ public class Card05 extends StatefulEffect {
                 ", timeUsed=" + timeUsed +
                 ", context=" + context +
                 '}';
-    }
+    }*/
 }

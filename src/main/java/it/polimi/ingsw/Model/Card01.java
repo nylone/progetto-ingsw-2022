@@ -16,6 +16,7 @@ import java.util.Arrays;
 import static it.polimi.ingsw.Constants.*;
 
 /**
+ * Character Card#1
  * In setup, draw 4 Students and place them on this card. <br>
  * EFFECT: Take 1 Student from this card and place it on
  * an Island of your choice. Then, draw a new Student from the Bag and place it on this card.
@@ -24,6 +25,9 @@ import static it.polimi.ingsw.Constants.*;
 public class Card01 extends StatefulEffect {
     @Serial
     private static final long serialVersionUID = 103L; // convention: 1 for model, (01 -> 99) for objects
+    /**
+     * Array containing card's pawns
+     */
     private final PawnColour[] students = new PawnColour[4];
 
     public Card01(Model ctx) {
@@ -39,32 +43,61 @@ public class Card01 extends StatefulEffect {
         }
     }
 
+    /**
+     * Get card's content
+     * @return ArrayList of Objects with pawns (Can be casted to {@link PawnColour})
+     */
     public ArrayList<Object> getState() {
         return new ArrayList<>(Arrays.asList(students));
     }
 
+    /**
+     * Get card's stateType
+     * @return card's stateType
+     */
     public StateType getStateType() {
         return stateType;
     }
 
+    /**
+     * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     * @param input CharacterCardInput should contain:
+     *<ul>
+     *  <li>A valid island's ID </li>
+     *  <li>a valid PawnColour from card</li>
+     * </ul>
+     */
     @Override
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
+        //check if input contains a valid island
         if (input.getTargetIsland().isEmpty()) {
             throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND);
         }
+        //check if input contains a valid pawnColour
         if (input.getTargetPawn().isEmpty()) {
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
         }
+        Island ti = input.getTargetIsland().get();
+        if (ti.getId() < 0 || ti.getId() >= 12) {
+            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti out of bounds for id
+        }
+        if (!this.context.getMutableIslandField().getMutableIslands().contains(ti)) {
+            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not in field
+        } // note: if island is in field then the island must also be in a group, due to how islandfield works.
         // find if the target pawn colour is present in the card's stored pawn
         if (Arrays.stream(this.students).noneMatch(cell -> cell == input.getTargetPawn().get())) {
             throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
         }
+        //if StudentBag is empty then the card could not be filled anymore
         if (context.getMutableStudentBag().getSize() == 0) {
-            throw new GenericInputValidationException(CONTAINER_NAME_STUDENT_BAG, CONTAINER_NAME_STUDENT_BAG + "is empty");
+            throw new GenericInputValidationException(CONTAINER_NAME_STUDENT_BAG, CONTAINER_NAME_STUDENT_BAG + " is empty");
         }
         return true;
     }
 
+    /**
+     * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
+     */
     @Override
     protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
         PawnColour movedPawn = input.getTargetPawn().get();
@@ -80,7 +113,7 @@ public class Card01 extends StatefulEffect {
         throw new FailedOperationException(OPERATION_NAME_CARD01_APPLY_EFFECT, "Target pawn was not contained in card's state");
     }
 
-    //test-purpose only
+   /* //test-purpose only
     @Override
     public String toString() {
         return "Card01{" +
@@ -89,5 +122,5 @@ public class Card01 extends StatefulEffect {
                 ", timeUsed=" + timeUsed +
                 ", context=" + context +
                 '}';
-    }
+    }*/
 }
