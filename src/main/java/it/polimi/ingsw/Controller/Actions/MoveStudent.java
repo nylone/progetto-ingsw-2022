@@ -17,7 +17,10 @@ import java.util.List;
 import static it.polimi.ingsw.Constants.*;
 import static it.polimi.ingsw.Misc.Utils.countSimilarClassOccurrences;
 
-
+/**
+ * This {@link PlayerAction} allows the caller to move a single student from the entrance to the school to an island or a dining room table. This action
+ * is linked to the Action Phase.
+ */
 public class MoveStudent extends PlayerAction {
     @Serial
     private static final long serialVersionUID = 205L; // convention: 2 for controller, (01 -> 99) for objects
@@ -25,6 +28,13 @@ public class MoveStudent extends PlayerAction {
     private final int selectedEntrancePosition;
     private final MoveDestination destination;
 
+    /**
+     * Create a new instance of this class with the following inputs:
+     *
+     * @param playerBoardId            the ID of the current {@link PlayerBoard}
+     * @param destination              a {@link MoveDestination} value specifying where the selected student will be moved
+     * @param selectedEntrancePosition id of the slot in the list returned by {@link PlayerBoard#getEntranceStudents()}, selects a student to be moved
+     */
     public MoveStudent(int playerBoardId, int selectedEntrancePosition, MoveDestination destination) {
         super(playerBoardId, false);
         this.selectedEntrancePosition = selectedEntrancePosition;

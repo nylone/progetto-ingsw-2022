@@ -4,7 +4,6 @@ import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
-import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
 
 import java.io.Serial;
@@ -35,6 +34,7 @@ public class Card05 extends StatefulEffect {
 
     /**
      * Get card's content
+     *
      * @return ArrayList of Objects with noEntryTile (Can be casted to {@link NoEntryTile})
      */
     public ArrayList<Object> getState() {
@@ -43,6 +43,7 @@ public class Card05 extends StatefulEffect {
 
     /**
      * Get card's stateType
+     *
      * @return card's stateType
      */
     public StateType getStateType() {
@@ -51,10 +52,11 @@ public class Card05 extends StatefulEffect {
 
     /**
      * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     *
      * @param input CharacterCardInput should contain:
-     *<ul>
-     *  <li>A valid island's ID </li>
-     * </ul>
+     *              <ul>
+     *               <li>A valid island's ID </li>
+     *              </ul>
      */
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetIsland().isEmpty()) {
@@ -92,6 +94,7 @@ public class Card05 extends StatefulEffect {
 
     /**
      * Add NoEntryTile to card
+     *
      * @param tile tile to add
      */
     public void tileReset(NoEntryTile tile) {

@@ -66,6 +66,14 @@ public abstract class PlayerAction implements Serializable {
         return Optional.empty();
     }
 
+    /**
+     * SUB-VALIDATION FUNCTION: <br>
+     * if the game is not active anymore (i.e. the game is over and no actions can be made), this function will return a non-empty value.
+     *
+     * @param ctx the {@link Model} object, used during verification.
+     * @return an {@link Optional} value, the value is empty if no issues are found during the validation of the function. Else the
+     * value will contain a {@link Throwable} {@link Exception} that can be used to propagate the error message.
+     */
     private Optional<InputValidationException> isGameRunning(Model ctx) {
         if (ctx.isGameOver()) {
             return Optional.of(new GenericInputValidationException(this.getClass().getSimpleName(), "Game is over"));
@@ -73,6 +81,14 @@ public abstract class PlayerAction implements Serializable {
         return Optional.empty();
     }
 
+    /**
+     * SUB-VALIDATION FUNCTION: <br>
+     * if the {@link PlayerAction}'s declared player is not the current player that needs to play, this function will return a non-empty value.
+     *
+     * @param ctx the {@link Model} object, used during verification.
+     * @return an {@link Optional} value, the value is empty if no issues are found during the validation of the function. Else the
+     * value will contain a {@link Throwable} {@link Exception} that can be used to propagate the error message.
+     */
     private Optional<InputValidationException> isCorrectTurn(Model ctx) {
         if (!(ctx.getMutablePlayerBoards().size() > this.getPlayerBoardID())) {
             return Optional.of(new InvalidElementException("PlayerBoardID out of range"));
@@ -83,6 +99,15 @@ public abstract class PlayerAction implements Serializable {
         return Optional.empty();
     }
 
+    /**
+     * SUB-VALIDATION FUNCTION: <br>
+     * if the {@link PlayerAction} is marked as unique per turn, this function will return a non-empty value in case of a duplicate
+     * action being present in the history
+     *
+     * @param history a list of previous actions submitted by the player
+     * @return an {@link Optional} value, the value is empty if no issues are found during the validation of the function. Else the
+     * value will contain a {@link Throwable} {@link Exception} that can be used to propagate the error message.
+     */
     private Optional<InputValidationException> isDuplicate(List<PlayerAction> history) {
         if (!this.uniquePerTurn || history.stream().noneMatch(h -> h.getClass() == this.getClass())) {
             return Optional.empty();
@@ -104,6 +129,9 @@ public abstract class PlayerAction implements Serializable {
      */
     protected abstract Optional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx);
 
+    /**
+     * @return the {@link it.polimi.ingsw.Model.PlayerBoard} id set during construction of the Action.
+     */
     final public int getPlayerBoardID() {
         return playerBoardID;
     }

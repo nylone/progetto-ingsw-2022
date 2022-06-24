@@ -266,7 +266,7 @@ public class PlayerBoardPanel extends JPanel {
         pinkTeacherLabel.setBounds(765, 257, 50, 45);
         blueTeacherLabel.setBounds(765, 325, 50, 45);
         //create and place a label containing player balance (only if the game is an advanced game)
-        if(model.getGameMode() == GameMode.ADVANCED) {
+        if (model.getGameMode() == GameMode.ADVANCED) {
             JLabel coinAmountLabel = new JLabel();
             String text;
             if (pb.getCoinBalance() > 1) {

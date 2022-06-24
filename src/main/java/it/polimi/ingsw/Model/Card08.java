@@ -17,6 +17,7 @@ public class Card08 extends StatelessEffect {
 
     /**
      * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     *
      * @param input No extra parameters required
      */
     @Override

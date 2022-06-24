@@ -84,7 +84,7 @@ public class Card03Test {
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         Island island = new Island(13);
         input.setTargetIsland(island);
-        if (card.checkInput(input));
+        if (card.checkInput(input)) ;
     }
 
     /**

@@ -20,7 +20,6 @@ import java.util.List;
 import static it.polimi.ingsw.Constants.*;
 
 public class PlayCharacterCard extends PlayerAction {
-    // todo why not use character card input? otherwise it's weird
     @Serial
     private static final long serialVersionUID = 207L; // convention: 2 for controller, (01 -> 99) for objects
 
@@ -29,6 +28,15 @@ public class PlayCharacterCard extends PlayerAction {
     private final Optional<PawnColour> optTargetPawn;
     private final Optional<List<Pair<PawnColour, PawnColour>>> optTargetPawnPairs;
 
+    /**
+     * Create a new instance of this class with the following inputs:
+     *
+     * @param playerBoardId      the ID of the current {@link PlayerBoard}
+     * @param selectedCard       the ID of the {@link CharacterCard} to be played
+     * @param optTargetIsland    if a target island is required as an input to the card, provide it here
+     * @param optTargetPawn      if a target pawn is required as an input to the card, provide it here
+     * @param optTargetPawnPairs if a list of pawn pairs is required as an input to the card, provide it here
+     */
     public PlayCharacterCard(
             int playerBoardId,
             int selectedCard,
@@ -87,7 +95,6 @@ public class PlayCharacterCard extends PlayerAction {
                     INPUT_NAME_CHARACTER_CARD + " can't be played due to insufficient coin balance"));
         }
 
-        // todo redo character card validation
         try {
             selectedCard.checkInput(cardInput);
         } catch (InputValidationException e) {
@@ -114,6 +121,16 @@ public class PlayCharacterCard extends PlayerAction {
         }
     }
 
+    /**
+     * a {@link CharacterCard} requires more information than the one contained in the constructor of this {@link PlayerAction}
+     * to be able to function. During the calls to verify the action, a {@link CharacterCardInput} object needs to be created so
+     * the internal validation mechanism of the {@link CharacterCard} can work.
+     *
+     * @param caller instead of the id of the current player, a reference to the current {@link PlayerBoard} is needed
+     * @param ctx    the {@link Model} object is required to allow translation of the attributes of this object into a {@link CharacterCardInput}
+     * @return the {@link CharacterCardInput} associated with this object's attributes
+     * @throws InvalidContainerIndexException if the attribute of target island is pointing to an unidentified island-ID in the model, this exception is thrown
+     */
     private CharacterCardInput generateCharacterCardInput(PlayerBoard caller, Model ctx) throws InvalidContainerIndexException {
         CharacterCardInput out = new CharacterCardInput(caller);
         if (this.optTargetIsland.isPresent()) {

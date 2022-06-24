@@ -16,13 +16,22 @@ import java.util.List;
 
 import static it.polimi.ingsw.Constants.INPUT_NAME_ASSISTANT_CARD;
 
-
+/**
+ * This {@link PlayerAction} allows the caller to select the desired assistant card to be played this round. This action
+ * is linked to the Setup (Preparation) Phase.
+ */
 public class PlayAssistantCard extends PlayerAction {
     @Serial
     private static final long serialVersionUID = 206L; // convention: 2 for controller, (01 -> 99) for objects
 
     private final int selectedAssistant;
 
+    /**
+     * Create a new instance of this class with the following inputs:
+     *
+     * @param playerBoardId     the ID of the current {@link PlayerBoard}
+     * @param selectedAssistant the priority of the {@link AssistantCard} to be selected
+     */
     public PlayAssistantCard(int playerBoardId, int selectedAssistant) {
         super(playerBoardId, true);
         this.selectedAssistant = selectedAssistant - 1;

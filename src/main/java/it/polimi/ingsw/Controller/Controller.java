@@ -53,7 +53,7 @@ public class Controller {
     }
 
     /**
-     * Generates a new instance. This is the factory method to call for general purpose creation of a game.
+     * Generates a new instance. This is the static method to call for general purpose creation of a game.
      *
      * @param gameMode the game mode the players are going to use
      * @param lobby    in case a server is used, insert the {@linkplain Lobby} object wrapped in an {@link Optional} to let it

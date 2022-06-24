@@ -50,10 +50,11 @@ public class Card11 extends StatefulEffect {
 
     /**
      * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     *
      * @param input CharacterCardInput should contain:
-     *<ul>
-     *  <li>A valid pawnColour from card's state </li>
-     * </ul>
+     *              <ul>
+     *               <li>A valid pawnColour from card's state </li>
+     *              </ul>
      */
     @Override
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {

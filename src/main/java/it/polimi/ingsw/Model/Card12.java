@@ -24,10 +24,11 @@ public class Card12 extends StatelessEffect {
 
     /**
      * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     *
      * @param input CharacterCardInput should contain:
-     *<ul>
-     *  <li>A valid PawnColour</li>
-     * </ul>
+     *              <ul>
+     *               <li>A valid PawnColour</li>
+     *              </ul>
      */
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetPawn().isEmpty()) {

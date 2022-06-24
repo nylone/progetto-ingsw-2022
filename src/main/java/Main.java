@@ -6,7 +6,6 @@ import it.polimi.ingsw.Server.WelcomeServer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
 
 public class Main {
     public static void main(String... args) throws IOException {
@@ -31,20 +30,20 @@ public class Main {
             }
         }
         System.out.println("""
-            Welcome to the Eriantys startup tool!
-            Please choose one of the following options:
-            [S]\tstart server
-            [c]\tstart CLI client
-            [g]\tstart GUI client
-            
-            [d]\tenable the logging service for debugging purposes
+                Welcome to the Eriantys startup tool!
+                Please choose one of the following options:
+                [S]\tstart server
+                [c]\tstart CLI client
+                [g]\tstart GUI client
                             
-            [q]\tquit this tool
-            
-            Note: next time you run this tool, you can use the same [s/c/g] characters as command line parameters to skip this menu.
-            Note: you can enable the logging service via cli parameters by appending a [-d] at the end of the arguments.
-            Example: "java --enable-preview -jar <program-name>.jar s -d" will start the server in debug mode.
-            """);
+                [d]\tenable the logging service for debugging purposes
+                                
+                [q]\tquit this tool
+                            
+                Note: next time you run this tool, you can use the same [s/c/g] characters as command line parameters to skip this menu.
+                Note: you can enable the logging service via cli parameters by appending a [-d] at the end of the arguments.
+                Example: "java --enable-preview -jar <program-name>.jar s -d" will start the server in debug mode.
+                """);
 
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(System.in));

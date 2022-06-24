@@ -25,10 +25,11 @@ public class Card03 extends StatelessEffect {
 
     /**
      * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     *
      * @param input CharacterCardInput should contain:
-     *<ul>
-     *  <li>A valid island's ID </li>
-     * </ul>
+     *              <ul>
+     *               <li>A valid island's ID </li>
+     *              </ul>
      */
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetIsland().isEmpty()) {

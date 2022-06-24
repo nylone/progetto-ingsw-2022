@@ -13,12 +13,22 @@ import java.util.List;
 
 import static it.polimi.ingsw.Misc.Utils.countSimilarClassOccurrences;
 
+/**
+ * This {@link PlayerAction} allows the caller to move the mother nature entity forward by a specified amount. This action
+ * is linked to the Action Phase.
+ */
 public class MoveMotherNature extends PlayerAction {
     @Serial
     private static final long serialVersionUID = 204L; // convention: 2 for controller, (01 -> 99) for objects
 
     private final int distanceToMove;
 
+    /**
+     * Create a new instance of this class with the following inputs:
+     *
+     * @param playerBoardId  the ID of the current {@link PlayerBoard}
+     * @param distanceToMove the amount of distance Mother Nature is going to be moved
+     */
     public MoveMotherNature(int playerBoardId, int distanceToMove) {
         super(playerBoardId, true);
         this.distanceToMove = distanceToMove;

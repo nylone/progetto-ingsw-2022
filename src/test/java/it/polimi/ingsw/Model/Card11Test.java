@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
@@ -9,7 +8,6 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
 import org.junit.Assert;
 import org.junit.Test;
-
 
 import java.util.EnumMap;
 
@@ -62,17 +60,17 @@ public class Card11Test {
     }
 
     @Test
-    public void EmptyStudentBagExceptionCardConstructor(){
+    public void EmptyStudentBagExceptionCardConstructor() {
         Model g = new Model(GameMode.ADVANCED, "ari", "teo");
         // creates a wrong input which will not be filled with information
         Card11 card;
         //create a new Card until student bag has 5 students or fewer
-        do{
+        do {
             card = new Card11(g);
-        }while (g.getMutableStudentBag().getSize()>=4);
+        } while (g.getMutableStudentBag().getSize() >= 4);
         try {
             card = new Card11(g);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             assertEquals("it.polimi.ingsw.Exceptions.Container.EmptyContainerException: An error occurred on: StudentBag\n" +
                     "The error was: StudentBag was found empty.", e.getMessage());
         }
@@ -86,38 +84,38 @@ public class Card11Test {
         // selects the first and second students from both the card and the entrance and links them together
         Card11 card = new Card11(g);
         input.setTargetPawn((PawnColour) card.getState().get(2));
-        while(!g.getMutableStudentBag().isEmpty()){
+        while (!g.getMutableStudentBag().isEmpty()) {
             g.getMutableStudentBag().extract();
         }
         try {
             card.checkInput(input);
-        }catch (GenericInputValidationException e){
+        } catch (GenericInputValidationException e) {
             Assert.assertEquals("An error occurred while validating: Student Bag\n" +
-                    "The error was: Student Bag is empty",e.getMessage());
+                    "The error was: Student Bag is empty", e.getMessage());
         }
     }
 
     @Test
-    public void PawnNotPresentInCard() throws Exception{
+    public void PawnNotPresentInCard() throws Exception {
         Model g = new Model(GameMode.ADVANCED, "ari", "teo");
         // creates a wrong input which will not be filled with information
         CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
         Card11 card = new Card11(g);
         EnumMap<PawnColour, Integer> pawnColourIntegerEnumMap = new EnumMap<>(PawnColour.class);
-        for(PawnColour p : card.getState().stream().map(o -> (PawnColour) o).toList()){
-            pawnColourIntegerEnumMap.merge(p,1,Integer::sum);
+        for (PawnColour p : card.getState().stream().map(o -> (PawnColour) o).toList()) {
+            pawnColourIntegerEnumMap.merge(p, 1, Integer::sum);
         }
-        for(PawnColour p : PawnColour.values()){
-            if(!pawnColourIntegerEnumMap.containsKey(p)){
+        for (PawnColour p : PawnColour.values()) {
+            if (!pawnColourIntegerEnumMap.containsKey(p)) {
                 input.setTargetPawn(p);
                 break;
             }
         }
         try {
             card.checkInput(input);
-        }catch (InvalidElementException e){
+        } catch (InvalidElementException e) {
             Assert.assertEquals("An error occurred while validating: Target Pawn Colour\n" +
-                    "The error was: element Target Pawn Colour was found to be invalid (eg: null, out of bounds or otherwise incorrect).",e.getMessage());
+                    "The error was: element Target Pawn Colour was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
         }
     }
 

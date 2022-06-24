@@ -131,13 +131,12 @@ public class GameInProgressPanel extends JTabbedPane {
                         || (guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1 && guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 0)
                 ) {
                     StringBuilder text;
-                    if(guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1) {
+                    if (guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1) {
                         text = new StringBuilder("It's your turn!!");
-                    }
-                    else {
+                    } else {
                         text = new StringBuilder("<html>It's your turn!!<br>");
-                        for(PlayerBoard playerBoard : model.getMutableTurnOrder().getCurrentTurnOrder()){
-                            if(playerBoard.getNickname().equals(ownNickname)) break;
+                        for (PlayerBoard playerBoard : model.getMutableTurnOrder().getCurrentTurnOrder()) {
+                            if (playerBoard.getNickname().equals(ownNickname)) break;
                             text.append(playerBoard.getNickname()).append(" has played assistantCard: #").append(model.getMutableTurnOrder().getMutableSelectedCard(playerBoard).get().getPriority()).append("<br>");
                         }
                         text.append("</html>");

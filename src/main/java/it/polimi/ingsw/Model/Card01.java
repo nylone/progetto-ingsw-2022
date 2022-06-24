@@ -45,6 +45,7 @@ public class Card01 extends StatefulEffect {
 
     /**
      * Get card's content
+     *
      * @return ArrayList of Objects with pawns (Can be casted to {@link PawnColour})
      */
     public ArrayList<Object> getState() {
@@ -53,6 +54,7 @@ public class Card01 extends StatefulEffect {
 
     /**
      * Get card's stateType
+     *
      * @return card's stateType
      */
     public StateType getStateType() {
@@ -61,11 +63,12 @@ public class Card01 extends StatefulEffect {
 
     /**
      * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     *
      * @param input CharacterCardInput should contain:
-     *<ul>
-     *  <li>A valid island's ID </li>
-     *  <li>a valid PawnColour from card</li>
-     * </ul>
+     *              <ul>
+     *               <li>A valid island's ID </li>
+     *               <li>a valid PawnColour from card</li>
+     *              </ul>
      */
     @Override
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {

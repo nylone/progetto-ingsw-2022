@@ -51,19 +51,20 @@ public class Card07 extends StatefulEffect {
 
     /**
      * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+     *
      * @param input CharacterCardInput should contain:
-     *<ul>
-     *  <li>A valid list of pair having following properties: </li>
      *              <ul>
-     *                  No more than three pairs<br>
-     *                  No null values inside pairs
+     *               <li>A valid list of pair having following properties: </li>
+     *                           <ul>
+     *                               No more than three pairs<br>
+     *                               No null values inside pairs
+     *                           </ul>
+     *               <li>Every pairs must follow this format:</li>
+     *                         <ul>
+     *                           first element from entrance and second from card
+     *                         </ul>
+     *               <li>a valid PawnColour from card</li>
      *              </ul>
-     *  <li>Every pairs must follow this format:</li>
-     *            <ul>
-     *              first element from entrance and second from card
-     *            </ul>
-     *  <li>a valid PawnColour from card</li>
-     * </ul>
      */
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from card

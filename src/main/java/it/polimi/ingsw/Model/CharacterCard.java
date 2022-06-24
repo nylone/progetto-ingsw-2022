@@ -68,6 +68,7 @@ public abstract class CharacterCard implements Serializable {
     /**
      * This method must be called after checking user's input
      * Play
+     *
      * @param input
      */
     public final void unsafeUseCard(CharacterCardInput input) {
@@ -82,6 +83,7 @@ public abstract class CharacterCard implements Serializable {
     /**
      * This method must be called after {@link  #checkInput(CharacterCardInput)}
      * Execute CharacterCard's effect (NOTE: keep in mind this funcion DOES ALTERATE the gamestate)
+     *
      * @param input verified user's input
      * @throws Exception not related to user's input and not recoverable
      */

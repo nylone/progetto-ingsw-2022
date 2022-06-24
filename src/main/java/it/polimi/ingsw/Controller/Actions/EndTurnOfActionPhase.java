@@ -5,16 +5,26 @@ import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.Optional;
 import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.Model;
+import it.polimi.ingsw.Model.PlayerBoard;
 
 import java.io.Serial;
 import java.util.List;
 
 import static it.polimi.ingsw.Misc.Utils.countSimilarClassOccurrences;
 
+/**
+ * The Action phase is a lengthy one and its length cannot be determined. This {@link PlayerAction} enables the caller to
+ * end an Action phase on its own accord.
+ */
 public class EndTurnOfActionPhase extends PlayerAction {
     @Serial
     private static final long serialVersionUID = 202L; // convention: 2 for controller, (01 -> 99) for objects
 
+    /**
+     * Create a new instance of this class with the following inputs:
+     *
+     * @param playerBoardId the ID of the current {@link PlayerBoard}
+     */
     public EndTurnOfActionPhase(int playerBoardId) {
         super(playerBoardId, true);
     }

@@ -14,12 +14,22 @@ import java.util.List;
 import static it.polimi.ingsw.Constants.*;
 import static it.polimi.ingsw.Misc.Utils.countSimilarClassOccurrences;
 
+/**
+ * {@link PlayerAction} allowing a user to choose one of many cloud tiles present on the gameboard. This action is
+ * linked to the Action Phase
+ */
 public class ChooseCloudTile extends PlayerAction {
 
     @Serial
     private static final long serialVersionUID = 201L; // convention: 2 for controller, (01 -> 99) for objects
     private final int selectedTile;
 
+    /**
+     * Create a new instance of this class with the following inputs:
+     *
+     * @param playerBoardId the ID of the current {@link PlayerBoard}
+     * @param selectedTile  the ID of the {@link Cloud} the player has chosen
+     */
     public ChooseCloudTile(int playerBoardId, int selectedTile) {
         super(playerBoardId, true);
         this.selectedTile = selectedTile;
