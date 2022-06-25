@@ -14,29 +14,35 @@ import java.util.EnumMap;
 import static org.junit.Assert.*;
 
 public class Card11Test {
-    Model gb = new Model(GameMode.ADVANCED, "ari", "teo");
+    Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
 
     @Test
     public void checkUse() throws Exception {
         Card11 card11 = new Card11(gb);
-        assertEquals(4, card11.getState().size());
-        assertSame(card11.getStateType(), StateType.PAWNCOLOUR);
+        assertEquals(4, card11.getState().size()); // check if card has 4 items when initialized
+        assertSame(card11.getStateType(), StateType.PAWNCOLOUR); // check that card contains students
 
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
 
+        // creates input to let the current player interact with card
         CharacterCardInput input = new CharacterCardInput(pb);
+        // selects third student on card
         input.setTargetPawn((PawnColour) card11.getState().get(2));
         PawnColour toAdd = input.getTargetPawn().get();
-        assertEquals(4, card11.getState().size());
+
+        // act
+        // card should move student to dining room
         if (card11.checkInput(input)) card11.unsafeApplyEffect(input);
-        assertEquals(1, pb.getDiningRoomCount(toAdd));
-        assertEquals(4, card11.getState().size());
+
+        assertEquals(1, pb.getDiningRoomCount(toAdd)); // one student should be added to the correct dining row
+        assertEquals(4, card11.getState().size()); // checks if the card was filled up
     }
 
     @Test(expected = InputValidationException.class)
     public void checkExceptionInput() throws Exception {
         Card11 card11 = new Card11(gb);
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
+        // creates a wrong input which will not be filled with information
         CharacterCardInput input = new CharacterCardInput(pb);
         if (card11.checkInput(input)) card11.unsafeApplyEffect(input);
     }
@@ -46,47 +52,37 @@ public class Card11Test {
         Card11 card11 = new Card11(gb);
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
 
+        // creates input to let the current player interact with card
         CharacterCardInput input = new CharacterCardInput(pb);
+        // selects third student on card
         input.setTargetPawn((PawnColour) card11.getState().get(2));
+        // fills a dining room row
         for (int i = 0; i < 10; i++) {
             pb.unsafeAddStudentToDiningRoom(input.getTargetPawn().get());
         }
+        // checks that card doesn't allow to add student to a full dining room row
         InputValidationException exception = assertThrows(InputValidationException.class, () -> {
             if (card11.checkInput(input)) card11.unsafeApplyEffect(input);
         });
 
+        // checks the specific exception error message
         assertEquals("An error occurred while validating: DiningRoom\n" +
                 "The error was: DiningRoom can't contain " + input.getTargetPawn().get() + "without overflowing.", exception.getMessage());
     }
 
     @Test
-    public void EmptyStudentBagExceptionCardConstructor() {
-        Model g = new Model(GameMode.ADVANCED, "ari", "teo");
-        // creates a wrong input which will not be filled with information
-        Card11 card;
-        //create a new Card until student bag has 5 students or fewer
-        do {
-            card = new Card11(g);
-        } while (g.getMutableStudentBag().getSize() >= 4);
-        try {
-            card = new Card11(g);
-        } catch (RuntimeException e) {
-            assertEquals("it.polimi.ingsw.Exceptions.Container.EmptyContainerException: An error occurred on: StudentBag\n" +
-                    "The error was: StudentBag was found empty.", e.getMessage());
-        }
-    }
-
-    @Test
     public void EmptyStudentBagCardUse() throws Exception {
-        Model g = new Model(GameMode.ADVANCED, "ari", "teo");
-        // creates a wrong input which will not be filled with information
-        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
-        // selects the first and second students from both the card and the entrance and links them together
+        Model g = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
         Card11 card = new Card11(g);
+        // creates input to let the current player interact with card
+        CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
+        // selects third student on card
         input.setTargetPawn((PawnColour) card.getState().get(2));
+        // emptying student bag
         while (!g.getMutableStudentBag().isEmpty()) {
             g.getMutableStudentBag().extract();
         }
+        // it should not be possible to activate card if student bag is empty
         try {
             card.checkInput(input);
         } catch (GenericInputValidationException e) {
@@ -97,20 +93,19 @@ public class Card11Test {
 
     @Test
     public void PawnNotPresentInCard() throws Exception {
-        Model g = new Model(GameMode.ADVANCED, "ari", "teo");
+        Model g = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
         // creates a wrong input which will not be filled with information
         CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
         Card11 card = new Card11(g);
-        EnumMap<PawnColour, Integer> pawnColourIntegerEnumMap = new EnumMap<>(PawnColour.class);
-        for (PawnColour p : card.getState().stream().map(o -> (PawnColour) o).toList()) {
-            pawnColourIntegerEnumMap.merge(p, 1, Integer::sum);
-        }
+
+        // selecting a student not contained in the card
         for (PawnColour p : PawnColour.values()) {
-            if (!pawnColourIntegerEnumMap.containsKey(p)) {
+            if (!card.getState().contains(p)) {
                 input.setTargetPawn(p);
                 break;
             }
         }
+        // it should not be possible to activate card if student is not on the card
         try {
             card.checkInput(input);
         } catch (InvalidElementException e) {
