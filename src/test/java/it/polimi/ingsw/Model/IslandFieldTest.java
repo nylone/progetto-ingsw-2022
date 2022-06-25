@@ -24,7 +24,8 @@ public class IslandFieldTest {
         // act
         islandField.moveMotherNature(movement);
         // assert
-        int expected = (initialPosition + islandField.getMutableGroups().size() + movement) % islandField.getMutableGroups().size();
+        // mod 12 arithmetic is needed to calculate final mother nature position (because there are 12 islands initially)
+        int expected = (initialPosition + movement + 12) % 12;
         assertEquals(expected, islandField.getMutableMotherNaturePosition().getId());
     }
 
@@ -47,7 +48,8 @@ public class IslandFieldTest {
 
         try {
             // act
-            IslandGroup found = field.getMutableIslandGroupById(15);
+            // trying to access not existent island group
+            field.getMutableIslandGroupById(15);
             fail("An exception was thrown");
         } catch (InvalidContainerIndexException e) {
             // assert
@@ -67,6 +69,7 @@ public class IslandFieldTest {
     public void testInvalidIslandId() {
         // act
         try {
+            // trying to access not existent island
             field.getMutableIslandById(18);
             fail("Exception was thrown");
         } catch (InvalidContainerIndexException e) {
@@ -79,19 +82,28 @@ public class IslandFieldTest {
     public void testingJoiningMotherNatureWithPreviousGroup() throws Exception {
         // arrange
         Model model = new Model(GameMode.SIMPLE, "ale", "teo");
-        IslandGroup motherNaturePosition = model.getMutableIslandField().getMutableMotherNaturePosition();
+        // selects island containing mother nature
+        IslandGroup initialMnPosition = model.getMutableIslandField().getMutableMotherNaturePosition();
         List<IslandGroup> groups = model.getMutableIslandField().getMutableGroups();
-        IslandGroup previousGroup = Utils.modularSelection(motherNaturePosition, groups, -1);
+        // selects island before mother nature island
+        IslandGroup previousGroup = Utils.modularSelection(initialMnPosition, groups, -1);
 
+        // adds tower of same colour to both selected islands
         TeamMapper teamMapper = model.getTeamMapper();
-        motherNaturePosition.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
+        initialMnPosition.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         previousGroup.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
+
         // act
         model.getMutableIslandField().joinGroups();
+
         // assert
+        // update mother nature position
         IslandGroup currentMotherNaturePosition = model.getMutableIslandField().getMutableMotherNaturePosition();
+        // verifies that 2 islands have been merged in one island group
         assertEquals(2, currentMotherNaturePosition.getMutableIslands().size());
-        assertEquals(motherNaturePosition.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(0));
+        // checks that the first island in the joined group is the initial mother nature island
+        assertEquals(initialMnPosition.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(0));
+        // check that the second island in the joined group is the island before initial mother nature island
         assertEquals(previousGroup.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(1));
     }
 
@@ -99,19 +111,28 @@ public class IslandFieldTest {
     public void testingJoiningMotherNatureWithNextGroup() throws Exception {
         // arrange
         Model model = new Model(GameMode.SIMPLE, "ale", "teo");
+        // selects island containing mother nature
         IslandGroup motherNaturePosition = model.getMutableIslandField().getMutableMotherNaturePosition();
         List<IslandGroup> groups = model.getMutableIslandField().getMutableGroups();
+        // selects island after mother nature island
         IslandGroup nextGroup = Utils.modularSelection(motherNaturePosition, groups, +1);
 
+        // adds tower of same colour to both selected islands
         TeamMapper teamMapper = model.getTeamMapper();
         motherNaturePosition.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         nextGroup.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
+
         // act
         model.getMutableIslandField().joinGroups();
+
         // assert
+        // update mother nature position
         IslandGroup currentMotherNaturePosition = model.getMutableIslandField().getMutableMotherNaturePosition();
+        // verifies that 2 islands have been merged in one island group
         assertEquals(2, currentMotherNaturePosition.getMutableIslands().size());
+        // checks that the first island in the joined group is the initial mother nature island
         assertEquals(motherNaturePosition.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(0));
+        // check that the second island in the joined group is the island after initial mother nature island
         assertEquals(nextGroup.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(1));
     }
 
@@ -119,22 +140,33 @@ public class IslandFieldTest {
     public void testingJoiningThreeIslands() throws Exception {
         // arrange
         Model model = new Model(GameMode.SIMPLE, "ale", "teo");
+        // selects island containing mother nature
         IslandGroup motherNaturePosition = model.getMutableIslandField().getMutableMotherNaturePosition();
         List<IslandGroup> groups = model.getMutableIslandField().getMutableGroups();
+        // selects island before mother nature island
         IslandGroup prevGroup = Utils.modularSelection(motherNaturePosition, groups, -1);
+        // selects island after mother nature island
         IslandGroup nextGroup = Utils.modularSelection(motherNaturePosition, groups, +1);
 
+        // adds tower of same colour to the three selected islands
         TeamMapper teamMapper = model.getTeamMapper();
         motherNaturePosition.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         prevGroup.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
         nextGroup.getMutableIslands().get(0).swapTower(teamMapper.getMutableTowerStorage(TeamID.ONE).extractTower());
+
         // act
         model.getMutableIslandField().joinGroups();
+
         // assert
+        // update mother nature position
         IslandGroup currentMotherNaturePosition = model.getMutableIslandField().getMutableMotherNaturePosition();
+        // verifies that 3 islands have been merged in one island group
         assertEquals(3, currentMotherNaturePosition.getMutableIslands().size());
+        // checks that the first island in the joined group is the initial mother nature island
         assertEquals(motherNaturePosition.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(0));
+        // check that the second island in the joined group is the island before initial mother nature island
         assertEquals(prevGroup.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(1));
+        // check that the third island in the joined group is the island after initial mother nature island
         assertEquals(nextGroup.getMutableIslands().get(0), currentMotherNaturePosition.getMutableIslands().get(2));
     }
 }

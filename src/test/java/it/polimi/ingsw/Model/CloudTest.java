@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class CloudTest {
 
-    // testing extractContents method
+
     @Test
     public void emptyCloudShouldRaiseException() {
         Cloud cloud = new Cloud(4);
@@ -40,7 +40,7 @@ public class CloudTest {
     }
 
     @Test
-    public void shouldReturnCorrectStudents() throws EmptyContainerException, FullContainerException {
+    public void shouldReturnCorrectStudentsAndRemoveThemFromCloud() throws EmptyContainerException, FullContainerException {
         // arrange
         Cloud cloud = new Cloud(2);
         ArrayList<PawnColour> expected = new ArrayList<>(3);
@@ -52,10 +52,9 @@ public class CloudTest {
         List<PawnColour> actual = cloud.extractContents();
         // assert
         assertEquals(expected, actual);
-
+        assertEquals(0, cloud.getContents().size());
     }
 
-    // testing fill method
     @Test
     public void checkCloudHasBeenFilled() throws FullContainerException {
         // arrange
@@ -79,6 +78,7 @@ public class CloudTest {
         colours.add(PawnColour.GREEN);
         cloud.fill(colours);
         try {
+            // trying to fill a full cloud
             cloud.fill(colours);
             fail("Cloud already filled");
         } catch (FullContainerException e) {
