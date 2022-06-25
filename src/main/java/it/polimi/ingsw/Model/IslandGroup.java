@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
 import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
-import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 
@@ -72,7 +72,7 @@ public class IslandGroup implements Serializable {
         return id;
     }
 
-    public Optional<TowerColour> getTowerColour() {
+    public SerializableOptional<TowerColour> getTowerColour() {
         return this.getMutableIslands().get(0).getTowerColour();
     }
 

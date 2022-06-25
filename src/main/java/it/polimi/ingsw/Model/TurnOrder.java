@@ -5,7 +5,7 @@ import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
-import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GamePhase;
 
@@ -19,7 +19,7 @@ import static it.polimi.ingsw.Constants.OPERATION_NAME_PLAY_ASSISTANT;
 public class TurnOrder implements Serializable {
     @Serial
     private static final long serialVersionUID = 134L; // convention: 1 for model, (01 -> 99) for objects
-    private final Map<PlayerBoard, Optional<AssistantCard>> selectedCards; // used to generate the new turn order
+    private final Map<PlayerBoard, SerializableOptional<AssistantCard>> selectedCards; // used to generate the new turn order
     // if a playerboard is associated with an empty optional then their card has not yet been chosen for the turn
     // or said player is currently being skipped
     private int currentTurnPosition; // selects the current player from currentTurnOrder
@@ -32,7 +32,7 @@ public class TurnOrder implements Serializable {
             this.selectedCards = new HashMap<>(playerBoards.size());
             for (PlayerBoard pb :
                     playerBoards) {
-                this.selectedCards.put(pb, Optional.empty());
+                this.selectedCards.put(pb, SerializableOptional.empty());
             }
             // create turn order
             this.currentTurnOrder = new ArrayList<>(playerBoards);
@@ -51,7 +51,7 @@ public class TurnOrder implements Serializable {
         return List.copyOf(currentTurnOrder);
     }
 
-    public Optional<AssistantCard> getMutableSelectedCard(PlayerBoard pb) {
+    public SerializableOptional<AssistantCard> getMutableSelectedCard(PlayerBoard pb) {
         return this.selectedCards.get(pb);
     }
 
@@ -74,7 +74,7 @@ public class TurnOrder implements Serializable {
 
         // validation passed:
         ac.setUsed();
-        this.selectedCards.put(pb, Optional.of(ac));
+        this.selectedCards.put(pb, SerializableOptional.of(ac));
     }
 
     public GamePhase getGamePhase() {
@@ -100,8 +100,8 @@ public class TurnOrder implements Serializable {
 
     public List<AssistantCard> getSelectedCards() {
         return selectedCards.values().stream()
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .filter(SerializableOptional::isPresent)
+                .map(SerializableOptional::get)
                 .toList(); // immutable list
     }
 
@@ -134,7 +134,7 @@ public class TurnOrder implements Serializable {
         this.currentTurnOrder = selectedCards.entrySet().stream()
                 .sorted(Comparator.comparingInt(t -> // sort based on priority
                         t.getValue()
-                                .flatMap(ac -> Optional.of(
+                                .flatMap(ac -> SerializableOptional.of(
                                         ac.getPriority())) // if a card was selected extract the priority
                                 .orElse(100))) // otherwise use a priority level that is higher than any other card
                 .map(Map.Entry::getKey)
@@ -142,6 +142,6 @@ public class TurnOrder implements Serializable {
     }
 
     private void cleanSelectedCards() {
-        selectedCards.replaceAll((k, v) -> Optional.empty());
+        selectedCards.replaceAll((k, v) -> SerializableOptional.empty());
     }
 }

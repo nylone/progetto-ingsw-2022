@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
-import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -57,7 +57,7 @@ public class Card07Test {
         // checks if the students from the entrance are on the card
         assertTrue(card.getState().containsAll(pairs.stream().map(Pair::getFirst).toList()));
         // check if the students from the card are in the entrance
-        assertTrue(pb.getEntranceStudents().containsAll(pairs.stream().map(p -> Optional.of(p.getSecond())).toList()));
+        assertTrue(pb.getEntranceStudents().containsAll(pairs.stream().map(p -> SerializableOptional.of(p.getSecond())).toList()));
     }
 
     /**

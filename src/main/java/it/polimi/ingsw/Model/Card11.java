@@ -107,5 +107,6 @@ public class Card11 extends StatefulEffect {
                 ", timeUsed=" + timeUsed +
                 ", context=" + context +
                 '}';
-    }*/
+    }
+    //*/
 }

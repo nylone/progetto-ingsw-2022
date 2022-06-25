@@ -41,5 +41,6 @@ public class Card04 extends StatelessEffect {
                 ", timeUsed=" + timeUsed +
                 ", context=" + context +
                 '}';
-    }*/
+    }
+    //*/
 }

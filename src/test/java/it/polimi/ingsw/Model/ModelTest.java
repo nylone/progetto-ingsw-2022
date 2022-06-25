@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
-import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -104,9 +104,9 @@ public class ModelTest {
         IslandGroup empty = Utils.modularSelection(gb_sim_2.getMutableIslandField().getMutableMotherNaturePosition(),
                 gb_sim_2.getMutableIslandField().getMutableGroups(), 6);
         // act
-        Optional<TeamID> actual = gb_sim_2.getInfluencerOf(empty);
+        SerializableOptional<TeamID> actual = gb_sim_2.getInfluencerOf(empty);
         // assert
-        assertEquals(Optional.empty(), actual);
+        assertEquals(SerializableOptional.empty(), actual);
 
     }
 

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Server.Lobby;
 import it.polimi.ingsw.Server.Messages.Events.Internal.GameOverEvent;
@@ -12,9 +12,9 @@ import it.polimi.ingsw.Server.Messages.Events.Internal.ModelUpdateEvent;
  */
 public class ModelWrapper {
     private final Model model;
-    private final Optional<Lobby> toNotify;
+    private final SerializableOptional<Lobby> toNotify;
 
-    public ModelWrapper(GameMode gameMode, Optional<Lobby> toNotify, String... playerNicknames) {
+    public ModelWrapper(GameMode gameMode, SerializableOptional<Lobby> toNotify, String... playerNicknames) {
         this.model = new Model(gameMode, playerNicknames);
         this.toNotify = toNotify;
         notifyLobby();
@@ -40,7 +40,7 @@ public class ModelWrapper {
 
     public ModelWrapper(Model model, Lobby lobby) {
         this.model = model;
-        this.toNotify = Optional.ofNullable(lobby);
+        this.toNotify = SerializableOptional.ofNullable(lobby);
         notifyLobby();
     }
 

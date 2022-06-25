@@ -116,7 +116,7 @@ public class Card01 extends StatefulEffect {
         throw new FailedOperationException(OPERATION_NAME_CARD01_APPLY_EFFECT, "Target pawn was not contained in card's state");
     }
 
-   /* //test-purpose only
+   /*//test-purpose only
     @Override
     public String toString() {
         return "Card01{" +
@@ -125,5 +125,6 @@ public class Card01 extends StatefulEffect {
                 ", timeUsed=" + timeUsed +
                 ", context=" + context +
                 '}';
-    }*/
+    }
+    //*/
 }

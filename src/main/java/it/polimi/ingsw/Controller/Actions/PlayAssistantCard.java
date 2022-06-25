@@ -4,7 +4,7 @@ import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
-import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.Model;
@@ -52,27 +52,27 @@ public class PlayAssistantCard extends PlayerAction {
      *                Some actions may use this {@link List} to check for duplicates.
      * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
      *                the actions declares and what the Model offers.
-     * @return An empty {@link Optional} in case of a successful validation. Otherwise the returned {@link Optional}
+     * @return An empty {@link SerializableOptional} in case of a successful validation. Otherwise the returned {@link SerializableOptional}
      * contains the related {@link InputValidationException}
      */
     @Override
-    protected Optional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
+    protected SerializableOptional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         TurnOrder turnOrder = ctx.getMutableTurnOrder();
         if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.SETUP) {
-            return Optional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " may only be used during the setup phase"));
+            return SerializableOptional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " may only be used during the setup phase"));
         }
         if (!(this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getMutableAssistantCards().size() - 1)) {
-            return Optional.of(new InvalidElementException(INPUT_NAME_ASSISTANT_CARD));
+            return SerializableOptional.of(new InvalidElementException(INPUT_NAME_ASSISTANT_CARD));
         }
         AssistantCard selectedCard = currentPlayer.getMutableAssistantCards().get(selectedAssistant);
         if (selectedCard.getUsed()) {
-            return Optional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " can only be used once"));
+            return SerializableOptional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " can only be used once"));
         }
         if (ctx.getMutableTurnOrder().isAlreadyInSelection(selectedCard) && turnOrder.canPlayUniqueCard(currentPlayer)) {
-            return Optional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " has already been selected by another player"));
+            return SerializableOptional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " has already been selected by another player"));
         }
-        return Optional.empty();
+        return SerializableOptional.empty();
     }
 
     public void unsafeExecute(Model ctx) throws InputValidationException, OperationException {

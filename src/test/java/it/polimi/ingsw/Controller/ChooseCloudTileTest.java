@@ -3,7 +3,7 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Controller.Actions.*;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
-import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -183,7 +183,7 @@ public class ChooseCloudTileTest {
         gh.executeAction(chooseCloudTile);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
 
-        PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, Optional.empty(), Optional.empty(), Optional.empty());
+        PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
         gh.executeAction(playCharacterCard);
 
         selectedCloud = 1;

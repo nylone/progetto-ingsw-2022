@@ -3,7 +3,7 @@ package it.polimi.ingsw.Controller.Actions;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
-import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.Model;
 
 import java.io.Serial;
@@ -47,23 +47,23 @@ public abstract class PlayerAction implements Serializable {
      *                Some actions may use this {@link List} to check for duplicates.
      * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
      *                the actions declares and what the Model offers.
-     * @return An empty {@link Optional} in case of a successful validation. Otherwise the returned {@link Optional}
+     * @return An empty {@link SerializableOptional} in case of a successful validation. Otherwise the returned {@link SerializableOptional}
      * contains the related {@link InputValidationException}
      */
-    public final Optional<InputValidationException> validate(List<PlayerAction> history, Model ctx) {
-        Optional<InputValidationException> gameRunningCheck = isGameRunning(ctx);
+    public final SerializableOptional<InputValidationException> validate(List<PlayerAction> history, Model ctx) {
+        SerializableOptional<InputValidationException> gameRunningCheck = isGameRunning(ctx);
         if (gameRunningCheck.isPresent()) return gameRunningCheck;
 
-        Optional<InputValidationException> correctTurnCheck = isCorrectTurn(ctx);
+        SerializableOptional<InputValidationException> correctTurnCheck = isCorrectTurn(ctx);
         if (correctTurnCheck.isPresent()) return correctTurnCheck;
 
-        Optional<InputValidationException> duplicateCheck = isDuplicate(history);
+        SerializableOptional<InputValidationException> duplicateCheck = isDuplicate(history);
         if (duplicateCheck.isPresent()) return duplicateCheck;
 
-        Optional<InputValidationException> customValidationCheck = customValidation(history, ctx);
+        SerializableOptional<InputValidationException> customValidationCheck = customValidation(history, ctx);
         if (customValidationCheck.isPresent()) return customValidationCheck;
 
-        return Optional.empty();
+        return SerializableOptional.empty();
     }
 
     /**
@@ -71,14 +71,14 @@ public abstract class PlayerAction implements Serializable {
      * if the game is not active anymore (i.e. the game is over and no actions can be made), this function will return a non-empty value.
      *
      * @param ctx the {@link Model} object, used during verification.
-     * @return an {@link Optional} value, the value is empty if no issues are found during the validation of the function. Else the
+     * @return an {@link SerializableOptional} value, the value is empty if no issues are found during the validation of the function. Else the
      * value will contain a {@link Throwable} {@link Exception} that can be used to propagate the error message.
      */
-    private Optional<InputValidationException> isGameRunning(Model ctx) {
+    private SerializableOptional<InputValidationException> isGameRunning(Model ctx) {
         if (ctx.isGameOver()) {
-            return Optional.of(new GenericInputValidationException(this.getClass().getSimpleName(), "Game is over"));
+            return SerializableOptional.of(new GenericInputValidationException(this.getClass().getSimpleName(), "Game is over"));
         }
-        return Optional.empty();
+        return SerializableOptional.empty();
     }
 
     /**
@@ -86,17 +86,17 @@ public abstract class PlayerAction implements Serializable {
      * if the {@link PlayerAction}'s declared player is not the current player that needs to play, this function will return a non-empty value.
      *
      * @param ctx the {@link Model} object, used during verification.
-     * @return an {@link Optional} value, the value is empty if no issues are found during the validation of the function. Else the
+     * @return an {@link SerializableOptional} value, the value is empty if no issues are found during the validation of the function. Else the
      * value will contain a {@link Throwable} {@link Exception} that can be used to propagate the error message.
      */
-    private Optional<InputValidationException> isCorrectTurn(Model ctx) {
+    private SerializableOptional<InputValidationException> isCorrectTurn(Model ctx) {
         if (!(ctx.getMutablePlayerBoards().size() > this.getPlayerBoardID())) {
-            return Optional.of(new InvalidElementException("PlayerBoardID out of range"));
+            return SerializableOptional.of(new InvalidElementException("PlayerBoardID out of range"));
         }
         if (ctx.getMutableTurnOrder().getMutableCurrentPlayer().getId() != this.getPlayerBoardID()) {
-            return Optional.of(new GenericInputValidationException(this.getClass().getSimpleName(), "It's not your turn yet"));
+            return SerializableOptional.of(new GenericInputValidationException(this.getClass().getSimpleName(), "It's not your turn yet"));
         }
-        return Optional.empty();
+        return SerializableOptional.empty();
     }
 
     /**
@@ -105,14 +105,14 @@ public abstract class PlayerAction implements Serializable {
      * action being present in the history
      *
      * @param history a list of previous actions submitted by the player
-     * @return an {@link Optional} value, the value is empty if no issues are found during the validation of the function. Else the
+     * @return an {@link SerializableOptional} value, the value is empty if no issues are found during the validation of the function. Else the
      * value will contain a {@link Throwable} {@link Exception} that can be used to propagate the error message.
      */
-    private Optional<InputValidationException> isDuplicate(List<PlayerAction> history) {
+    private SerializableOptional<InputValidationException> isDuplicate(List<PlayerAction> history) {
         if (!this.uniquePerTurn || history.stream().noneMatch(h -> h.getClass() == this.getClass())) {
-            return Optional.empty();
+            return SerializableOptional.empty();
         }
-        return Optional.of(new GenericInputValidationException(this.getClass().getSimpleName(), "Too many similar actions have been executed"));
+        return SerializableOptional.of(new GenericInputValidationException(this.getClass().getSimpleName(), "Too many similar actions have been executed"));
     }
 
     /**
@@ -124,10 +124,10 @@ public abstract class PlayerAction implements Serializable {
      *                Some actions may use this {@link List} to check for duplicates.
      * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
      *                the actions declares and what the Model offers.
-     * @return An empty {@link Optional} in case of a successful validation. Otherwise the returned {@link Optional}
+     * @return An empty {@link SerializableOptional} in case of a successful validation. Otherwise the returned {@link SerializableOptional}
      * contains the related {@link InputValidationException}
      */
-    protected abstract Optional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx);
+    protected abstract SerializableOptional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx);
 
     /**
      * @return the {@link it.polimi.ingsw.Model.PlayerBoard} id set during construction of the Action.

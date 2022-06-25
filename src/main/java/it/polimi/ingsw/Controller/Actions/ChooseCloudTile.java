@@ -3,7 +3,7 @@ package it.polimi.ingsw.Controller.Actions;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
-import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.Cloud;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -51,34 +51,34 @@ public class ChooseCloudTile extends PlayerAction {
      *                Some actions may use this {@link List} to check for duplicates.
      * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
      *                the actions declares and what the Model offers.
-     * @return An empty {@link Optional} in case of a successful validation. Otherwise the returned {@link Optional}
+     * @return An empty {@link SerializableOptional} in case of a successful validation. Otherwise the returned {@link SerializableOptional}
      * contains the related {@link InputValidationException}
      */
     @Override
-    protected Optional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
+    protected SerializableOptional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
         if (countSimilarClassOccurrences(MoveMotherNature.class, history) != 1) {
-            return Optional.of(new GenericInputValidationException("History", "MoveMotherNature action has not been executed"));
+            return SerializableOptional.of(new GenericInputValidationException("History", "MoveMotherNature action has not been executed"));
         }
         if (!(history.get(history.size() - 1).getClass() == MoveMotherNature.class || (history.get(history.size() - 1).getClass() == PlayCharacterCard.class))) {
-            return Optional.of(new GenericInputValidationException("History", "This action can only be executed after a MoveMotherNature action or PlayCharacterCard action"));
+            return SerializableOptional.of(new GenericInputValidationException("History", "This action can only be executed after a MoveMotherNature action or PlayCharacterCard action"));
         }
         if (!(this.selectedTile >= 0 && selectedTile <= ctx.getClouds().size() - 1)) {
-            return Optional.of(new InvalidElementException(INPUT_NAME_CLOUD));
+            return SerializableOptional.of(new InvalidElementException(INPUT_NAME_CLOUD));
         }
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         Cloud selectedCloud = ctx.getClouds().get(selectedTile);
         if (!(caller.getEntranceSpaceLeft() >= selectedCloud.getContents().size())) {
-            return Optional.of(new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
+            return SerializableOptional.of(new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
                     CONTAINER_NAME_ENTRANCE + " can't contain " + selectedCloud.getContents().size()
                             + " element's without overflowing."));
         }
         if (ctx.getClouds().stream().anyMatch(cloud -> cloud.getContents().size() != 0)) {
             if (selectedCloud.getContents().size() == 0) {
-                return Optional.of(new GenericInputValidationException(CONTAINER_NAME_CLOUD,
+                return SerializableOptional.of(new GenericInputValidationException(CONTAINER_NAME_CLOUD,
                         CONTAINER_NAME_CLOUD + " has already been emptied"));
             }
         }
-        return Optional.empty();
+        return SerializableOptional.empty();
     }
 
     @Override

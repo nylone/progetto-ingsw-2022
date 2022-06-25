@@ -5,7 +5,7 @@ import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
-import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.ModelWrapper;
@@ -56,13 +56,13 @@ public class Controller {
      * Generates a new instance. This is the static method to call for general purpose creation of a game.
      *
      * @param gameMode the game mode the players are going to use
-     * @param lobby    in case a server is used, insert the {@linkplain Lobby} object wrapped in an {@link Optional} to let it
+     * @param lobby    in case a server is used, insert the {@linkplain Lobby} object wrapped in an {@link SerializableOptional} to let it
      *                 receive {@link ModelUpdateEvent} and {@link GameOverEvent}
      * @param players  a list of minimum 2 and maximum 4 strings containing the nicknames of the players.
      *                 In the case of 4 players: players at index 0 and 2 go together against players at index 1 and 3
      * @throws InputValidationException if the supplied players are less than 2 or more than 4
      */
-    public static Controller createGame(GameMode gameMode, Optional<Lobby> lobby, String... players) throws InputValidationException {
+    public static Controller createGame(GameMode gameMode, SerializableOptional<Lobby> lobby, String... players) throws InputValidationException {
         Objects.requireNonNull(gameMode);
         Objects.requireNonNull(lobby);
         Objects.requireNonNull(players);
@@ -85,7 +85,7 @@ public class Controller {
      */
     public void executeAction(PlayerAction action) throws InputValidationException {
         Model model = this.modelWrapper.modelCopy(false);
-        Optional<InputValidationException> validation = action.validate(this.getHistory(), model);
+        SerializableOptional<InputValidationException> validation = action.validate(this.getHistory(), model);
         if (validation.isPresent()) throw validation.get();
         // as right now we are abusing the hell out of exception throwing
         try {

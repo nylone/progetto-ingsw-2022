@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Actions.MoveStudent;
-import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.SerializableOptional;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -13,7 +13,7 @@ public class MoveDestination implements Serializable {
     @Serial
     private static final long serialVersionUID = 203L; // convention: 2 for controller, (01 -> 99) for objects
     private final DestinationType destinationType;
-    private final Optional<Integer> islandID;
+    private final SerializableOptional<Integer> islandID;
 
     /**
      * Constructor used to point to an island
@@ -22,7 +22,7 @@ public class MoveDestination implements Serializable {
      */
     private MoveDestination(int islandID) {
         this.destinationType = DestinationType.ISLAND;
-        this.islandID = Optional.of(islandID);
+        this.islandID = SerializableOptional.of(islandID);
     }
 
     /**
@@ -30,7 +30,7 @@ public class MoveDestination implements Serializable {
      */
     private MoveDestination() {
         this.destinationType = DestinationType.DININGROOM;
-        this.islandID = Optional.empty();
+        this.islandID = SerializableOptional.empty();
     }
 
     /**

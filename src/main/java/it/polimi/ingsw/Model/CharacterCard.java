@@ -81,7 +81,7 @@ public abstract class CharacterCard implements Serializable {
     }
 
     /**
-     * This method must be called after {@link  #checkInput(CharacterCardInput)}
+     * This method must be called after {@link #checkInput(CharacterCardInput)}
      * Execute CharacterCard's effect (NOTE: keep in mind this funcion DOES ALTERATE the gamestate)
      *
      * @param input verified user's input

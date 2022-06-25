@@ -2,7 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Logger;
-import it.polimi.ingsw.Misc.Optional;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 
@@ -32,9 +32,9 @@ public class Island implements Serializable {
         return new ArrayList<>(students);
     }
 
-    public Optional<TowerColour> getTowerColour() {
-        if (this.tower == null) return Optional.empty();
-        else return Optional.of(this.tower.getColour());
+    public SerializableOptional<TowerColour> getTowerColour() {
+        if (this.tower == null) return SerializableOptional.empty();
+        else return SerializableOptional.of(this.tower.getColour());
     }
 
     public void addStudent(StudentBag bag) {
