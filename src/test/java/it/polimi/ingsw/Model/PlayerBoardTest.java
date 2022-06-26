@@ -17,24 +17,28 @@ public class PlayerBoardTest {
     public void sizeIncreasedAfterAddingStudentToDiningRoom() throws FullContainerException {
         // arrange
         PlayerBoard playerBoard = new PlayerBoard(2, 3, "ari", new StudentBag(20));
-        int expected = playerBoard.getDiningRoomCount(PawnColour.RED);
+        int initial = playerBoard.getDiningRoomCount(PawnColour.RED);
         // act
         playerBoard.unsafeAddStudentToDiningRoom(PawnColour.RED);
         // assert
-        assertEquals(playerBoard.getDiningRoomCount(PawnColour.RED), expected + 1);
+        assertEquals(playerBoard.getDiningRoomCount(PawnColour.RED), initial + 1);
     }
 
     @Test
-    public void FullDiningRoomShouldRaiseException() throws FullContainerException {
+    public void fullDiningRoomShouldRaiseException() throws FullContainerException {
         // arrange
         PlayerBoard playerBoard = new PlayerBoard(1, 2, "alessandro", new StudentBag(50));
+        // fills yellow dining room row completely
         for (int i = 0; i < 10; i++) {
             playerBoard.unsafeAddStudentToDiningRoom(PawnColour.YELLOW);
         }
         try {
+            // act
+            // tempting to add one more yellow student to full row
             playerBoard.unsafeAddStudentToDiningRoom(PawnColour.YELLOW);
             fail();
         } catch (FullContainerException e) {
+            // assert
             assertEquals("An error occurred on: DiningRoom\nThe error was: DiningRoom was found full.", e.getMessage());
         }
     }
@@ -45,31 +49,31 @@ public class PlayerBoardTest {
         PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
         playerBoard.unsafeAddStudentToDiningRoom(PawnColour.BLUE);
         playerBoard.unsafeAddStudentToDiningRoom(PawnColour.BLUE);
-        int expected = playerBoard.getDiningRoomCount(PawnColour.BLUE);
+        int initial = playerBoard.getDiningRoomCount(PawnColour.BLUE);
         // act
         playerBoard.unsafeRemoveStudentFromDiningRoom(PawnColour.BLUE);
         playerBoard.unsafeRemoveStudentFromDiningRoom(PawnColour.BLUE);
         // assert
-        assertEquals(playerBoard.getDiningRoomCount(PawnColour.BLUE), expected - 2);
+        assertEquals(playerBoard.getDiningRoomCount(PawnColour.BLUE), initial - 2);
     }
 
     @Test(expected = EmptyContainerException.class)
-    public void removeStudentException() throws EmptyContainerException {
+    public void removeStudentFromEmptyRow() throws EmptyContainerException {
         PlayerBoard playerBoard = new PlayerBoard(3, 3, "ale", new StudentBag(30));
+        // trying to remove a red student when there are none in the row
         playerBoard.unsafeRemoveStudentFromDiningRoom(PawnColour.RED);
     }
 
 
     @Test
-    public void FullEntranceException() {
+    public void fullEntranceException() {
         // arrange
         PlayerBoard playerBoard = new PlayerBoard(2, 4, "teo", new StudentBag(50));
-        ArrayList<PawnColour> expected = new ArrayList<>();
-        expected.add(PawnColour.YELLOW);
-        expected.add(PawnColour.BLUE);
-        // act
+        PawnColour expected = PawnColour.YELLOW;
         try {
-            playerBoard.addStudentsToEntrance(expected);
+            // act
+            // trying to add one more student when entrance is full (at the beginning of the game)
+            playerBoard.addStudentToEntrance(expected);
         } catch (FullContainerException e) {
             // assert
             assertEquals("An error occurred on: Entrance\n" +
@@ -78,10 +82,12 @@ public class PlayerBoardTest {
     }
 
     @Test
-    public void InvalidEntrancePositionException() throws Exception {
+    public void invalidEntrancePositionException() throws Exception {
         PlayerBoard playerBoard = new PlayerBoard(2, 4, "teo", new StudentBag(24));
         playerBoard.removeStudentFromEntrance(0);
         try {
+            // act
+            // trying to remove a student already removed
             playerBoard.removeStudentFromEntrance(0);
         } catch (InvalidContainerIndexException exception) {
             assertEquals("An error occurred on: Entrance\n" +

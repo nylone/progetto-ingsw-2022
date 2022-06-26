@@ -100,7 +100,7 @@ public class GameStartingPanel extends JPanel {
             }
         });
 
-        // layout object decleration and setup
+        // layout object declaration and setup
         SpringLayout layout = new SpringLayout();
 
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 20, SpringLayout.NORTH, this);

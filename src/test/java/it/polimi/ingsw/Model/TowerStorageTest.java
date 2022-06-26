@@ -33,27 +33,24 @@ public class TowerStorageTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void checkTowerCreationException() {
-        Tower t = new Tower(TowerColour.BLACK, ts);
-        // Tower t2 = new Tower(3, TowerColour.BLACK, ts);
-        Tower t3 = new Tower(TowerColour.WHITE, ts);
+    public void linkingTowerWithWrongStorage() {
+        // trying to link a white tower to a black tower storage
+        new Tower(TowerColour.WHITE, ts);
     }
 
     @Test(expected = InvalidElementException.class)
     public void checkIllegalColourPush() throws InvalidElementException, DuplicateElementException {
-        Tower t = new Tower(TowerColour.BLACK, ts);
-        TowerStorage ts2 = new TowerStorage(TowerColour.WHITE, 6);
-        ts2.extractTower();
-        ts2.pushTower(t);
-
+        TowerStorage whiteTowerStorage = new TowerStorage(TowerColour.WHITE, 6);
+        Tower blackTower = new Tower(TowerColour.BLACK, ts); // ts is a black tower storage
+        // trying to push a black tower into a white tower storage
+        whiteTowerStorage.pushTower(blackTower);
     }
 
     @Test(expected = DuplicateElementException.class)
     public void checkIllegalDuplicatePush() throws DuplicateElementException, InvalidElementException {
-        ts.extractTower();
-        ts.extractTower();
         Tower t = new Tower(TowerColour.BLACK, ts);
 
+        // trying to push same tower twice
         ts.pushTower(t);
         ts.pushTower(t);
     }
