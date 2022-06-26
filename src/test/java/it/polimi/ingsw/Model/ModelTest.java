@@ -2,7 +2,6 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
-import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -11,6 +10,7 @@ import it.polimi.ingsw.Model.Enums.TeamID;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
@@ -35,16 +35,17 @@ public class ModelTest {
         assertEquals("Testing getPlayerBoardById, advanced GameMode 3 people", "ale", actual_a3_valid.getNickname());
         assertEquals("Testing getPlayerBoardById, advanced GameMode 4 people", "teo", actual_a4_valid.getNickname());
         // assert INVALID
-        try {
-            PlayerBoard actual_s2_invalid = gb_sim_2.getMutablePlayerBoardById(5);
-            fail("Testing getPlayerBoardById, simple GameMode 2 people, failed for invalid id");
-            PlayerBoard actual_a3_invalid = gb_adv_3.getMutablePlayerBoardById(27);
-            fail("Testing getPlayerBoardById, advanced GameMode 3 people, failed for invalid id");
-            PlayerBoard actual_a4_invalid = gb_adv_4.getMutablePlayerBoardById(323);
-            fail("Testing getPlayerBoardById, advanced GameMode 4 people, failed for invalid id");
-        } catch (InvalidContainerIndexException e) {
-            assertEquals("An error occurred on: Playerboards\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
+        for (Model gb : List.of(gb_sim_2, gb_adv_3, gb_adv_4)) {
+            try {
+                // choosing an invalid player ID should result in an exception
+                gb.getMutablePlayerBoardById(5);
+                fail("Testing getPlayerBoardById, " + gb.getGameMode() + " GameMode " + gb.getMutablePlayerBoards().size()
+                        + " people, failed for invalid id");
+            } catch (InvalidContainerIndexException e) {
+                assertEquals("An error occurred on: Playerboards\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
+            }
         }
+
     }
 
     @Test
@@ -61,15 +62,15 @@ public class ModelTest {
         assertEquals("Testing getPlayerBoardByNickname, advanced GameMode 3 people", 0, actual_a3_valid.getId());
         assertEquals("Testing getPlayerBoardByNickname, advanced GameMode 4 people", 2, actual_a4_valid.getId());
         // assert INVALID
-        try {
-            PlayerBoard actual_s2_invalid = gb_sim_2.getMutablePlayerBoardByNickname("wrong");
-            fail("Testing getPlayerBoardByNickname, simple GameMode 2 people, failed for invalid nickname");
-            PlayerBoard actual_a3_invalid = gb_adv_3.getMutablePlayerBoardByNickname("wrong");
-            fail("Testing getPlayerBoardByNickname, advanced GameMode 3 people, failed for invalid nickname");
-            PlayerBoard actual_a4_invalid = gb_adv_4.getMutablePlayerBoardByNickname("wrong");
-            fail("Testing getPlayerBoardByNickname, advanced GameMode 4 people, failed for invalid nickname");
-        } catch (InvalidContainerIndexException e) {
-            assertEquals("An error occurred on: Playerboards\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
+        for (Model gb : List.of(gb_sim_2, gb_adv_3, gb_adv_4)) {
+            try {
+                // choosing an invalid player nickname should result in an exception
+                gb.getMutablePlayerBoardByNickname("wrong");
+                fail("Testing getPlayerBoardByNickname " + gb.getGameMode() + " GameMode " + gb.getMutablePlayerBoards().size()
+                        + " people, failed for invalid nickname");
+            } catch (InvalidContainerIndexException e) {
+                assertEquals("An error occurred on: Playerboards\nThe error was: provided index is out of bounds or no valid value could be retrieved.", e.getMessage());
+            }
         }
     }
 
@@ -79,20 +80,25 @@ public class ModelTest {
         IslandGroup ig_s2 = gb_sim_2.getMutableIslandField().getMutableIslandGroupById(7);
         IslandGroup ig_a3 = gb_adv_3.getMutableIslandField().getMutableIslandGroupById(7);
         IslandGroup ig_a4 = gb_adv_4.getMutableIslandField().getMutableIslandGroupById(7);
-        // adding two students because, during initialization of the game, one random students is placed on the islands
-        // to be sure that the influence will be granted at least two students should be placed
+        // adding one student because, during initialization of the game, one random student is placed on every island.
+        // To be sure that the influence will be granted at least one blue student should be placed
         for (IslandGroup ig : Arrays.asList(ig_s2, ig_a3, ig_a4)) {
             ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
         }
 
+        // assigning blue teacher to player
         gb_sim_2.setTeacher(PawnColour.BLUE, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
         gb_adv_3.setTeacher(PawnColour.BLUE, gb_adv_3.getMutablePlayerBoardByNickname("ari"));
         gb_adv_4.setTeacher(PawnColour.BLUE, gb_adv_4.getMutablePlayerBoardByNickname("ari"));
+
         // act
+        // calculate influencer of island 7
         TeamID actualInfluencer_s2 = gb_sim_2.getInfluencerOf(ig_s2).get();
         TeamID actualInfluencer_a3 = gb_adv_3.getInfluencerOf(ig_a3).get();
         TeamID actualInfluencer_a4 = gb_adv_4.getInfluencerOf(ig_a4).get();
+
         // assert
+        // checking that the influencer is the one detaining ownership of the teacher
         assertEquals(TeamID.ONE, actualInfluencer_s2);
         assertEquals(TeamID.ONE, actualInfluencer_a3);
         assertEquals(TeamID.ONE, actualInfluencer_a4);
@@ -101,11 +107,14 @@ public class ModelTest {
     @Test
     public void testingInfluenceOnEmptyIsland() throws Exception {
         // arrange
+        // select the empty island, that is the opposite to mother nature island at the beginning
         IslandGroup empty = Utils.modularSelection(gb_sim_2.getMutableIslandField().getMutableMotherNaturePosition(),
                 gb_sim_2.getMutableIslandField().getMutableGroups(), 6);
         // act
+        // calculating influencer of the empty island
         SerializableOptional<TeamID> actual = gb_sim_2.getInfluencerOf(empty);
         // assert
+        // check that no one should control the empty island
         assertEquals(SerializableOptional.empty(), actual);
 
     }
@@ -117,30 +126,43 @@ public class ModelTest {
     public void testingInfluenceOnIslandWithSameInfluence() throws InvalidContainerIndexException {
         // arrange
         IslandGroup ig = gb_sim_2.getMutableIslandField().getMutableIslandGroupById(6);
+        // placing one tower of second player on the selected island
         ig.getMutableIslands().get(0).swapTower(gb_sim_2.getTeamMapper().getMutableTowerStorage(TeamID.fromInteger(1)).extractTower());
 
+
         PawnColour studentOnTheIslandAtBeginning;
+        // controls that the island is not the empty or mother nature island
         if (ig.getStudents().size() != 0) {
+            // select the student on the island
             studentOnTheIslandAtBeginning = ig.getStudents().get(0);
             for (PawnColour colour : PawnColour.values()) {
                 if (!colour.equals(studentOnTheIslandAtBeginning)) {
+                    // add 2 students on the island of a different colour from the one previously detected
                     ig.getMutableIslands().get(0).addStudent(colour);
                     ig.getMutableIslands().get(0).addStudent(colour);
+                    // assign teacher to first player
                     gb_sim_2.setTeacher(colour, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
                     break;
                 }
             }
+            // assign teacher to second player
             gb_sim_2.setTeacher(studentOnTheIslandAtBeginning, gb_sim_2.getMutablePlayerBoardByNickname("ale"));
         } else {
+            // add 2 blue students and 1 red students on the selected island
             ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
             ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
             ig.getMutableIslands().get(0).addStudent(PawnColour.RED);
+            // assign blue teacher to first player
             gb_sim_2.setTeacher(PawnColour.BLUE, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
+            // assign red teacher to second player
             gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getMutablePlayerBoardByNickname("ale"));
         }
+
         // act
         TeamID actualInfluencer = gb_sim_2.getInfluencerOf(ig).get();
+
         // assert
+        // verifies that, in parity situation, the second player maintains influence because he had one tower previously
         assertEquals(TeamID.TWO, actualInfluencer);
     }
 
@@ -151,15 +173,22 @@ public class ModelTest {
     public void testingInfluenceOnIslandWithStudents() throws InvalidContainerIndexException {
         // arrange
         IslandGroup ig = gb_sim_2.getMutableIslandField().getMutableIslandGroupById(6);
+        // add 3 blue students to first player
         ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
         ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
         ig.getMutableIslands().get(0).addStudent(PawnColour.BLUE);
+        // add 1 red student to second player
         ig.getMutableIslands().get(0).addStudent(PawnColour.RED);
+        // assign blue teacher to first player
         gb_sim_2.setTeacher(PawnColour.BLUE, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
+        // assign red teacher to second player
         gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getMutablePlayerBoardByNickname("ale"));
+
         // act
         TeamID actualInfluencer = gb_sim_2.getInfluencerOf(ig).get();
+
         // assert
+        // checks that influence should be given to the player that owns the teacher whose colour is more present on the island
         assertEquals(TeamID.ONE, actualInfluencer);
     }
 
@@ -169,35 +198,45 @@ public class ModelTest {
     @Test
     public void testingInfluenceAfterCardEffect() throws InvalidContainerIndexException {
         // arrange
+        // choose the denied colour as yellow
         gb_sim_2.getMutableEffects().setDeniedPawnColour(PawnColour.YELLOW);
         IslandGroup islandGroup = gb_sim_2.getMutableIslandField().getMutableIslandGroupById(6);
+        // add three yellow students
         islandGroup.getMutableIslands().get(0).addStudent(PawnColour.YELLOW);
         islandGroup.getMutableIslands().get(0).addStudent(PawnColour.YELLOW);
         islandGroup.getMutableIslands().get(0).addStudent(PawnColour.YELLOW);
+        // add one red student
         islandGroup.getMutableIslands().get(0).addStudent(PawnColour.RED);
+        // assign yellow teacher to first player
         gb_sim_2.setTeacher(PawnColour.YELLOW, gb_sim_2.getMutablePlayerBoardByNickname("ari"));
+        // assign red teacher to second player
         gb_sim_2.setTeacher(PawnColour.RED, gb_sim_2.getMutablePlayerBoardByNickname("ale"));
+
         // act
         TeamID actualInfluencer = gb_sim_2.getInfluencerOf(islandGroup).get();
+
         // assert
+        // checks that influence goes to second player because of yellow colour denied
         assertEquals(TeamID.TWO, actualInfluencer);
 
     }
 
     @Test(expected = RuntimeException.class)
     public void testingInconsistentNumOfPlayers() {
-        Model gb_adv_5 = new Model(GameMode.SIMPLE, "ari", "ale", "teo", "polimi", "java");
+        // the maximum allowed number of players is 4
+        new Model(GameMode.SIMPLE, "ari", "ale", "teo", "polimi", "java");
     }
 
     @Test
-    public void finishingTowersMakesWin() throws InputValidationException {
+    public void finishingTowersMakesWin() {
         // arrange & act
         Model gb = new Model(GameMode.SIMPLE, "ale", "teo", "ari");
         PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
-        for (int i = 0; i < 6; i++) { // leaving current player with just one tower left
+        for (int i = 0; i < 6; i++) { // leaving current player with no towers left
             gb.getTeamMapper().getMutableTowerStorage(currentPlayer).extractTower();
         }
         // assert
+        // player should win because he placed all of his towers
         assertEquals(currentPlayer, gb.getWinners().get().get(0));
     }
 
@@ -206,9 +245,11 @@ public class ModelTest {
         // arrange & act
         Model gb = new Model(GameMode.SIMPLE, "ale", "teo", "ari");
         PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
+        // assign red teacher to current player
         gb.setTeacher(PawnColour.RED, currentPlayer);
-        // ends game
+        // ends game by extracting all students from student bag
         gb.getMutableStudentBag().multipleExtraction(gb.getMutableStudentBag().getSize());
+        // emptying all clouds to simulate end of last round (all players have finished their turn by selecting a cloud)
         gb.getClouds().forEach(cloud -> {
             try {
                 cloud.extractContents();
@@ -216,7 +257,9 @@ public class ModelTest {
                 throw new RuntimeException(e);
             }
         });
+
         // assert
+        // current player should win because he has more teachers than the others when they have the same number of towers
         assertEquals(currentPlayer, gb.getWinners().get().get(0));
     }
 
@@ -224,9 +267,9 @@ public class ModelTest {
     public void parityWhenSameNumberOfTowersAndTeachers() {
         // arrange & act
         Model gb = new Model(GameMode.SIMPLE, "ale", "teo", "ari");
-        PlayerBoard currentPlayer = gb.getMutableTurnOrder().getMutableCurrentPlayer();
-        // ends game
+        // ends game by extracting all students from student bag
         gb.getMutableStudentBag().multipleExtraction(gb.getMutableStudentBag().getSize());
+        // emptying all clouds to simulate end of last round (all players have finished their turn by selecting a cloud)
         gb.getClouds().forEach(cloud -> {
             try {
                 cloud.extractContents();
@@ -234,8 +277,10 @@ public class ModelTest {
                 throw new RuntimeException(e);
             }
         });
+
         // assert
-        assertTrue(gb.getWinners().get().size() == 3);
+        // all players are winner when game ends with parity of teachers and towers
+        assertEquals(3, gb.getWinners().get().size());
     }
 
     @Test
@@ -246,10 +291,14 @@ public class ModelTest {
         for (int i = 0; i < 8; i++) { // leaving current player with no towers left
             gb.getTeamMapper().getMutableTowerStorage(currentPlayer).extractTower();
         }
+        // actual winning team
+        TeamID winner = gb.getTeamMapper().getTeamID(currentPlayer);
+
         // assert
-        PlayerBoard winner = gb.getWinners().get().get(0);
-        assertEquals(gb.getTeamMapper().getTeamID(currentPlayer), gb.getTeamMapper().getTeamID(winner));
-        assertTrue(gb.getWinners().get().size() == 2);
+        // checks that all winners are in the same team of the current player
+        assertTrue(gb.getWinners().get().stream().allMatch(w -> gb.getTeamMapper().getTeamID(w).equals(winner)));
+        // checks that there are 2 winners because a team is made of 2 players in a 4 players game
+        assertEquals(2, gb.getWinners().get().size());
     }
 
     @Test
