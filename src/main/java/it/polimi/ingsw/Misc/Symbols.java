@@ -15,6 +15,12 @@ public class Symbols {
     public static final String RESET = "\u001b[00m";
     public static final String BACKGROUND = "\u001b[48;5;237m";
 
+    public static final String BACKGROUND_BLUE = "\u001b[44m";
+    public static final String BACKGROUND_GREEN = "\u001b[42m";
+    public static final String BACKGROUND_PINK = "\u001b[45m";
+    public static final String BACKGROUND_RED = "\u001b[41m";
+    public static final String BACKGROUND_YELLOW = "\u001b[43m";
+
 
     public static final String BOLD = "\u001b[1m";
     public static final String STRIKED = "\u001b[7m";
@@ -32,6 +38,18 @@ public class Symbols {
             case PINK -> student = student + Symbols.colour(message, Symbols.PINK);
             case RED -> student = student + Symbols.colour(message, Symbols.RED);
             case YELLOW -> student = student + Symbols.colour(message, Symbols.YELLOW);
+        }
+        return student;
+    }
+    public static String colorizeBackgroundStudent(PawnColour p, String message) {
+        String student = "";
+        switch (p) {
+            case BLUE -> student = student + Symbols.BACKGROUND_BLUE + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
+            case GREEN -> student = student + Symbols.BACKGROUND_GREEN + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
+            case PINK -> student = student + Symbols.BACKGROUND_PINK + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
+            case RED -> student = student + Symbols.BACKGROUND_RED + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
+            case YELLOW -> student = student + Symbols.BACKGROUND_YELLOW + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
+
         }
         return student;
     }

@@ -60,22 +60,24 @@ public class PlayerBoardUI {
      * @return the unused students in a multiline dual column layout String representation
      */
     public static String drawEntrance(PlayerBoard pb, Model gb) {
-        String entrance = "  "; // the first place is empty because of odd number of students in an even grid
+        String entrance = "    "; // the first place is empty because of odd number of students in an even grid
+        int currentEntranceIndex = 0;
         // Print the content of every place in the entrance
         for (SerializableOptional<PawnColour> p : pb.getEntranceStudents()) {
             if (p.isPresent())
-                entrance = entrance + Symbols.colorizeStudent(p.get(), Symbols.PAWN) + " ";
-            else entrance = entrance + "  ";
+                entrance = entrance + Symbols.colorizeBackgroundStudent(p.get(), String.valueOf(currentEntranceIndex)) + " ";
+            else entrance = entrance + "    ";
 
             // Every two students there should be a new line instead of a white space to force the dual column layout
-            if (Symbols.stripFromANSICodes(entrance).length() % 4 == 0) {
+            if (Symbols.stripFromANSICodes(entrance).length() % 8 == 0) {
                 entrance = entrance.substring(0, entrance.length() - 1); // remove space after pawn in the II column
                 entrance = entrance + "\n";
             }
+            currentEntranceIndex++;
         }
         // Adds padding if not enough students are present to complete the five rows layout
         if (gb.getMutablePlayerBoards().size() != 3) {
-            entrance = entrance + "   " + "\n";
+            entrance = entrance + "     " + "\n";
         }
         return entrance;
     }
