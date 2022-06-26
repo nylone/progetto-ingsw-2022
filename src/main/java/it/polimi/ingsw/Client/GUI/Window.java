@@ -29,10 +29,12 @@ public class Window {
      * @param newView Component that will be drawn inside the frame
      */
     public void changeView(JComponent newView) {
-        frame.getContentPane().removeAll();
-        frame.add(newView);
-        frame.pack();
-        frame.setIconImage(logo.getImage());
+        SwingUtilities.invokeLater(() -> {
+            frame.getContentPane().removeAll();
+            frame.add(newView);
+            frame.pack();
+            frame.setIconImage(logo.getImage());
+        });
     }
 
     /**

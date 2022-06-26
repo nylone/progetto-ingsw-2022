@@ -38,7 +38,7 @@ public class GUIReader implements Runnable {
      */
     private final SocketWrapper sw;
     /**
-     * Last player's request send to Server
+     * Last player's request sent to Server
      */
     private PlayerAction playerActionRequest;
 
