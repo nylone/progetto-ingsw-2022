@@ -10,6 +10,7 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusC
 
 import javax.swing.*;
 import java.io.IOException;
+import java.net.SocketException;
 
 /**
  * Panel that allows user to choose his username
@@ -68,8 +69,9 @@ public class UserCredentialsPanel extends JPanel {
                             new PopupMessage("Server denied your login", "Failure :(");
                         }
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    new PopupMessage("Error in the connection with the server", "Failure :(");
+                    new StartPanel(ctx);
                 }
             }).start();
         });

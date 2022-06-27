@@ -101,8 +101,10 @@ public class GUIReader implements Runnable {
                             JOptionPane.showMessageDialog(null, "Your request has not been executed, probably you are trying to play out of turn");
                     default -> throw new IllegalStateException("Unexpected value: " + input.getClass());
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (Exception e) {
+                new PopupMessage("Error in the connection with the server", "Failure :(");
+                new StartPanel(ctx);
+                return;
             }
         }
     }

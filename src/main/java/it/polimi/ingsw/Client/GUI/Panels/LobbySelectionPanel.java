@@ -116,7 +116,8 @@ public class LobbySelectionPanel extends JTabbedPane {
                         new PopupMessage("Try again.", "Failure :(");
                     }
                 } catch (Exception e) {
-                    new PopupMessage("Try again.", "Failure :(");
+                    new PopupMessage("Error in the connection with the server", "Failure :(");
+                    new StartPanel(ctx);
                 }
             });
 
@@ -191,8 +192,8 @@ public class LobbySelectionPanel extends JTabbedPane {
                         new PopupMessage("Try again.", "Failure :(");
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    new PopupMessage("Try again.", "Failure :(");
+                    new PopupMessage("Error in the connection with the server", "Failure :(");
+                    new StartPanel(ctx);
                 }
             });
 

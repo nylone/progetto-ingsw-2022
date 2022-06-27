@@ -164,8 +164,9 @@ public class GameStartingPanel extends JPanel {
                         }
                         default -> throw new IllegalStateException("Unexpected value: " + input.getClass());
                     }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    new PopupMessage("Error in the connection with the server", "Failure :(");
+                    new StartPanel(ctx);
                 }
             }
         }).start();
