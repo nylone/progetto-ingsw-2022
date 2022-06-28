@@ -23,8 +23,8 @@ public class Card03Test {
     @Test
     public void checkUse() throws Exception {
         // arrange
-        PlayerBoard pb1 = gb.getMutablePlayerBoardByNickname("ari");
-        PlayerBoard pb2 = gb.getMutablePlayerBoardByNickname("teo");
+        PlayerBoard pb1 = gb.getMutablePlayerBoard(0);
+        PlayerBoard pb2 = gb.getMutablePlayerBoard(1);
         IslandGroup ig = gb.getMutableIslandField().getMutableIslandGroupById(5);
         // select an island on which students will be placed
         Island island = ig.getMutableIslands().get(0);

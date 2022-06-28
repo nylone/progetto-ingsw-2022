@@ -38,6 +38,7 @@ public class Card12Test {
             assertEquals(0, player.getDiningRoomCount(PawnColour.BLUE));
         }
     }
+
     @Test(expected = InputValidationException.class)
     public void checkEmptyInput() throws Exception {
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();

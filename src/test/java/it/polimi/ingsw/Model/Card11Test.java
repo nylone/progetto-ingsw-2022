@@ -9,8 +9,6 @@ import it.polimi.ingsw.Model.Enums.StateType;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.EnumMap;
-
 import static org.junit.Assert.*;
 
 public class Card11Test {

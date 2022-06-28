@@ -44,7 +44,7 @@ public class Card06And08Test {
         // arrange
         Island island = gb.getMutableIslandField().getMutableIslandGroupById(1).getMutableIslands().get(0);
         IslandGroup islandGroup = gb.getMutableIslandField().getMutableIslandGroupById(0);
-        PlayerBoard pb2 = gb.getMutablePlayerBoardByNickname("teo");
+        PlayerBoard pb2 = gb.getMutablePlayerBoard(1);
         TurnOrder turnOrder = gb.getMutableTurnOrder();
         island.addStudent(PawnColour.RED);
         gb.setTeacher(PawnColour.RED, pb2);

@@ -41,22 +41,27 @@ public class Symbols {
         }
         return student;
     }
-    public static String colorizeBackgroundStudent(PawnColour p, String message) {
-        String student = "";
-        switch (p) {
-            case BLUE -> student = student + Symbols.BACKGROUND_BLUE + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
-            case GREEN -> student = student + Symbols.BACKGROUND_GREEN + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
-            case PINK -> student = student + Symbols.BACKGROUND_PINK + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
-            case RED -> student = student + Symbols.BACKGROUND_RED + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
-            case YELLOW -> student = student + Symbols.BACKGROUND_YELLOW + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
-
-        }
-        return student;
-    }
-
 
     public static String colour(String s, String colour) {
         return colour + s + Symbols.RESET + Symbols.BACKGROUND;
+    }
+
+    public static String colorizeBackgroundStudent(PawnColour p, String message) {
+        String student = "";
+        switch (p) {
+            case BLUE ->
+                    student = student + Symbols.BACKGROUND_BLUE + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
+            case GREEN ->
+                    student = student + Symbols.BACKGROUND_GREEN + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
+            case PINK ->
+                    student = student + Symbols.BACKGROUND_PINK + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
+            case RED ->
+                    student = student + Symbols.BACKGROUND_RED + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
+            case YELLOW ->
+                    student = student + Symbols.BACKGROUND_YELLOW + Symbols.BLACK + " " + message + " " + Symbols.RESET + Symbols.BACKGROUND;
+
+        }
+        return student;
     }
 
     public static String stripFromANSICodes(String s) {

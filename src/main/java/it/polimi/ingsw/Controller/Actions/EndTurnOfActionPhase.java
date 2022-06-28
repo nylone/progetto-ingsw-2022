@@ -58,13 +58,14 @@ public class EndTurnOfActionPhase extends PlayerAction {
     }
 
     @Override
-    public void unsafeExecute(Model ctx) {
+    public void unsafeExecute(Model ctx) throws Exception {
         // reset effects through EffectTracker
         ctx.getMutableEffects().reset();
         ctx.getMutableTurnOrder().stepToNextPlayer();
         if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.ACTION) {
-            if (ctx.getMutableStudentBag().getSize() > 0)
+            if (ctx.getMutableStudentBag().getSize() > 0) {
                 ctx.refillClouds();
+            }
         }
     }
 

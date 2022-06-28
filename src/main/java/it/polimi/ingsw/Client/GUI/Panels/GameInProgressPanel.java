@@ -93,7 +93,7 @@ public class GameInProgressPanel extends JTabbedPane {
                 }
                 PlayerBoard pb = null;
                 try {
-                    pb = model.getMutablePlayerBoardById(pbp.getValue().getPlayerBoardId());
+                    pb = model.getMutablePlayerBoard(pbp.getValue().getPlayerBoardId());
                 } catch (InvalidContainerIndexException e) {
                     e.printStackTrace();
                 }

@@ -61,8 +61,8 @@ public class IslandFieldPanel extends JPanel {
         //set IslandFieldPanel's actionType basing on previous actions performed by current Player
         if (guiReader.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
             this.setActionType(ActionType.NONE, SerializableOptional.empty());
-        } else if ((model.getMutablePlayerBoards().size()!=3 && guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 3) ||
-                (model.getMutablePlayerBoards().size()==3 && guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 4)) {
+        } else if ((model.getMutablePlayerBoards().size() != 3 && guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 3) ||
+                (model.getMutablePlayerBoards().size() == 3 && guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 4)) {
             this.setActionType(ActionType.MOVEMOTHERNATURE, SerializableOptional.empty());
         }
         this.setOpaque(true);

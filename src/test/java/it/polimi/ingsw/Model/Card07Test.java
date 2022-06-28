@@ -3,8 +3,8 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
-import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Misc.Pair;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
@@ -70,7 +70,7 @@ public class Card07Test {
     @Test(expected = InputValidationException.class)
     public void checkExceptionUse() throws Exception {
         Card07 card = new Card07(gb);
-        PlayerBoard pb = gb.getMutablePlayerBoardByNickname("ari");
+        PlayerBoard pb = gb.getMutablePlayerBoard(0);
         // creates a wrong input which will not be filled with information
         CharacterCardInput input = new CharacterCardInput(pb);
         if (card.checkInput(input)) card.unsafeUseCard(input);
@@ -86,7 +86,7 @@ public class Card07Test {
     @Test(expected = InputValidationException.class)
     public void checkUse4Pawns() throws Exception {
         Card07 card = new Card07(gb);
-        PlayerBoard pb = gb.getMutablePlayerBoardByNickname("ari");
+        PlayerBoard pb = gb.getMutablePlayerBoard(0);
         // creates a wrong input which will be filled with too much information
         CharacterCardInput input = new CharacterCardInput(pb);
         // todo

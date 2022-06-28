@@ -79,7 +79,7 @@ public class IslandField implements Serializable {
      * @param id the ID of the group to search for
      * @return the {@link IslandGroup} matching the ID on the input
      * @throws InvalidContainerIndexException if the specified ID is not in the list of currently active groups, this exception
-     * is thrown
+     *                                        is thrown
      */
     public IslandGroup getMutableIslandGroupById(int id) throws InvalidContainerIndexException {
         return groups.stream()
@@ -92,7 +92,7 @@ public class IslandField implements Serializable {
      * @param id the ID of the island to search for
      * @return the {@link Island} matching the ID on the input
      * @throws InvalidContainerIndexException if the specified ID is not in the list of currently active islands, this exception
-     * is thrown
+     *                                        is thrown
      */
     public Island getMutableIslandById(int id) throws InvalidContainerIndexException {
         return islands.stream()
@@ -104,6 +104,7 @@ public class IslandField implements Serializable {
     /**
      * this method is Package-private - moving mother nature through this method does not enact its power. it is therefore unsafe
      * to call this outside of very specific circumstances.
+     *
      * @param moves the amount of moves mother nature will move.
      */
     protected void moveMotherNature(int moves) {
@@ -124,27 +125,6 @@ public class IslandField implements Serializable {
     }
 
     /**
-     * Two groups are considered joinable if they share the same tower colour.
-     * @param motherGroup the group on which Mother nature is standing
-     * @param otherGroup a group adjacent to motherGroup
-     */
-    private void ifJoinableThenJoin(IslandGroup motherGroup, IslandGroup otherGroup) {
-        try {
-            if (motherGroup.canJoin(otherGroup)) {
-                IslandGroup joined = new IslandGroup(motherGroup, otherGroup);
-                this.groups.remove(otherGroup);
-                this.groups.set(this.groups.indexOf(motherGroup), joined);
-                this.motherNaturePosition = joined;
-            }
-        }
-        catch (OperationException e) {
-            Logger.severe("Unreachable statement has been reached. Severe, unrecoverable error");
-            e.printStackTrace();
-            throw new RuntimeException();
-        }
-    }
-
-    /**
      * @return the {@link IslandGroup} matching the position of mother nature
      */
     public IslandGroup getMutableMotherNaturePosition() {
@@ -153,6 +133,7 @@ public class IslandField implements Serializable {
 
     /**
      * searches for the {@link IslandGroup} adjacent to a selected one
+     *
      * @param curr the {@link IslandGroup} you wish to find the next adjacent one
      * @return the {@link IslandGroup} that comes after the one in input
      */
@@ -166,6 +147,7 @@ public class IslandField implements Serializable {
 
     /**
      * searches for the {@link IslandGroup} adjacent to a selected one
+     *
      * @param curr the {@link IslandGroup} you wish to find the previous adjacent one
      * @return the {@link IslandGroup} that comes before the one in input
      */
@@ -175,6 +157,27 @@ public class IslandField implements Serializable {
         return groups.get(
                 (currIndex + groupSize - 1) % groupSize
         );
+    }
+
+    /**
+     * Two groups are considered joinable if they share the same tower colour.
+     *
+     * @param motherGroup the group on which Mother nature is standing
+     * @param otherGroup  a group adjacent to motherGroup
+     */
+    private void ifJoinableThenJoin(IslandGroup motherGroup, IslandGroup otherGroup) {
+        try {
+            if (motherGroup.canJoin(otherGroup)) {
+                IslandGroup joined = new IslandGroup(motherGroup, otherGroup);
+                this.groups.remove(otherGroup);
+                this.groups.set(this.groups.indexOf(motherGroup), joined);
+                this.motherNaturePosition = joined;
+            }
+        } catch (OperationException e) {
+            Logger.severe("Unreachable statement has been reached. Severe, unrecoverable error");
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 
     /*//test-purpose only

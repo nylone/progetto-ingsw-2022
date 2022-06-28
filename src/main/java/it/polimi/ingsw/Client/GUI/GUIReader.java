@@ -11,7 +11,6 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.*;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import javax.swing.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -8,8 +8,8 @@ import it.polimi.ingsw.Controller.Actions.MoveStudent;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Controller.Actions.PlayCharacterCard;
 import it.polimi.ingsw.Controller.MoveDestination;
-import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Misc.Pair;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -370,11 +370,12 @@ public class PlayerBoardPanel extends JPanel {
 
     /**
      * get PlayerBoard id
+     *
      * @return playerBoardPanel's playerBoard's id
      */
-     public int getPlayerBoardId(){
-         return this.player.getId();
-     }
+    public int getPlayerBoardId() {
+        return this.player.getId();
+    }
 
     /**
      * Executes characterCards' effects that interact directly with the playerBoard

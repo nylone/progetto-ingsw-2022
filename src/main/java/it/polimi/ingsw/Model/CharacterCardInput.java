@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Misc.Pair;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
@@ -22,6 +22,7 @@ public class CharacterCardInput implements Serializable {
 
     /**
      * Constructor for the base input of the card.
+     *
      * @param caller each card requires the caller's {@link PlayerBoard} as an input.
      */
     public CharacterCardInput(PlayerBoard caller) {
@@ -79,6 +80,7 @@ public class CharacterCardInput implements Serializable {
 
     /**
      * Note: the convention of the {@link Pair} is to be verified through the card that requires the input.
+     *
      * @param targetPawnPairs the {@link List} of {@link Pair}s of {@link PawnColour} to set as a target.
      */
     public void setTargetPawnPairs(List<Pair<PawnColour, PawnColour>> targetPawnPairs) {

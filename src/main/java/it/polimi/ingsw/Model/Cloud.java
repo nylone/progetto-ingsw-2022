@@ -24,6 +24,7 @@ public class Cloud implements Serializable {
 
     /**
      * Construct a Cloud, assigning an ID to it.
+     *
      * @param id if the cloud is in an array, the id will be the index of the array at which the cloud is located
      */
     public Cloud(int id) {
@@ -33,6 +34,7 @@ public class Cloud implements Serializable {
 
     /**
      * The ID of the cloud is the index of the array in which the Cloud is stored
+     *
      * @return the ID of the cloud
      */
     public int getId() {
@@ -41,6 +43,7 @@ public class Cloud implements Serializable {
 
     /**
      * A Cloud will need to be emptied out, eventually. This method returns a {@link List} of {@link PawnColour} and empties the Cloud.
+     *
      * @return a {@link List} of {@link PawnColour}s that were contained in the Cloud
      * @throws EmptyContainerException if the Cloud being emptied was already empty, this exception is thrown.
      */
@@ -56,6 +59,7 @@ public class Cloud implements Serializable {
 
     /**
      * Cloud contents may be inspected without emptying the tile.
+     *
      * @return an {@link java.util.List#copyOf(Collection)} of the contents of the Cloud
      */
     public List<PawnColour> getContents() {
@@ -64,6 +68,7 @@ public class Cloud implements Serializable {
 
     /**
      * A cloud may need to be filled from time to time. this method is used for that
+     *
      * @param colours a {@link List} of {@link PawnColour}s to put in the Cloud tile
      * @throws FullContainerException if the Cloud being filled already had some contents, this exception will be thrown
      */

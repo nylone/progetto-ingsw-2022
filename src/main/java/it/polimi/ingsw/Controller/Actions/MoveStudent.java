@@ -101,9 +101,9 @@ public class MoveStudent extends PlayerAction {
 
     @Override
     public void unsafeExecute(Model ctx) throws Exception {
-        PawnColour toMove = ctx.getMutablePlayerBoardById(this.getPlayerBoardID())
+        PawnColour toMove = ctx.getMutablePlayerBoard(this.getPlayerBoardID())
                 .getEntranceStudents().get(this.selectedEntrancePosition).get();
-        PlayerBoard pb = ctx.getMutablePlayerBoardById(this.getPlayerBoardID());
+        PlayerBoard pb = ctx.getMutablePlayerBoard(this.getPlayerBoardID());
         // set entrance position to null
         pb.removeStudentFromEntrance(selectedEntrancePosition);
         switch (this.destination.getDestinationType()) {

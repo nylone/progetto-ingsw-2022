@@ -9,8 +9,6 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyAccept;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import javax.swing.*;
-import java.io.IOException;
-import java.net.SocketException;
 
 /**
  * Panel that allows user to choose his username

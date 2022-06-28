@@ -12,6 +12,7 @@ import java.util.Random;
 public class CharacterDeckGenerator {
     /**
      * Generate a random list of 3 Character cards (ensured to be non repeating in the list)
+     *
      * @param context each generated {@link CharacterCard} needs a reference to the {@link Model} in order to work.
      * @return a list of 3 randomly generated cards, in no specific order.
      */
@@ -41,6 +42,7 @@ public class CharacterDeckGenerator {
     private interface CharacterCardGenerator {
         /**
          * the constructor of a {@link CharacterCard} has the same signature as this method
+         *
          * @param ctx the reference to {@link Model}
          * @return a {@link CharacterCard}
          */

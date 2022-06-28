@@ -14,6 +14,7 @@ public class AssistantCard implements Serializable {
 
     /**
      * Constructs an Assistant card based on its priority.
+     *
      * @param priority the priority of the card
      */
     public AssistantCard(int priority) {
@@ -23,6 +24,7 @@ public class AssistantCard implements Serializable {
 
     /**
      * Every card has a maximum value for the movement to use in {@link it.polimi.ingsw.Controller.Actions.MoveMotherNature}
+     *
      * @return an integer value representing max mother nature movement
      */
     public int getMaxMovement() {
@@ -31,6 +33,7 @@ public class AssistantCard implements Serializable {
 
     /**
      * Returns the priority of turn linked to the use of the card.
+     *
      * @return an integer value representing priority
      */
     public int getPriority() {
@@ -39,6 +42,7 @@ public class AssistantCard implements Serializable {
 
     /**
      * If a card is used in a turn by the player, this flag must be set to true.
+     *
      * @return the used flag of the card
      */
     public boolean getUsed() {

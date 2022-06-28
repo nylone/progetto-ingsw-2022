@@ -26,6 +26,7 @@ public class IslandGroup implements Serializable {
 
     /**
      * Construct an IslandGroup starting from a single {@link Island}
+     *
      * @param i a single {@link Island}, its {@link Island#getId()} becomes the group's ID
      */
     public IslandGroup(Island i) {
@@ -39,28 +40,30 @@ public class IslandGroup implements Serializable {
      * Construct a new amalgamation of groups. The new group contains the sum of all the {@link PawnColour} on each group, the sum of the
      * {@link NoEntryTile}s on each group. Groups can only be joined if their {@link Tower#getColour()} returns the same value.<br>
      * The ID assigned to the new group will be the lowest between the input groups.
+     *
      * @param islandGroups an array of groups to be merged into one
      * @throws OperationException if the groups cannot be joined
      */
     public IslandGroup(IslandGroup... islandGroups) throws OperationException {
         if (islandGroups.length > 0 && islandGroups[0].canJoin(islandGroups)) {
-                this.islands = new ArrayList<>();
-                this.noEntryTiles = new Stack<>();
-                for (IslandGroup i : islandGroups) {
-                    this.islands.addAll(i.getMutableIslands());
-                    this.noEntryTiles.addAll(i.getMutableNoEntryTiles());
-                }
-                this.id = Arrays.stream(islandGroups)
-                        .min(Comparator.comparingInt(IslandGroup::getId))
-                        .orElseThrow(() -> new FailedOperationException(OPERATION_NAME_CONSTRUCTOR_ISLAND_GROUPS))
-                        .getId();
-            } else {
+            this.islands = new ArrayList<>();
+            this.noEntryTiles = new Stack<>();
+            for (IslandGroup i : islandGroups) {
+                this.islands.addAll(i.getMutableIslands());
+                this.noEntryTiles.addAll(i.getMutableNoEntryTiles());
+            }
+            this.id = Arrays.stream(islandGroups)
+                    .min(Comparator.comparingInt(IslandGroup::getId))
+                    .orElseThrow(() -> new FailedOperationException(OPERATION_NAME_CONSTRUCTOR_ISLAND_GROUPS))
+                    .getId();
+        } else {
             throw new ForbiddenOperationException(OPERATION_NAME_CONSTRUCTOR_ISLAND_GROUPS);
         }
     }
 
     /**
      * returns true if the inputted {@link IslandGroup} all contain the same type of tower
+     *
      * @param groups the groups you'd like to join
      */
     public boolean canJoin(IslandGroup... groups) {
@@ -135,6 +138,7 @@ public class IslandGroup implements Serializable {
 
     /**
      * Checks to see if an island is contained in the group
+     *
      * @param i the {@link Island} you wish to search for in the group
      * @return true if the island is contained, false otherwise
      */
@@ -149,6 +153,7 @@ public class IslandGroup implements Serializable {
 
     /**
      * adds a {@link NoEntryTile} to the group
+     *
      * @param tile the no entry tile to add
      */
     public void addNoEntry(NoEntryTile tile) {
@@ -164,8 +169,9 @@ public class IslandGroup implements Serializable {
 
     /**
      * multiple {@link Tower}s may need to be swapped or added during the Group's lifespan, this method can be used for that
+     *
      * @param ts the new {@link TowerStorage} where towers are coming from. the old towers (if any were present) will all be returned to its
-     *          rightful storage automatically
+     *           rightful storage automatically
      */
     public void swapTower(TowerStorage ts) {
         if (ts.getTowerCount() >= this.islands.size()) {

@@ -108,6 +108,7 @@ public class EffectTracker implements Serializable {
 
     /**
      * sets the denied {@link PawnColour}
+     *
      * @param pawnColour the {@link PawnColour} to be denied
      */
     public void setDeniedPawnColour(PawnColour pawnColour) {
