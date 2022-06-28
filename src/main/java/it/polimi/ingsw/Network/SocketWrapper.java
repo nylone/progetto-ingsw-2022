@@ -27,7 +27,7 @@ public class SocketWrapper {
         while (true) {
             try {
                 return (Message) input.readObject();
-            } catch (ClassNotFoundException e) {
+            } catch (Exception e) {
                 Logger.severe("received invalid class as message: " + e.getMessage());
                 if (this.input.read() == -1) {
                     Logger.info("closing SocketWrapper");
