@@ -9,10 +9,8 @@ import javax.swing.*;
  */
 public class GUI {
     public static void main(String... args) {
-        SwingUtilities.invokeLater(() -> {
-            Context ctx = new Context();
-            ctx.setWindow(new Window());
-            new StartPanel(ctx);
-        });
+        Context ctx = new Context();
+        ctx.setWindow(new Window());
+        new StartPanel(ctx);
     }
 }

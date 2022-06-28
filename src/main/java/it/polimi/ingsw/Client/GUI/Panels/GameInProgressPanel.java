@@ -54,7 +54,8 @@ public class GameInProgressPanel extends JTabbedPane {
         this.window.changeView(this);
         this.guiReader = new GUIReader(this, ctx);
         //run GuiReader thread
-        SwingUtilities.invokeLater(guiReader);
+        Thread readerThread = new Thread(guiReader);
+        readerThread.start();
     }
 
     /**
@@ -162,7 +163,8 @@ public class GameInProgressPanel extends JTabbedPane {
         this.sw = ctx.getSocketWrapper();
         this.window.changeView(this);
         this.guiReader = guiReader;
-        SwingUtilities.invokeLater(guiReader);
+        Thread readerThread = new Thread(guiReader);
+        readerThread.start();
     }
 
     /**
