@@ -369,6 +369,14 @@ public class PlayerBoardPanel extends JPanel {
     }
 
     /**
+     * get PlayerBoard id
+     * @return playerBoardPanel's playerBoard's id
+     */
+     public int getPlayerBoardId(){
+         return this.player.getId();
+     }
+
+    /**
      * Executes characterCards' effects that interact directly with the playerBoard
      *
      * @param cardIndex          card's priority
