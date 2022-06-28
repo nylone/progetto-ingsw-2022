@@ -90,7 +90,7 @@ public class MoveStudent extends PlayerAction {
                 return SerializableOptional.of(new InvalidElementException(INPUT_NAME_TARGET_ISLAND)); // target ti out of bounds for id
             }
         } else if (this.destination.getDestinationType() == DestinationType.DININGROOM) {
-            if (!caller.canDiningRoomFit(caller.getEntranceStudents().get(this.selectedEntrancePosition).get())) {
+            if (caller.isDiningRoomFull(caller.getEntranceStudents().get(this.selectedEntrancePosition).get())) {
                 return SerializableOptional.of(new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
                         CONTAINER_NAME_DININGROOM + "can't contain the pawn without overflowing."));
             }
@@ -101,11 +101,9 @@ public class MoveStudent extends PlayerAction {
 
     @Override
     public void unsafeExecute(Model ctx) throws Exception {
-        PawnColour toMove = ctx.getMutablePlayerBoard(this.getPlayerBoardID())
-                .getEntranceStudents().get(this.selectedEntrancePosition).get();
         PlayerBoard pb = ctx.getMutablePlayerBoard(this.getPlayerBoardID());
         // set entrance position to null
-        pb.removeStudentFromEntrance(selectedEntrancePosition);
+        PawnColour toMove = pb.removeStudentFromEntrance(selectedEntrancePosition);
         switch (this.destination.getDestinationType()) {
             case ISLAND -> {
                 int id = this.destination.getIslandID();

@@ -41,7 +41,7 @@ public abstract class CharacterCard implements Serializable {
      * This function checks whether the correct input has been provided. It should always be called BEFORE calling an
      * unsafeApplyEffect. Keep in mind this function does not alterate the gamestate.
      *
-     * @param input
+     * @param input user's input object
      * @return can only return true as a value, only returns it when the input is correct
      * @throws InputValidationException whenever the input is invalid
      */
@@ -58,7 +58,7 @@ public abstract class CharacterCard implements Serializable {
      * NOTE: checkInput(input) by default checks whether the correct player has called the card, then relays all other
      * checks to this function. So don't check the correct user in this function as it is pointless.
      *
-     * @param input user's input
+     * @param input user's input object
      * @return can only return true as a value, only returns it when the input is correct
      * @throws InputValidationException whenever the input is invalid
      */
@@ -69,7 +69,7 @@ public abstract class CharacterCard implements Serializable {
      * This method must be called after checking user's input
      * Play
      *
-     * @param input
+     * @param input a {@link CharacterCardInput} object, the same used during validation
      */
     public final void unsafeUseCard(CharacterCardInput input) {
         try { // we should never get an exception now, if we do we crash

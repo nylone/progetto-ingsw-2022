@@ -11,7 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * This is the main server thread. </br>
+ * This is the main server thread. <br>
  * Expected behaviour: a thread runs forever, accepting all connections and dispatching the
  * sockets to the LobbyServer.
  */

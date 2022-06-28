@@ -14,7 +14,7 @@ import java.util.*;
 import static it.polimi.ingsw.Constants.OPERATION_NAME_CONSTRUCTOR_ISLAND_GROUPS;
 
 /**
- * Every {@link Island} can be contained in an IslandGroup
+ * Every {@link Island} can be contained in an IslandGroup and multiple Islands can be grouped up.
  */
 public class IslandGroup implements Serializable {
     @Serial

@@ -68,7 +68,7 @@ public class Card11 extends StatefulEffect {
 
         PlayerBoard playerBoard = input.getCaller();
         // validate size of dining room
-        if (!playerBoard.canDiningRoomFit(input.getTargetPawn().get())) {
+        if (playerBoard.isDiningRoomFull(input.getTargetPawn().get())) {
             throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
                     CONTAINER_NAME_DININGROOM + " can't contain " + input.getTargetPawn().get()
                             + "without overflowing.");

@@ -336,7 +336,7 @@ public class PlayCharacterCardTest {
     }
 
     private Controller initializeGameHandlerAndPlayAssistantCard(Model model) throws InputValidationException {
-        Controller controller = new Controller(new ModelWrapper(model, null), new ArrayList<>());
+        Controller controller = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>());
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
@@ -382,7 +382,7 @@ public class PlayCharacterCardTest {
         characterCards.add(new Card01(model));
         characterCards.add(new Card02(model));
         characterCards.add(new Card03(model));
-        Controller gh = new Controller(new ModelWrapper(model, null), new ArrayList<>());
+        Controller gh = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>());
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
@@ -416,7 +416,7 @@ public class PlayCharacterCardTest {
     @Test
     public void simpleModePlayAttempt() throws Exception {
         Model model = new Model(GameMode.SIMPLE, "ale", "teo");
-        Controller gh = new Controller(new ModelWrapper(model, null), new ArrayList<>(6));
+        Controller gh = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>(6));
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
         try {
@@ -430,7 +430,7 @@ public class PlayCharacterCardTest {
     @Test
     public void noAssistantCardPlayed() throws Exception {
         Model model = new Model(GameMode.SIMPLE, "ale", "teo");
-        Controller gh = new Controller(new ModelWrapper(model, null), new ArrayList<>(6));
+        Controller gh = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>(6));
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
         try {
@@ -459,7 +459,7 @@ public class PlayCharacterCardTest {
     public void CharacterCardActionOutOfPhase() throws Exception {
         Model model = initializeGameBoard(40, 2, 2);
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        Controller controller = new Controller(new ModelWrapper(model, null), new ArrayList<>());
+        Controller controller = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>());
         PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
 
         try {

@@ -4,6 +4,7 @@ import it.polimi.ingsw.Controller.Actions.MoveStudent;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -22,7 +23,7 @@ public class MoveStudentTest {
     Model model = new Model(GameMode.ADVANCED, "ale", "teo");
     //Controller gh = new Controller(model, new ArrayList<>(6));
 
-    Controller gh = new Controller(new ModelWrapper(model, null), new ArrayList<>());
+    Controller gh = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>());
 
     @Test
     public void testSingleMovementToIsland() throws Exception {

@@ -24,7 +24,7 @@ import java.util.Objects;
 public class Controller {
     private final List<PlayerAction> history;
     private final ModelWrapper modelWrapper;
-
+    private boolean unsafeReferences = false;
 
     /**
      * Subscribes a new {@link Controller} object to a {@link ModelWrapper} instance, allowing the creation of a
@@ -41,7 +41,9 @@ public class Controller {
 
     /**
      * Generates a new instance of the {@link Controller}. This is the debug method to call to create a game, since the internal attributes
-     * are set to the parameters. <br>
+     * are set to the parameters.<br>
+     *
+     * <b>Note:</b> this method will not protect model references after editing actions to the model.
      * <b>Note:</b> this method should be called <b>ONLY</b> by test code.
      *
      * @param modelWrapper an instance of {@link ModelWrapper}
@@ -50,6 +52,7 @@ public class Controller {
     Controller(ModelWrapper modelWrapper, List<PlayerAction> history) {
         this.history = history;
         this.modelWrapper = modelWrapper;
+        this.unsafeReferences = true;
     }
 
     /**
@@ -68,7 +71,7 @@ public class Controller {
         Objects.requireNonNull(players);
 
         if (players.length > 1 && players.length <= 4) {
-            return new Controller(new ModelWrapper(gameMode, lobby, players));
+            return new Controller(new ModelWrapper(new Model(gameMode, players), lobby));
         } else {
             throw new GenericInputValidationException("Players", "The number of players must be 2, 3 or 4.\n" +
                     "Players received: " + players.length);
@@ -78,6 +81,9 @@ public class Controller {
     /**
      * An execution request handler. Actions are passed in, validated and (if possible) executed. <br>
      * Warning: this request is not thread safe, that job is delegated to the caller to handle.
+     *
+     * Note: if this Controller was generated using the debug constructor, then references to the model, once modified, are
+     * going to be kept unsafe, generally decreasing the security of the editing mechanism.
      *
      * @param action the action to be validated and executed.
      * @throws InputValidationException thrown when validation fails, carries information about the error. If thrown,
@@ -89,7 +95,7 @@ public class Controller {
         if (validation.isPresent()) throw validation.get();
         // as right now we are abusing the hell out of exception throwing
         try {
-            this.modelWrapper.editModel(action::unsafeExecute);
+            this.modelWrapper.editModel(action::unsafeExecute, unsafeReferences);
         } catch (Exception e) {
             e.printStackTrace();
         }

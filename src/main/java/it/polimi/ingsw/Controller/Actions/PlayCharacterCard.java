@@ -4,6 +4,7 @@ import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
 import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.CharacterCard;
@@ -105,20 +106,16 @@ public class PlayCharacterCard extends PlayerAction {
     }
 
     @Override
-    public void unsafeExecute(Model ctx) {
+    public void unsafeExecute(Model ctx) throws Exception {
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         CharacterCard characterCard = ctx.getCharacterCards().get(this.selectedCard);
-        caller.payCharacterEffect(characterCard.getCost());
+        caller.payCharacterEffect(characterCard);
         if (characterCard.getTimeUsed() > 0) {
             ctx.addCoinToReserve(characterCard.getCost());
         } else {
             ctx.addCoinToReserve(characterCard.getCost() - 1); //the first time, one coin has to be placed on the card and not in the coin reserve
         }
-        try {
-            characterCard.unsafeUseCard(generateCharacterCardInput(caller, ctx));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        characterCard.unsafeUseCard(generateCharacterCardInput(caller, ctx));
     }
 
     /**
