@@ -65,7 +65,7 @@ public class IslandUI {
         String islandTitle = "Island " + i.getId(); // island's title and id
         if (i.getMutableNoEntryTiles().size() > 0) {
             // The title will be crossed out if the island's influence cannot be changed
-            islandTitle = Symbols.STRIKED + islandTitle + Symbols.RESET + Symbols.BACKGROUND;
+            islandTitle = Symbols.OVERLAY + islandTitle + Symbols.RESET + Symbols.BACKGROUND;
         }
         return mn + islandTitle + ":\t" + students + tower;
     }

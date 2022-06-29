@@ -23,8 +23,8 @@ public class Symbols {
 
 
     public static final String BOLD = "\u001b[1m";
-    public static final String STRIKED = "\u001b[7m";
 
+    public static final String OVERLAY = "\u001b[7m";
     public static final String PAWN = BOLD + "■" + RESET + BACKGROUND;
     public static final String TOWER = BOLD + "≡" + RESET + BACKGROUND;
     public static final String COIN = GOLD + "¤" + RESET + BACKGROUND;
