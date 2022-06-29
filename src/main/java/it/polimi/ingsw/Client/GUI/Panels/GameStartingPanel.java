@@ -127,9 +127,6 @@ public class GameStartingPanel extends JPanel {
         // apply layout
         this.setLayout(layout);
 
-        // display the view
-        window.changeView(this);
-
         // start socket listener task
         new Thread(() -> {
             while (true) {
@@ -142,7 +139,7 @@ public class GameStartingPanel extends JPanel {
                             new PopupMessage("Lobby was closed by the server.\n" +
                                     "Client is disconnecting from the server.", "Lobby closed");
                             sw.close();
-                            new StartPanel(ctx);
+                            window.changeView(new StartPanel(ctx));
                         }
                         case ClientConnected clientConnected -> {
                             synchronized (connectedPlayersList) {
@@ -160,14 +157,14 @@ public class GameStartingPanel extends JPanel {
                             }
                         }
                         case GameStarted ignored -> {
-                            new GameInProgressPanel(ctx);
+                            window.changeView(new GameInProgressPanel(ctx));
                             return;
                         }
                         default -> throw new IllegalStateException("Unexpected value: " + input.getClass());
                     }
                 } catch (Exception e) {
                     new PopupMessage("Disconnected from server", "Warning");
-                    new StartPanel(ctx);
+                    window.changeView(new StartPanel(ctx));
                     return;
                 }
             }

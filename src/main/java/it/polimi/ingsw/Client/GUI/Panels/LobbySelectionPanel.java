@@ -120,7 +120,7 @@ public class LobbySelectionPanel extends JTabbedPane {
                             case LobbyRedirect lobbyRedirect -> {
                                 if (lobbyRedirect.getStatusCode() == StatusCode.Success) {
                                     //Switch to a new LobbySelectionPanel if user has been accepted by Server
-                                    new GameStartingPanel(ctx, false, lobbyRedirect.getLobbyID());
+                                    window.changeView(new GameStartingPanel(ctx, false, lobbyRedirect.getLobbyID()));
                                     again = false;
                                 } else {
                                     new PopupMessage("Try again.", "Failure :(");
@@ -208,7 +208,7 @@ public class LobbySelectionPanel extends JTabbedPane {
                             case LobbyRedirect lobbyRedirect -> {
                                 if (lobbyRedirect.getStatusCode() == StatusCode.Success) {
                                     //Switch to a new LobbySelectionPanel if user has been accepted by Server
-                                    new GameStartingPanel(ctx, true, lobbyRedirect.getLobbyID());
+                                    window.changeView(new GameStartingPanel(ctx, true, lobbyRedirect.getLobbyID()));
                                     again = false;
                                 } else {
                                     new PopupMessage("Try again.", "Failure :(");
@@ -249,8 +249,5 @@ public class LobbySelectionPanel extends JTabbedPane {
             // apply layout
             createPanel.setLayout(layout);
         }
-
-        // display the view
-        window.changeView(this);
     }
 }

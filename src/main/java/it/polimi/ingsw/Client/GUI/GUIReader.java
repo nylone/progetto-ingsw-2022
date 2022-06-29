@@ -71,7 +71,7 @@ public class GUIReader implements Runnable {
                                 "Client is disconnecting from the server.", "Lobby closed");
                         //close socket and return to StartPanel
                         sw.close();
-                        new StartPanel(ctx);
+                        ctx.getWindow().changeView(new StartPanel(ctx));
                         return;
                     }
                     case ClientDisconnected clientDisconnected ->
@@ -104,7 +104,7 @@ public class GUIReader implements Runnable {
                 }
             } catch (Exception e) {
                 new PopupMessage("Error in the connection with the server", "Failure :(");
-                new StartPanel(ctx);
+                ctx.getWindow().changeView(new StartPanel(ctx));
                 return;
             }
         }

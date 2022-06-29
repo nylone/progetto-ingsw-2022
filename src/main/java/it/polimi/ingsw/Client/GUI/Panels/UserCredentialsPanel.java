@@ -23,7 +23,6 @@ public class UserCredentialsPanel extends JPanel {
      */
     public UserCredentialsPanel(Context ctx) {
         // unwrapping context into useful variables
-        Window window = ctx.getWindow();
         SocketWrapper sw = ctx.getSocketWrapper();
 
         // labels
@@ -70,7 +69,7 @@ public class UserCredentialsPanel extends JPanel {
                             case LobbyAccept lobbyAccept -> {
                                 if (lobbyAccept.getStatusCode() == StatusCode.Success) {
                                     //Switch to a new LobbySelectionPanel if user has been accepted by Server
-                                    new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies());
+                                    ctx.getWindow().changeView(new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies()));
                                     again = false;
                                 } else {
                                     new PopupMessage("Server denied your login", "Failure :(");
@@ -102,8 +101,5 @@ public class UserCredentialsPanel extends JPanel {
 
         // apply layout
         this.setLayout(layout);
-
-        // display the view
-        window.changeView(this);
     }
 }

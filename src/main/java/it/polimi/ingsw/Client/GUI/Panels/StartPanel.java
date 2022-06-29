@@ -21,9 +21,6 @@ public class StartPanel extends JPanel {
      * @param ctx Context that will be used by GUI's panels
      */
     public StartPanel(Context ctx) {
-        // unwrapping context into useful variables
-        Window window = ctx.getWindow();
-
         // labels
         JLabel title = new JLabel("Eriantys welcomes You!");
         JLabel serverAddressLabel = new JLabel("Server address:", SwingConstants.RIGHT);
@@ -61,7 +58,7 @@ public class StartPanel extends JPanel {
                 if (sw.awaitMessage() instanceof Welcome welcome && welcome.getStatusCode() == StatusCode.Success) {
                     // spawn and change to next view
                     ctx.setSocketWrapper(sw);
-                    new UserCredentialsPanel(ctx);
+                    ctx.getWindow().changeView(new UserCredentialsPanel(ctx));
                     HeartBeatHandler.handle(sw);
                 } else {
                     new PopupMessage("Server did not welcome us", "Failure :(");
@@ -92,8 +89,5 @@ public class StartPanel extends JPanel {
 
         // apply layout
         this.setLayout(layout);
-
-        // display the view
-        window.changeView(this);
     }
 }

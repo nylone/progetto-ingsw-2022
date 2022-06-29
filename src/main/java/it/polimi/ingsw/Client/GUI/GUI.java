@@ -9,6 +9,6 @@ public class GUI {
     public static void main(String... args) {
         Context ctx = new Context();
         ctx.setWindow(new Window());
-        new StartPanel(ctx);
+        ctx.getWindow().changeView(new StartPanel(ctx));
     }
 }

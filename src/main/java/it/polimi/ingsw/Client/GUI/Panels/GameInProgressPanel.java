@@ -67,7 +67,6 @@ public class GameInProgressPanel extends JTabbedPane {
      */
     public GameInProgressPanel(Context ctx, Model model, GUIReader guiReader) {
         this(ctx, guiReader);
-        this.removeAll();
         if (!model.isGameOver()) {
             //add IslandFieldPanel to JTabbedPane
             this.add("Islands", new IslandFieldPanel(model, sw, guiReader));
