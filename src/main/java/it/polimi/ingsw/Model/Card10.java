@@ -52,7 +52,7 @@ public class Card10 extends StatelessEffect {
                 optionalPawnPair.isEmpty() || // target pawn pairs was set as parameter
                         //optionalPawnPair.get().size() == 0 || // target pawn pairs is not empty (technically allowed)
                         optionalPawnPair.get().size() > 2 || // target pawn pairs are not over the pair limit of 2 swaps
-                        optionalPawnPair.get().stream().anyMatch(p -> p.getFirst() == null || p.getSecond() == null) // no null values in pair
+                        optionalPawnPair.get().stream().anyMatch(p -> p.first() == null || p.second() == null) // no null values in pair
         ) {
             // in case throw exception for invalid element in input
             throw new InvalidElementException("Target Pawn Pairs");
@@ -63,8 +63,8 @@ public class Card10 extends StatelessEffect {
         Map<PawnColour, Integer> comingFromEntrance = new EnumMap<>(PawnColour.class); // counts user entrance selected colours
         Map<PawnColour, Integer> comingFromDiningRoom = new EnumMap<>(PawnColour.class); // counts diningroom selected colours
         for (Pair<PawnColour, PawnColour> pair : pawnPairs) {
-            comingFromEntrance.merge(pair.getFirst(), 1, Integer::sum);
-            comingFromDiningRoom.merge(pair.getSecond(), 1, Integer::sum);
+            comingFromEntrance.merge(pair.first(), 1, Integer::sum);
+            comingFromDiningRoom.merge(pair.second(), 1, Integer::sum);
         }
 
         // get user entrance counts per colour
@@ -115,10 +115,10 @@ public class Card10 extends StatelessEffect {
         // get the playerboard to operate on
         PlayerBoard playerBoard = input.getCaller();
         for (Pair<PawnColour, PawnColour> p : pawnPairs) {
-            fromEntrance.add(p.getFirst());
-            fromDiningRoom.add(p.getSecond());
-            playerBoard.removeStudentFromEntrance(p.getFirst());
-            this.context.removeStudentFromDiningRoom(p.getSecond(), playerBoard);
+            fromEntrance.add(p.first());
+            fromDiningRoom.add(p.second());
+            playerBoard.removeStudentFromEntrance(p.first());
+            this.context.removeStudentFromDiningRoom(p.second(), playerBoard);
         }
         // true effect happens here
         playerBoard.addStudentsToEntrance(fromDiningRoom);

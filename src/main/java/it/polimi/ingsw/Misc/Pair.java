@@ -2,25 +2,17 @@ package it.polimi.ingsw.Misc;
 
 import java.io.Serializable;
 
-public class Pair<T, U> implements Serializable {
-    private final T first;
-    private final U second;
+/**
+ * A Pair represents a set of 2 objects linked in some way
+ *
+ * @param first  the first element of the pair
+ * @param second the second element of the pair
+ * @param <T>    the first element's type
+ * @param <U>    the second element's type
+ */
+public record Pair<T, U>(T first, U second) implements Serializable {
 
-    public Pair(T first, U second) {
-        this.first = first;
-        this.second = second;
-    }
-
-    public T getFirst() {
-        return first;
-    }
-
-    public U getSecond() {
-        return second;
-    }
-
-    //test-purpose only
-
+    /*//test-purpose only
     @Override
     public String toString() {
         return "Pair{" +
@@ -28,4 +20,5 @@ public class Pair<T, U> implements Serializable {
                 ", second=" + second +
                 '}';
     }
+    //*/
 }

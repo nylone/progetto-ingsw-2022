@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Network;
 
 import it.polimi.ingsw.Logger;
-import it.polimi.ingsw.Server.Messages.Events.Internal.SocketClosedEvent;
 import it.polimi.ingsw.Server.Messages.HeartBeatMessage;
 import it.polimi.ingsw.Server.Messages.Message;
 
@@ -12,11 +11,11 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-public class KeepAliveSocketWrapper extends SocketWrapper{
+public class KeepAliveSocketWrapper extends SocketWrapper {
     private final BlockingQueue<Message> inputQueue;
     private final HeartBeatSender heartBeatSender;
+    private final long keepAlivePeriod;
     private Timer heartBeatTimer;
-    private long keepAlivePeriod;
 
     public KeepAliveSocketWrapper(Socket socket, long keepAlivePeriod, boolean activeHeartBeat) throws IOException {
         super(socket);

@@ -164,8 +164,8 @@ public class PlayCharacterCardTest {
         assertEquals(player.getCoinBalance(), initialBalance - model.getCharacterCards().get(0).getCost() + 1);
         assertEquals(model.getCoinReserve(), initialReserve + model.getCharacterCards().get(0).getCost() - 2);
         cardStateful = (StatefulEffect) model.getCharacterCards().get(0);
-        assertTrue(cardStateful.getState().containsAll(pairs.stream().map(Pair::getFirst).toList()));
-        assertTrue(player.getEntranceStudents().containsAll(pairs.stream().map(p -> SerializableOptional.of(p.getSecond())).toList()));
+        assertTrue(cardStateful.getState().containsAll(pairs.stream().map(Pair::first).toList()));
+        assertTrue(player.getEntranceStudents().containsAll(pairs.stream().map(p -> SerializableOptional.of(p.second())).toList()));
 
          /*
         -------------------------------------------
@@ -229,16 +229,16 @@ public class PlayCharacterCardTest {
         pairs = new ArrayList<>();
         pairs.add(new Pair<>(player.getEntranceStudents().get(4).get(), firstPawnDiningRoom));
         pairs.add(new Pair<>(player.getEntranceStudents().get(5).get(), secondPawnDiningRoom));
-        int firstCount = player.getDiningRoomCount(pairs.get(0).getFirst());
-        int secondCount = player.getDiningRoomCount(pairs.get(1).getFirst());
+        int firstCount = player.getDiningRoomCount(pairs.get(0).first());
+        int secondCount = player.getDiningRoomCount(pairs.get(1).first());
         playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.of(pairs));
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - model.getCharacterCards().get(0).getCost() + 1);
         assertEquals(model.getCoinReserve(), initialReserve + model.getCharacterCards().get(0).getCost() - 2);
-        assertTrue(player.getDiningRoomCount(pairs.get(0).getFirst()) >= firstCount - 2 && player.getDiningRoomCount(pairs.get(0).getFirst()) <= firstCount + 2); //equals 2 if students taken from entrance have the same colour
-        assertTrue(player.getDiningRoomCount(pairs.get(1).getFirst()) >= secondCount - 2 && player.getDiningRoomCount(pairs.get(1).getFirst()) <= secondCount + 2);
-        assertTrue(player.getEntranceStudents().containsAll(pairs.stream().map(p -> SerializableOptional.of(p.getSecond())).toList()));
+        assertTrue(player.getDiningRoomCount(pairs.get(0).first()) >= firstCount - 2 && player.getDiningRoomCount(pairs.get(0).first()) <= firstCount + 2); //equals 2 if students taken from entrance have the same colour
+        assertTrue(player.getDiningRoomCount(pairs.get(1).first()) >= secondCount - 2 && player.getDiningRoomCount(pairs.get(1).first()) <= secondCount + 2);
+        assertTrue(player.getEntranceStudents().containsAll(pairs.stream().map(p -> SerializableOptional.of(p.second())).toList()));
 
         /*
         -------------------------------------------

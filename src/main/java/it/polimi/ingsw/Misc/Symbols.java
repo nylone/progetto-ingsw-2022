@@ -47,7 +47,7 @@ public class Symbols {
      * Method used to create a visual representation of the students using a colour and the icon.
      * Extends the functionality of the method {@link Symbols#colour(String, String)}
      *
-     * @param p student object used to access colour information
+     * @param p       student object used to access colour information
      * @param message the icon or character with which the student will be represented
      * @return a String containing the ASCII code of the colour followed by the message
      */
@@ -66,7 +66,8 @@ public class Symbols {
     /**
      * Method used to change the style of a string. It is usually used to change the colour of the string but
      * can be used to change other aspect of the style in general
-     * @param s the String of which we want to change the style
+     *
+     * @param s      the String of which we want to change the style
      * @param colour the ANSI code with which the String style will be modified
      * @return a String with style changed
      */
@@ -77,7 +78,7 @@ public class Symbols {
     /**
      * Method used to create a visual representation of the students using a colour as the background of a String.
      *
-     * @param p student object used to access colour information
+     * @param p       student object used to access colour information
      * @param message the icon or character with which the student will be represented
      * @return a String containing the ASCII code of the colour followed by the message
      */
@@ -102,6 +103,7 @@ public class Symbols {
     /**
      * Method used to remove all ANSI codes and tabulation from a String. Useful to count character within a String
      * which has its style affected by ANSI codes
+     *
      * @param s the message which the ANSI code will be stripped from
      * @return a simple ASCII String
      */

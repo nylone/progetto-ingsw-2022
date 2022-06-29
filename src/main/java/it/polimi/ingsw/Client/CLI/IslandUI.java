@@ -6,7 +6,7 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.IslandGroup;
 import it.polimi.ingsw.Model.Model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * IslandUI allows to print a placeholder containing an {@link IslandGroup} representation or an empty row
@@ -34,7 +34,7 @@ public class IslandUI {
 
         StringBuilder students = new StringBuilder();
         // Prints each student on the island
-        ArrayList<PawnColour> sortedStudents = Utils.sortByFrequency(i.getStudents());
+        List<PawnColour> sortedStudents = Utils.sortByFrequency(i.getStudents());
         for (PawnColour p : sortedStudents) {
             students.append(Symbols.colorizeStudent(p, Symbols.PAWN + " "));
         }

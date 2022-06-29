@@ -11,6 +11,7 @@ import java.io.IOException;
 public class SocketListener implements Runnable {
     private final SocketWrapper socket;
     private final ClientEventHandler queue;
+
     private SocketListener(SocketWrapper socket, ClientEventHandler queue) {
         this.socket = socket;
         this.queue = queue;

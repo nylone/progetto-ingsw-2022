@@ -53,10 +53,10 @@ public class Card10Test {
         // check that students have been added to the dining room
         // if chosen students from entrance have same colour -> one row in the dining room should have 2 students
         // if chosen students from entrance have different colour -> two row in the dining room should have 1 student
-        assertTrue(pb.getDiningRoomCount(pairs.get(0).getFirst()) == 1 || pb.getDiningRoomCount(pairs.get(0).getFirst()) == 2);
-        assertTrue(pb.getDiningRoomCount(pairs.get(1).getFirst()) == 1 || pb.getDiningRoomCount(pairs.get(1).getFirst()) == 2);
+        assertTrue(pb.getDiningRoomCount(pairs.get(0).first()) == 1 || pb.getDiningRoomCount(pairs.get(0).first()) == 2);
+        assertTrue(pb.getDiningRoomCount(pairs.get(1).first()) == 1 || pb.getDiningRoomCount(pairs.get(1).first()) == 2);
         // check that both students from the dining room have been added to the entrance
-        assertTrue(pb.getEntranceStudents().containsAll(pairs.stream().map(p -> SerializableOptional.of(p.getSecond())).toList()));
+        assertTrue(pb.getEntranceStudents().containsAll(pairs.stream().map(p -> SerializableOptional.of(p.second())).toList()));
     }
 
     /**

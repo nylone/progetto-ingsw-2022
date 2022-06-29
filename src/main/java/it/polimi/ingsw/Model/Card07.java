@@ -74,7 +74,7 @@ public class Card07 extends StatefulEffect {
                 optionalPawnPair.isEmpty() || // target pawn pairs was set as parameter
                         //optionalPawnPair.get().size() == 0 || /target pawn pairs is not empty (technically allowed)
                         optionalPawnPair.get().size() > 3 || // target pawn pairs are not over the pair limit of 2 swaps
-                        optionalPawnPair.get().stream().anyMatch(p -> p.getFirst() == null || p.getSecond() == null) // no null values in pair
+                        optionalPawnPair.get().stream().anyMatch(p -> p.first() == null || p.second() == null) // no null values in pair
         ) {
             // in case throw exception for invalid element in input
             throw new InvalidElementException("Target Pawn Pairs");
@@ -87,8 +87,8 @@ public class Card07 extends StatefulEffect {
         Map<PawnColour, Integer> firstMap = new EnumMap<>(PawnColour.class); // counts user entrance selected colours
         Map<PawnColour, Integer> secondMap = new EnumMap<>(PawnColour.class); // counts card state selected colours
         for (Pair<PawnColour, PawnColour> pair : pawnPairs) {
-            firstMap.merge(pair.getFirst(), 1, Integer::sum);
-            secondMap.merge(pair.getSecond(), 1, Integer::sum);
+            firstMap.merge(pair.first(), 1, Integer::sum);
+            secondMap.merge(pair.second(), 1, Integer::sum);
         }
 
         // get user entrance counts per colour
@@ -136,13 +136,13 @@ public class Card07 extends StatefulEffect {
         //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from card
         for (Pair<PawnColour, PawnColour> pair : input.getTargetPawnPairs().get()) {
             // match the first element in entrance with first and swap it with second
-            me.removeStudentFromEntrance(pair.getFirst());
-            me.addStudentToEntrance(pair.getSecond());
+            me.removeStudentFromEntrance(pair.first());
+            me.addStudentToEntrance(pair.second());
 
             // match the first element in card with second and swap it with first
             for (int i = 0; i < students.length; i++) {
-                if (students[i] == pair.getSecond()) {
-                    students[i] = pair.getFirst();
+                if (students[i] == pair.second()) {
+                    students[i] = pair.first();
                     break;
                 }
             }

@@ -127,7 +127,7 @@ public class GUISocketListener implements Runnable {
      */
     public int getSuccessfulRequestsByType(Class<?> playerActionClass) {
         List<PlayerActionFeedback> actions = requestAndFeedback.stream().
-                filter(pair -> pair.getFirst().getClass().equals(playerActionClass)).map(Pair::getSecond).toList();
+                filter(pair -> pair.first().getClass().equals(playerActionClass)).map(Pair::second).toList();
 
         return (int) actions.stream().filter(playerActionFeedback -> playerActionFeedback.getStatusCode() == StatusCode.Success).count();
     }
