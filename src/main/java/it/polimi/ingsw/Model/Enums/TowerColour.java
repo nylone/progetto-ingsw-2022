@@ -17,6 +17,7 @@ public enum TowerColour implements Serializable {
 
     /**
      * Internal constructor of the enum
+     *
      * @param teamId the team to bind the tower to
      */
     TowerColour(TeamID teamId) {
@@ -25,6 +26,7 @@ public enum TowerColour implements Serializable {
 
     /**
      * Get the {@link TowerColour} connected to a {@link TeamID}
+     *
      * @param tID the {@link TeamID} enum representing a team
      * @return the {@link TowerColour} bound to a particular {@link TeamID}
      */
@@ -37,6 +39,7 @@ public enum TowerColour implements Serializable {
 
     /**
      * Get the {@link TeamID} bound to a specific color of the tower
+     *
      * @return the {@link TeamID} bound to the current {@link TowerColour} variant
      */
     public TeamID getTeamID() {

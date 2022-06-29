@@ -32,10 +32,10 @@ public class CloudPanel extends JPanel {
     /**
      * Create a new JPanel and draw all clouds (and their students)
      *
-     * @param clouds        clouds from model that needs to be drawn
-     * @param currentPlayer current Player's playerBoard
-     * @param guiSocketListener     guiReader necessary for checking and saving actions requested by user
-     * @param sw            socketWrapper to send messages to Server
+     * @param clouds            clouds from model that needs to be drawn
+     * @param currentPlayer     current Player's playerBoard
+     * @param guiSocketListener guiReader necessary for checking and saving actions requested by user
+     * @param sw                socketWrapper to send messages to Server
      */
     public CloudPanel(List<Cloud> clouds, PlayerBoard currentPlayer, GUISocketListener guiSocketListener, SocketWrapper sw) {
         this.guiSocketListener = guiSocketListener;

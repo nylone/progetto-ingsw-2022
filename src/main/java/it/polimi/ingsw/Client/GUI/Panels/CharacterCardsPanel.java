@@ -1,9 +1,9 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.ActionType;
-import it.polimi.ingsw.Client.GUI.Listeners.CheckBoxListener;
 import it.polimi.ingsw.Client.GUI.Components.NoEntryTileComponent;
 import it.polimi.ingsw.Client.GUI.Components.StudentButton;
+import it.polimi.ingsw.Client.GUI.Listeners.CheckBoxListener;
 import it.polimi.ingsw.Client.GUI.Listeners.GUISocketListener;
 import it.polimi.ingsw.Controller.Actions.PlayCharacterCard;
 import it.polimi.ingsw.Misc.SerializableOptional;

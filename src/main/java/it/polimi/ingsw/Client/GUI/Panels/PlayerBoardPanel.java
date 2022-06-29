@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.ActionType;
-import it.polimi.ingsw.Client.GUI.Listeners.CheckBoxListener;
 import it.polimi.ingsw.Client.GUI.Components.StudentButton;
+import it.polimi.ingsw.Client.GUI.Listeners.CheckBoxListener;
 import it.polimi.ingsw.Client.GUI.Listeners.GUISocketListener;
 import it.polimi.ingsw.Controller.Actions.MoveStudent;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
@@ -54,10 +54,10 @@ public class PlayerBoardPanel extends JPanel {
     /**
      * Create a new PlayerBoardPanel
      *
-     * @param pb            Player's playerboard to represent
-     * @param model         Game's model
-     * @param socketWrapper socketWrapper to communicate with Server
-     * @param guiSocketListener     guiReader from GameInProgressPanel
+     * @param pb                Player's playerboard to represent
+     * @param model             Game's model
+     * @param socketWrapper     socketWrapper to communicate with Server
+     * @param guiSocketListener guiReader from GameInProgressPanel
      */
     public PlayerBoardPanel(PlayerBoard pb, Model model, SocketWrapper socketWrapper, GUISocketListener guiSocketListener) {
         this.player = pb;

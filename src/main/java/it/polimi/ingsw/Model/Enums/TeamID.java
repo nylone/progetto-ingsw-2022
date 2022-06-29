@@ -14,6 +14,7 @@ public enum TeamID implements Serializable {
 
     /**
      * Internal constructor of the enum
+     *
      * @param teamID the id of the team
      */
     TeamID(int teamID) {
@@ -22,6 +23,7 @@ public enum TeamID implements Serializable {
 
     /**
      * Given an integer, find the corresponding team
+     *
      * @param id the id of the team to enumerate
      * @return the {@link TeamID} enum variant if the id is between 0 and 3 (excluded), otherwise returns null
      */

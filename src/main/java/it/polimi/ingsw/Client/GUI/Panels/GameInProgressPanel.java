@@ -61,8 +61,8 @@ public class GameInProgressPanel extends JTabbedPane {
     /**
      * Public constructor to create GameInProgressPanel's object starting from the second creation; it should never be called the first time
      *
-     * @param ctx       Context to use during the game
-     * @param model     Model containing all game's information
+     * @param ctx               Context to use during the game
+     * @param model             Model containing all game's information
      * @param guiSocketListener created upon first gameInProgressPanel creation
      */
     public GameInProgressPanel(Context ctx, Model model, GUISocketListener guiSocketListener) {
@@ -153,7 +153,7 @@ public class GameInProgressPanel extends JTabbedPane {
     /**
      * Should be used upon the second creation of GameInProgressPanel
      *
-     * @param ctx       Context to use during the game
+     * @param ctx               Context to use during the game
      * @param guiSocketListener created upon first gameInProgressPanel creation
      */
     private GameInProgressPanel(Context ctx, GUISocketListener guiSocketListener) {

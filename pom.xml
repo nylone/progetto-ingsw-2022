@@ -31,7 +31,6 @@
             **/Network/**/*,
             **/Exceptions/**/*,
             **/Logger.java,
-            **/Constants.java,
             **/Main.java
         </sonar.exclusions>
     </properties>
@@ -105,22 +104,6 @@
         </pluginManagement>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <release>18</release>
-                    <additionalOptions>--enable-preview</additionalOptions>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.8</version>
@@ -183,25 +166,4 @@
 
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>server</id>
-            <properties>
-                <mainClass>it.polimi.ingsw.Server.WelcomeServer</mainClass>
-            </properties>
-        </profile>
-        <profile>
-            <id>gui</id>
-            <properties>
-                <mainClass>it.polimi.ingsw.Client.GUI.GUI</mainClass>
-            </properties>
-        </profile>
-        <profile>
-            <id>cli</id>
-            <properties>
-                <mainClass>it.polimi.ingsw.Client.CLI.CLI</mainClass>
-            </properties>
-        </profile>
-    </profiles>
 </project>
