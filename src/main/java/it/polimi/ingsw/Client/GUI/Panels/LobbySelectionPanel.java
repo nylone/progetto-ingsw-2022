@@ -6,6 +6,9 @@ import it.polimi.ingsw.Client.GUI.Window;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.Events.Requests.ConnectLobbyRequest;
 import it.polimi.ingsw.Server.Messages.Events.Requests.CreateLobbyRequest;
+import it.polimi.ingsw.Server.Messages.Message;
+import it.polimi.ingsw.Server.Messages.ServerResponses.HeartBeatResponse;
+import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyAccept;
 import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyRedirect;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.LobbyInfo;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
@@ -109,12 +112,23 @@ public class LobbySelectionPanel extends JTabbedPane {
                 UUID id = UUID.fromString(idString);
                 try {
                     sw.sendMessage(new ConnectLobbyRequest(id));
-                    if (sw.awaitMessage() instanceof LobbyRedirect lobbyRedirect &&
-                            lobbyRedirect.getStatusCode() == StatusCode.Success) {
-                        new GameStartingPanel(ctx, false, lobbyRedirect.getLobbyID());
-                    } else {
-                        new PopupMessage("Try again.", "Failure :(");
-                    }
+                    boolean again = true;
+                    do {
+                        Message response = sw.awaitMessage();
+                        switch (response) {
+                            case HeartBeatResponse ignored -> {}
+                            case LobbyRedirect lobbyRedirect -> {
+                                if (lobbyRedirect.getStatusCode() == StatusCode.Success) {
+                                    //Switch to a new LobbySelectionPanel if user has been accepted by Server
+                                    new GameStartingPanel(ctx, false, lobbyRedirect.getLobbyID());
+                                    again = false;
+                                } else {
+                                    new PopupMessage("Try again.", "Failure :(");
+                                }
+                            }
+                            default -> throw new IllegalStateException("Unexpected value: " + response);
+                        }
+                    } while (again);
                 } catch (Exception e) {
                     new PopupMessage("Error in the connection with the server", "Failure :(");
                     new StartPanel(ctx);
@@ -185,12 +199,23 @@ public class LobbySelectionPanel extends JTabbedPane {
                             openLobby.isSelected(),
                             Integer.parseInt(maxPlayers.getSelection().getActionCommand())
                     ));
-                    if (sw.awaitMessage() instanceof LobbyRedirect lobbyRedirect &&
-                            lobbyRedirect.getStatusCode() == StatusCode.Success) {
-                        new GameStartingPanel(ctx, true, lobbyRedirect.getLobbyID());
-                    } else {
-                        new PopupMessage("Try again.", "Failure :(");
-                    }
+                    boolean again = true;
+                    do {
+                        Message response = sw.awaitMessage();
+                        switch (response) {
+                            case HeartBeatResponse ignored -> {}
+                            case LobbyRedirect lobbyRedirect -> {
+                                if (lobbyRedirect.getStatusCode() == StatusCode.Success) {
+                                    //Switch to a new LobbySelectionPanel if user has been accepted by Server
+                                    new GameStartingPanel(ctx, true, lobbyRedirect.getLobbyID());
+                                    again = false;
+                                } else {
+                                    new PopupMessage("Try again.", "Failure :(");
+                                }
+                            }
+                            default -> throw new IllegalStateException("Unexpected value: " + response);
+                        }
+                    } while (again);
                 } catch (Exception e) {
                     new PopupMessage("Error in the connection with the server", "Failure :(");
                     new StartPanel(ctx);

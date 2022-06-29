@@ -5,7 +5,10 @@ import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Client.GUI.Window;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.Events.Requests.DeclarePlayerRequest;
+import it.polimi.ingsw.Server.Messages.Message;
+import it.polimi.ingsw.Server.Messages.ServerResponses.HeartBeatResponse;
 import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyAccept;
+import it.polimi.ingsw.Server.Messages.ServerResponses.Response;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import javax.swing.*;
@@ -59,14 +62,23 @@ public class UserCredentialsPanel extends JPanel {
             }
             new Thread(() -> {
                 try {
-                    if (sw.awaitMessage() instanceof LobbyAccept lobbyAccept) {
-                        if (lobbyAccept.getStatusCode() == StatusCode.Success) {
-                            //Switch to a new LobbySelectionPanel if user has been accepted by Server
-                            new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies());
-                        } else {
-                            new PopupMessage("Server denied your login", "Failure :(");
+                    boolean again = true;
+                    do {
+                        Message response = sw.awaitMessage();
+                        switch (response) {
+                            case HeartBeatResponse ignored -> {}
+                            case LobbyAccept lobbyAccept -> {
+                                if (lobbyAccept.getStatusCode() == StatusCode.Success) {
+                                    //Switch to a new LobbySelectionPanel if user has been accepted by Server
+                                    new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies());
+                                    again = false;
+                                } else {
+                                    new PopupMessage("Server denied your login", "Failure :(");
+                                }
+                            }
+                            default -> throw new IllegalStateException("Unexpected value: " + response);
                         }
-                    }
+                    } while (again);
                 } catch (Exception e) {
                     new PopupMessage("Error in the connection with the server", "Failure :(");
                     new StartPanel(ctx);

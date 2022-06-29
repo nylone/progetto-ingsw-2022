@@ -39,8 +39,12 @@ public class SocketWrapper {
         }
     }
 
+    public boolean isClosed() {
+        return sock.isClosed();
+    }
+
     public void close() {
-        try {
+        if (!this.sock.isClosed()) try {
             this.input.close();
             this.output.flush();
             this.output.close();

@@ -88,7 +88,6 @@ public class GameStartingPanel extends JPanel {
 
         disconnect.addActionListener(actionEvent -> {
             sw.close();
-            new PopupMessage("Disconnected", "Disconnected from server");
             new StartPanel(ctx);
         });
 
@@ -137,6 +136,7 @@ public class GameStartingPanel extends JPanel {
                 try {
                     Message input = sw.awaitMessage();
                     switch (input) {
+                        case HeartBeatResponse ignored -> {}
                         case LobbyClosed ignored -> {
                             new PopupMessage("Lobby was closed by the server.\n" +
                                     "Client is disconnecting from the server.", "Lobby closed");
@@ -165,8 +165,9 @@ public class GameStartingPanel extends JPanel {
                         default -> throw new IllegalStateException("Unexpected value: " + input.getClass());
                     }
                 } catch (Exception e) {
-                    new PopupMessage("Error in the connection with the server", "Failure :(");
+                    new PopupMessage("Disconnected from server", "Warning");
                     new StartPanel(ctx);
+                    return;
                 }
             }
         }).start();
