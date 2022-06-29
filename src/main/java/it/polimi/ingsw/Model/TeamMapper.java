@@ -9,12 +9,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Maps the players in the model to their respective teams and {@link TowerStorage}
+ */
 public class TeamMapper implements Serializable {
     @Serial
     private static final long serialVersionUID = 136L; // convention: 1 for model, (01 -> 99) for objects
     Map<PlayerBoard, TeamID> playerTeamMap;
     Map<TeamID, TowerStorage> towerStorageMap;
 
+    /**
+     * Creates a new mapper. If the players are not 4, every player gets put into its own special team. If 4 players
+     * are inputted, the first pair of players will be put in the first team, and the second pair into the second team.
+     * @param players a {@link List} of {@link PlayerBoard}s to put into teams.
+     */
     public TeamMapper(List<PlayerBoard> players) {
         this.playerTeamMap = new HashMap<>();
         int nop = players.size();
@@ -28,21 +36,41 @@ public class TeamMapper implements Serializable {
         }
     }
 
-    public List<PlayerBoard> getPlayers(TeamID tID) {
+    /**
+     * Get a team's players
+     * @param tID the ID of the Team to search players of
+     * @return an Unmutable {@link List} containing references to the team's {@link PlayerBoard}s
+     */
+    public List<PlayerBoard> getMutablePlayers(TeamID tID) {
         return playerTeamMap.entrySet().stream()
                 .filter(e -> e.getValue().equals(tID))
                 .map(Map.Entry::getKey)
                 .toList();
     }
 
+    /**
+     * Get a team's tower storage
+     * @param pb the player to find the {@link TowerStorage} of
+     * @return a reference to {@link TowerStorage}, or null if the {@link PlayerBoard} matches no team in the game
+     */
     public TowerStorage getMutableTowerStorage(PlayerBoard pb) {
         return this.getMutableTowerStorage(this.getTeamID(pb));
     }
 
+    /**
+     * Get a team's tower storage
+     * @param tID the ID of the Team to search the tower storage of
+     * @return a reference to {@link TowerStorage}, or null if the TeamID is invalid
+     */
     public TowerStorage getMutableTowerStorage(TeamID tID) {
         return towerStorageMap.get(tID);
     }
 
+    /**
+     * Get the team of a player
+     * @param pb the player to find the {@link TeamID} of
+     * @return the {@link TeamID} of the player in input or null if the {@link PlayerBoard} matches no team in the game
+     */
     public TeamID getTeamID(PlayerBoard pb) {
         return playerTeamMap.get(pb);
     }

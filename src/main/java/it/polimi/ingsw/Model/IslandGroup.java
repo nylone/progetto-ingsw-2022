@@ -100,10 +100,15 @@ public class IslandGroup implements Serializable {
     }
 
     /**
-     * @return a non empty {@link SerializableOptional} containing the {@link TowerColour}, if present
+     * Get the colour of the towers stored on the islands.
+     * @return a non empty {@link SerializableOptional} containing the {@link TowerColour}, if present. Note: if at least an island doesn't match the {@link TowerColour} of the others, this method will return an empty
+     * {@link SerializableOptional}.
      */
     public SerializableOptional<TowerColour> getTowerColour() {
-        return this.getMutableIslands().get(0).getTowerColour();
+        List<Island> islands = this.getMutableIslands();
+        if (islands.stream().allMatch(i -> i.getTowerColour().equals(islands.get(0).getTowerColour()))) {
+            return islands.get(0).getTowerColour();
+        } else return SerializableOptional.empty();
     }
 
     /**
@@ -171,16 +176,15 @@ public class IslandGroup implements Serializable {
      * multiple {@link Tower}s may need to be swapped or added during the Group's lifespan, this method can be used for that
      *
      * @param ts the new {@link TowerStorage} where towers are coming from. the old towers (if any were present) will all be returned to its
-     *           rightful storage automatically
+     *           rightful storage automatically. If the new tower storage runs out of towers before swapping out all the towers from the group,
+     *           then some islands fill be left empty while others will be full. Note that the empty islands will keep staying in
+     *           the group, which is going to become un-join able.
      */
     public void swapTower(TowerStorage ts) {
-        if (ts.getTowerCount() >= this.islands.size()) {
-            for (Island i : this.islands) {
-                i.swapTower(ts.extractTower());
-            }
+        for (Island i : this.islands) {
+            i.swapTower(ts.extractTower());
         }
     }
-
     /*
     @Override
     public String toString() {

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import it.polimi.ingsw.Logger;
 import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TowerColour;
@@ -8,6 +10,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static it.polimi.ingsw.Constants.INPUT_NAME_TOWER;
 
 /**
  * Islands are containers of {@link PawnColour}s and {@link Tower}.The islands can be grouped through {@link IslandGroup}
@@ -68,10 +72,17 @@ public class Island implements Serializable {
      * a {@link Tower} may need to be swapped or added during the Island's lifespan, this method can be used for that
      *
      * @param t the new {@link Tower} to be put on the island. the old tower (if any was present) will be returned to its
-     *          rightful storage automatically
+     *          rightful storage automatically. The input can be null, this removes the tower from the island
      */
     public void swapTower(Tower t) {
-        if (this.tower != null) this.tower.linkBackToStorage();
+        if (this.tower != null) {
+            try {
+                this.tower.linkBackToStorage();
+            } catch (InvalidElementException e) {
+                Logger.severe("Tower could not be pushed back to its original Storage. Critical, unrecoverable error");
+                throw new RuntimeException(e);
+            }
+        }
         this.tower = t;
     }
 

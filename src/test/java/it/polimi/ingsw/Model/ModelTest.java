@@ -127,7 +127,7 @@ public class ModelTest {
         // arrange
         IslandGroup ig = gb_sim_2.getMutableIslandField().getMutableIslandGroupById(6);
         // placing one tower of second player on the selected island
-        ig.getMutableIslands().get(0).swapTower(gb_sim_2.getTeamMapper().getMutableTowerStorage(TeamID.fromInteger(1)).extractTower());
+        ig.swapTower(gb_sim_2.getTeamMapper().getMutableTowerStorage(TeamID.fromInteger(1)));
 
 
         PawnColour studentOnTheIslandAtBeginning;
