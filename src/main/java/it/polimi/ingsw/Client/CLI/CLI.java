@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.CLI;
 
 
-import it.polimi.ingsw.Client.HeartBeatHandler;
+import it.polimi.ingsw.Network.KeepAliveSocketWrapper;
 import it.polimi.ingsw.Network.SocketWrapper;
 
 import java.io.BufferedReader;
@@ -70,8 +70,7 @@ public class CLI implements Runnable {
                 return;
             }
             //create and initialize SocketWrapper
-            SocketWrapper socketWrapper = new SocketWrapper(connection);
-            HeartBeatHandler.handle(socketWrapper);
+            SocketWrapper socketWrapper = new KeepAliveSocketWrapper(connection, 5000, true);
             OpenCLI(socketWrapper, stdIn);
         } catch (Exception e) {
             e.printStackTrace();

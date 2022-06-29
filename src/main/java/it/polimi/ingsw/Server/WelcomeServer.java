@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Logger;
+import it.polimi.ingsw.Network.KeepAliveSocketWrapper;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 import it.polimi.ingsw.Server.Messages.ServerResponses.Welcome;
@@ -41,7 +42,7 @@ public class WelcomeServer implements Runnable {
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
-                SocketWrapper sw = new SocketWrapper(socket);
+                SocketWrapper sw = new KeepAliveSocketWrapper(socket, 5000, false);
                 Logger.info("New connection from: " + sw.getInetAddress());
                 sw.sendMessage(new Welcome(StatusCode.Success));
                 LobbyServer.spawn(sw);

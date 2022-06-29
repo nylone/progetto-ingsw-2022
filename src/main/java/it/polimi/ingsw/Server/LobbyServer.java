@@ -49,8 +49,6 @@ public class LobbyServer {
                                 " on address " +
                                 this.sw.getInetAddress());
                         return;
-                    } else if (event instanceof HeartBeatRequest) {
-                        sw.sendMessage(new HeartBeatResponse());
                     } else {
                         switch (this.state) {
                             case ACCEPT_PHASE -> acceptPhase(event);

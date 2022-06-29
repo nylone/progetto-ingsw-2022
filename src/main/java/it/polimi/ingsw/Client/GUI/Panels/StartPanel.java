@@ -2,7 +2,7 @@ package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.PopupMessage;
-import it.polimi.ingsw.Client.HeartBeatHandler;
+import it.polimi.ingsw.Network.KeepAliveSocketWrapper;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 import it.polimi.ingsw.Server.Messages.ServerResponses.Welcome;
@@ -51,14 +51,13 @@ public class StartPanel extends JPanel {
 
         connect.addActionListener(actionEvent -> new Thread(() -> {
             try {
-                SocketWrapper sw = new SocketWrapper(new Socket(
+                SocketWrapper sw = new KeepAliveSocketWrapper(new Socket(
                         address.getText().trim(),
-                        Integer.parseInt(port.getText().trim())));
+                        Integer.parseInt(port.getText().trim())), 5000, true);
                 if (sw.awaitMessage() instanceof Welcome welcome && welcome.getStatusCode() == StatusCode.Success) {
                     // spawn and change to next view
                     ctx.setSocketWrapper(sw);
                     ctx.getWindow().changeView(new UserCredentialsPanel(ctx));
-                    HeartBeatHandler.handle(sw);
                 } else {
                     new PopupMessage("Server did not welcome us", "Failure :(");
                 }

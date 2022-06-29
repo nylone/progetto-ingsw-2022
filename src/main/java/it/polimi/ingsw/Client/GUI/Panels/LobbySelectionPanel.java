@@ -7,7 +7,6 @@ import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.Events.Requests.ConnectLobbyRequest;
 import it.polimi.ingsw.Server.Messages.Events.Requests.CreateLobbyRequest;
 import it.polimi.ingsw.Server.Messages.Message;
-import it.polimi.ingsw.Server.Messages.ServerResponses.HeartBeatResponse;
 import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyRedirect;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.LobbyInfo;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
@@ -115,8 +114,6 @@ public class LobbySelectionPanel extends JTabbedPane {
                     do {
                         Message response = sw.awaitMessage();
                         switch (response) {
-                            case HeartBeatResponse ignored -> {
-                            }
                             case LobbyRedirect lobbyRedirect -> {
                                 if (lobbyRedirect.getStatusCode() == StatusCode.Success) {
                                     //Switch to a new LobbySelectionPanel if user has been accepted by Server
@@ -203,8 +200,6 @@ public class LobbySelectionPanel extends JTabbedPane {
                     do {
                         Message response = sw.awaitMessage();
                         switch (response) {
-                            case HeartBeatResponse ignored -> {
-                            }
                             case LobbyRedirect lobbyRedirect -> {
                                 if (lobbyRedirect.getStatusCode() == StatusCode.Success) {
                                     //Switch to a new LobbySelectionPanel if user has been accepted by Server
