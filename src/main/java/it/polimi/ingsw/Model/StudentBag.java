@@ -20,6 +20,7 @@ public class StudentBag implements Serializable {
 
     /**
      * Construct the bag
+     *
      * @param numOfStudentsPerColour the number of each color of students to put in the bag
      */
     public StudentBag(int numOfStudentsPerColour) {
@@ -36,6 +37,7 @@ public class StudentBag implements Serializable {
 
     /**
      * Check to see if the bag is empty
+     *
      * @return true if the bag is empty
      */
     public boolean isEmpty() {
@@ -44,6 +46,7 @@ public class StudentBag implements Serializable {
 
     /**
      * Extract multiple {@link PawnColour}s at once
+     *
      * @param extractions number of maximum extractions to carry out. The number of extracted students may be lower than the
      *                    number specified as input, if the bag empties out during the extraction
      * @return an Unmodifiable {@link List} containing the extracted {@link PawnColour}
@@ -63,6 +66,7 @@ public class StudentBag implements Serializable {
 
     /**
      * Extract a single {@link PawnColour} from the bag
+     *
      * @return the extracted student
      * @throws EmptyContainerException if the bag is empty
      */
@@ -74,6 +78,7 @@ public class StudentBag implements Serializable {
 
     /**
      * Check the remaining students in the bag
+     *
      * @return the size of the bag
      */
     public int getSize() {
@@ -82,6 +87,7 @@ public class StudentBag implements Serializable {
 
     /**
      * Put a student back in the bag and shuffle it in.
+     *
      * @param colour the {@link PawnColour} to add back to the bag
      */
     public void appendAndShuffle(PawnColour colour) {

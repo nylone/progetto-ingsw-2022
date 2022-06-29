@@ -15,6 +15,7 @@ public class HeartBeatHandler {
 
     /**
      * Given a socket, keep the connection active
+     *
      * @param socketWrapper the socket to keep alive
      */
     public static void handle(SocketWrapper socketWrapper) {

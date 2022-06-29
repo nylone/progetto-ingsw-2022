@@ -8,6 +8,7 @@ public class Logger {
 
     /**
      * If the logger is enabled, logs a message with level: info
+     *
      * @param message the message to log
      */
     public static void info(String message) {
@@ -16,6 +17,7 @@ public class Logger {
 
     /**
      * If the logger is enabled, logs a message with level: warning
+     *
      * @param message the message to log
      */
     public static void warning(String message) {
@@ -24,6 +26,7 @@ public class Logger {
 
     /**
      * If the logger is enabled, logs a message with level: severe
+     *
      * @param message the message to log
      */
     public static void severe(String message) {
@@ -32,6 +35,7 @@ public class Logger {
 
     /**
      * Enables or disables the logger
+     *
      * @param enabled if true, enables the logger. if false, disables it
      */
     public static void enable(boolean enabled) {

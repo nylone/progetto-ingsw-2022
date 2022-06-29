@@ -3,7 +3,6 @@ import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Logger;
 import it.polimi.ingsw.Server.WelcomeServer;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 
 /**
@@ -12,6 +11,7 @@ import java.net.InetSocketAddress;
 public class Main {
     /**
      * When fed the proper cli inputs, starts the appropriate elements of the project
+     *
      * @param args
      */
     public static void main(String... args) {

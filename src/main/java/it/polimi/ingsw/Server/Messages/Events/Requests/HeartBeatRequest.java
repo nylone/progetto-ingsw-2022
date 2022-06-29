@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Server.Messages.Events.Requests;
 
 import java.io.Serial;
-import java.util.UUID;
 
 public class HeartBeatRequest extends ClientRequest {
     @Serial

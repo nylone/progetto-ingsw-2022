@@ -81,7 +81,7 @@ public class Controller {
     /**
      * An execution request handler. Actions are passed in, validated and (if possible) executed. <br>
      * Warning: this request is not thread safe, that job is delegated to the caller to handle.
-     *
+     * <p>
      * Note: if this Controller was generated using the debug constructor, then references to the model, once modified, are
      * going to be kept unsafe, generally decreasing the security of the editing mechanism.
      *

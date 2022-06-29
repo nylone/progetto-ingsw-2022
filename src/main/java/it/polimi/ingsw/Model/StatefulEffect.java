@@ -4,7 +4,6 @@ import it.polimi.ingsw.Model.Enums.StateType;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,10 +16,11 @@ public abstract class StatefulEffect extends CharacterCard implements Serializab
 
     /**
      * Construct a stateful card object
-     * @param id the ID of the card
-     * @param cost the cost of the card
+     *
+     * @param id        the ID of the card
+     * @param cost      the cost of the card
      * @param stateType the {@link StateType} of the card
-     * @param context a reference to the Model, to apply the effect.
+     * @param context   a reference to the Model, to apply the effect.
      */
     public StatefulEffect(int id, int cost, StateType stateType, Model context) {
         super(id, cost, context);
@@ -29,12 +29,14 @@ public abstract class StatefulEffect extends CharacterCard implements Serializab
 
     /**
      * Get the internal state of the card. Use {@link #getStateType()} to know how to interpret it.
+     *
      * @return a {@link List} of the state objects
      */
     public abstract List<Object> getState();
 
     /**
      * Get the type of state this card uses.
+     *
      * @return a variant of {@link StateType}
      */
     public abstract StateType getStateType();

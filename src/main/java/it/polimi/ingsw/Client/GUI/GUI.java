@@ -2,8 +2,6 @@ package it.polimi.ingsw.Client.GUI;
 
 import it.polimi.ingsw.Client.GUI.Panels.StartPanel;
 
-import javax.swing.*;
-
 /**
  * Run game's gui version by creating a new {@link Context} and a new {@link Window}
  */

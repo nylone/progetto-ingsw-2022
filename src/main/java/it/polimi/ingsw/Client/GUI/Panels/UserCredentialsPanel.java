@@ -8,7 +8,6 @@ import it.polimi.ingsw.Server.Messages.Events.Requests.DeclarePlayerRequest;
 import it.polimi.ingsw.Server.Messages.Message;
 import it.polimi.ingsw.Server.Messages.ServerResponses.HeartBeatResponse;
 import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyAccept;
-import it.polimi.ingsw.Server.Messages.ServerResponses.Response;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import javax.swing.*;
@@ -66,7 +65,8 @@ public class UserCredentialsPanel extends JPanel {
                     do {
                         Message response = sw.awaitMessage();
                         switch (response) {
-                            case HeartBeatResponse ignored -> {}
+                            case HeartBeatResponse ignored -> {
+                            }
                             case LobbyAccept lobbyAccept -> {
                                 if (lobbyAccept.getStatusCode() == StatusCode.Success) {
                                     //Switch to a new LobbySelectionPanel if user has been accepted by Server

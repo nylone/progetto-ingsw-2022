@@ -30,12 +30,13 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Generates a board and initializes its structures
-     * @param id the ID of the player, used to reference the board through various classes.
+     *
+     * @param id           the ID of the player, used to reference the board through various classes.
      * @param numOfPlayers when creating a board, the number of players becomes important during initialization of various
      *                     internal structures
-     * @param nickname every player has a nickname and the board can store it. Nicknames are not guaranteed to be unique, so
-     *                 identifying a board through nicknames is highly insecure.
-     * @param studentBag used during the initialization of the board.
+     * @param nickname     every player has a nickname and the board can store it. Nicknames are not guaranteed to be unique, so
+     *                     identifying a board through nicknames is highly insecure.
+     * @param studentBag   used during the initialization of the board.
      */
     public PlayerBoard(int id, int numOfPlayers, String nickname, StudentBag studentBag) {
         this.nickname = nickname;
@@ -67,6 +68,7 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Get the {@link AssistantCard}s linked to the player
+     *
      * @return an Unmodifiable {@link List} of {@link AssistantCard} linked to the player
      */
     public List<AssistantCard> getMutableAssistantCards() {
@@ -75,6 +77,7 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Get the current coin balance of the player
+     *
      * @return an integer representing the amount of coins owned by the player
      */
     public int getCoinBalance() {
@@ -93,6 +96,7 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Get the mappings from {@link PawnColour} to number of students of that colour in the Dining room
+     *
      * @return an Unmodifiable {@link Map} from {@link PawnColour} to {@link Integer}
      */
     public Map<PawnColour, Integer> getDiningRoom() {
@@ -101,6 +105,7 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Get a list of the active slots usable in the student entrance
+     *
      * @return an Unmodifiable {@link List} representing each slot of the Entrance
      */
     public List<SerializableOptional<PawnColour>> getEntranceStudents() {
@@ -109,6 +114,7 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Get the ID of the player
+     *
      * @return the ID of the PlayerBoard
      */
     public int getId() {
@@ -117,6 +123,7 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Get the Nickname of the player
+     *
      * @return the Nickname of the PlayerBoard
      */
     public String getNickname() {
@@ -126,6 +133,7 @@ public class PlayerBoard implements Serializable {
     /**
      * Unsafely add a student to the Dining room. The addition is unsafe because it doesn't track gained coins or teachers.
      * This method is used by {@link Model#addStudentToDiningRoom(PawnColour, PlayerBoard)} which is the "safe" version.
+     *
      * @param colour the colour of the student to add to the dining room
      * @return true if a new coin is to be added to the player's balance
      * @throws FullContainerException if the dining room is full on the lane of colour before the addition
@@ -139,8 +147,29 @@ public class PlayerBoard implements Serializable {
     }
 
     /**
+     * Check to see if the dining room can accommodate more students on a lane
+     *
+     * @param student selects the lane of the dining room to inspect
+     * @return true if the dining room's lane is full, false otherwise
+     */
+    public boolean isDiningRoomFull(PawnColour student) {
+        return getDiningRoomCount(student) >= 10;
+    }
+
+    /**
+     * Get the amount of students in a lane of the dining room
+     *
+     * @param colour selects the lane of the dining room to inspect
+     * @return the count of students in the lane selected by colour
+     */
+    public int getDiningRoomCount(PawnColour colour) {
+        return diningRoom.get(colour);
+    }
+
+    /**
      * Unsafely remove a student from the Dining room. The removal is unsafe because it doesn't track teachers.
      * This method is used by {@link Model#removeStudentFromDiningRoom(PawnColour, PlayerBoard)} which is the "safe" version.
+     *
      * @param colour the colour of the student to remove the dining room
      * @throws EmptyContainerException if the dining room is empty on the lane of colour before the removal
      */
@@ -153,28 +182,11 @@ public class PlayerBoard implements Serializable {
     }
 
     /**
-     * Get the amount of students in a lane of the dining room
-     * @param colour selects the lane of the dining room to inspect
-     * @return the count of students in the lane selected by colour
-     */
-    public int getDiningRoomCount(PawnColour colour) {
-        return diningRoom.get(colour);
-    }
-
-    /**
-     * Check to see if the dining room can accommodate more students on a lane
-     * @param student selects the lane of the dining room to inspect
-     * @return true if the dining room's lane is full, false otherwise
-     */
-    public boolean isDiningRoomFull(PawnColour student) {
-        return getDiningRoomCount(student) >= 10;
-    }
-
-    /**
      * Add multiple students to slots in the entrance
+     *
      * @param students a {@link List} of {@link PawnColour} containing the students to add to the entrance
      * @throws FullContainerException if the entrance isn's capable of holding all the students, the students are not added and the
-     * exception is thrown
+     *                                exception is thrown
      */
     public void addStudentsToEntrance(List<PawnColour> students) throws FullContainerException {
         if (students.size() > this.getEntranceSpaceLeft()) {
@@ -196,6 +208,7 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Get the amount of free slots in the student entrance
+     *
      * @return the count of free slots in the entrance
      */
     public int getEntranceSpaceLeft() {
@@ -206,6 +219,7 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Get the size of the entrance (can change depending on the number of players)
+     *
      * @return the size of the entrance
      */
     public int getEntranceSize() {
@@ -214,9 +228,10 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Add a single student to a slot in the entrance
+     *
      * @param student a {@link PawnColour} representing the student to add to the entrance
      * @throws FullContainerException if the entrance isn's capable of the student, the student is not added and the
-     * exception is thrown
+     *                                exception is thrown
      */
     public void addStudentToEntrance(PawnColour student) throws FullContainerException {
         if (this.getEntranceSpaceLeft() == 0) {
@@ -233,6 +248,7 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Removes a single student from the entrance
+     *
      * @param pos the index of the slot from which to remove the student
      * @return the {@link PawnColour} of the removed student
      * @throws InvalidContainerIndexException if the index is out of bounds or the slot was empty before removal
@@ -248,6 +264,7 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Removes a single student from the entrance
+     *
      * @param colour the {@link PawnColour} of the student to remove from the entrance
      * @throws InvalidElementException if no students of the same colour could be found in the entrance
      */
@@ -270,6 +287,7 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Removes as many coins from the balance as the cost of the paid card.
+     *
      * @param card the {@link CharacterCard} to pay for
      * @throws ForbiddenOperationException if the balance cannot accommodate for the cost of the card
      */

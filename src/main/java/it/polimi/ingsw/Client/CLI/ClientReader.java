@@ -203,7 +203,8 @@ public class ClientReader implements Runnable {
             }
             case InvalidRequest ignored ->
                     System.out.println("Something gone wrong, your request has not been executed");
-            case HeartBeatResponse ignored -> {}
+            case HeartBeatResponse ignored -> {
+            }
             default -> System.out.println("Received an unexpected server's response:" + serverResponse.getClass());
         }
     }

@@ -21,6 +21,7 @@ public class TeamMapper implements Serializable {
     /**
      * Creates a new mapper. If the players are not 4, every player gets put into its own special team. If 4 players
      * are inputted, the first pair of players will be put in the first team, and the second pair into the second team.
+     *
      * @param players a {@link List} of {@link PlayerBoard}s to put into teams.
      */
     public TeamMapper(List<PlayerBoard> players) {
@@ -38,6 +39,7 @@ public class TeamMapper implements Serializable {
 
     /**
      * Get a team's players
+     *
      * @param tID the ID of the Team to search players of
      * @return an Unmutable {@link List} containing references to the team's {@link PlayerBoard}s
      */
@@ -50,6 +52,7 @@ public class TeamMapper implements Serializable {
 
     /**
      * Get a team's tower storage
+     *
      * @param pb the player to find the {@link TowerStorage} of
      * @return a reference to {@link TowerStorage}, or null if the {@link PlayerBoard} matches no team in the game
      */
@@ -59,6 +62,7 @@ public class TeamMapper implements Serializable {
 
     /**
      * Get a team's tower storage
+     *
      * @param tID the ID of the Team to search the tower storage of
      * @return a reference to {@link TowerStorage}, or null if the TeamID is invalid
      */
@@ -68,6 +72,7 @@ public class TeamMapper implements Serializable {
 
     /**
      * Get the team of a player
+     *
      * @param pb the player to find the {@link TeamID} of
      * @return the {@link TeamID} of the player in input or null if the {@link PlayerBoard} matches no team in the game
      */

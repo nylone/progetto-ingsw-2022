@@ -136,7 +136,8 @@ public class GameStartingPanel extends JPanel {
                 try {
                     Message input = sw.awaitMessage();
                     switch (input) {
-                        case HeartBeatResponse ignored -> {}
+                        case HeartBeatResponse ignored -> {
+                        }
                         case LobbyClosed ignored -> {
                             new PopupMessage("Lobby was closed by the server.\n" +
                                     "Client is disconnecting from the server.", "Lobby closed");

@@ -14,6 +14,7 @@ public class NoEntryTile implements Serializable {
 
     /**
      * Generate a card and sets its "home"
+     *
      * @param card {@link Card05} is the home of every No entry tile.
      */
     public NoEntryTile(Card05 card) {

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Misc.SerializableOptional;
-import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Server.Lobby;
 import it.polimi.ingsw.Server.Messages.Events.Internal.GameOverEvent;
 import it.polimi.ingsw.Server.Messages.Events.Internal.ModelUpdateEvent;
@@ -13,13 +12,14 @@ import java.util.Objects;
  * whenever a meaningful change to the underlying data is carried out.
  */
 public class ModelWrapper {
-    private Model model;
     private final SerializableOptional<Lobby> toNotify;
+    private Model model;
 
     /**
      * Wraps a {@link Model} along with a {@link SerializableOptional}<{@link Lobby}> object to allow for easy notification
      * to the view (ie the lobby component) of any and all changes to the model that are carried through this object's method:
      * {@link #editModel(ModelModifier, boolean)}
+     *
      * @param model a non null reference to the Model
      * @param lobby a non null optional value (can obviously be empty, but not null)
      */
@@ -48,6 +48,7 @@ public class ModelWrapper {
 
     /**
      * When called, returns a copy of the Model object
+     *
      * @param sanitize if set to true, tells the method to remove the {@link StudentBag} reference to prevent
      *                 peeking at the contents of the bag
      * @return an optionally sanitized clone of the wrapped {@link Model} object
@@ -63,7 +64,8 @@ public class ModelWrapper {
     /**
      * When called, allows a {@link ModelModifier} type of function to carry out changes to the {@link Model}, then notifies
      * the lobby of such changes
-     * @param modelModifier a function or method that can be linked to the {@link ModelModifier} interface
+     *
+     * @param modelModifier       a function or method that can be linked to the {@link ModelModifier} interface
      * @param keepUnsafeReference if set to true, the model reference is kept unaltered after a successful edit action, allowing for
      *                            debugging introspection of the model. If unsure, set it to false for best security.
      * @throws Exception the modelModifier can optionally throw Exceptions, which will be escalated to the caller.
@@ -73,7 +75,7 @@ public class ModelWrapper {
         if (keepUnsafeReference) {
             toModify = this.model;
         } else {
-            toModify= modelCopy(false);
+            toModify = modelCopy(false);
         }
         modelModifier.modifyModel(toModify);
         this.model = toModify;
@@ -86,6 +88,7 @@ public class ModelWrapper {
     public interface ModelModifier {
         /**
          * The function responsible for changes to the {@link Model}
+         *
          * @param model a reference to the {@link Model} object. In order to grant safe access to the model, the reference ceases to hold
          *              meaning once this function terminates
          * @throws Exception the modelModifier can optionally throw Exceptions, which will be escalated to the caller.

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Model.Enums.StateType;
-
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -14,8 +12,9 @@ public abstract class StatelessEffect extends CharacterCard implements Serializa
 
     /**
      * Construct a stateless card object
-     * @param id the ID of the card
-     * @param cost the cost of the card
+     *
+     * @param id      the ID of the card
+     * @param cost    the cost of the card
      * @param context a reference to the Model, to apply the effect.
      */
     public StatelessEffect(int id, int cost, Model context) {

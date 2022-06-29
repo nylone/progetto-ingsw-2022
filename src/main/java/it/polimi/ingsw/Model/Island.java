@@ -11,8 +11,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.polimi.ingsw.Constants.INPUT_NAME_TOWER;
-
 /**
  * Islands are containers of {@link PawnColour}s and {@link Tower}.The islands can be grouped through {@link IslandGroup}
  */

@@ -7,9 +7,6 @@ import it.polimi.ingsw.Server.Messages.Events.Requests.ClientRequest;
 import it.polimi.ingsw.Server.Messages.Events.Requests.HeartBeatRequest;
 
 import java.io.IOException;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -17,6 +14,7 @@ public class SocketListener implements Runnable {
     private final SocketWrapper socket;
     private final ClientEventHandler queue;
     private Timer heartBeatTimer;
+
     private SocketListener(SocketWrapper socket, ClientEventHandler queue) {
         this.socket = socket;
         this.queue = queue;

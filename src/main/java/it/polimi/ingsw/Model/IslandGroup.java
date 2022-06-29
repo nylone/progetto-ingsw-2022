@@ -101,6 +101,7 @@ public class IslandGroup implements Serializable {
 
     /**
      * Get the colour of the towers stored on the islands.
+     *
      * @return a non empty {@link SerializableOptional} containing the {@link TowerColour}, if present. Note: if at least an island doesn't match the {@link TowerColour} of the others, this method will return an empty
      * {@link SerializableOptional}.
      */

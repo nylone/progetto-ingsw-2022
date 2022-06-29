@@ -1,10 +1,8 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Input.DuplicateElementException;
-import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
-import it.polimi.ingsw.Exceptions.Operation.OperationException;
 import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GamePhase;
@@ -31,6 +29,7 @@ public class TurnOrder implements Serializable {
 
     /**
      * Creates the turn order object and assigns a random starting turn formation for players.
+     *
      * @param playerBoards the players in the game
      */
     public TurnOrder(List<PlayerBoard> playerBoards) {
@@ -55,6 +54,7 @@ public class TurnOrder implements Serializable {
 
     /**
      * Get the current pecking order for the turn
+     *
      * @return an Unmodifiable {@link List} ordered from index 0 being the first player, onwards
      */
     public List<PlayerBoard> getCurrentTurnOrder() {
@@ -63,6 +63,7 @@ public class TurnOrder implements Serializable {
 
     /**
      * Get the card a user played to define the pecking order
+     *
      * @param pb the player to filter the played {@link AssistantCard}s for
      * @return a {@link SerializableOptional} containing the selected {@link AssistantCard}, if one has been played by the user this round.
      */
@@ -72,12 +73,13 @@ public class TurnOrder implements Serializable {
 
     /**
      * Select the {@link AssistantCard} used by the player this round
+     *
      * @param pb the player to set the card for
      * @param ac the card selected by the player
      * @throws ForbiddenOperationException if the card was already used, if the {@link GamePhase} is not in {@link GamePhase#SETUP}
-     * or if it's not the player's turn yet
-     * @throws InvalidElementException if the card or the player were null
-     * @throws DuplicateElementException if the player could have played a different, not yet played by him or anyone else (during this turn) card.
+     *                                     or if it's not the player's turn yet
+     * @throws InvalidElementException     if the card or the player were null
+     * @throws DuplicateElementException   if the player could have played a different, not yet played by him or anyone else (during this turn) card.
      */
     public void setSelectedCard(PlayerBoard pb, AssistantCard ac) throws ForbiddenOperationException, InvalidElementException, DuplicateElementException {
         if (pb == null) { // not null contract
@@ -103,6 +105,7 @@ public class TurnOrder implements Serializable {
 
     /**
      * Get the phase of the current round
+     *
      * @return the {@link GamePhase} of the current round
      */
     public GamePhase getGamePhase() {
@@ -111,6 +114,7 @@ public class TurnOrder implements Serializable {
 
     /**
      * Finds if it is a player's own turn yet
+     *
      * @param pb the player to filter for
      * @return true if it is the player's turn, false otherwise
      */
@@ -120,6 +124,7 @@ public class TurnOrder implements Serializable {
 
     /**
      * Check if a card has already been played this round
+     *
      * @param ac the card to filter for
      * @return true if the selected card was already submitted as a selection in {@link #setSelectedCard(PlayerBoard, AssistantCard)}
      * during this round
@@ -131,6 +136,7 @@ public class TurnOrder implements Serializable {
 
     /**
      * Check to see if the player can still play a card that is unique this turn
+     *
      * @param pb the player to filter cards for
      * @return true if the player can play at least one not yet selected card this round, false otherwise
      */
@@ -140,6 +146,7 @@ public class TurnOrder implements Serializable {
 
     /**
      * Get a reference to the current player
+     *
      * @return a reference to the {@link PlayerBoard} of the current player
      */
     public PlayerBoard getMutableCurrentPlayer() {
@@ -148,6 +155,7 @@ public class TurnOrder implements Serializable {
 
     /**
      * Get all of the assistant cards played this round
+     *
      * @return an Unmodifiable {@link List} of the {@link AssistantCard}s played this round as of yet
      */
     public List<AssistantCard> getSelectedCards() {

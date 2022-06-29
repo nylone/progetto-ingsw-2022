@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Model;
 
 
-import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Input.DuplicateElementException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Model.Enums.TowerColour;
@@ -24,6 +23,7 @@ public class TowerStorage implements Serializable {
 
     /**
      * Creates the storage and fills it up with towers
+     *
      * @param colour the colour of the towers in storage
      * @param amount how many towers will be added to the storage
      */
@@ -37,6 +37,7 @@ public class TowerStorage implements Serializable {
 
     /**
      * Get the colour of the stored {@link Tower}s
+     *
      * @return the {@link TowerColour} this storage handles
      */
     public TowerColour getColour() {
@@ -44,7 +45,18 @@ public class TowerStorage implements Serializable {
     }
 
     /**
+     * Extract a tower from storage.
+     *
+     * @return the extracted {@link Tower} or null if the storage is empty
+     */
+    public Tower extractTower() {
+        if (getTowerCount() == 0) return null;
+        return this.storage.pop();
+    }
+
+    /**
      * Get the amount of towers left in storage
+     *
      * @return the amount of {@link Tower}s left in storage
      */
     public int getTowerCount() {
@@ -52,20 +64,12 @@ public class TowerStorage implements Serializable {
     }
 
     /**
-     * Extract a tower from storage.
-     * @return the extracted {@link Tower} or null if the storage is empty
-     */
-    public Tower extractTower() {
-        if (getTowerCount() == 0) return null ;
-        return this.storage.pop();
-    }
-
-    /**
      * Put a {@link Tower} into storage
+     *
      * @param t the Tower to add into storage
      * @throws DuplicateElementException if the same {@link Tower} was found already present in storage
-     * @throws InvalidElementException {@link Tower} if the {@link TowerColour} of the Tower is not the same as the {@link TowerColour} of the
-     * storage
+     * @throws InvalidElementException   {@link Tower} if the {@link TowerColour} of the Tower is not the same as the {@link TowerColour} of the
+     *                                   storage
      */
     public void pushTower(Tower t) throws DuplicateElementException, InvalidElementException {
         boolean checkIfPresent = storage.stream()

@@ -39,10 +39,6 @@ public class SocketWrapper {
         }
     }
 
-    public boolean isClosed() {
-        return sock.isClosed();
-    }
-
     public void close() {
         if (!this.sock.isClosed()) try {
             this.input.close();
@@ -52,6 +48,10 @@ public class SocketWrapper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isClosed() {
+        return sock.isClosed();
     }
 
     public synchronized void sendMessage(Message message) throws IOException {
