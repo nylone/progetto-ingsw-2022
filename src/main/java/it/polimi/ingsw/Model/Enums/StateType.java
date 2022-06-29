@@ -1,8 +1,14 @@
 package it.polimi.ingsw.Model.Enums;
 
+import it.polimi.ingsw.Model.StatefulEffect;
+
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * {@link it.polimi.ingsw.Model.StatefulEffect} cards contain an internal state, this Enumeration allows for simple identification
+ * of the internal state through {@link StatefulEffect#getStateType()}
+ */
 public enum StateType implements Serializable {
     PAWNCOLOUR,
     NOENTRY;

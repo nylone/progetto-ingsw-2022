@@ -3,6 +3,9 @@ package it.polimi.ingsw.Model.Enums;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * Represent the Phase of a turn. A turn can be in the {@link #SETUP} phase or in the {@link #ACTION} phase
+ */
 public enum GamePhase implements Serializable {
     SETUP, ACTION;
     @Serial
