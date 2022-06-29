@@ -9,8 +9,6 @@ import it.polimi.ingsw.Model.Enums.StateType;
 import java.io.Serial;
 import java.util.ArrayList;
 
-import static it.polimi.ingsw.Constants.*;
-
 /**
  * In Setup, put the 4 No Entry tiles on this card.
  * EFFECT: Place a No Entrytile on an Island of your choice.
@@ -60,18 +58,18 @@ public class Card05 extends StatefulEffect {
      */
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetIsland().isEmpty()) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not set
+            throw new InvalidElementException("Target Island"); // target ti not set
         }
         Island ti = input.getTargetIsland().get();
         if (ti.getId() < 0 || ti.getId() >= 12) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti out of bounds for id
+            throw new InvalidElementException("Target Island"); // target ti out of bounds for id
         }
         if (!this.context.getMutableIslandField().getMutableIslands().contains(ti)) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not in field
+            throw new InvalidElementException("Target Island"); // target ti not in field
         } // note: if island is in field then the island must also be in a group, due to how islandfield works.
         if (tiles.size() == 0) {
-            throw new GenericInputValidationException(CONTAINER_NAME_CARD05,
-                    CONTAINER_NAME_CARD05 + "has finished all its NoEntryTile(s)");
+            throw new GenericInputValidationException("Card05",
+                    "has finished all its NoEntryTile(s)");
         }
         //all tests passed
         return true;
@@ -89,7 +87,7 @@ public class Card05 extends StatefulEffect {
                 return;
             }
         }
-        throw new FailedOperationException(OPERATION_NAME_CARD05_APPLY_EFFECT, "Target Island was not contained in any IslandGroup");
+        throw new FailedOperationException("Card05.unsafeApplyEffect", "Target Island was not contained in any IslandGroup");
     }
 
     /**

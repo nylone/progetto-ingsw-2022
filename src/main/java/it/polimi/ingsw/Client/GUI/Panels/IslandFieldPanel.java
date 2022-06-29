@@ -5,7 +5,7 @@ import it.polimi.ingsw.Client.GUI.CircleLayout;
 import it.polimi.ingsw.Client.GUI.Components.NoEntryTileComponent;
 import it.polimi.ingsw.Client.GUI.Components.StudentButton;
 import it.polimi.ingsw.Client.GUI.Components.TowerComponent;
-import it.polimi.ingsw.Client.GUI.GUIReader;
+import it.polimi.ingsw.Client.GUI.Listeners.GUISocketListener;
 import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
 import it.polimi.ingsw.Controller.Actions.MoveStudent;
 import it.polimi.ingsw.Controller.Actions.PlayCharacterCard;
@@ -38,7 +38,7 @@ public class IslandFieldPanel extends JPanel {
     /**
      * Contains GuiReader's information necessary to record user's requests during his turn
      */
-    private final GUIReader guiReader;
+    private final GUISocketListener guiSocketListener;
     /**
      * Optional Integer containing student's index inside player's PlayerBoard's entrance (necessary when sending MoveStudentAction to Server)
      */
@@ -57,19 +57,19 @@ public class IslandFieldPanel extends JPanel {
     private ActionType actionType = ActionType.NONE;
 
 
-    public IslandFieldPanel(Model model, SocketWrapper sw, GUIReader guiReader) {
+    public IslandFieldPanel(Model model, SocketWrapper sw, GUISocketListener guiSocketListener) {
         //set IslandFieldPanel's actionType basing on previous actions performed by current Player
-        if (guiReader.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
+        if (guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
             this.setActionType(ActionType.NONE, SerializableOptional.empty());
-        } else if ((model.getMutablePlayerBoards().size() != 3 && guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 3) ||
-                (model.getMutablePlayerBoards().size() == 3 && guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 4)) {
+        } else if ((model.getMutablePlayerBoards().size() != 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) == 3) ||
+                (model.getMutablePlayerBoards().size() == 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) == 4)) {
             this.setActionType(ActionType.MOVEMOTHERNATURE, SerializableOptional.empty());
         }
         this.setOpaque(true);
         this.setBackground(new Color(105, 186, 233));
         this.setLayout(new CircleLayout());
         this.model = model;
-        this.guiReader = guiReader;
+        this.guiSocketListener = guiSocketListener;
         ArrayList<IslandGroup> islandGroups = new ArrayList<>(this.model.getMutableIslandField().getMutableGroups());
         //list containing islands images
         ArrayList<ImageIcon> islandIcons = new ArrayList<>(Arrays.asList(Island1, Island2, Island3));
@@ -116,7 +116,7 @@ public class IslandFieldPanel extends JPanel {
                         PlayerActionRequest playerActionRequest = new PlayerActionRequest(playCharacterCard);
                         //reset islandFieldPanel's actionType to NONE
                         this.setActionType(ActionType.NONE, SerializableOptional.empty());
-                        this.guiReader.savePlayerActionRequest(playCharacterCard);
+                        this.guiSocketListener.savePlayerActionRequest(playCharacterCard);
                         try {
                             //send playCharacterCard request to Server
                             sw.sendMessage(playerActionRequest);
@@ -129,7 +129,7 @@ public class IslandFieldPanel extends JPanel {
                         MoveStudent moveStudent = new MoveStudent(this.model.getMutableTurnOrder().getMutableCurrentPlayer().getId(), entrancePositionToMove.get(), MoveDestination.toIsland(islandGroups.get(finalI).getId()));
                         PlayerActionRequest playerAction = new PlayerActionRequest(moveStudent);
                         //save moveStudentAction request inside guiReader
-                        this.guiReader.savePlayerActionRequest(moveStudent);
+                        this.guiSocketListener.savePlayerActionRequest(moveStudent);
                         try {
                             this.setActionType(ActionType.NONE, SerializableOptional.empty());
                             sw.sendMessage(playerAction);
@@ -142,7 +142,7 @@ public class IslandFieldPanel extends JPanel {
                         MoveMotherNature moveMotherNature = new MoveMotherNature(this.model.getMutableTurnOrder().getMutableCurrentPlayer().getId(), getMotherNatureSteps(islandGroups, islandGroups.get(finalI)));
                         PlayerActionRequest playerAction = new PlayerActionRequest(moveMotherNature);
                         //save moveStudentAction request inside guiReader
-                        this.guiReader.savePlayerActionRequest(moveMotherNature);
+                        this.guiSocketListener.savePlayerActionRequest(moveMotherNature);
                         try {
                             sw.sendMessage(playerAction);
                         } catch (IOException ex) {

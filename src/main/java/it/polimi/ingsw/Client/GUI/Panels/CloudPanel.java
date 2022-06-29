@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.Components.CloudComponent;
-import it.polimi.ingsw.Client.GUI.GUIReader;
+import it.polimi.ingsw.Client.GUI.Listeners.GUISocketListener;
 import it.polimi.ingsw.Controller.Actions.ChooseCloudTile;
 import it.polimi.ingsw.Controller.Actions.EndTurnOfActionPhase;
 import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
@@ -27,18 +27,18 @@ public class CloudPanel extends JPanel {
     /**
      * Contains GuiReader's information necessary to record user's requests during his turn
      */
-    private final GUIReader guiReader;
+    private final GUISocketListener guiSocketListener;
 
     /**
      * Create a new JPanel and draw all clouds (and their students)
      *
      * @param clouds        clouds from model that needs to be drawn
      * @param currentPlayer current Player's playerBoard
-     * @param guiReader     guiReader necessary for checking and saving actions requested by user
+     * @param guiSocketListener     guiReader necessary for checking and saving actions requested by user
      * @param sw            socketWrapper to send messages to Server
      */
-    public CloudPanel(List<Cloud> clouds, PlayerBoard currentPlayer, GUIReader guiReader, SocketWrapper sw) {
-        this.guiReader = guiReader;
+    public CloudPanel(List<Cloud> clouds, PlayerBoard currentPlayer, GUISocketListener guiSocketListener, SocketWrapper sw) {
+        this.guiSocketListener = guiSocketListener;
         //create the label that contains all others components
         JLabel backGroundLabel = new JLabel(sky);
         backGroundLabel.setLayout(null);
@@ -52,15 +52,15 @@ public class CloudPanel extends JPanel {
         endTurnButton.setForeground(Color.BLACK);
         endTurnButton.setFocusPainted(false);
         //set visible only whether the player has played a chooseCloudTile action
-        endTurnButton.setVisible(guiReader.getSuccessfulRequestsByType(ChooseCloudTile.class) == 1);
+        endTurnButton.setVisible(guiSocketListener.getSuccessfulRequestsByType(ChooseCloudTile.class) == 1);
         //add on-click action listener to endTurnButton
         endTurnButton.addActionListener(e -> {
-            if (guiReader.getSuccessfulRequestsByType(ChooseCloudTile.class) == 1) {
+            if (guiSocketListener.getSuccessfulRequestsByType(ChooseCloudTile.class) == 1) {
                 //create endTurn action and its playerActionRequest
                 EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(currentPlayer.getId());
                 PlayerActionRequest playerActionRequest = new PlayerActionRequest(endTurnOfActionPhase);
                 //save action inside guiReader
-                guiReader.savePlayerActionRequest(endTurnOfActionPhase);
+                guiSocketListener.savePlayerActionRequest(endTurnOfActionPhase);
                 try {
                     sw.sendMessage(playerActionRequest);
                 } catch (IOException ex) {
@@ -75,12 +75,12 @@ public class CloudPanel extends JPanel {
             int finalI = i;
             //add on-click action listener to cloudComponent
             cloudButtons.get(cloudButtons.size() - 1).addActionListener(e -> {
-                if (guiReader.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
+                if (guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
                     //create chooseCloudTile action and its playerActionRequest
                     ChooseCloudTile chooseCloudTile = new ChooseCloudTile(currentPlayer.getId(), finalI);
                     PlayerActionRequest playerActionRequest = new PlayerActionRequest(chooseCloudTile);
                     //save action inside guiReader
-                    this.guiReader.savePlayerActionRequest(chooseCloudTile);
+                    this.guiSocketListener.savePlayerActionRequest(chooseCloudTile);
                     try {
                         sw.sendMessage(playerActionRequest);
                     } catch (IOException ex) {

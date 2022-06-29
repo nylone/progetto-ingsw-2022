@@ -14,7 +14,6 @@ import it.polimi.ingsw.Model.TurnOrder;
 import java.io.Serial;
 import java.util.List;
 
-import static it.polimi.ingsw.Constants.INPUT_NAME_ASSISTANT_CARD;
 
 /**
  * This {@link PlayerAction} allows the caller to select the desired assistant card to be played this round. This action
@@ -60,17 +59,17 @@ public class PlayAssistantCard extends PlayerAction {
         PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         TurnOrder turnOrder = ctx.getMutableTurnOrder();
         if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.SETUP) {
-            return SerializableOptional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " may only be used during the setup phase"));
+            return SerializableOptional.of(new GenericInputValidationException("Assitant Card", "may only be used during the setup phase"));
         }
         if (!(this.selectedAssistant >= 0 && this.selectedAssistant <= currentPlayer.getMutableAssistantCards().size() - 1)) {
-            return SerializableOptional.of(new InvalidElementException(INPUT_NAME_ASSISTANT_CARD));
+            return SerializableOptional.of(new InvalidElementException("Assitant Card"));
         }
         AssistantCard selectedCard = currentPlayer.getMutableAssistantCards().get(selectedAssistant);
         if (selectedCard.getUsed()) {
-            return SerializableOptional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " can only be used once"));
+            return SerializableOptional.of(new GenericInputValidationException("Assitant Card", "can only be used once"));
         }
         if (ctx.getMutableTurnOrder().isAlreadyInSelection(selectedCard) && turnOrder.canPlayUniqueCard(currentPlayer)) {
-            return SerializableOptional.of(new GenericInputValidationException(INPUT_NAME_ASSISTANT_CARD, INPUT_NAME_ASSISTANT_CARD + " has already been selected by another player"));
+            return SerializableOptional.of(new GenericInputValidationException("Assitant Card", "has already been selected by another player"));
         }
         return SerializableOptional.empty();
     }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Client.GUI;
+package it.polimi.ingsw.Client.GUI.Listeners;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;

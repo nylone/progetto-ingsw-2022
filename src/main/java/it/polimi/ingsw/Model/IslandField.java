@@ -11,9 +11,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.polimi.ingsw.Constants.CONTAINER_NAME_ISLANDFIELD_ISLANDGROUPS;
-import static it.polimi.ingsw.Constants.CONTAINER_NAME_ISLANDFIELD_ISLANDS;
-
 /**
  * All {@link IslandGroup}s in the game need to be contained in a circular structure. This class does just that - along
  * joining the groups and tracking Mother Nature's position
@@ -85,7 +82,7 @@ public class IslandField implements Serializable {
         return groups.stream()
                 .filter(g -> g.getId() == id)
                 .findAny()
-                .orElseThrow(() -> new InvalidContainerIndexException(CONTAINER_NAME_ISLANDFIELD_ISLANDGROUPS));
+                .orElseThrow(() -> new InvalidContainerIndexException("Island Groups"));
     }
 
     /**
@@ -98,7 +95,7 @@ public class IslandField implements Serializable {
         return islands.stream()
                 .filter(i -> i.getId() == id)
                 .findAny()
-                .orElseThrow(() -> new InvalidContainerIndexException(CONTAINER_NAME_ISLANDFIELD_ISLANDS));
+                .orElseThrow(() -> new InvalidContainerIndexException("Islands"));
     }
 
     /**

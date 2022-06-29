@@ -1,10 +1,10 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.ActionType;
-import it.polimi.ingsw.Client.GUI.CheckBoxListener;
+import it.polimi.ingsw.Client.GUI.Listeners.CheckBoxListener;
 import it.polimi.ingsw.Client.GUI.Components.NoEntryTileComponent;
 import it.polimi.ingsw.Client.GUI.Components.StudentButton;
-import it.polimi.ingsw.Client.GUI.GUIReader;
+import it.polimi.ingsw.Client.GUI.Listeners.GUISocketListener;
 import it.polimi.ingsw.Controller.Actions.PlayCharacterCard;
 import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.*;
@@ -29,7 +29,7 @@ import static it.polimi.ingsw.Client.GUI.IconLoader.*;
  */
 public class CharacterCardsPanel extends JPanel {
 
-    public CharacterCardsPanel(Model model, SocketWrapper socketWrapper, GUIReader guiReader) {
+    public CharacterCardsPanel(Model model, SocketWrapper socketWrapper, GUISocketListener guiSocketListener) {
         UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 14));
         //List containing game's characterCards
         ArrayList<CharacterCard> characterCards = new ArrayList<>(model.getCharacterCards());
@@ -282,7 +282,7 @@ public class CharacterCardsPanel extends JPanel {
                     }
                 }
                 //save action inside guiReader then send the request to Server
-                guiReader.savePlayerActionRequest(playCharacterCard);
+                guiSocketListener.savePlayerActionRequest(playCharacterCard);
                 try {
                     socketWrapper.sendMessage(playerActionRequest);
                 } catch (IOException ex) {

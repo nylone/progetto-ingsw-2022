@@ -13,8 +13,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-import static it.polimi.ingsw.Constants.*;
-
 /**
  * This class represents the Player's part of the board
  */
@@ -140,7 +138,7 @@ public class PlayerBoard implements Serializable {
      */
     protected boolean unsafeAddStudentToDiningRoom(PawnColour colour) throws FullContainerException {
         if (this.isDiningRoomFull(colour)) {
-            throw new FullContainerException(CONTAINER_NAME_DININGROOM);
+            throw new FullContainerException("Dining Room");
         }
         this.diningRoom.merge(colour, 1, Integer::sum);
         return this.diningRoom.get(colour) % 3 == 0; // returns true when a coin should be added
@@ -175,7 +173,7 @@ public class PlayerBoard implements Serializable {
      */
     public void unsafeRemoveStudentFromDiningRoom(PawnColour colour) throws EmptyContainerException {
         if (this.getDiningRoomCount(colour) == 0) {
-            throw new EmptyContainerException(CONTAINER_NAME_DININGROOM);
+            throw new EmptyContainerException("Dining Room");
         } else {
             this.diningRoom.merge(colour, -1, Integer::sum);
         }
@@ -191,7 +189,7 @@ public class PlayerBoard implements Serializable {
     public void addStudentsToEntrance(List<PawnColour> students) throws FullContainerException {
         if (students.size() > this.getEntranceSpaceLeft()) {
             // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
-            throw new FullContainerException(CONTAINER_NAME_ENTRANCE);
+            throw new FullContainerException("Entrance");
         }
         int cont = 0;
         for (int i = 0; i < this.getEntranceSize(); i++) {
@@ -236,7 +234,7 @@ public class PlayerBoard implements Serializable {
     public void addStudentToEntrance(PawnColour student) throws FullContainerException {
         if (this.getEntranceSpaceLeft() == 0) {
             // 2 & 4 players -> 7 students placed on entrance, 3 players -> 9 students placed on entrance
-            throw new FullContainerException(CONTAINER_NAME_ENTRANCE);
+            throw new FullContainerException("Entrance");
         }
         for (int i = 0; i < this.getEntranceSize(); i++) {
             if (this.entrance.get(i).isEmpty()) {
@@ -255,7 +253,7 @@ public class PlayerBoard implements Serializable {
      */
     public PawnColour removeStudentFromEntrance(int pos) throws InvalidContainerIndexException {
         if (pos < 0 || pos >= this.getEntranceSize() || this.entrance.get(pos).isEmpty()) {
-            throw new InvalidContainerIndexException(CONTAINER_NAME_ENTRANCE);
+            throw new InvalidContainerIndexException("Entrance");
         }
         PawnColour student = this.entrance.get(pos).get();
         this.entrance.set(pos, SerializableOptional.empty());
@@ -275,7 +273,7 @@ public class PlayerBoard implements Serializable {
                 return;
             }
         }
-        throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
+        throw new InvalidElementException("Target Pawn Colour");
     }
 
     /**
@@ -295,7 +293,7 @@ public class PlayerBoard implements Serializable {
         if (this.coinBalance >= card.getCost()) {
             this.coinBalance -= card.getCost();
         } else {
-            throw new ForbiddenOperationException(OPERATION_NAME_PAY_CHARACTER_EFFECT);
+            throw new ForbiddenOperationException("payCharacterEffect");
         }
     }
 

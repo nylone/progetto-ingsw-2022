@@ -11,7 +11,6 @@ import it.polimi.ingsw.Model.PlayerBoard;
 import java.io.Serial;
 import java.util.List;
 
-import static it.polimi.ingsw.Constants.*;
 import static it.polimi.ingsw.Misc.Utils.countSimilarClassOccurrences;
 
 /**
@@ -63,19 +62,19 @@ public class ChooseCloudTile extends PlayerAction {
             return SerializableOptional.of(new GenericInputValidationException("History", "This action can only be executed after a MoveMotherNature action or PlayCharacterCard action"));
         }
         if (!(this.selectedTile >= 0 && selectedTile <= ctx.getClouds().size() - 1)) {
-            return SerializableOptional.of(new InvalidElementException(INPUT_NAME_CLOUD));
+            return SerializableOptional.of(new InvalidElementException("Cloud"));
         }
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         Cloud selectedCloud = ctx.getClouds().get(selectedTile);
         if (!(caller.getEntranceSpaceLeft() >= selectedCloud.getContents().size())) {
-            return SerializableOptional.of(new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
-                    CONTAINER_NAME_ENTRANCE + " can't contain " + selectedCloud.getContents().size()
-                            + " element's without overflowing."));
+            return SerializableOptional.of(new GenericInputValidationException("Entrance",
+                    "can't contain " + selectedCloud.getContents().size()
+                            + " elements without overflowing."));
         }
         if (ctx.getClouds().stream().anyMatch(cloud -> cloud.getContents().size() != 0)) {
             if (selectedCloud.getContents().size() == 0) {
-                return SerializableOptional.of(new GenericInputValidationException(CONTAINER_NAME_CLOUD,
-                        CONTAINER_NAME_CLOUD + " has already been emptied"));
+                return SerializableOptional.of(new GenericInputValidationException("Cloud",
+                        "has already been emptied"));
             }
         }
         return SerializableOptional.empty();

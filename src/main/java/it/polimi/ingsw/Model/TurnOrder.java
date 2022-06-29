@@ -12,8 +12,6 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.Constants.OPERATION_NAME_PLAY_ASSISTANT;
-
 /**
  * Represents the order in which players will play a round, and organizes the next round based on played {@link AssistantCard}s
  */
@@ -86,13 +84,13 @@ public class TurnOrder implements Serializable {
             throw new InvalidElementException("PlayerBoard pb");
         }
         if (getGamePhase() != GamePhase.SETUP || !isOwnTurn(pb)) { // correct phase and turn contract
-            throw new ForbiddenOperationException(OPERATION_NAME_PLAY_ASSISTANT);
+            throw new ForbiddenOperationException("setSelectedCard");
         }
         if (ac == null) { // not null contract
             throw new InvalidElementException("AssistantCard ac");
         }
         if (ac.getUsed()) { // no reuse card contract
-            throw new ForbiddenOperationException(OPERATION_NAME_PLAY_ASSISTANT);
+            throw new ForbiddenOperationException("setSelectedCard");
         }
         if (isAlreadyInSelection(ac) && canPlayUniqueCard(pb)) { // no duplicate cards contract
             throw new DuplicateElementException("AssistantCard ac");

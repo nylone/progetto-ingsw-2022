@@ -11,8 +11,6 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.Constants.CONTAINER_NAME_PLAYERBOARDS;
-
 /**
  * As the name suggests, this class is the game's Model. The Model's role is to keep track of the game's state and
  * provide the tools to modify it. This class is not able to detect changes to the underlying data. If you wish for that
@@ -200,7 +198,7 @@ public class Model implements Serializable {
         return playerBoards.stream()
                 .filter(p -> p.getId() == id)
                 .findAny()
-                .orElseThrow(() -> new InvalidContainerIndexException(CONTAINER_NAME_PLAYERBOARDS));
+                .orElseThrow(() -> new InvalidContainerIndexException("Playerboards"));
     }
 
     /**

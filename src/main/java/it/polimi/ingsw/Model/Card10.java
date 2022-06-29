@@ -13,8 +13,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import static it.polimi.ingsw.Constants.CONTAINER_NAME_DININGROOM;
-import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_PAIRS;
 import static it.polimi.ingsw.Misc.Utils.canMapFit;
 
 /**
@@ -57,7 +55,7 @@ public class Card10 extends StatelessEffect {
                         optionalPawnPair.get().stream().anyMatch(p -> p.getFirst() == null || p.getSecond() == null) // no null values in pair
         ) {
             // in case throw exception for invalid element in input
-            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
+            throw new InvalidElementException("Target Pawn Pairs");
         }
         // explode pawnpairs into respective arrays of elements
         List<Pair<PawnColour, PawnColour>> pawnPairs = optionalPawnPair.get();
@@ -81,7 +79,7 @@ public class Card10 extends StatelessEffect {
 
         // make sure the elements coming from user (first) are also mapped to entrance
         if (!canMapFit(entranceMap, comingFromEntrance)) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
+            throw new InvalidElementException("Target Pawn Pairs");
         }
 
         Map<PawnColour, Integer> diningRoomMap = new EnumMap<>(PawnColour.class); // counts user diningRoom total colours
@@ -90,14 +88,14 @@ public class Card10 extends StatelessEffect {
         }
         // make sure the elements coming from diningRoom (second) are also mapped to the diningroom
         if (!canMapFit(diningRoomMap, comingFromDiningRoom)) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
+            throw new InvalidElementException("Target Pawn Pairs");
         }
 
         // validate size of dining room
         for (PawnColour p : comingFromEntrance.keySet()) {
             if (playerBoard.getDiningRoomCount(p) - comingFromDiningRoom.getOrDefault(p, 0) + comingFromEntrance.getOrDefault(p, 0) > 10) {
-                throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
-                        CONTAINER_NAME_DININGROOM + "can't contain " + pawnPairs.size()
+                throw new GenericInputValidationException("Dining Room",
+                        "can't contain " + pawnPairs.size()
                                 + "elements without overflowing on one of its lanes.");
             }
         }

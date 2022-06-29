@@ -6,8 +6,6 @@ import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import java.io.Serial;
 import java.io.Serializable;
 
-import static it.polimi.ingsw.Constants.INPUT_NAME_CALLER;
-
 public abstract class CharacterCard implements Serializable {
     @Serial
     private static final long serialVersionUID = 115L; // convention: 1 for model, (01 -> 99) for objects
@@ -47,7 +45,7 @@ public abstract class CharacterCard implements Serializable {
      */
     public final boolean checkInput(CharacterCardInput input) throws InputValidationException {
         if (input.getCaller() == null || !input.getCaller().getNickname().equals(this.context.getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {
-            throw new InvalidElementException(INPUT_NAME_CALLER);
+            throw new InvalidElementException("Card Caller");
         }
         return overridableCheckInput(input);
     }

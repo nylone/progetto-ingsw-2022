@@ -187,7 +187,7 @@ public class Card01Test {
             card.checkInput(input);
         } catch (GenericInputValidationException e) {
             Assert.assertEquals("An error occurred while validating: Student Bag\n" +
-                    "The error was: Student Bag is empty", e.getMessage());
+                    "The error was: is empty", e.getMessage());
         }
     }
 

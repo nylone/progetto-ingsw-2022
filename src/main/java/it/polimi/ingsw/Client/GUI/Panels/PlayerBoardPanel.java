@@ -1,9 +1,9 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.ActionType;
-import it.polimi.ingsw.Client.GUI.CheckBoxListener;
+import it.polimi.ingsw.Client.GUI.Listeners.CheckBoxListener;
 import it.polimi.ingsw.Client.GUI.Components.StudentButton;
-import it.polimi.ingsw.Client.GUI.GUIReader;
+import it.polimi.ingsw.Client.GUI.Listeners.GUISocketListener;
 import it.polimi.ingsw.Controller.Actions.MoveStudent;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Controller.Actions.PlayCharacterCard;
@@ -49,7 +49,7 @@ public class PlayerBoardPanel extends JPanel {
     /**
      * Contains GuiReader's information necessary to record user's requests during his turn
      */
-    private final GUIReader guiReader;
+    private final GUISocketListener guiSocketListener;
 
     /**
      * Create a new PlayerBoardPanel
@@ -57,11 +57,11 @@ public class PlayerBoardPanel extends JPanel {
      * @param pb            Player's playerboard to represent
      * @param model         Game's model
      * @param socketWrapper socketWrapper to communicate with Server
-     * @param guiReader     guiReader from GameInProgressPanel
+     * @param guiSocketListener     guiReader from GameInProgressPanel
      */
-    public PlayerBoardPanel(PlayerBoard pb, Model model, SocketWrapper socketWrapper, GUIReader guiReader) {
+    public PlayerBoardPanel(PlayerBoard pb, Model model, SocketWrapper socketWrapper, GUISocketListener guiSocketListener) {
         this.player = pb;
-        this.guiReader = guiReader;
+        this.guiSocketListener = guiSocketListener;
         this.socketWrapper = socketWrapper;
         this.model = model;
         //list containing teachers owned by the player
@@ -151,7 +151,7 @@ public class PlayerBoardPanel extends JPanel {
                     //create and send moveStudent action
                     MoveStudent moveStudent = new MoveStudent(this.player.getId(), finalI, MoveDestination.toDiningRoom());
                     PlayerActionRequest playerAction = new PlayerActionRequest(moveStudent);
-                    this.guiReader.savePlayerActionRequest(moveStudent);
+                    this.guiSocketListener.savePlayerActionRequest(moveStudent);
                     try {
                         socketWrapper.sendMessage(playerAction);
                     } catch (IOException ex) {
@@ -183,7 +183,7 @@ public class PlayerBoardPanel extends JPanel {
             //add on-click actionListener to assistantCard's button
             assistantCardButton.addActionListener(e -> {
                 //enable button only if a playAssistantCard action has not been played
-                if (guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0) {
+                if (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0) {
                     int dialogButton = JOptionPane.YES_NO_OPTION;
                     //create optionPane for confirmation
                     int dialogResult = JOptionPane.showConfirmDialog(this, "Confirm to play assistant card with priority: " + finalI + "?", "PlayAssistant card confirmation", dialogButton);
@@ -191,7 +191,7 @@ public class PlayerBoardPanel extends JPanel {
                         //if the player clicked first button (YES) then create and send the playAssistantCard action
                         PlayAssistantCard playAssistantCard = new PlayAssistantCard(this.player.getId(), finalI);
                         PlayerActionRequest playerAction = new PlayerActionRequest(playAssistantCard);
-                        this.guiReader.savePlayerActionRequest(playAssistantCard);
+                        this.guiSocketListener.savePlayerActionRequest(playAssistantCard);
                         try {
                             socketWrapper.sendMessage(playerAction);
                         } catch (IOException ex) {
@@ -477,7 +477,7 @@ public class PlayerBoardPanel extends JPanel {
             }
         }
         //save action inside guiReader's history
-        guiReader.savePlayerActionRequest(playCharacterCard);
+        guiSocketListener.savePlayerActionRequest(playCharacterCard);
         //send playerActionRequest to Server
         try {
             socketWrapper.sendMessage(playerActionRequest);

@@ -64,8 +64,8 @@ public class Card11Test {
         });
 
         // checks the specific exception error message
-        assertEquals("An error occurred while validating: DiningRoom\n" +
-                "The error was: DiningRoom can't contain " + input.getTargetPawn().get() + "without overflowing.", exception.getMessage());
+        assertEquals("An error occurred while validating: Dining Room\n" +
+                "The error was: can't contain " + input.getTargetPawn().get() + "without overflowing.", exception.getMessage());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class Card11Test {
             card.checkInput(input);
         } catch (GenericInputValidationException e) {
             Assert.assertEquals("An error occurred while validating: Student Bag\n" +
-                    "The error was: Student Bag is empty", e.getMessage());
+                    "The error was: is empty", e.getMessage());
         }
     }
 

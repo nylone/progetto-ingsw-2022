@@ -13,7 +13,6 @@ import it.polimi.ingsw.Model.Enums.StateType;
 import java.io.Serial;
 import java.util.*;
 
-import static it.polimi.ingsw.Constants.*;
 import static it.polimi.ingsw.Misc.Utils.canMapFit;
 
 /**
@@ -78,7 +77,7 @@ public class Card07 extends StatefulEffect {
                         optionalPawnPair.get().stream().anyMatch(p -> p.getFirst() == null || p.getSecond() == null) // no null values in pair
         ) {
             // in case throw exception for invalid element in input
-            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
+            throw new InvalidElementException("Target Pawn Pairs");
         }
 
 
@@ -103,7 +102,7 @@ public class Card07 extends StatefulEffect {
         }
         // make sure the elements coming from user (first) are also mapped to entrance
         if (!canMapFit(entranceMap, firstMap)) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
+            throw new InvalidElementException("Target Pawn Pairs");
         }
 
         // get card storage counts per colour
@@ -113,15 +112,15 @@ public class Card07 extends StatefulEffect {
         }
         // make sure the elements coming from card (second) are also mapped to the card state
         if (!canMapFit(cardMap, secondMap)) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_PAIRS);
+            throw new InvalidElementException("Target Pawn Pairs");
         }
         if (playerBoard.getEntranceSpaceLeft() + pawnPairs.size() >= playerBoard.getEntranceSize()) {
-            throw new GenericInputValidationException(CONTAINER_NAME_ENTRANCE,
-                    CONTAINER_NAME_ENTRANCE + " does not contain " + pawnPairs.size()
+            throw new GenericInputValidationException("Entrance",
+                    "does not contain " + pawnPairs.size()
                             + " pawns");
         }
         if (context.getMutableStudentBag().getSize() == 0) {
-            throw new GenericInputValidationException(CONTAINER_NAME_STUDENT_BAG, CONTAINER_NAME_STUDENT_BAG + " is empty");
+            throw new GenericInputValidationException("Student Bag", "is empty");
         }
 
         return true;

@@ -14,7 +14,6 @@ import it.polimi.ingsw.Model.PlayerBoard;
 import java.io.Serial;
 import java.util.List;
 
-import static it.polimi.ingsw.Constants.*;
 import static it.polimi.ingsw.Misc.Utils.countSimilarClassOccurrences;
 
 /**
@@ -70,11 +69,11 @@ public class MoveStudent extends PlayerAction {
         }
         if (history.size() > 0) {
             if (!(history.get(history.size() - 1).getClass() == MoveStudent.class || history.get(history.size() - 1).getClass() == PlayCharacterCard.class)) {
-                return SerializableOptional.of(new GenericInputValidationException(HISTORY, "MoveStudent can only be preceded by a PlayCharacterCard action or MoveStudent action"));
+                return SerializableOptional.of(new GenericInputValidationException("History", "MoveStudent can only be preceded by a PlayCharacterCard action or MoveStudent action"));
             }
         }
         if (countSimilarClassOccurrences(MoveStudent.class, history) >= maxCount) {
-            return SerializableOptional.of(new GenericInputValidationException(HISTORY, "only " + maxCount + " pawns can be moved from entrance"));
+            return SerializableOptional.of(new GenericInputValidationException("History", "only " + maxCount + " pawns can be moved from entrance"));
         }
 
         if (!(this.selectedEntrancePosition >= 0 && this.selectedEntrancePosition < entranceSize)) {
@@ -87,12 +86,12 @@ public class MoveStudent extends PlayerAction {
         if (this.destination.getDestinationType() == DestinationType.ISLAND) {
             int islandId = this.destination.getIslandID();
             if (islandId < 0 || islandId > 12) {
-                return SerializableOptional.of(new InvalidElementException(INPUT_NAME_TARGET_ISLAND)); // target ti out of bounds for id
+                return SerializableOptional.of(new InvalidElementException("Target Island")); // target ti out of bounds for id
             }
         } else if (this.destination.getDestinationType() == DestinationType.DININGROOM) {
             if (caller.isDiningRoomFull(caller.getEntranceStudents().get(this.selectedEntrancePosition).get())) {
-                return SerializableOptional.of(new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
-                        CONTAINER_NAME_DININGROOM + "can't contain the pawn without overflowing."));
+                return SerializableOptional.of(new GenericInputValidationException("DiningRoom",
+                        "can't contain the pawn without overflowing."));
             }
         }
         return SerializableOptional.empty();

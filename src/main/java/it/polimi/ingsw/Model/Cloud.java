@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static it.polimi.ingsw.Constants.CONTAINER_NAME_CLOUD;
-
 /**
  * The Cloud class is used to replenish pawns in the entrance fields of the {@link PlayerBoard#getEntranceStudents()}
  */
@@ -53,7 +51,7 @@ public class Cloud implements Serializable {
             this.contents = new ArrayList<>(3);
             return toReturn;
         } else {
-            throw new EmptyContainerException(CONTAINER_NAME_CLOUD);
+            throw new EmptyContainerException("Cloud");
         }
     }
 
@@ -76,7 +74,7 @@ public class Cloud implements Serializable {
         if (contents.isEmpty()) {
             contents.addAll(colours);
         } else {
-            throw new FullContainerException(CONTAINER_NAME_CLOUD);
+            throw new FullContainerException("Cloud");
         }
     }
 }

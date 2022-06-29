@@ -65,7 +65,7 @@ public class PlayAssistantCardTest {
             gh.executeAction(action);
         } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: Assitant Card\n" +
-                    "The error was: Assitant Card has already been selected by another player", exception.getMessage());
+                    "The error was: has already been selected by another player", exception.getMessage());
         }
 
 
@@ -117,7 +117,7 @@ public class PlayAssistantCardTest {
             gh.executeAction(playAssistantCard);
         } catch (GenericInputValidationException e) {
             assertEquals("An error occurred while validating: Assitant Card\n" +
-                    "The error was: Assitant Card may only be used during the setup phase", e.getMessage());
+                    "The error was: may only be used during the setup phase", e.getMessage());
         }
     }
 }

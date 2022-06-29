@@ -17,7 +17,6 @@ import it.polimi.ingsw.Model.PlayerBoard;
 import java.io.Serial;
 import java.util.List;
 
-import static it.polimi.ingsw.Constants.*;
 
 public class PlayCharacterCard extends PlayerAction {
     @Serial
@@ -71,11 +70,11 @@ public class PlayCharacterCard extends PlayerAction {
     @Override
     protected SerializableOptional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
         if (ctx.getGameMode() != GameMode.ADVANCED) {
-            return SerializableOptional.of(new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD, INPUT_NAME_CHARACTER_CARD + " can't be played in simple mode"));
+            return SerializableOptional.of(new GenericInputValidationException("Character Card", "can't be played in simple mode"));
         }
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.ACTION) {
-            return SerializableOptional.of(new GenericInputValidationException(HISTORY, "the game is not in the correct phase"));
+            return SerializableOptional.of(new GenericInputValidationException("History", "the game is not in the correct phase"));
         }
 
         // generate the input object before validation
@@ -83,16 +82,16 @@ public class PlayCharacterCard extends PlayerAction {
         try {
             cardInput = generateCharacterCardInput(caller, ctx);
         } catch (InvalidContainerIndexException e) {
-            return SerializableOptional.of(new InvalidElementException(INPUT_NAME_TARGET_ISLAND));
+            return SerializableOptional.of(new InvalidElementException("Target Island"));
         }
 
         if (!(this.selectedCard >= 0 && this.selectedCard < 3)) { //selectedCard out of bounds
-            return SerializableOptional.of(new InvalidElementException(INPUT_NAME_CHARACTER_CARD));
+            return SerializableOptional.of(new InvalidElementException("Character Card"));
         }
         CharacterCard selectedCard = ctx.getCharacterCards().get(this.selectedCard);
         if (caller.getCoinBalance() < selectedCard.getCost()) {
-            return SerializableOptional.of(new GenericInputValidationException(INPUT_NAME_CHARACTER_CARD,
-                    INPUT_NAME_CHARACTER_CARD + " can't be played due to insufficient coin balance"));
+            return SerializableOptional.of(new GenericInputValidationException("Character Card",
+                    "can't be played due to insufficient coin balance"));
         }
 
         try {

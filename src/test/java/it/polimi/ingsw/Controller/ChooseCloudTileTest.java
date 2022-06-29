@@ -247,7 +247,7 @@ public class ChooseCloudTileTest {
             gh.executeAction(chooseCloudTile);
         } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: Cloud\n" +
-                    "The error was: Cloud has already been emptied", exception.getMessage());
+                    "The error was: has already been emptied", exception.getMessage());
         }
     }
 
@@ -293,7 +293,7 @@ public class ChooseCloudTileTest {
             gh.executeAction(chooseCloudTile);
         } catch (Exception exception) {
             assertEquals("An error occurred while validating: Entrance\n" +
-                    "The error was: Entrance can't contain 3 element's without overflowing.", exception.getMessage());
+                    "The error was: can't contain 3 elements without overflowing.", exception.getMessage());
         }
     }
 }

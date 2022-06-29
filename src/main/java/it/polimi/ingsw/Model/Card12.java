@@ -5,8 +5,6 @@ import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 
 import java.io.Serial;
 
-import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_COLOUR;
-
 /**
  * EFFECT: Choose a type of Student: every player
  * (including yourself) must return 3 Students of that type
@@ -32,7 +30,7 @@ public class Card12 extends StatelessEffect {
      */
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetPawn().isEmpty()) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
+            throw new InvalidElementException("Target Pawn Colour");
         }
         return true;
     }

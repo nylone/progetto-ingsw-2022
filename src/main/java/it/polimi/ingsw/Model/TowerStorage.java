@@ -9,8 +9,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Stack;
 
-import static it.polimi.ingsw.Constants.INPUT_NAME_TOWER;
-
 /**
  * A container for a set of {@link Tower}s of the same {@link TowerColour}
  */
@@ -78,10 +76,10 @@ public class TowerStorage implements Serializable {
             this.storage.push(t);
         } else {
             if (checkIfPresent) {
-                throw new DuplicateElementException(INPUT_NAME_TOWER);
+                throw new DuplicateElementException("Tower");
             }
             if (t.getColour() != this.colour) {
-                throw new InvalidElementException(INPUT_NAME_TOWER);
+                throw new InvalidElementException("Tower");
             }
         }
     }

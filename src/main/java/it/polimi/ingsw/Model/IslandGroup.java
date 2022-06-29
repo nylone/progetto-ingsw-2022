@@ -11,8 +11,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-import static it.polimi.ingsw.Constants.OPERATION_NAME_CONSTRUCTOR_ISLAND_GROUPS;
-
 /**
  * Every {@link Island} can be contained in an IslandGroup and multiple Islands can be grouped up.
  */
@@ -54,10 +52,10 @@ public class IslandGroup implements Serializable {
             }
             this.id = Arrays.stream(islandGroups)
                     .min(Comparator.comparingInt(IslandGroup::getId))
-                    .orElseThrow(() -> new FailedOperationException(OPERATION_NAME_CONSTRUCTOR_ISLAND_GROUPS))
+                    .orElseThrow(() -> new FailedOperationException("Island Groups Constructor"))
                     .getId();
         } else {
-            throw new ForbiddenOperationException(OPERATION_NAME_CONSTRUCTOR_ISLAND_GROUPS);
+            throw new ForbiddenOperationException("Island Groups Constructor");
         }
     }
 

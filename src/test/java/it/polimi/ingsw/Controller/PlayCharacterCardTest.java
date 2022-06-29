@@ -423,7 +423,7 @@ public class PlayCharacterCardTest {
             gh.executeAction(playAction);
         } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: Character Card\n" +
-                    "The error was: Character Card can't be played in simple mode", exception.getMessage());
+                    "The error was: can't be played in simple mode", exception.getMessage());
         }
     }
 
@@ -437,7 +437,7 @@ public class PlayCharacterCardTest {
             gh.executeAction(playAction);
         } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: Character Card\n" +
-                    "The error was: Character Card can't be played in simple mode", exception.getMessage());
+                    "The error was: can't be played in simple mode", exception.getMessage());
         }
     }
 
@@ -451,7 +451,7 @@ public class PlayCharacterCardTest {
             gh.executeAction(playCharacterCard);
         } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: Character Card\n" +
-                    "The error was: Character Card can't be played due to insufficient coin balance", exception.getMessage());
+                    "The error was: can't be played due to insufficient coin balance", exception.getMessage());
         }
     }
 

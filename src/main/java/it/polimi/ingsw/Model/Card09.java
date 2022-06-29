@@ -6,8 +6,6 @@ import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 
 import java.io.Serial;
 
-import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_PAWN_COLOUR;
-
 /**
  * EFFECT: Choose a color of Student: during the influence calculation this turn, that color adds no influence
  */
@@ -29,7 +27,7 @@ public class Card09 extends StatelessEffect {
      */
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetPawn().isEmpty()) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
+            throw new InvalidElementException("Target Pawn Colour");
         }
         return true;
     }

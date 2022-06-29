@@ -6,9 +6,6 @@ import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
 
 import java.io.Serial;
 
-import static it.polimi.ingsw.Constants.INPUT_NAME_TARGET_ISLAND;
-import static it.polimi.ingsw.Constants.OPERATION_NAME_CARD03_APPLY_EFFECT;
-
 /**
  * EFFECT: Choose an Island and resolve the Island as if
  * Mother Nature had ended her movement there. Mother
@@ -33,14 +30,14 @@ public class Card03 extends StatelessEffect {
      */
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetIsland().isEmpty()) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not set
+            throw new InvalidElementException("Target Island"); // target ti not set
         }
         Island ti = input.getTargetIsland().get();
         if (ti.getId() < 0 || ti.getId() >= 12) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti out of bounds for id
+            throw new InvalidElementException("Target Island"); // target ti out of bounds for id
         }
         if (!this.context.getMutableIslandField().getMutableIslands().contains(ti)) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_ISLAND); // target ti not in field
+            throw new InvalidElementException("Target Island"); // target ti not in field
         }
         return true;
     }
@@ -57,7 +54,7 @@ public class Card03 extends StatelessEffect {
                 return;
             }
         }
-        throw new FailedOperationException(OPERATION_NAME_CARD03_APPLY_EFFECT, "Target Island was not contained in any IslandGroup");
+        throw new FailedOperationException("Card03.unsafeApplyEffect", "Target Island was not contained in any IslandGroup");
     }
 
     //test purpose only

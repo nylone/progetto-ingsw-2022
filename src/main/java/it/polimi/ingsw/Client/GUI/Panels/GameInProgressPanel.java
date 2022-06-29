@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.Context;
-import it.polimi.ingsw.Client.GUI.GUIReader;
+import it.polimi.ingsw.Client.GUI.Listeners.GUISocketListener;
 import it.polimi.ingsw.Client.GUI.Window;
 import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
 import it.polimi.ingsw.Controller.Actions.MoveStudent;
@@ -39,7 +39,7 @@ public class GameInProgressPanel extends JTabbedPane {
     /**
      * Contains GuiReader's information necessary to record user's requests during his turn
      */
-    private final GUIReader guiReader;
+    private final GUISocketListener guiSocketListener;
 
     /**
      * Constructor that should be called only upon the creation of first GameInProgressPanel
@@ -52,9 +52,9 @@ public class GameInProgressPanel extends JTabbedPane {
         this.window = ctx.getWindow();
         this.sw = ctx.getSocketWrapper();
         this.window.changeView(this);
-        this.guiReader = new GUIReader(this, ctx);
+        this.guiSocketListener = new GUISocketListener(this, ctx);
         //run GuiReader thread
-        Thread readerThread = new Thread(guiReader);
+        Thread readerThread = new Thread(guiSocketListener);
         readerThread.start();
     }
 
@@ -63,20 +63,20 @@ public class GameInProgressPanel extends JTabbedPane {
      *
      * @param ctx       Context to use during the game
      * @param model     Model containing all game's information
-     * @param guiReader created upon first gameInProgressPanel creation
+     * @param guiSocketListener created upon first gameInProgressPanel creation
      */
-    public GameInProgressPanel(Context ctx, Model model, GUIReader guiReader) {
-        this(ctx, guiReader);
+    public GameInProgressPanel(Context ctx, Model model, GUISocketListener guiSocketListener) {
+        this(ctx, guiSocketListener);
         if (!model.isGameOver()) {
             //add IslandFieldPanel to JTabbedPane
-            this.add("Islands", new IslandFieldPanel(model, sw, guiReader));
+            this.add("Islands", new IslandFieldPanel(model, sw, guiSocketListener));
             Map<String, PlayerBoardPanel> playerTabs = new HashMap<>();
             ArrayList<String> tooltips = new ArrayList<>(model.getMutablePlayerBoards().size());
             //set ToolTip font
             UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 15));
             for (PlayerBoard pb : model.getMutablePlayerBoards()) {
                 //for all playerBoards create and add a PlayerBoardPanel to JTabbedPane
-                playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb, model, this.sw, guiReader));
+                playerTabs.put(pb.getNickname(), new PlayerBoardPanel(pb, model, this.sw, guiSocketListener));
             }
             for (Map.Entry<String, PlayerBoardPanel> pbp : playerTabs.entrySet()) {
                 //set a proper name to playerBoardPanel's tab inside jTabbedPane
@@ -115,22 +115,22 @@ public class GameInProgressPanel extends JTabbedPane {
             }
             //If the game is an advanced game then create and add a new CharacterCardsPanel to JTabbedPane
             if (model.getGameMode() == GameMode.ADVANCED) {
-                final JPanel characterCardsPanel = new CharacterCardsPanel(model, sw, guiReader);
+                final JPanel characterCardsPanel = new CharacterCardsPanel(model, sw, guiSocketListener);
                 this.add("CharacterCards", characterCardsPanel);
             }
             //create and add CloudPanel to JTabbedPane
-            this.add("Clouds", new CloudPanel(model.getClouds(), model.getMutableTurnOrder().getMutableCurrentPlayer(), guiReader, sw));
+            this.add("Clouds", new CloudPanel(model.getClouds(), model.getMutableTurnOrder().getMutableCurrentPlayer(), guiSocketListener, sw));
             //set JTabbedPane to last tab whether the user has moved MotherNature (las tab is always the CloudPanel)
-            if (guiReader.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
+            if (guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
                 this.setSelectedIndex(this.getTabCount() - 1);
                 this.getSelectedComponent();
             }
             if (model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname().equals(ownNickname)) {
-                if (guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0
-                        || (guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1 && guiReader.getSuccessfulRequestsByType(MoveStudent.class) == 0)
+                if (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0
+                        || (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) == 0)
                 ) {
                     StringBuilder text;
-                    if (guiReader.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1) {
+                    if (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1) {
                         text = new StringBuilder("It's your turn!!");
                     } else {
                         text = new StringBuilder("<html>It's your turn!!<br>");
@@ -154,15 +154,15 @@ public class GameInProgressPanel extends JTabbedPane {
      * Should be used upon the second creation of GameInProgressPanel
      *
      * @param ctx       Context to use during the game
-     * @param guiReader created upon first gameInProgressPanel creation
+     * @param guiSocketListener created upon first gameInProgressPanel creation
      */
-    private GameInProgressPanel(Context ctx, GUIReader guiReader) {
+    private GameInProgressPanel(Context ctx, GUISocketListener guiSocketListener) {
         this.ownNickname = ctx.getNickname();
         this.window = ctx.getWindow();
         this.sw = ctx.getSocketWrapper();
         this.window.changeView(this);
-        this.guiReader = guiReader;
-        Thread readerThread = new Thread(guiReader);
+        this.guiSocketListener = guiSocketListener;
+        Thread readerThread = new Thread(guiSocketListener);
         readerThread.start();
     }
 

@@ -1,7 +1,9 @@
-package it.polimi.ingsw.Client.GUI;
+package it.polimi.ingsw.Client.GUI.Listeners;
 
+import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.Panels.GameInProgressPanel;
 import it.polimi.ingsw.Client.GUI.Panels.StartPanel;
+import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Controller.Actions.EndTurnOfActionPhase;
 import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Misc.Pair;
@@ -17,7 +19,7 @@ import java.util.List;
 /**
  * Handles messages received from server and keep a record of current player's actions executed during its turn
  */
-public class GUIReader implements Runnable {
+public class GUISocketListener implements Runnable {
 
     /**
      * JTabbedPane containing all others JPanels
@@ -48,7 +50,7 @@ public class GUIReader implements Runnable {
      * @param gameInProgressPanel GameInProgressPanel that call the constructor
      * @param ctx                 Context containing socket and GUI's window
      */
-    public GUIReader(GameInProgressPanel gameInProgressPanel, Context ctx) {
+    public GUISocketListener(GameInProgressPanel gameInProgressPanel, Context ctx) {
         this.gameInProgressPanel = gameInProgressPanel;
         this.sw = ctx.getSocketWrapper();
         this.ctx = ctx;

@@ -13,8 +13,6 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static it.polimi.ingsw.Constants.*;
-
 /**
  * In Setup, draw 4 Students and place them on this card <br>
  * EFFECT: Take 1 Student from this card and place it in
@@ -59,22 +57,22 @@ public class Card11 extends StatefulEffect {
     @Override
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         if (input.getTargetPawn().isEmpty()) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
+            throw new InvalidElementException("Target Pawn Colour");
         }
         // find if the target pawn colour is present in the card's stored pawn
         if (Arrays.stream(this.students).noneMatch(cell -> cell == input.getTargetPawn().get())) {
-            throw new InvalidElementException(INPUT_NAME_TARGET_PAWN_COLOUR);
+            throw new InvalidElementException("Target Pawn Colour");
         }
 
         PlayerBoard playerBoard = input.getCaller();
         // validate size of dining room
         if (playerBoard.isDiningRoomFull(input.getTargetPawn().get())) {
-            throw new GenericInputValidationException(CONTAINER_NAME_DININGROOM,
-                    CONTAINER_NAME_DININGROOM + " can't contain " + input.getTargetPawn().get()
+            throw new GenericInputValidationException("Dining Room",
+                    "can't contain " + input.getTargetPawn().get()
                             + "without overflowing.");
         }
         if (context.getMutableStudentBag().getSize() == 0) {
-            throw new GenericInputValidationException(CONTAINER_NAME_STUDENT_BAG, CONTAINER_NAME_STUDENT_BAG + " is empty");
+            throw new GenericInputValidationException("Student Bag", "is empty");
         }
         //all tests passed
         return true;
@@ -95,7 +93,7 @@ public class Card11 extends StatefulEffect {
                 return;
             }
         }
-        throw new FailedOperationException(OPERATION_NAME_CARD11_APPLY_EFFECT, "Target pawn was not contained in card's state");
+        throw new FailedOperationException("Card011.unsafeApplyEffect", "Target pawn was not contained in card's state");
     }
 
     //test-purpose only

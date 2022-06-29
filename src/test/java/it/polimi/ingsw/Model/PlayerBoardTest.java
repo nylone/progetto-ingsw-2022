@@ -37,7 +37,7 @@ public class PlayerBoardTest {
             fail();
         } catch (FullContainerException e) {
             // assert
-            assertEquals("An error occurred on: DiningRoom\nThe error was: DiningRoom was found full.", e.getMessage());
+            assertEquals("An error occurred on: Dining Room\nThe error was: Dining Room was found full.", e.getMessage());
         }
     }
 
