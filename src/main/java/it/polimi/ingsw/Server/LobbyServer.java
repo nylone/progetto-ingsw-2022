@@ -13,6 +13,8 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.LobbyIn
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
@@ -23,7 +25,7 @@ public class LobbyServer implements Runnable{
     protected static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
     private static final Set<String> connectedNicknames = new HashSet<>();
     private final SocketWrapper sw;
-    private final ClientEventHandler eventHandler;
+    private final BlockingQueue<ClientEvent> eventQueue;
 
     /**
      * Creates the server around a {@link SocketWrapper}
@@ -31,7 +33,7 @@ public class LobbyServer implements Runnable{
      */
     private LobbyServer(SocketWrapper sw) {
         this.sw = sw;
-        this.eventHandler = new ClientEventHandler();
+        this.eventQueue = new ArrayBlockingQueue<>(10);
     }
 
     /**
@@ -47,11 +49,11 @@ public class LobbyServer implements Runnable{
     }
 
     /**
-     * Get the event handler for this server
-     * @return the {@link ClientEventHandler} linked to this server
+     * Get the event queue this server listens on
+     * @return the {@link BlockingQueue<ClientEvent>} linked to this server
      */
-    private ClientEventHandler getEventHandler() {
-        return this.eventHandler;
+    private BlockingQueue<ClientEvent> getEventQueue() {
+        return this.eventQueue;
     }
 
     /**
@@ -61,7 +63,7 @@ public class LobbyServer implements Runnable{
     public static void spawn(SocketWrapper socketWrapper) {
         LobbyServer lobbyServer = new LobbyServer(socketWrapper);
         new Thread(lobbyServer).start();
-        SocketListener.subscribe(socketWrapper, lobbyServer.getEventHandler());
+        SocketListener.subscribe(socketWrapper, lobbyServer.getEventQueue());
     }
 
     /**
@@ -75,7 +77,7 @@ public class LobbyServer implements Runnable{
         State state = State.ACCEPT_PHASE;
         while (true) {
             try {
-                ClientEvent event = this.eventHandler.dequeue();
+                ClientEvent event = this.eventQueue.take();
                 Logger.info("Lobby server received a new Event: " + event.getClass());
                 if (event instanceof SocketClosedEvent) {
                     if (currentLobby != null) {
@@ -130,14 +132,14 @@ public class LobbyServer implements Runnable{
                                             castedEvent.getMaxPlayers(),
                                             nickname
                                     );
-                                    currentLobby.addPlayer(nickname, this.getEventHandler());
+                                    currentLobby.addPlayer(nickname, this.getEventQueue());
                                     lobbyMap.put(lobbyID, currentLobby);
                                     state = State.GAME_START_PHASE;
                                     sw.sendMessage(LobbyRedirect.success(lobbyID, currentLobby.getAdmin()));
                                 }
                                 case ConnectLobbyRequest castedEvent -> {
                                     UUID lobbyID = castedEvent.getCode();
-                                    if (!lobbyMap.containsKey(lobbyID) || !lobbyMap.get(lobbyID).addPlayer(nickname, this.getEventHandler())) {
+                                    if (!lobbyMap.containsKey(lobbyID) || !lobbyMap.get(lobbyID).addPlayer(nickname, this.getEventQueue())) {
                                         sw.sendMessage(LobbyRedirect.fail());
                                         break;
                                     }
