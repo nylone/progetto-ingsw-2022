@@ -3,9 +3,7 @@ package it.polimi.ingsw.Client.GUI.Panels;
 import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.Listeners.GUISocketListener;
 import it.polimi.ingsw.Client.GUI.Window;
-import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
-import it.polimi.ingsw.Controller.Actions.MoveStudent;
-import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
+import it.polimi.ingsw.Controller.Actions.*;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Model;
@@ -120,9 +118,14 @@ public class GameInProgressPanel extends JTabbedPane {
             }
             //create and add CloudPanel to JTabbedPane
             this.add("Clouds", new CloudPanel(model.getClouds(), model.getMutableTurnOrder().getMutableCurrentPlayer(), guiSocketListener, sw));
+
+            if(ownNickname.equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname())){
+                this.add(getNextAction(model), null);
+                this.setEnabledAt(this.getTabCount()-1, false);
+            }
             //set JTabbedPane to last tab whether the user has moved MotherNature (las tab is always the CloudPanel)
             if (guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
-                this.setSelectedIndex(this.getTabCount() - 1);
+                this.setSelectedIndex(this.getTabCount() - 2);
                 this.getSelectedComponent();
             }
             if (model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname().equals(ownNickname)) {
@@ -148,6 +151,32 @@ public class GameInProgressPanel extends JTabbedPane {
         } else {
             this.add("WINNERS", new EndGamePanel(model.getWinners().get(), ctx));
         }
+    }
+
+    private String getNextAction(Model model) {
+        String nextAction = "NEXT ACTION: ";
+        if(guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0){
+            nextAction = nextAction + "Play assistant card";
+            return nextAction;
+        }
+        if ((model.getMutablePlayerBoards().size() != 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) < 3) ||
+                (model.getMutablePlayerBoards().size() == 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) < 4)) {
+            nextAction = nextAction + "Move Student";
+            return nextAction;
+        }
+        if(guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 0){
+            nextAction = nextAction + "Move MotherNature";
+            return nextAction;
+        }
+        if(guiSocketListener.getSuccessfulRequestsByType(ChooseCloudTile.class) == 0){
+            nextAction = nextAction + "Choose cloud";
+            return nextAction;
+        }
+        if(guiSocketListener.getSuccessfulRequestsByType(EndTurnOfActionPhase.class) == 0){
+            nextAction = nextAction + "End your turn";
+            return nextAction;
+        }
+        return "No action is currently available";
     }
 
     /**
