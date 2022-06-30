@@ -12,7 +12,7 @@ public class ConnectEvent implements ClientEvent {
     protected final List<String> players;
 
     /**
-     * Create the response
+     * Create the event
      * @param affectedNickname the nickname of the player that just caused this event
      * @param players the list of all connected players
      */

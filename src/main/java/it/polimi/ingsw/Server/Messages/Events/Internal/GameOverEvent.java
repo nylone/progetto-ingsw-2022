@@ -1,17 +1,12 @@
 package it.polimi.ingsw.Server.Messages.Events.Internal;
 
+import it.polimi.ingsw.Model.ModelWrapper;
 import it.polimi.ingsw.Server.Messages.Events.ClientEvent;
 
 import java.util.List;
 
-public class GameOverEvent implements ClientEvent {
-    protected final List<String> winners;
-
-    public GameOverEvent(List<String> winners) {
-        this.winners = winners;
-    }
-
-    public List<String> getWinners() {
-        return winners;
-    }
-}
+/**
+ * This Event is generated when a lobby's game is detected to have ended. It is always spawned AFTER a {@link ModelUpdateEvent}
+ * in the {@link ModelWrapper#editModel} method
+ */
+public record GameOverEvent(List<String> winners) implements ClientEvent {}

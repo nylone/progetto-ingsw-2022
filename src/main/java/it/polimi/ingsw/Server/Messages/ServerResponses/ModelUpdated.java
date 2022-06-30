@@ -15,7 +15,7 @@ public class ModelUpdated extends FixedStatusResponse {
 
     /**
      * Prepare a response with the updated model
-     * @param model the updated model to send
+     * @param model reference to the updated model
      */
     public ModelUpdated(Model model) {
         this.model = model;
@@ -23,10 +23,10 @@ public class ModelUpdated extends FixedStatusResponse {
 
     /**
      * Get the model
-     * @return the {@link Model} that was updated
+     * @return the copy of the {@link Model} that was updated
      */
     public Model getModel() {
-        return this.model;
+        return this.model.copy();
     }
 
 }

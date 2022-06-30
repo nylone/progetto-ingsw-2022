@@ -189,7 +189,7 @@ public class Lobby {
     }
 
     /**
-     * Starts the game
+     * Starts the game. {@link LobbyServer}s will receive a {@link GameStartEvent}
      * @param gameMode the {@link GameMode} to start the game in
      * @throws InputValidationException if the players in lobby are more than 4 or less than 2
      */

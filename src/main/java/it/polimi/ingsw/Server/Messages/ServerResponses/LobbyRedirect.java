@@ -51,7 +51,7 @@ public class LobbyRedirect extends Response {
      * @return the UUID of the lobby or null if no lobby was linked to the response
      */
     public UUID getLobbyID() {
-        return lobbyID;
+        return this.lobbyID;
     }
 
     /**

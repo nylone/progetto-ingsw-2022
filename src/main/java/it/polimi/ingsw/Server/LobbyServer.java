@@ -10,7 +10,6 @@ import it.polimi.ingsw.Server.Messages.Events.Internal.*;
 import it.polimi.ingsw.Server.Messages.Events.Requests.*;
 import it.polimi.ingsw.Server.Messages.ServerResponses.*;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.LobbyInfo;
-import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -189,7 +188,7 @@ public class LobbyServer implements Runnable{
                                 }
                                 case GameStartEvent gameStartEvent -> {
                                     state = State.GAME_IN_PROGRESS_PHASE;
-                                    playerID = gameStartEvent.getNickToID().get(nickname);
+                                    playerID = gameStartEvent.nickToID().get(nickname);
                                     sw.sendMessage(new GameStarted());
                                 }
                                 case default -> sw.sendMessage(new InvalidRequest());
@@ -208,8 +207,9 @@ public class LobbyServer implements Runnable{
                                 }
                                 case ModelUpdateEvent modelUpdateEvent -> sw.sendMessage(new ModelUpdated(modelUpdateEvent.getModel()));
                                 case GameOverEvent gameOverEvent -> {
-                                    sw.sendMessage(new GameOver(gameOverEvent.getWinners()));
+                                    sw.sendMessage(new GameOver(gameOverEvent.winners()));
                                     currentLobby.close();
+                                    state = State.REDIRECT_PHASE;
                                 }
                                 case PlayerActionRequest playerActionRequest -> {
                                     try {
