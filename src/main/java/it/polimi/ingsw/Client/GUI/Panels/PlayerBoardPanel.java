@@ -139,7 +139,7 @@ public class PlayerBoardPanel extends JPanel {
                 //create options that will be displayed on JOptionPane
                 String[] buttons = {"DiningRoom", "Island"};
                 //create and show JoptionPane
-                int returnValue = JOptionPane.showOptionDialog(this, "Where do you want to send this pawn?", "Destination ", JOptionPane.DEFAULT_OPTION,
+                int returnValue = JOptionPane.showOptionDialog(null, "Where do you want to send this pawn?", "Destination ", JOptionPane.DEFAULT_OPTION,
                         JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
                 Container c = this.getParent();
                 while (!(c instanceof JTabbedPane jTabbedPane)) {

@@ -113,9 +113,9 @@ public class CharacterCardsPanel extends JPanel {
                 PlayCharacterCard playCharacterCard = null;
                 PlayerActionRequest playerActionRequest = null;
                 //get JTabbedPane (necessary to switch to another JPanel)
-                Container c = this.getParent();
-                while (!(c instanceof JTabbedPane jTabbedPane)) {
-                    c = c.getParent();
+                Container parent = this.getParent();
+                while (!(parent instanceof JTabbedPane jTabbedPane)) {
+                    parent = parent.getParent();
                 }
                 switch (characterCards.get(finalI)) {
                     case Card01 card01 -> {
@@ -123,7 +123,7 @@ public class CharacterCardsPanel extends JPanel {
                         //list containing CharacterCard's pawns
                         PawnColour[] options = card01.getState().toArray(new PawnColour[0]);
                         //create and show JOptionPane
-                        int option = JOptionPane.showOptionDialog(this, "Select pawnColour to move to an island", "Select PawnColour",
+                        int option = JOptionPane.showOptionDialog(null, "Select pawnColour to move to an island", "Select PawnColour",
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                                 null, options, options[0]);
                         //get pawn to move
@@ -131,7 +131,7 @@ public class CharacterCardsPanel extends JPanel {
                         //switch to first JTabbedPane's tab
                         jTabbedPane.setSelectedIndex(0);
                         IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
-                        JOptionPane.showMessageDialog(this, "click on the island on which you want to move the pawn");
+                        JOptionPane.showMessageDialog(null, "click on the island on which you want to move the pawn");
                         //set IslandFieldPanel to play this characterCard
                         islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, OptionalValue.of(finalI), OptionalValue.of(toMove));
                         return;
@@ -146,7 +146,7 @@ public class CharacterCardsPanel extends JPanel {
                         //switch to first JTabbedPane's pane
                         jTabbedPane.setSelectedIndex(0);
                         IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
-                        JOptionPane.showMessageDialog(this, "click on the island on which you want to calculate the influence");
+                        JOptionPane.showMessageDialog(null, "click on the island on which you want to calculate the influence");
                         //set IslandFieldPanel to play this characterCard
                         islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, OptionalValue.of(finalI), OptionalValue.empty());
                         return;
@@ -161,7 +161,7 @@ public class CharacterCardsPanel extends JPanel {
                         //switch to first JTabbedPane's pane
                         jTabbedPane.setSelectedIndex(0);
                         IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
-                        JOptionPane.showMessageDialog(this, "click on the island on which you want to move NoEntry tile");
+                        JOptionPane.showMessageDialog(null, "click on the island on which you want to move NoEntry tile");
                         //set IslandFieldPanel to play this characterCard
                         islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, OptionalValue.of(finalI), OptionalValue.empty());
                         return;
@@ -225,7 +225,7 @@ public class CharacterCardsPanel extends JPanel {
                         //Array of strings containing all PawnColours
                         String[] options = new String[]{"RED", "PINK", "GREEN", "YELLOW", "BLUE"};
                         //create and show JOptionPane
-                        int option = JOptionPane.showOptionDialog(this, "Select pawnColour to make it irrelevant", "Select PawnColour",
+                        int option = JOptionPane.showOptionDialog(null, "Select pawnColour to make it irrelevant", "Select PawnColour",
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                                 null, options, options[0]);
                         //get selected pawn to exclude
@@ -253,7 +253,7 @@ public class CharacterCardsPanel extends JPanel {
                         //get characterCard's state and convert its elements to String
                         String[] options = card11.getState().stream().map(Object::toString).toArray(String[]::new);
                         //create and show JOptionPane
-                        int option = JOptionPane.showOptionDialog(this, "Select the pawn to move", "Select PawnColour",
+                        int option = JOptionPane.showOptionDialog(null, "Select the pawn to move", "Select PawnColour",
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                                 null, options, options[0]);
                         if (option == -1) return;
@@ -267,7 +267,7 @@ public class CharacterCardsPanel extends JPanel {
                     case Card12 ignored12 -> {
                         PawnColour toRemove;
                         String[] options = new String[]{"RED", "PINK", "GREEN", "YELLOW", "BLUE"};
-                        int option = JOptionPane.showOptionDialog(this, "Title", "Message",
+                        int option = JOptionPane.showOptionDialog(null, "Title", "Select a colour",
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                                 null, options, options[0]);
                         if (option == -1) return;

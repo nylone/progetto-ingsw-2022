@@ -60,16 +60,16 @@ public class GUISocketListener implements Runnable {
                 Message input = sw.awaitMessage();
                 switch (input) {
                     case LobbyClosed ignored -> {
-                        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Lobby was closed by the server.\n" +
-                                "Client is disconnecting from the server.", "Lobby closed", JOptionPane.INFORMATION_MESSAGE));
+                        JOptionPane.showMessageDialog(null, "Lobby was closed by the server.\n" +
+                                "Client is disconnecting from the server.", "Lobby closed", JOptionPane.INFORMATION_MESSAGE);
                         //close socket and return to StartPanel
                         sw.close();
                         ctx.getWindow().changeView(new StartPanel(ctx));
                         return;
                     }
                     case ClientDisconnected clientDisconnected ->
-                            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Client " + clientDisconnected.getLastDisconnectedNickname() +
-                                    " just disconnected.", "Client disconnected", JOptionPane.INFORMATION_MESSAGE));
+                            JOptionPane.showMessageDialog(null, "Client " + clientDisconnected.getLastDisconnectedNickname() +
+                                    " just disconnected.", "Client disconnected", JOptionPane.INFORMATION_MESSAGE);
                     case ModelUpdated modelUpdated -> {
                         //create a new GameInProgressPanel with updated model
                         ctx.getWindow().changeView(new GameInProgressPanel(ctx, modelUpdated.getModel(), this));
@@ -80,7 +80,7 @@ public class GUISocketListener implements Runnable {
                         requestAndFeedback.add(new Pair<>(this.playerActionRequest, playerActionFeedback));
                         //show eventual fail report
                         if (playerActionFeedback.getStatusCode() == StatusCode.Fail)
-                            JOptionPane.showMessageDialog(ctx.getWindow().getFrame(), playerActionFeedback.getReport());
+                            JOptionPane.showMessageDialog(null, playerActionFeedback.getReport());
                         //clear history when endTurn action has been performed by user
                         if (playerActionRequest.getClass().equals(EndTurnOfActionPhase.class) && playerActionFeedback.getStatusCode() == StatusCode.Success) {
                             requestAndFeedback.clear();
@@ -90,11 +90,12 @@ public class GUISocketListener implements Runnable {
                         return;
                     }
                     case InvalidRequest ignored ->
-                            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Your request has not been executed, probably you are trying to play out of turn", "Warning", JOptionPane.INFORMATION_MESSAGE));
+                            JOptionPane.showMessageDialog(null, "Your request has not been executed, probably you are trying to play out of turn",
+                                    "Warning", JOptionPane.INFORMATION_MESSAGE);
                     default -> throw new IllegalStateException("Unexpected value: " + input.getClass());
                 }
             } catch (Exception e) {
-                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Error", JOptionPane.INFORMATION_MESSAGE));
+                JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Error", JOptionPane.INFORMATION_MESSAGE);
                 try {
                     sw.close();
                 } catch (IOException ex) {
