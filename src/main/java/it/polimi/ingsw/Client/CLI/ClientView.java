@@ -66,7 +66,7 @@ public class ClientView {
      *
      * @return gameBoard representing the game
      */
-    public Model getGameBoard() {
+    public Model getModel() {
         return this.model;
     }
 

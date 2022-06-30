@@ -166,7 +166,7 @@ public class CliWriter implements Runnable {
      */
     private void playCharacterCard() throws IOException {
         //check for GameMode's validity
-        if (this.clientView.getGameBoard().getGameMode() == GameMode.SIMPLE) {
+        if (this.clientView.getModel().getGameMode() == GameMode.SIMPLE) {
             System.out.println("Command valid only in Advanced GameMode");
             return;
         }
@@ -174,11 +174,11 @@ public class CliWriter implements Runnable {
         int selected = getCharacterCardIndex();
         int finalSelected = selected;
         //get current player
-        PlayerBoard currentPlayer = this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer();
+        PlayerBoard currentPlayer = this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer();
         //extract CharacterCard from GameBoard
-        CharacterCard characterCard = this.clientView.getGameBoard().getCharacterCards().stream().filter(characterCard1 -> characterCard1.getId() == finalSelected).findFirst().get();
+        CharacterCard characterCard = this.clientView.getModel().getCharacterCards().stream().filter(characterCard1 -> characterCard1.getId() == finalSelected).findFirst().get();
         //get selected characterCard's index from gameBoard
-        selected = IntStream.range(0, 3).filter(i -> this.clientView.getGameBoard().getCharacterCards().get(i).getId() == characterCard.getId()).findFirst().orElse(selected);
+        selected = IntStream.range(0, 3).filter(i -> this.clientView.getModel().getCharacterCards().get(i).getId() == characterCard.getId()).findFirst().orElse(selected);
         PlayCharacterCard playCharacterCard;
         PlayerActionRequest playerActionRequest;
         //pattern matching switch responsible for redirecting user to right input creation
@@ -394,7 +394,7 @@ public class CliWriter implements Runnable {
      */
     private void characterCardInfo() throws IOException {
         //check for GameMode's validity
-        if (this.clientView.getGameBoard().getGameMode() == GameMode.SIMPLE) {
+        if (this.clientView.getModel().getGameMode() == GameMode.SIMPLE) {
             System.out.println("Command valid only in Advanced GameMode");
             return;
         }
@@ -639,13 +639,13 @@ public class CliWriter implements Runnable {
     private void playAssistantCard() throws IOException {
         System.out.println("select one of these available assistant card");
         //get the unused cards
-        ArrayList<AssistantCard> availableAssistants = this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards()
+        ArrayList<AssistantCard> availableAssistants = this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards()
                 .stream().filter(assistantCard -> !assistantCard.getUsed())
                 .collect(Collectors.toCollection(ArrayList::new));
         //from the unused cards, extract the card with a priority not selected before by other players
-        for (PlayerBoard pb : this.clientView.getGameBoard().getMutableTurnOrder().getCurrentTurnOrder()) {
-            if (this.clientView.getGameBoard().getMutableTurnOrder().getMutableSelectedCard(pb).isPresent()) {
-                availableAssistants.removeIf(assistantCard -> assistantCard.getPriority() == this.clientView.getGameBoard().getMutableTurnOrder().getMutableSelectedCard(pb).get().getPriority());
+        for (PlayerBoard pb : this.clientView.getModel().getMutableTurnOrder().getCurrentTurnOrder()) {
+            if (this.clientView.getModel().getMutableTurnOrder().getMutableSelectedCard(pb).isPresent()) {
+                availableAssistants.removeIf(assistantCard -> assistantCard.getPriority() == this.clientView.getModel().getMutableTurnOrder().getMutableSelectedCard(pb).get().getPriority());
             }
         }
         //get the priority of the available cards
@@ -662,7 +662,7 @@ public class CliWriter implements Runnable {
             }
             //repeat until the user pic
         } while (true);
-        PlayAssistantCard playAssistantCard = new PlayAssistantCard(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected);
+        PlayAssistantCard playAssistantCard = new PlayAssistantCard(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected);
         PlayerActionRequest playerAction = new PlayerActionRequest(playAssistantCard);
         socketWrapper.sendMessage(playerAction);
     }
@@ -679,7 +679,7 @@ public class CliWriter implements Runnable {
      */
     private void moveStudent() throws IOException {
         //get entrance size
-        int entranceSize = this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getEntranceSize() - 1;
+        int entranceSize = this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getEntranceSize() - 1;
         System.out.println("Insert the number of entrance's position between 0 and " + entranceSize);
         //get selected pawn's index from entrance
         int selected = getInt();
@@ -691,10 +691,10 @@ public class CliWriter implements Runnable {
         MoveStudent moveStudent;
         if (choice.isEmpty()) {
             //if the user has typed 'enter' then initialize the moveStudent action with dining room as MoveDestination
-            moveStudent = new MoveStudent(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected, MoveDestination.toDiningRoom());
+            moveStudent = new MoveStudent(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected, MoveDestination.toDiningRoom());
         } else {
             //if the user has typed a number then initialize the moveStudent with that number
-            moveStudent = new MoveStudent(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected, MoveDestination.toIsland(choice.get()));
+            moveStudent = new MoveStudent(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected, MoveDestination.toIsland(choice.get()));
         }
         //create and initialize clientPlayerAction to send to the Server
         PlayerActionRequest clientPlayerAction = new PlayerActionRequest(moveStudent);
@@ -715,7 +715,7 @@ public class CliWriter implements Runnable {
         //get the amount of steps to perform
         int steps = getInt();
         //create and initialize moveMotherNature action
-        MoveMotherNature moveMotherNature = new MoveMotherNature(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId(), steps);
+        MoveMotherNature moveMotherNature = new MoveMotherNature(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), steps);
         //create and initialize PlayerActionRequest to send to the server
         PlayerActionRequest clientPlayerAction = new PlayerActionRequest(moveMotherNature);
         //send action request to the server
@@ -729,11 +729,11 @@ public class CliWriter implements Runnable {
      * @throws IOException if an I/O error occurs
      */
     private void chooseCloud() throws IOException {
-        System.out.println("Select one cloud from 0 to " + (this.clientView.getGameBoard().getClouds().size() - 1));
+        System.out.println("Select one cloud from 0 to " + (this.clientView.getModel().getClouds().size() - 1));
         //get selected Cloud's ID
         int selectedCloud = getInt();
         //create and initialize ChooseCloudTile Object with the selected Island's ID
-        ChooseCloudTile chooseCloudTile = new ChooseCloudTile(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selectedCloud);
+        ChooseCloudTile chooseCloudTile = new ChooseCloudTile(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selectedCloud);
         //create and initialize clientPlayerAction request to send to the Server
         PlayerActionRequest clientPlayerAction = new PlayerActionRequest(chooseCloudTile);
         //send clientPlayerAction request to the Server
@@ -745,7 +745,7 @@ public class CliWriter implements Runnable {
      */
     private void endTurn() throws IOException {
         //create and initialize endTurnOfActionPhase action
-        EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getId());
+        EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId());
         //create and initialize PlayerActionRequest to send to the server
         PlayerActionRequest clientPlayerAction = new PlayerActionRequest(endTurnOfActionPhase);
         //send action to the server
@@ -757,12 +757,12 @@ public class CliWriter implements Runnable {
      */
     private void printGameActions() {
         //check whether the user is allowed to perform any action (i.e. if is the current player)
-        if (!this.clientView.getNickname().equals(this.clientView.getGameBoard().getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {
+        if (!this.clientView.getNickname().equals(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {
             System.out.println("No actions are allowed out of turn");
             return;
         }
         //get current gamePhase
-        GamePhase gamePhase = this.clientView.getGameBoard().getMutableTurnOrder().getGamePhase();
+        GamePhase gamePhase = this.clientView.getModel().getMutableTurnOrder().getGamePhase();
         System.out.println("during the " + gamePhase + " phase these are the available commands:");
         switch (gamePhase) {
             //during SETUP phase the user can only play the assistant card
@@ -772,13 +772,13 @@ public class CliWriter implements Runnable {
             case ACTION -> {
                 System.out.println("--moveStudent (move one student from entrance to dining room or one island)");
                 //only in advanced game mode the user can play a CharacterCard
-                if (this.clientView.getGameBoard().getGameMode() == GameMode.ADVANCED) {
+                if (this.clientView.getModel().getGameMode() == GameMode.ADVANCED) {
                     System.out.println("--playCharacterCard (activate the powerful effect of the character card)");
                 }
                 System.out.println("--moveMotherNature (move mother nature and calculate the influence");
                 System.out.println("--chooseCloud (fill your entrance after moving three students)");
                 //only in advanced game mode the user can get CharacterCard's info
-                if (this.clientView.getGameBoard().getGameMode() == GameMode.ADVANCED)
+                if (this.clientView.getModel().getGameMode() == GameMode.ADVANCED)
                     System.out.println("--characterCardInfo (show the information about one characterCard)");
                 System.out.println("--endTurn (end your turn)");
             }
@@ -799,7 +799,7 @@ public class CliWriter implements Runnable {
         int selected;
         //ArrayList containing the 3 characterCards' numbers available during the game
         ArrayList<Integer> characterCardsNumbers =
-                this.clientView.getGameBoard().getCharacterCards().stream().map(CharacterCard::getId).collect(Collectors.toCollection(ArrayList::new));
+                this.clientView.getModel().getCharacterCards().stream().map(CharacterCard::getId).collect(Collectors.toCollection(ArrayList::new));
         do {
             //acquire number
             selected = getInt();
