@@ -5,6 +5,10 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusC
 import java.io.Serial;
 import java.util.UUID;
 
+/**
+ * A {@link Response} to represent the output the controller gave on a previous {@link it.polimi.ingsw.Server.Messages.Events.Requests.ConnectLobbyRequest} or
+ * {@link it.polimi.ingsw.Server.Messages.Events.Requests.CreateLobbyRequest}
+ */
 public class LobbyRedirect extends Response {
     @Serial
     private static final long serialVersionUID = 310L;
@@ -12,24 +16,48 @@ public class LobbyRedirect extends Response {
 
     private final String admin;
 
+    /**
+     * Construct the response
+     * @param statusCode the status code of the response
+     * @param lobbyID    the UUID of the lobby
+     * @param admin      the admin of the lobby
+     */
     private LobbyRedirect(StatusCode statusCode, UUID lobbyID, String admin) {
         super(statusCode);
         this.lobbyID = lobbyID;
         this.admin = admin;
     }
 
+    /**
+     * Returns a failed status code response
+     * @return a failed status code response
+     */
     public static LobbyRedirect fail() {
         return new LobbyRedirect(StatusCode.Fail, null, null);
     }
 
+    /**
+     * Returns a successful status code response
+     * @param lobbyID the UUID of the successfully connected to lobby
+     * @param admin the admin of the lobby
+     * @return a successful status code response
+     */
     public static LobbyRedirect success(UUID lobbyID, String admin) {
         return new LobbyRedirect(StatusCode.Success, lobbyID, admin);
     }
 
+    /**
+     * Get the id of the lobby
+     * @return the UUID of the lobby or null if no lobby was linked to the response
+     */
     public UUID getLobbyID() {
         return lobbyID;
     }
 
+    /**
+     * Get the admin of the lobby
+     * @return the nickname of the admin of the lobby or null if no lobby was linked to the response
+     */
     public String getAdmin() {
         return admin;
     }

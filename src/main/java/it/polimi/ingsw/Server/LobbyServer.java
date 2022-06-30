@@ -98,7 +98,7 @@ public class LobbyServer implements Runnable{
                                 nickname = castedEvent.getNickname();
                                 synchronized (connectedNicknames) {
                                     if (connectedNicknames.contains(nickname)) {
-                                        sw.sendMessage(new LobbyAccept(StatusCode.Fail, null));
+                                        sw.sendMessage(LobbyAccept.fail());
                                     } else {
                                         connectedNicknames.add(nickname);
                                         List<LobbyInfo> publicLobbies = lobbyMap.values().stream()
@@ -106,7 +106,7 @@ public class LobbyServer implements Runnable{
                                                 .filter(Predicate.not(Lobby::isGameInProgress))
                                                 .map(LobbyInfo::new)
                                                 .toList();
-                                        sw.sendMessage(new LobbyAccept(StatusCode.Success, publicLobbies));
+                                        sw.sendMessage(LobbyAccept.success(publicLobbies));
                                         state = State.REDIRECT_PHASE;
                                     }
                                 }
