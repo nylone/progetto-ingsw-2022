@@ -267,7 +267,7 @@ public class CharacterCardsPanel extends JPanel {
                     case Card12 ignored12 -> {
                         PawnColour toRemove;
                         String[] options = new String[]{"RED", "PINK", "GREEN", "YELLOW", "BLUE"};
-                        int option = JOptionPane.showOptionDialog(null, "Title", "Select a colour",
+                        int option = JOptionPane.showOptionDialog(null, "Select the pawn to remove", "Select a colour",
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                                 null, options, options[0]);
                         if (option == -1) return;
