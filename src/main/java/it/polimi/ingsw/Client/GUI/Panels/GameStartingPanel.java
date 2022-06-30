@@ -73,7 +73,6 @@ public class GameStartingPanel extends JPanel {
         connectedPlayersList.setCellRenderer(cellRenderer);
         connectedPlayersList.setPreferredSize(new Dimension(720, 100));
 
-
         // adding all elements to the view
         this.add(title);
         this.add(disconnect);
@@ -91,7 +90,6 @@ public class GameStartingPanel extends JPanel {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            new StartPanel(ctx);
         });
 
         start.addActionListener(actionEvent -> {
@@ -165,6 +163,11 @@ public class GameStartingPanel extends JPanel {
                     }
                 } catch (Exception e) {
                     SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Disconnected from server", "Error", JOptionPane.INFORMATION_MESSAGE));
+                    try {
+                        sw.close();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     window.changeView(new StartPanel(ctx));
                     return;
                 }

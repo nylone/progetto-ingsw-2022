@@ -12,6 +12,7 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusC
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -103,6 +104,7 @@ public class LobbySelectionPanel extends JTabbedPane {
                 connect.requestFocusInWindow();
             });
             connect.addActionListener(actionEvent -> {
+                connect.setEnabled(false);
                 // normalize id
                 String idString = lobbyID.getText().trim();
                 lobbyID.setText(idString);
@@ -112,21 +114,26 @@ public class LobbySelectionPanel extends JTabbedPane {
                     boolean again = true;
                     do {
                         Message response = sw.awaitMessage();
-                        switch (response) {
-                            case LobbyRedirect lobbyRedirect -> {
-                                if (lobbyRedirect.getStatusCode() == StatusCode.Success) {
-                                    //Switch to a new LobbySelectionPanel if user has been accepted by Server
-                                    window.changeView(new GameStartingPanel(ctx, false, lobbyRedirect.getLobbyID()));
-                                    again = false;
-                                } else {
-                                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE));
-                                }
+                        if (response instanceof LobbyRedirect lobbyRedirect) {
+                            if (lobbyRedirect.getStatusCode() == StatusCode.Success) {
+                                //Switch to a new LobbySelectionPanel if user has been accepted by Server
+                                window.changeView(new GameStartingPanel(ctx, false, lobbyRedirect.getLobbyID()));
+                                again = false;
+                            } else {
+                                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE));
+                                connect.setEnabled(true);
                             }
-                            default -> throw new IllegalStateException("Unexpected value: " + response);
+                        } else {
+                            throw new IllegalStateException("Unexpected value: " + response);
                         }
                     } while (again);
                 } catch (Exception e) {
                     SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Error", JOptionPane.INFORMATION_MESSAGE));
+                    try {
+                        sw.close();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     window.changeView(new StartPanel(ctx));
                 }
             });
@@ -189,6 +196,7 @@ public class LobbySelectionPanel extends JTabbedPane {
             createPanel.add(maxPlayers_4);
 
             create.addActionListener(actionEvent -> {
+                create.setEnabled(false);
                 // normalize id
                 try {
                     sw.sendMessage(new CreateLobbyRequest(
@@ -198,21 +206,26 @@ public class LobbySelectionPanel extends JTabbedPane {
                     boolean again = true;
                     do {
                         Message response = sw.awaitMessage();
-                        switch (response) {
-                            case LobbyRedirect lobbyRedirect -> {
-                                if (lobbyRedirect.getStatusCode() == StatusCode.Success) {
-                                    //Switch to a new LobbySelectionPanel if user has been accepted by Server
-                                    window.changeView(new GameStartingPanel(ctx, true, lobbyRedirect.getLobbyID()));
-                                    again = false;
-                                } else {
-                                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE));
-                                }
+                        if (response instanceof LobbyRedirect lobbyRedirect) {
+                            if (lobbyRedirect.getStatusCode() == StatusCode.Success) {
+                                //Switch to a new LobbySelectionPanel if user has been accepted by Server
+                                window.changeView(new GameStartingPanel(ctx, true, lobbyRedirect.getLobbyID()));
+                                again = false;
+                            } else {
+                                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE));
+                                create.setEnabled(true);
                             }
-                            default -> throw new IllegalStateException("Unexpected value: " + response);
+                        } else {
+                            throw new IllegalStateException("Unexpected value: " + response);
                         }
                     } while (again);
                 } catch (Exception e) {
                     SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Error", JOptionPane.INFORMATION_MESSAGE));
+                    try {
+                        sw.close();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     window.changeView(new StartPanel(ctx));
                 }
             });

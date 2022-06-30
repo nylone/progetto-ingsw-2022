@@ -12,6 +12,7 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.*;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,6 +95,11 @@ public class GUISocketListener implements Runnable {
                 }
             } catch (Exception e) {
                 SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Error", JOptionPane.INFORMATION_MESSAGE));
+                try {
+                    sw.close();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
                 ctx.getWindow().changeView(new StartPanel(ctx));
                 return;
             }

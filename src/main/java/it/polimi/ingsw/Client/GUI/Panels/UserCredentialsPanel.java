@@ -10,6 +10,7 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusC
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Panel that allows user to choose his username
@@ -53,6 +54,7 @@ public class UserCredentialsPanel extends JPanel {
             login.requestFocusInWindow();
         }));
         login.addActionListener(actionEvent -> {
+            login.setEnabled(false);
             // normalize username
             ctx.setNickname(username.getText().trim());
             username.setText(ctx.getNickname());
@@ -66,21 +68,26 @@ public class UserCredentialsPanel extends JPanel {
                     boolean again = true;
                     do {
                         Message response = sw.awaitMessage();
-                        switch (response) {
-                            case LobbyAccept lobbyAccept -> {
-                                if (lobbyAccept.getStatusCode() == StatusCode.Success) {
-                                    //Switch to a new LobbySelectionPanel if user has been accepted by Server
-                                    ctx.getWindow().changeView(new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies()));
-                                    again = false;
-                                } else {
-                                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Server denied your login", "Warning", JOptionPane.INFORMATION_MESSAGE));
-                                }
+                        if (response instanceof LobbyAccept lobbyAccept) {
+                            if (lobbyAccept.getStatusCode() == StatusCode.Success) {
+                                //Switch to a new LobbySelectionPanel if user has been accepted by Server
+                                ctx.getWindow().changeView(new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies()));
+                                again = false;
+                            } else {
+                                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Server denied your login", "Warning", JOptionPane.INFORMATION_MESSAGE));
+                                login.setEnabled(true);
                             }
-                            default -> throw new IllegalStateException("Unexpected value: " + response);
+                        } else {
+                            throw new IllegalStateException("Unexpected value: " + response);
                         }
                     } while (again);
                 } catch (Exception e) {
                     SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Warning", JOptionPane.INFORMATION_MESSAGE));
+                    try {
+                        sw.close();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     ctx.getWindow().changeView(new StartPanel(ctx));
                 }
             }).start();

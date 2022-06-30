@@ -56,22 +56,27 @@ public class StartPanel extends JPanel {
         // enter on port moves focus to connect
         port.addActionListener((actionEvent -> connect.requestFocusInWindow()));
 
-        connect.addActionListener(actionEvent -> new Thread(() -> {
-            try {
-                SocketWrapper sw = new KeepAliveSocketWrapper(new Socket(
-                        address.getText().trim(),
-                        Integer.parseInt(port.getText().trim())), 5000, true);
-                if (sw.awaitMessage() instanceof Welcome welcome && welcome.getStatusCode() == StatusCode.Success) {
-                    // spawn and change to next view
-                    ctx.setSocketWrapper(sw);
-                    ctx.getWindow().changeView(new UserCredentialsPanel(ctx));
-                } else {
-                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Server did not welcome us", "Warning", JOptionPane.INFORMATION_MESSAGE));
+        connect.addActionListener(actionEvent -> {
+            connect.setEnabled(false);
+            new Thread(() -> {
+                try {
+                    SocketWrapper sw = new KeepAliveSocketWrapper(new Socket(
+                            address.getText().trim(),
+                            Integer.parseInt(port.getText().trim())), 5000, true);
+                    if (sw.awaitMessage() instanceof Welcome welcome && welcome.getStatusCode() == StatusCode.Success) {
+                        // spawn and change to next view
+                        ctx.setSocketWrapper(sw);
+                        ctx.getWindow().changeView(new UserCredentialsPanel(ctx));
+                    } else {
+                        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Server did not welcome us", "Warning", JOptionPane.INFORMATION_MESSAGE));
+                        connect.setEnabled(true);
+                    }
+                } catch (Exception e) {
+                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "No valid server was found", "Warning", JOptionPane.INFORMATION_MESSAGE));
+                    connect.setEnabled(true);
                 }
-            } catch (Exception e) {
-                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "No valid server was found", "Warning", JOptionPane.INFORMATION_MESSAGE));
-            }
-        }).start());
+            }).start();
+        });
 
         // layout object declaration and setup
         SpringLayout layout = new SpringLayout();
