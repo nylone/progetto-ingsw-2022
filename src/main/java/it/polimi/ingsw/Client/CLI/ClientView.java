@@ -13,7 +13,7 @@ public class ClientView {
     /**
      * Used to contain the game
      */
-    Model model;
+    private Model model;
     /**
      * Used to verify whether the client is connected to the Server
      */

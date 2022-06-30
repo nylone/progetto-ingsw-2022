@@ -262,7 +262,7 @@ public class IslandFieldPanel extends JPanel {
     private int getMotherNatureSteps(ArrayList<IslandGroup> islandGroups, IslandGroup destinationIsland) {
         //get motherNature's islandGroup's index
         int motherNatureIndex = islandGroups.indexOf(model.getMutableIslandField().getMutableMotherNaturePosition());
-        int steps = 0;
+        int steps = 1;
         //repeat until found islandGroup with same id as the one clicked by user
         while (!islandGroups.get((motherNatureIndex + steps) % islandGroups.size()).equals(destinationIsland)) {
             steps = steps + 1;
