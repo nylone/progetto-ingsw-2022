@@ -40,7 +40,7 @@ public class Lobby {
 
     public synchronized void executeAction(PlayerAction pa) throws InputValidationException, OperationException {
         if (controller == null) {
-            throw new ForbiddenOperationException("Lobby is in waiting state, no game is running");
+            throw new ForbiddenOperationException("Game lobby", "Lobby is in waiting state, no game is running");
         }
         controller.executeAction(pa);
     }

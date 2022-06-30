@@ -75,25 +75,24 @@ public class TurnOrder implements Serializable {
      * @param pb the player to set the card for
      * @param ac the card selected by the player
      * @throws ForbiddenOperationException if the card was already used, if the {@link GamePhase} is not in {@link GamePhase#SETUP}
-     *                                     or if it's not the player's turn yet
-     * @throws InvalidElementException     if the card or the player were null
-     * @throws DuplicateElementException   if the player could have played a different, not yet played by him or anyone else (during this turn) card.
+     *                                     or if it's not the player's turn yet, if the card or the player were null or if
+     *                                     the player could have played a different, not yet played by him or anyone else (during this turn) card.
      */
-    public void setSelectedCard(PlayerBoard pb, AssistantCard ac) throws ForbiddenOperationException, InvalidElementException, DuplicateElementException {
+    public void setSelectedCard(PlayerBoard pb, AssistantCard ac) throws ForbiddenOperationException {
         if (pb == null) { // not null contract
-            throw new InvalidElementException("PlayerBoard pb");
+            throw new ForbiddenOperationException("PlayerBoard pb", "can't be null");
         }
         if (getGamePhase() != GamePhase.SETUP || !isOwnTurn(pb)) { // correct phase and turn contract
-            throw new ForbiddenOperationException("setSelectedCard");
+            throw new ForbiddenOperationException("Game phase or turn", "wrong game phase or turn for player");
         }
         if (ac == null) { // not null contract
-            throw new InvalidElementException("AssistantCard ac");
+            throw new ForbiddenOperationException("AssistantCard ac", "can't be null");
         }
         if (ac.getUsed()) { // no reuse card contract
-            throw new ForbiddenOperationException("setSelectedCard");
+            throw new ForbiddenOperationException("setSelectedCard", "can't have been previously used");
         }
         if (isAlreadyInSelection(ac) && canPlayUniqueCard(pb)) { // no duplicate cards contract
-            throw new DuplicateElementException("AssistantCard ac");
+            throw new ForbiddenOperationException("AssistantCard ac", "should be a unique card whenever possible");
         }
 
         // validation passed:

@@ -293,7 +293,7 @@ public class PlayerBoard implements Serializable {
         if (this.coinBalance >= card.getCost()) {
             this.coinBalance -= card.getCost();
         } else {
-            throw new ForbiddenOperationException("payCharacterEffect");
+            throw new ForbiddenOperationException("payCharacterEffect", "player coin balance too low");
         }
     }
 

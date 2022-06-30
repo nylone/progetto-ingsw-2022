@@ -52,10 +52,10 @@ public class IslandGroup implements Serializable {
             }
             this.id = Arrays.stream(islandGroups)
                     .min(Comparator.comparingInt(IslandGroup::getId))
-                    .orElseThrow(() -> new FailedOperationException("Island Groups Constructor"))
+                    .orElseThrow(() -> new FailedOperationException("Island Groups Constructor", "no minimum ID between groups found"))
                     .getId();
         } else {
-            throw new ForbiddenOperationException("Island Groups Constructor");
+            throw new ForbiddenOperationException("Island Groups Constructor", "groups are not join-able");
         }
     }
 
