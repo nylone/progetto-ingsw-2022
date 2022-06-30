@@ -86,7 +86,11 @@ public class GameStartingPanel extends JPanel {
         this.add(gameMode);
 
         disconnect.addActionListener(actionEvent -> {
-            sw.close();
+            try {
+                sw.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             new StartPanel(ctx);
         });
 
