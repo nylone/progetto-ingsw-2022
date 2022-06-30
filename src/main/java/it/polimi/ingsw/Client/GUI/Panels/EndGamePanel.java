@@ -36,7 +36,7 @@ public class EndGamePanel extends JPanel {
         JButton closeButton = new JButton("Close game");
         closeButton.addActionListener(e -> System.exit(0));
         JButton startButton = new JButton("Play again");
-        startButton.addActionListener(e -> new UserCredentialsPanel(ctx));
+        startButton.addActionListener(e -> ctx.getWindow().changeView(new UserCredentialsPanel(ctx)));
         //---ABSOLUTE POSITIONING---
         WinTitle.setBounds(250, 10, 523, 120);
         winnersNames.setBounds(0, 200, 1080, 150);
