@@ -67,8 +67,8 @@ public class GUISocketListener implements Runnable {
                         return;
                     }
                     case ClientDisconnected clientDisconnected ->
-                        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Client " + clientDisconnected.getLastDisconnectedNickname() +
-                                " just disconnected.", "Client disconnected", JOptionPane.INFORMATION_MESSAGE));
+                            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Client " + clientDisconnected.getLastDisconnectedNickname() +
+                                    " just disconnected.", "Client disconnected", JOptionPane.INFORMATION_MESSAGE));
                     case ModelUpdated modelUpdated -> {
                         //create a new GameInProgressPanel with updated model
                         ctx.getWindow().changeView(new GameInProgressPanel(ctx, modelUpdated.getModel(), this));

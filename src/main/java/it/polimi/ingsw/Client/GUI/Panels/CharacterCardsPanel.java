@@ -293,7 +293,8 @@ public class CharacterCardsPanel extends JPanel {
             checkStatefulCard(characterCards.get(i), characterCardsStatelabes.get(i));
             //draw Coin's image whether the card has been used at least once
             if (characterCards.get(i).getTimeUsed() > 0) coinLabels.get(i).setVisible(true);
-        };
+        }
+        ;
         //--ABSOLUTE POSITIONING--
         coinLabels.get(0).setBounds(125, 320, 150, 160);
         coinLabels.get(1).setBounds(465, 320, 150, 160);

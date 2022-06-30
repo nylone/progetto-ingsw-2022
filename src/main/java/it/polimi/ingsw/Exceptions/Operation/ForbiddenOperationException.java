@@ -8,7 +8,8 @@ package it.polimi.ingsw.Exceptions.Operation;
 public class ForbiddenOperationException extends OperationException {
     /**
      * Creates an exception reporting a specific error and an identifier for the failed operation
-     * @param operationName the name of the operation in question
+     *
+     * @param operationName  the name of the operation in question
      * @param additionalInfo a short description of the error
      */
     public ForbiddenOperationException(String operationName, String additionalInfo) {

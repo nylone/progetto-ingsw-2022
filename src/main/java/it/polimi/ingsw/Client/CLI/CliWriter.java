@@ -712,9 +712,9 @@ public class CliWriter implements Runnable {
      */
     private void moveMotherNature() throws IOException {
         int steps = this.clientView.getModel().getMutableEffects().isMotherNatureMovementIncreased() ?
-                this.clientView.getModel().getMutableTurnOrder().getMutableSelectedCard(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer()).get().getPriority()+2 :
+                this.clientView.getModel().getMutableTurnOrder().getMutableSelectedCard(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer()).get().getPriority() + 2 :
                 this.clientView.getModel().getMutableTurnOrder().getMutableSelectedCard(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer()).get().getPriority();
-        System.out.println("You can now move mother nature up to "+steps+" steps");
+        System.out.println("You can now move mother nature up to " + steps + " steps");
         System.out.println("How many steps do you want mother nature to take?");
         //get the amount of steps to perform
         steps = getInt();

@@ -6,6 +6,7 @@ package it.polimi.ingsw.Exceptions.Input;
 public class GenericInputValidationException extends InputValidationException {
     /**
      * Creates an exception reporting a specific error and an identifier for the part of the failed contract
+     *
      * @param elementName the name of the field in the contract that failed validation
      * @param errorReport a short description of the error
      */

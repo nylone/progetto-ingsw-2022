@@ -119,9 +119,9 @@ public class GameInProgressPanel extends JTabbedPane {
             //create and add CloudPanel to JTabbedPane
             this.add("Clouds", new CloudPanel(model.getClouds(), model.getMutableTurnOrder().getMutableCurrentPlayer(), guiSocketListener, sw));
 
-            if(ownNickname.equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname())){
+            if (ownNickname.equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {
                 this.add(getNextAction(model), null);
-                this.setEnabledAt(this.getTabCount()-1, false);
+                this.setEnabledAt(this.getTabCount() - 1, false);
             }
             //set JTabbedPane to last tab whether the user has moved MotherNature (las tab is always the CloudPanel)
             if (guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
@@ -153,32 +153,6 @@ public class GameInProgressPanel extends JTabbedPane {
         }
     }
 
-    private String getNextAction(Model model) {
-        String nextAction = "NEXT ACTION: ";
-        if(guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0){
-            nextAction = nextAction + "Play assistant card";
-            return nextAction;
-        }
-        if ((model.getMutablePlayerBoards().size() != 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) < 3) ||
-                (model.getMutablePlayerBoards().size() == 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) < 4)) {
-            nextAction = nextAction + "Move Student";
-            return nextAction;
-        }
-        if(guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 0){
-            nextAction = nextAction + "Move MotherNature";
-            return nextAction;
-        }
-        if(guiSocketListener.getSuccessfulRequestsByType(ChooseCloudTile.class) == 0){
-            nextAction = nextAction + "Choose cloud";
-            return nextAction;
-        }
-        if(guiSocketListener.getSuccessfulRequestsByType(EndTurnOfActionPhase.class) == 0){
-            nextAction = nextAction + "End your turn";
-            return nextAction;
-        }
-        return "No action is currently available";
-    }
-
     /**
      * Should be used upon the second creation of GameInProgressPanel
      *
@@ -192,5 +166,31 @@ public class GameInProgressPanel extends JTabbedPane {
         this.guiSocketListener = guiSocketListener;
         Thread readerThread = new Thread(guiSocketListener);
         readerThread.start();
+    }
+
+    private String getNextAction(Model model) {
+        String nextAction = "NEXT ACTION: ";
+        if (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0) {
+            nextAction = nextAction + "Play assistant card";
+            return nextAction;
+        }
+        if ((model.getMutablePlayerBoards().size() != 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) < 3) ||
+                (model.getMutablePlayerBoards().size() == 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) < 4)) {
+            nextAction = nextAction + "Move Student";
+            return nextAction;
+        }
+        if (guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 0) {
+            nextAction = nextAction + "Move MotherNature";
+            return nextAction;
+        }
+        if (guiSocketListener.getSuccessfulRequestsByType(ChooseCloudTile.class) == 0) {
+            nextAction = nextAction + "Choose cloud";
+            return nextAction;
+        }
+        if (guiSocketListener.getSuccessfulRequestsByType(EndTurnOfActionPhase.class) == 0) {
+            nextAction = nextAction + "End your turn";
+            return nextAction;
+        }
+        return "No action is currently available";
     }
 }

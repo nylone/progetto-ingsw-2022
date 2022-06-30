@@ -7,6 +7,7 @@ package it.polimi.ingsw.Exceptions.Container;
 public class FullContainerException extends ContainerException {
     /**
      * Creates an exception with the name of the affected container and a default report
+     *
      * @param containerName a string identifying the container
      */
     public FullContainerException(String containerName) {

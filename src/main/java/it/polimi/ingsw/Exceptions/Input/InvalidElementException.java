@@ -7,6 +7,7 @@ package it.polimi.ingsw.Exceptions.Input;
 public class InvalidElementException extends InputValidationException {
     /**
      * Creates an exception reporting a specific error and an identifier for the part of the failed contract
+     *
      * @param elementName the name of the field in the contract that failed validation
      */
     public InvalidElementException(String elementName) {

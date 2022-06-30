@@ -213,7 +213,7 @@ public class LobbySelectionPanel extends JTabbedPane {
                     } while (again);
                 } catch (Exception e) {
                     SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Error", JOptionPane.INFORMATION_MESSAGE));
-                    window.changeView( new StartPanel(ctx));
+                    window.changeView(new StartPanel(ctx));
                 }
             });
 
