@@ -16,7 +16,7 @@ public class EffectTracker implements Serializable {
     private boolean denyTowerInfluence;
     private boolean increasedInfluence;
     private boolean increasedMotherNatureMovement;
-    private boolean alternativeTeacherAssignmente;
+    private boolean alternativeTeacherAssignment;
 
     /**
      * Constructor for the Tracker (all effects are disabled)
@@ -33,7 +33,7 @@ public class EffectTracker implements Serializable {
         this.denyTowerInfluence = false;
         this.increasedInfluence = false;
         this.increasedMotherNatureMovement = false;
-        this.alternativeTeacherAssignmente = false;
+        this.alternativeTeacherAssignment = false;
     }
 
     /**
@@ -61,7 +61,7 @@ public class EffectTracker implements Serializable {
      * enables the alternative teacher assignment algorithm flag
      */
     public void enableAlternativeTeacherAssignment() {
-        this.alternativeTeacherAssignmente = true;
+        this.alternativeTeacherAssignment = true;
     }
 
     /**
@@ -89,7 +89,7 @@ public class EffectTracker implements Serializable {
      * @return value of the alternative teacher assignment algorithm flag
      */
     public boolean isAlternativeTeacherAssignmentEnabled() {
-        return alternativeTeacherAssignmente;
+        return alternativeTeacherAssignment;
     }
 
     /**

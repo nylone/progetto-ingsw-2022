@@ -321,19 +321,19 @@ public class CharacterCardsPanel extends JPanel {
         String info;
         switch (characterCard) {
             case Card01 ignored9 ->
-                    info = "<html><p width = 300px>EFFECT: Take 1 Student from this card and place it on" +
+                    info = "<html><p width = 300px>EFFECT: Take 1 Student from this card and place it on " +
                             "an Island of your choice. Then, draw a new Student from the Bag and place it on this card.</p></html>";
             case Card02 ignored -> info = "<html><p width = 300px>EFFECT: During this turn, you take control of any" +
                     " number of Professors even if you have the same number of Students as the player who currently controls them.</p></html>";
             case Card03 ignored1 ->
-                    info = "<html><p width = 300px>EFFECT: Choose an Island and resolve the Island as if" +
-                            "Mother Nature had ended her movement there. Mother" +
+                    info = "<html><p width = 300px>EFFECT: Choose an Island and resolve the Island as if " +
+                            "Mother Nature had ended her movement there. Mother " +
                             "Nature will still move and the Island where she ends her movement will also be resolved.</p></html>";
             case Card04 ignored2 -> info = "<html><p width = 300px>EFFECT: You may move Mother Nature up to 2" +
                     " additional Islands than is indicated by the Assistant card you've played.</p></html>";
             case Card05 ignored3 ->
-                    info = "<html><p width = 300px>EFFECT: Place a No Entrytile on an Island of your choice." +
-                            "The first time Mother Nature ends her movement there, put the No Entry tile back onto this card" +
+                    info = "<html><p width = 300px>EFFECT: Place a No Entrytile on an Island of your choice. " +
+                            "The first time Mother Nature ends her movement there, put the No Entry tile back onto this card " +
                             "DO NOT calculate influence on that Island, or place any Towers.</p></html>";
             case Card06 ignored4 ->
                     info = "<html><p width = 300px>EFFECT: When resolving a Conquering on an Island, Towers do not count towards influence.</p></html>";
@@ -347,11 +347,11 @@ public class CharacterCardsPanel extends JPanel {
             case Card10 ignored7 ->
                     info = "<html><p width = 300px>EFFECT: You may exchange up to 2 Students between your entrance and your Dining Room</p></html>";
             case Card11 ignored11 ->
-                    info = "<html><p width = 300px>EFFECT: Take 1 Student from this card and place it in your Dining Room." +
+                    info = "<html><p width = 300px>EFFECT: Take 1 Student from this card and place it in your Dining Room. " +
                             "Then, draw a new Student from the Bag and place it on this card.</p></html>";
             case Card12 ignored8 ->
-                    info = "<html><p width = 300px>EFFECT: Choose a type of Student: every player (including yourself) must return 3 Students of that type" +
-                            "from their Dining Room to the bag. If any player has fewer than 3 Students of that type" +
+                    info = "<html><p width = 300px>EFFECT: Choose a type of Student: every player (including yourself) must return 3 Students of that type " +
+                            "from their Dining Room to the bag. If any player has fewer than 3 Students of that type " +
                             "return as many Students as they have.</p></html>";
             case default -> info = "CharacterCard not recognized";
         }

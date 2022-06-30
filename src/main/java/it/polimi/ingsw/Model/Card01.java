@@ -24,10 +24,7 @@ import java.util.Arrays;
 public class Card01 extends StatefulEffect {
     @Serial
     private static final long serialVersionUID = 103L; // convention: 1 for model, (01 -> 99) for objects
-    /**
-     * Array containing card's pawns
-     */
-    private final PawnColour[] students = new PawnColour[4];
+    private final PawnColour[] students = new PawnColour[4]; // array containing card's pawns
 
     public Card01(Model ctx) {
         super(1, 1, StateType.PAWNCOLOUR, ctx);
@@ -45,7 +42,7 @@ public class Card01 extends StatefulEffect {
     /**
      * Get card's content
      *
-     * @return ArrayList of Objects with pawns (Can be casted to {@link PawnColour})
+     * @return ArrayList of Objects with pawns (Can be cast to {@link PawnColour})
      */
     public ArrayList<Object> getState() {
         return new ArrayList<>(Arrays.asList(students));
