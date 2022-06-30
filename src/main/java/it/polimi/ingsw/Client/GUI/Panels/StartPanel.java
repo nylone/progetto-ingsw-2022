@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.Context;
+import it.polimi.ingsw.Client.GUI.IconLoader;
 import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Network.KeepAliveSocketWrapper;
 import it.polimi.ingsw.Network.SocketWrapper;
@@ -8,6 +9,7 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusC
 import it.polimi.ingsw.Server.Messages.ServerResponses.Welcome;
 
 import javax.swing.*;
+import java.awt.*;
 import java.net.Socket;
 
 /**
@@ -22,8 +24,14 @@ public class StartPanel extends JPanel {
     public StartPanel(Context ctx) {
         // labels
         JLabel title = new JLabel("Eriantys welcomes You!");
+        title.setFont(new Font("SansSerif", Font.BOLD, 40));
+        title.setForeground(Color.WHITE);
         JLabel serverAddressLabel = new JLabel("Server address:", SwingConstants.RIGHT);
+        serverAddressLabel.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        serverAddressLabel.setForeground(Color.WHITE);
         JLabel serverPortLabel = new JLabel("Server port:", SwingConstants.RIGHT);
+        serverPortLabel.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        serverPortLabel.setForeground(Color.WHITE);
 
         // text fields
         JTextField address = new JTextField("localhost", 10);
@@ -69,10 +77,10 @@ public class StartPanel extends JPanel {
         // layout object declaration and setup
         SpringLayout layout = new SpringLayout();
 
-        layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 20, SpringLayout.NORTH, this);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 340, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, this);
 
-        layout.putConstraint(SpringLayout.VERTICAL_CENTER, serverAddressLabel, 20, SpringLayout.VERTICAL_CENTER, title);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER, serverAddressLabel, 60, SpringLayout.VERTICAL_CENTER, title);
         layout.putConstraint(SpringLayout.EAST, serverAddressLabel, -10, SpringLayout.HORIZONTAL_CENTER, title);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, address, 0, SpringLayout.VERTICAL_CENTER, serverAddressLabel);
         layout.putConstraint(SpringLayout.WEST, address, 10, SpringLayout.HORIZONTAL_CENTER, title);
@@ -87,5 +95,11 @@ public class StartPanel extends JPanel {
 
         // apply layout
         this.setLayout(layout);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(IconLoader.userCredentialBackground.getImage(), 0, 0, null);
     }
 }

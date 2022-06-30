@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.Context;
+import it.polimi.ingsw.Client.GUI.IconLoader;
 import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.Events.Requests.DeclarePlayerRequest;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyAccept;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Panel that allows user to choose his username
@@ -25,7 +27,11 @@ public class UserCredentialsPanel extends JPanel {
 
         // labels
         JLabel title = new JLabel("Login");
+        title.setFont(new Font("SansSerif", Font.BOLD, 50));
+        title.setForeground(Color.WHITE);
         JLabel usernameLabel = new JLabel("Username:", SwingConstants.RIGHT);
+        usernameLabel.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        usernameLabel.setForeground(Color.WHITE);
 
         // text fields
         JTextField username = new JTextField("guest" + (int) (Math.random() * 1000), 10);
@@ -84,10 +90,10 @@ public class UserCredentialsPanel extends JPanel {
         // layout object declaration and setup
         SpringLayout layout = new SpringLayout();
 
-        layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 20, SpringLayout.NORTH, this);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 340, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, this);
 
-        layout.putConstraint(SpringLayout.VERTICAL_CENTER, usernameLabel, 20, SpringLayout.VERTICAL_CENTER, title);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER, usernameLabel, 65, SpringLayout.VERTICAL_CENTER, title);
         layout.putConstraint(SpringLayout.EAST, usernameLabel, -10, SpringLayout.HORIZONTAL_CENTER, title);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, username, 0, SpringLayout.VERTICAL_CENTER, usernameLabel);
         layout.putConstraint(SpringLayout.WEST, username, 10, SpringLayout.HORIZONTAL_CENTER, title);
@@ -97,5 +103,11 @@ public class UserCredentialsPanel extends JPanel {
 
         // apply layout
         this.setLayout(layout);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(IconLoader.userCredentialBackground.getImage(), 0, 0, null);
     }
 }

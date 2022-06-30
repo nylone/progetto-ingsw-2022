@@ -10,6 +10,7 @@ import java.util.Objects;
 
 public class IconLoader {
     public static final ImageIcon logo = loadIcon("IconEriantys.png", 600, 600);
+    public static final ImageIcon userCredentialBackground = loadIcon("userCredentialBackground.jpg", 1080, 720);
     public static final ImageIcon motherNature = loadIcon("motherNature.png", 50, 75);
     public static final ImageIcon cloudIcon = loadIcon("cloud.png", 1300, 700);
     public static final ImageIcon sky = loadIcon("sky.png", 1080, 720);
