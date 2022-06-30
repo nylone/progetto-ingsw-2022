@@ -13,7 +13,7 @@ public class HeartBeatTimeoutTask extends TimerTask {
     }
 
     public void run() {
-        timer.cancel();
         sock.close();
+        timer.cancel();
     }
 }

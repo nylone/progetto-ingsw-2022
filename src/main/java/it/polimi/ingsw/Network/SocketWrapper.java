@@ -24,18 +24,14 @@ public class SocketWrapper {
     }
 
     public Message awaitMessage() throws IOException {
-        while (true) {
-            try {
-                return (Message) input.readObject();
-            } catch (Exception e) {
-                Logger.severe("received invalid class as message: " + e.getMessage());
-                if (this.input.read() == -1) {
-                    Logger.info("closing SocketWrapper");
-                    this.close();
-                    Logger.info("closed SocketWrapper");
-                    throw new SocketException("SocketWrapper is closed");
-                }
-            }
+        try {
+            return (Message) input.readObject();
+        } catch (Exception e) {
+            Logger.info("the object stream from socket generated an exception and the SocketWrapper will now be closed." +
+                    "The exception was: " + e.getClass());
+            this.close();
+            Logger.info("closed SocketWrapper");
+            throw new SocketException("SocketWrapper is closed");
         }
     }
 

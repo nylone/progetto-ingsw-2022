@@ -39,7 +39,5 @@ public class CloudComponent extends JButton {
         this.setLayout(new GridLayout(2, 2));
         //add students' labels to CloudComponent
         students.forEach(this::add);
-
-
     }
 }

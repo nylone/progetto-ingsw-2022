@@ -3,7 +3,6 @@ package it.polimi.ingsw.Client.GUI.Listeners;
 import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.Panels.GameInProgressPanel;
 import it.polimi.ingsw.Client.GUI.Panels.StartPanel;
-import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Controller.Actions.EndTurnOfActionPhase;
 import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Misc.Pair;
@@ -20,11 +19,6 @@ import java.util.List;
  * Handles messages received from server and keep a record of current player's actions executed during its turn
  */
 public class GUISocketListener implements Runnable {
-
-    /**
-     * JTabbedPane containing all others JPanels
-     */
-    private final GameInProgressPanel gameInProgressPanel;
 
     /**
      * List of actions executed by current player and their feedbacks
@@ -47,11 +41,9 @@ public class GUISocketListener implements Runnable {
     /**
      * Create a new GUIReader
      *
-     * @param gameInProgressPanel GameInProgressPanel that call the constructor
-     * @param ctx                 Context containing socket and GUI's window
+     * @param ctx Context containing socket and GUI's window
      */
-    public GUISocketListener(GameInProgressPanel gameInProgressPanel, Context ctx) {
-        this.gameInProgressPanel = gameInProgressPanel;
+    public GUISocketListener(Context ctx) {
         this.sw = ctx.getSocketWrapper();
         this.ctx = ctx;
     }
@@ -67,16 +59,16 @@ public class GUISocketListener implements Runnable {
                 Message input = sw.awaitMessage();
                 switch (input) {
                     case LobbyClosed ignored -> {
-                        new PopupMessage("Lobby was closed by the server.\n" +
-                                "Client is disconnecting from the server.", "Lobby closed");
+                        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Lobby was closed by the server.\n" +
+                                "Client is disconnecting from the server.", "Lobby closed", JOptionPane.INFORMATION_MESSAGE));
                         //close socket and return to StartPanel
                         sw.close();
                         ctx.getWindow().changeView(new StartPanel(ctx));
                         return;
                     }
                     case ClientDisconnected clientDisconnected ->
-                            new PopupMessage("Client " + clientDisconnected.getLastDisconnectedNickname() +
-                                    " just disconnected.", "Client disconnected");
+                        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Client " + clientDisconnected.getLastDisconnectedNickname() +
+                                " just disconnected.", "Client disconnected", JOptionPane.INFORMATION_MESSAGE));
                     case ModelUpdated modelUpdated -> {
                         //create a new GameInProgressPanel with updated model
                         ctx.getWindow().changeView(new GameInProgressPanel(ctx, modelUpdated.getModel(), this));
@@ -88,8 +80,6 @@ public class GUISocketListener implements Runnable {
                         //show eventual fail report
                         if (playerActionFeedback.getStatusCode() == StatusCode.Fail)
                             JOptionPane.showMessageDialog(ctx.getWindow().getFrame(), playerActionFeedback.getReport());
-                        //enable all GUI components
-                        gameInProgressPanel.enableGUIComponents(gameInProgressPanel, true);
                         //clear history when endTurn action has been performed by user
                         if (playerActionRequest.getClass().equals(EndTurnOfActionPhase.class) && playerActionFeedback.getStatusCode() == StatusCode.Success) {
                             requestAndFeedback.clear();
@@ -99,11 +89,11 @@ public class GUISocketListener implements Runnable {
                         return;
                     }
                     case InvalidRequest ignored ->
-                            JOptionPane.showMessageDialog(null, "Your request has not been executed, probably you are trying to play out of turn");
+                            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Your request has not been executed, probably you are trying to play out of turn", "Warning", JOptionPane.INFORMATION_MESSAGE));
                     default -> throw new IllegalStateException("Unexpected value: " + input.getClass());
                 }
             } catch (Exception e) {
-                new PopupMessage("Error in the connection with the server", "Failure :(");
+                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Error", JOptionPane.INFORMATION_MESSAGE));
                 ctx.getWindow().changeView(new StartPanel(ctx));
                 return;
             }

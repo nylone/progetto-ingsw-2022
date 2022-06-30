@@ -2,7 +2,6 @@ package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.IconLoader;
-import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Network.KeepAliveSocketWrapper;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
@@ -67,10 +66,10 @@ public class StartPanel extends JPanel {
                     ctx.setSocketWrapper(sw);
                     ctx.getWindow().changeView(new UserCredentialsPanel(ctx));
                 } else {
-                    new PopupMessage("Server did not welcome us", "Failure :(");
+                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Server did not welcome us", "Warning", JOptionPane.INFORMATION_MESSAGE));
                 }
             } catch (Exception e) {
-                new PopupMessage("No valid server was found", "Failure :(");
+                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "No valid server was found", "Warning", JOptionPane.INFORMATION_MESSAGE));
             }
         }).start());
 

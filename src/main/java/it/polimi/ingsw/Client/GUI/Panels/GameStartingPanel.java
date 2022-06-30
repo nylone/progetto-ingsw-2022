@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.Context;
-import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Client.GUI.Window;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Network.SocketWrapper;
@@ -134,8 +133,8 @@ public class GameStartingPanel extends JPanel {
                     Message input = sw.awaitMessage();
                     switch (input) {
                         case LobbyClosed ignored -> {
-                            new PopupMessage("Lobby was closed by the server.\n" +
-                                    "Client is disconnecting from the server.", "Lobby closed");
+                            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Lobby was closed by the server.\n" +
+                                    "Client is disconnecting from the server.", "Lobby closed", JOptionPane.INFORMATION_MESSAGE));
                             sw.close();
                             window.changeView(new StartPanel(ctx));
                         }
@@ -151,7 +150,7 @@ public class GameStartingPanel extends JPanel {
                         }
                         case GameInit gameInit -> {
                             if (gameInit.getStatusCode() == StatusCode.Fail) {
-                                new PopupMessage("Failure", gameInit.getErrorMessage());
+                                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, gameInit.getErrorMessage(), "Error", JOptionPane.INFORMATION_MESSAGE));
                             }
                         }
                         case GameStarted ignored -> {
@@ -161,7 +160,7 @@ public class GameStartingPanel extends JPanel {
                         default -> throw new IllegalStateException("Unexpected value: " + input.getClass());
                     }
                 } catch (Exception e) {
-                    new PopupMessage("Disconnected from server", "Warning");
+                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Disconnected from server", "Error", JOptionPane.INFORMATION_MESSAGE));
                     window.changeView(new StartPanel(ctx));
                     return;
                 }

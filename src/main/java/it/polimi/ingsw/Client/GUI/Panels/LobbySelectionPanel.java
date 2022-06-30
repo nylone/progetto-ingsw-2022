@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.Context;
-import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Client.GUI.Window;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.Events.Requests.ConnectLobbyRequest;
@@ -120,15 +119,15 @@ public class LobbySelectionPanel extends JTabbedPane {
                                     window.changeView(new GameStartingPanel(ctx, false, lobbyRedirect.getLobbyID()));
                                     again = false;
                                 } else {
-                                    new PopupMessage("Try again.", "Failure :(");
+                                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE));
                                 }
                             }
                             default -> throw new IllegalStateException("Unexpected value: " + response);
                         }
                     } while (again);
                 } catch (Exception e) {
-                    new PopupMessage("Error in the connection with the server", "Failure :(");
-                    new StartPanel(ctx);
+                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Error", JOptionPane.INFORMATION_MESSAGE));
+                    window.changeView(new StartPanel(ctx));
                 }
             });
 
@@ -206,15 +205,15 @@ public class LobbySelectionPanel extends JTabbedPane {
                                     window.changeView(new GameStartingPanel(ctx, true, lobbyRedirect.getLobbyID()));
                                     again = false;
                                 } else {
-                                    new PopupMessage("Try again.", "Failure :(");
+                                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE));
                                 }
                             }
                             default -> throw new IllegalStateException("Unexpected value: " + response);
                         }
                     } while (again);
                 } catch (Exception e) {
-                    new PopupMessage("Error in the connection with the server", "Failure :(");
-                    new StartPanel(ctx);
+                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Error", JOptionPane.INFORMATION_MESSAGE));
+                    window.changeView( new StartPanel(ctx));
                 }
             });
 

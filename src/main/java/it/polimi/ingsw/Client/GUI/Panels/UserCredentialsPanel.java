@@ -2,7 +2,6 @@ package it.polimi.ingsw.Client.GUI.Panels;
 
 import it.polimi.ingsw.Client.GUI.Context;
 import it.polimi.ingsw.Client.GUI.IconLoader;
-import it.polimi.ingsw.Client.GUI.PopupMessage;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.Events.Requests.DeclarePlayerRequest;
 import it.polimi.ingsw.Server.Messages.Message;
@@ -74,15 +73,15 @@ public class UserCredentialsPanel extends JPanel {
                                     ctx.getWindow().changeView(new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies()));
                                     again = false;
                                 } else {
-                                    new PopupMessage("Server denied your login", "Failure :(");
+                                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Server denied your login", "Warning", JOptionPane.INFORMATION_MESSAGE));
                                 }
                             }
                             default -> throw new IllegalStateException("Unexpected value: " + response);
                         }
                     } while (again);
                 } catch (Exception e) {
-                    new PopupMessage("Error in the connection with the server", "Failure :(");
-                    new StartPanel(ctx);
+                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Warning", JOptionPane.INFORMATION_MESSAGE));
+                    ctx.getWindow().changeView(new StartPanel(ctx));
                 }
             }).start();
         });

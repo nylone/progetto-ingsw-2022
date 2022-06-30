@@ -109,7 +109,7 @@ public class CharacterCardsPanel extends JPanel {
             ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
             int finalI = i;
             //add on-click actionListener to characterCard's button
-            button.addActionListener(e -> {
+            button.addActionListener(e -> SwingUtilities.invokeLater(() -> {
                 PlayCharacterCard playCharacterCard = null;
                 PlayerActionRequest playerActionRequest = null;
                 //get JTabbedPane (necessary to switch to another JPanel)
@@ -151,7 +151,7 @@ public class CharacterCardsPanel extends JPanel {
                         islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, OptionalValue.of(finalI), OptionalValue.empty());
                         return;
                     }
-                    case Card04 ignored4 -> {
+                    case Card04 ignored -> {
                         //create playCharacterCard and its playerActionReqeust
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
                                 finalI, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
@@ -288,12 +288,12 @@ public class CharacterCardsPanel extends JPanel {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
-            });
+            }));
             //print eventual characterCard's state
             checkStatefulCard(characterCards.get(i), characterCardsStatelabes.get(i));
             //draw Coin's image whether the card has been used at least once
             if (characterCards.get(i).getTimeUsed() > 0) coinLabels.get(i).setVisible(true);
-        }
+        };
         //--ABSOLUTE POSITIONING--
         coinLabels.get(0).setBounds(125, 320, 150, 160);
         coinLabels.get(1).setBounds(465, 320, 150, 160);
@@ -308,7 +308,6 @@ public class CharacterCardsPanel extends JPanel {
         coinLabels.forEach(pageBackground::add);
         characterCardsButton.forEach(pageBackground::add);
         characterCardsStatelabes.forEach(pageBackground::add);
-
     }
 
     /**

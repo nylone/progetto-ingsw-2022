@@ -50,7 +50,7 @@ public class GameInProgressPanel extends JTabbedPane {
         this.window = ctx.getWindow();
         this.sw = ctx.getSocketWrapper();
         this.window.changeView(this);
-        this.guiSocketListener = new GUISocketListener(this, ctx);
+        this.guiSocketListener = new GUISocketListener(ctx);
         //run GuiReader thread
         Thread readerThread = new Thread(guiSocketListener);
         readerThread.start();
@@ -145,7 +145,7 @@ public class GameInProgressPanel extends JTabbedPane {
                     }
                     JLabel resLabel = new JLabel(text.toString());
                     resLabel.setFont(new Font("Monospaced", Font.BOLD, 17));
-                    JOptionPane.showMessageDialog(this.getParent(), resLabel, "Turn change", JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.showMessageDialog(null, resLabel, "Turn change", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         } else {
@@ -189,26 +189,8 @@ public class GameInProgressPanel extends JTabbedPane {
         this.ownNickname = ctx.getNickname();
         this.window = ctx.getWindow();
         this.sw = ctx.getSocketWrapper();
-        this.window.changeView(this);
         this.guiSocketListener = guiSocketListener;
         Thread readerThread = new Thread(guiSocketListener);
         readerThread.start();
-    }
-
-    /**
-     * Method to disable/enable all GUI's components; necessary for blocking GUI while waiting for Server's response
-     *
-     * @param container Container to disable/enable
-     * @param enable    <p>TRUE --> enable all Container's components</p>
-     *                  <p>FALSE --> disable all Container's components</p>
-     */
-    public void enableGUIComponents(Container container, boolean enable) {
-        Component[] components = container.getComponents();
-        for (Component component : components) {
-            component.setEnabled(enable);
-            if (component instanceof Container) {
-                enableGUIComponents((Container) component, enable);
-            }
-        }
     }
 }

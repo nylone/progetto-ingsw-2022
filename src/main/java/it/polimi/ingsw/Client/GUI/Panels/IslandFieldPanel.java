@@ -54,17 +54,11 @@ public class IslandFieldPanel extends JPanel {
     /**
      * Status of islandField
      */
-    private ActionType actionType = ActionType.NONE;
-
+    private ActionType actionType;
 
     public IslandFieldPanel(Model model, SocketWrapper sw, GUISocketListener guiSocketListener) {
         //set IslandFieldPanel's actionType basing on previous actions performed by current Player
-        if (guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
-            this.setActionType(ActionType.NONE, OptionalValue.empty());
-        } else if ((model.getMutablePlayerBoards().size() != 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) == 3) ||
-                (model.getMutablePlayerBoards().size() == 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) == 4)) {
-            this.setActionType(ActionType.MOVEMOTHERNATURE, OptionalValue.empty());
-        }
+        this.setActionType(ActionType.MOVEMOTHERNATURE, OptionalValue.empty());
         this.setOpaque(true);
         this.setBackground(new Color(105, 186, 233));
         this.setLayout(new CircleLayout());
@@ -99,8 +93,6 @@ public class IslandFieldPanel extends JPanel {
             //add on-click action listener to islandGroup
             islandButton.addActionListener(e -> {
                 switch (this.actionType) {
-                    case NONE -> {
-                    }
                     case CHARACTERCARD -> {
                         PlayCharacterCard playCharacterCard;
                         //create playCharacterCard action
@@ -114,8 +106,6 @@ public class IslandFieldPanel extends JPanel {
                                     , OptionalValue.empty(), OptionalValue.empty());
                         }
                         PlayerActionRequest playerActionRequest = new PlayerActionRequest(playCharacterCard);
-                        //reset islandFieldPanel's actionType to NONE
-                        this.setActionType(ActionType.NONE, OptionalValue.empty());
                         this.guiSocketListener.savePlayerActionRequest(playCharacterCard);
                         try {
                             //send playCharacterCard request to Server
@@ -131,7 +121,6 @@ public class IslandFieldPanel extends JPanel {
                         //save moveStudentAction request inside guiReader
                         this.guiSocketListener.savePlayerActionRequest(moveStudent);
                         try {
-                            this.setActionType(ActionType.NONE, OptionalValue.empty());
                             sw.sendMessage(playerAction);
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
@@ -150,6 +139,8 @@ public class IslandFieldPanel extends JPanel {
                         }
                     }
                 }
+                // reset the action listener to the base action
+                this.setActionType(ActionType.MOVEMOTHERNATURE, OptionalValue.empty());
             });
             //remove border and filled background from islandGroups' button
             islandButton.setPreferredSize(new Dimension(widthIsland, heightIsland));
