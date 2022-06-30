@@ -18,10 +18,6 @@ import java.util.concurrent.CyclicBarrier;
  * One for receiving responses from Server and update Client's view (ClientReader class)
  */
 public class CLI implements Runnable {
-    public static void main(String... args) {
-        new Thread(new CLI()).start();
-    }
-
     /**
      * Run Thread responsible for asking User which server wants to connect to
      */

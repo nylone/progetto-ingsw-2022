@@ -19,10 +19,6 @@ import java.net.Socket;
 public class WelcomeServer implements Runnable {
     private final ServerSocket serverSocket;
 
-    public WelcomeServer() {
-        this(8080, InetAddress.getLoopbackAddress());
-    }
-
     public WelcomeServer(int port, InetAddress address) {
         Logger.info("Starting Welcome Server on: " + address + ":" + port);
         try {
@@ -30,10 +26,6 @@ public class WelcomeServer implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
-    }
-
-    public static void main(String... args) {
-        new Thread(new WelcomeServer()).start();
     }
 
     @Override

@@ -20,8 +20,4 @@ public class ConnectEvent implements ClientEvent {
     public List<String> getPlayers() {
         return players;
     }
-
-    public int getNumOfPlayersConnected() {
-        return players.size();
-    }
 }
