@@ -14,11 +14,16 @@ import java.net.Socket;
 /**
  * This is the main server thread. <br>
  * Expected behaviour: a thread runs forever, accepting all connections and dispatching the
- * sockets to the LobbyServer.
+ * sockets to the {@link LobbyServer}.
  */
 public class WelcomeServer implements Runnable {
     private final ServerSocket serverSocket;
 
+    /**
+     * Create a new Welcome server, once run the server binds to an address and listens for connections
+     * @param port the port the server will bind to
+     * @param address the address the server will bind to
+     */
     public WelcomeServer(int port, InetAddress address) {
         Logger.info("Starting Welcome Server on: " + address + ":" + port);
         try {
@@ -28,6 +33,10 @@ public class WelcomeServer implements Runnable {
         }
     }
 
+    /**
+     * Used when running the server in a {@link Thread}, will make the server listen for connections, dispatching a
+     * {@link LobbyServer} for each new connection.
+     */
     @Override
     public void run() {
         Logger.info("Server initialized and listening for new connections");

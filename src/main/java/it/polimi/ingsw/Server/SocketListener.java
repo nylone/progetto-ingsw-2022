@@ -36,11 +36,11 @@ public class SocketListener implements Runnable {
             }
         } catch (IOException | InterruptedException e) {
             Logger.info("closing SocketListener");
-            this.socket.close();
             try {
+                this.socket.close();
                 queue.enqueue(new SocketClosedEvent());
-            } catch (InterruptedException ie) {
-                ie.printStackTrace();
+            } catch (Exception ee) {
+                throw new RuntimeException(ee);
             }
             Logger.info("closed SocketListener");
         }
