@@ -7,7 +7,7 @@ import it.polimi.ingsw.Controller.Actions.PlayerAction;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 public class MoveMotherNatureTest {
 
     Model model = new Model(GameMode.ADVANCED, "ale", "teo");
-    Controller gh = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>());
+    Controller gh = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
 
     @Test
     public void motherNatureShouldBeMoved() throws Exception {

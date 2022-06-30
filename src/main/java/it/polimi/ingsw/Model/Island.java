@@ -2,7 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Logger;
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 
@@ -48,13 +48,13 @@ public class Island implements Serializable {
     }
 
     /**
-     * If a tower is present, return a non-empty {@link SerializableOptional}
+     * If a tower is present, return a non-empty {@link OptionalValue}
      *
-     * @return the colour of the contained tower wrapped in a {@link SerializableOptional}
+     * @return the colour of the contained tower wrapped in a {@link OptionalValue}
      */
-    public SerializableOptional<TowerColour> getTowerColour() {
-        if (this.tower == null) return SerializableOptional.empty();
-        else return SerializableOptional.of(this.tower.getColour());
+    public OptionalValue<TowerColour> getTowerColour() {
+        if (this.tower == null) return OptionalValue.empty();
+        else return OptionalValue.of(this.tower.getColour());
     }
 
     /**

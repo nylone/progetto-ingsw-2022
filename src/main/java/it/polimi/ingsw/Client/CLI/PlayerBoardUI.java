@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.CLI;
 
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -63,7 +63,7 @@ public class PlayerBoardUI {
         String entrance = "    "; // the first place is empty because of odd number of students in an even grid
         int currentEntranceIndex = 0;
         // Print the content of every place in the entrance
-        for (SerializableOptional<PawnColour> p : pb.getEntranceStudents()) {
+        for (OptionalValue<PawnColour> p : pb.getEntranceStudents()) {
             if (p.isPresent())
                 entrance = entrance + Symbols.colorizeBackgroundStudent(p.get(), String.valueOf(currentEntranceIndex)) + " ";
             else entrance = entrance + "    ";

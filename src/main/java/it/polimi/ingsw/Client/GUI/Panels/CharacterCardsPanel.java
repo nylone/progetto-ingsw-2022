@@ -6,7 +6,7 @@ import it.polimi.ingsw.Client.GUI.Components.StudentButton;
 import it.polimi.ingsw.Client.GUI.Listeners.CheckBoxListener;
 import it.polimi.ingsw.Client.GUI.Listeners.GUISocketListener;
 import it.polimi.ingsw.Controller.Actions.PlayCharacterCard;
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
@@ -133,13 +133,13 @@ public class CharacterCardsPanel extends JPanel {
                         IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
                         JOptionPane.showMessageDialog(this, "click on the island on which you want to move the pawn");
                         //set IslandFieldPanel to play this characterCard
-                        islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, SerializableOptional.of(finalI), SerializableOptional.of(toMove));
+                        islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, OptionalValue.of(finalI), OptionalValue.of(toMove));
                         return;
                     }
                     case Card02 ignored2 -> {
                         //create playCharacterCard and its playerActionReqeust
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+                                finalI, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
                     }
                     case Card03 ignored3 -> {
@@ -148,13 +148,13 @@ public class CharacterCardsPanel extends JPanel {
                         IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
                         JOptionPane.showMessageDialog(this, "click on the island on which you want to calculate the influence");
                         //set IslandFieldPanel to play this characterCard
-                        islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, SerializableOptional.of(finalI), SerializableOptional.empty());
+                        islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, OptionalValue.of(finalI), OptionalValue.empty());
                         return;
                     }
                     case Card04 ignored4 -> {
                         //create playCharacterCard and its playerActionReqeust
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+                                finalI, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
                     }
                     case Card05 ignored5 -> {
@@ -163,13 +163,13 @@ public class CharacterCardsPanel extends JPanel {
                         IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
                         JOptionPane.showMessageDialog(this, "click on the island on which you want to move NoEntry tile");
                         //set IslandFieldPanel to play this characterCard
-                        islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, SerializableOptional.of(finalI), SerializableOptional.empty());
+                        islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, OptionalValue.of(finalI), OptionalValue.empty());
                         return;
                     }
                     case Card06 ignored6 -> {
                         //create playCharacterCard and its playerActionRequest
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+                                finalI, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
 
                     }
@@ -209,7 +209,7 @@ public class CharacterCardsPanel extends JPanel {
                                 //switch to that Panel
                                 jTabbedPane.setSelectedIndex(h);
                                 //delegate the remaining part of execution to PlayerBoardPanel
-                                playerBoardPanel.PlayCharacterCardEffect(7, finalI, SerializableOptional.of(pawnsFromCard));
+                                playerBoardPanel.PlayCharacterCardEffect(7, finalI, OptionalValue.of(pawnsFromCard));
                             }
                         }
                         return;
@@ -217,7 +217,7 @@ public class CharacterCardsPanel extends JPanel {
                     case Card08 ignored8 -> {
                         //create playCharacterCard and its playerActionRequest
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+                                finalI, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
                     }
                     case Card09 ignored9 -> {
@@ -232,7 +232,7 @@ public class CharacterCardsPanel extends JPanel {
                         toExclude = PawnColour.getPawnColourFromText(options[option]);
                         //create playCharacterCard action and its playerActionRequest
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, SerializableOptional.empty(), SerializableOptional.of(toExclude), SerializableOptional.empty());
+                                finalI, OptionalValue.empty(), OptionalValue.of(toExclude), OptionalValue.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
                     }
                     case Card10 ignored10 -> {
@@ -243,7 +243,7 @@ public class CharacterCardsPanel extends JPanel {
                                 //switch to that Panel
                                 jTabbedPane.setSelectedIndex(h);
                                 //delegate the remaining part of execution to PlayerBoardPanel
-                                playerBoardPanel.PlayCharacterCardEffect(10, finalI, SerializableOptional.empty());
+                                playerBoardPanel.PlayCharacterCardEffect(10, finalI, OptionalValue.empty());
                             }
                         }
                         return;
@@ -261,7 +261,7 @@ public class CharacterCardsPanel extends JPanel {
                         toMove = PawnColour.getPawnColourFromText(options[option]);
                         //create playCharacterCard action and its playerActionRequest
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, SerializableOptional.empty(), SerializableOptional.of(toMove), SerializableOptional.empty());
+                                finalI, OptionalValue.empty(), OptionalValue.of(toMove), OptionalValue.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
                     }
                     case Card12 ignored12 -> {
@@ -275,7 +275,7 @@ public class CharacterCardsPanel extends JPanel {
                         toRemove = PawnColour.getPawnColourFromText(options[option]);
                         //create playCharacterCard action and its playerActionRequest
                         playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                finalI, SerializableOptional.empty(), SerializableOptional.of(toRemove), SerializableOptional.empty());
+                                finalI, OptionalValue.empty(), OptionalValue.of(toRemove), OptionalValue.empty());
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
                     }
                     default -> {

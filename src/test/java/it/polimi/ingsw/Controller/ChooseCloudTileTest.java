@@ -3,7 +3,7 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Controller.Actions.*;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -18,7 +18,7 @@ public class ChooseCloudTileTest {
 
     Model model = new Model(GameMode.SIMPLE, "ale", "teo");
 
-    Controller gh = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>());
+    Controller gh = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
 
     /**
      * 2 ChooseCloudAction actions in a row throw an exception because before a ChooseCloudAction should only be present
@@ -146,7 +146,7 @@ public class ChooseCloudTileTest {
         characterCards.add(new Card04(model));
         characterCards.add(new Card09(model));
         characterCards.add(new Card10(model));
-        Controller gh = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>());
+        Controller gh = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
@@ -183,7 +183,7 @@ public class ChooseCloudTileTest {
         gh.executeAction(chooseCloudTile);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
 
-        PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+        PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
         gh.executeAction(playCharacterCard);
 
         selectedCloud = 1;
@@ -210,7 +210,7 @@ public class ChooseCloudTileTest {
         Model model = new Model(new IslandField(), GameMode.SIMPLE, studentBag, players, new EnumMap<>(PawnColour.class),
                 new TeamMapper(players), new TurnOrder(players), new EffectTracker(), clouds,
                 characterCards, 20, 1);
-        Controller gh = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>());
+        Controller gh = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());

@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
 import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.TowerColour;
 
@@ -100,14 +100,14 @@ public class IslandGroup implements Serializable {
     /**
      * Get the colour of the towers stored on the islands.
      *
-     * @return a non empty {@link SerializableOptional} containing the {@link TowerColour}, if present. Note: if at least an island doesn't match the {@link TowerColour} of the others, this method will return an empty
-     * {@link SerializableOptional}.
+     * @return a non empty {@link OptionalValue} containing the {@link TowerColour}, if present. Note: if at least an island doesn't match the {@link TowerColour} of the others, this method will return an empty
+     * {@link OptionalValue}.
      */
-    public SerializableOptional<TowerColour> getTowerColour() {
+    public OptionalValue<TowerColour> getTowerColour() {
         List<Island> islands = this.getMutableIslands();
         if (islands.stream().allMatch(i -> i.getTowerColour().equals(islands.get(0).getTowerColour()))) {
             return islands.get(0).getTowerColour();
-        } else return SerializableOptional.empty();
+        } else return OptionalValue.empty();
     }
 
     /**

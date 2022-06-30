@@ -8,8 +8,8 @@ import it.polimi.ingsw.Controller.Actions.MoveStudent;
 import it.polimi.ingsw.Controller.Actions.PlayAssistantCard;
 import it.polimi.ingsw.Controller.Actions.PlayCharacterCard;
 import it.polimi.ingsw.Controller.MoveDestination;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Misc.Pair;
-import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -163,7 +163,7 @@ public class PlayerBoardPanel extends JPanel {
                     //get IslandFieldPanel
                     IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
                     //Set correct actionType inside islandFieldPanel
-                    islandFieldPanel.setActionType(ActionType.MOVESTUDENT, SerializableOptional.of(finalI));
+                    islandFieldPanel.setActionType(ActionType.MOVESTUDENT, OptionalValue.of(finalI));
                 }
             });
         }
@@ -384,7 +384,7 @@ public class PlayerBoardPanel extends JPanel {
      * @param cardPositionInGame card's position inside the game (0 to 2)
      * @param fromCard           Optional list containing pawnColour picked from characterCard
      */
-    public void PlayCharacterCardEffect(int cardIndex, int cardPositionInGame, SerializableOptional<ArrayList<PawnColour>> fromCard) {
+    public void PlayCharacterCardEffect(int cardIndex, int cardPositionInGame, OptionalValue<ArrayList<PawnColour>> fromCard) {
         PlayCharacterCard playCharacterCard = null;
         PlayerActionRequest playerActionRequest = null;
         //create list that will contain chosen pawns from entrance
@@ -433,7 +433,7 @@ public class PlayerBoardPanel extends JPanel {
                 }
                 //create a new PlayCharacterCard action and its playerActionRequest
                 playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                        cardPositionInGame, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.of(pairs));
+                        cardPositionInGame, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.of(pairs));
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case 10 -> {
@@ -472,7 +472,7 @@ public class PlayerBoardPanel extends JPanel {
                 }
                 //create playCharacterCard action and its playerActionRequest
                 playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                        cardPositionInGame, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.of(pairs));
+                        cardPositionInGame, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.of(pairs));
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
         }

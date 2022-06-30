@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Misc.Pair;
-import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
@@ -37,12 +37,12 @@ public class CharacterCardInput implements Serializable {
     }
 
     /**
-     * @return the {@link Island} set as a target. The value is wrapped in a {@link SerializableOptional}, as the related input is not
+     * @return the {@link Island} set as a target. The value is wrapped in a {@link OptionalValue}, as the related input is not
      * compulsory
      */
-    public SerializableOptional<Island> getTargetIsland() {
-        if (this.targetIsland == null) return SerializableOptional.empty();
-        else return SerializableOptional.of(targetIsland);
+    public OptionalValue<Island> getTargetIsland() {
+        if (this.targetIsland == null) return OptionalValue.empty();
+        else return OptionalValue.of(targetIsland);
     }
 
     /**
@@ -53,12 +53,12 @@ public class CharacterCardInput implements Serializable {
     }
 
     /**
-     * @return the {@link PawnColour} set as a target. The value is wrapped in a {@link SerializableOptional}, as the related input is not
+     * @return the {@link PawnColour} set as a target. The value is wrapped in a {@link OptionalValue}, as the related input is not
      * compulsory
      */
-    public SerializableOptional<PawnColour> getTargetPawn() {
-        if (this.targetPawn == null) return SerializableOptional.empty();
-        else return SerializableOptional.of(targetPawn);
+    public OptionalValue<PawnColour> getTargetPawn() {
+        if (this.targetPawn == null) return OptionalValue.empty();
+        else return OptionalValue.of(targetPawn);
     }
 
     /**
@@ -70,12 +70,12 @@ public class CharacterCardInput implements Serializable {
 
     /**
      * @return the the {@link List} of {@link Pair}s of {@link PawnColour} set as a target.
-     * The value is wrapped in a {@link SerializableOptional}, as the related input is not
+     * The value is wrapped in a {@link OptionalValue}, as the related input is not
      * compulsory
      */
-    public SerializableOptional<List<Pair<PawnColour, PawnColour>>> getTargetPawnPairs() {
-        if (this.targetPawnPairs == null) return SerializableOptional.empty();
-        else return SerializableOptional.of(targetPawnPairs);
+    public OptionalValue<List<Pair<PawnColour, PawnColour>>> getTargetPawnPairs() {
+        if (this.targetPawnPairs == null) return OptionalValue.empty();
+        else return OptionalValue.of(targetPawnPairs);
     }
 
     /**

@@ -6,7 +6,7 @@ import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
 import it.polimi.ingsw.Logger;
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
@@ -22,7 +22,7 @@ public class PlayerBoard implements Serializable {
     private final String nickname;
     private final AssistantCard[] assistantCards;
     private final Map<PawnColour, Integer> diningRoom;
-    private final List<SerializableOptional<PawnColour>> entrance;
+    private final List<OptionalValue<PawnColour>> entrance;
     private final int id;
     private int coinBalance;
 
@@ -52,7 +52,7 @@ public class PlayerBoard implements Serializable {
         if (numOfPlayers >= 2 && numOfPlayers <= 4) {
             for (int i = 0; i < (numOfPlayers == 3 ? 9 : 7); i++) {
                 try {
-                    entrance.add(SerializableOptional.of(studentBag.extract()));
+                    entrance.add(OptionalValue.of(studentBag.extract()));
                 } catch (EmptyContainerException e) {
                     // should never happen
                     Logger.severe("student bag was found empty while adding a student to an student entrance. Critical, unrecoverable, error");
@@ -106,7 +106,7 @@ public class PlayerBoard implements Serializable {
      *
      * @return an Unmodifiable {@link List} representing each slot of the Entrance
      */
-    public List<SerializableOptional<PawnColour>> getEntranceStudents() {
+    public List<OptionalValue<PawnColour>> getEntranceStudents() {
         return List.copyOf(entrance);
     }
 
@@ -194,7 +194,7 @@ public class PlayerBoard implements Serializable {
         int cont = 0;
         for (int i = 0; i < this.getEntranceSize(); i++) {
             if (this.entrance.get(i).isEmpty()) {
-                this.entrance.set(i, SerializableOptional.of(students.get(cont)));
+                this.entrance.set(i, OptionalValue.of(students.get(cont)));
                 if (cont == students.size() - 1) {
                     break;
                 } else {
@@ -211,7 +211,7 @@ public class PlayerBoard implements Serializable {
      */
     public int getEntranceSpaceLeft() {
         return (int) entrance.stream()
-                .filter(SerializableOptional::isEmpty)
+                .filter(OptionalValue::isEmpty)
                 .count();
     }
 
@@ -238,7 +238,7 @@ public class PlayerBoard implements Serializable {
         }
         for (int i = 0; i < this.getEntranceSize(); i++) {
             if (this.entrance.get(i).isEmpty()) {
-                this.entrance.set(i, SerializableOptional.of(student));
+                this.entrance.set(i, OptionalValue.of(student));
                 return;
             }
         }
@@ -256,7 +256,7 @@ public class PlayerBoard implements Serializable {
             throw new InvalidContainerIndexException("Entrance");
         }
         PawnColour student = this.entrance.get(pos).get();
-        this.entrance.set(pos, SerializableOptional.empty());
+        this.entrance.set(pos, OptionalValue.empty());
         return student;
     }
 
@@ -268,8 +268,8 @@ public class PlayerBoard implements Serializable {
      */
     public void removeStudentFromEntrance(PawnColour colour) throws InvalidElementException {
         for (int i = 0; i < this.getEntranceSize(); i++) {
-            if (entrance.get(i).equals(SerializableOptional.of(colour))) {
-                entrance.set(i, SerializableOptional.empty());
+            if (entrance.get(i).equals(OptionalValue.of(colour))) {
+                entrance.set(i, OptionalValue.empty());
                 return;
             }
         }

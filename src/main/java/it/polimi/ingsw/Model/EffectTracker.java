@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class EffectTracker implements Serializable {
     @Serial
     private static final long serialVersionUID = 135L; // convention: 1 for model, (01 -> 99) for objects
-    private SerializableOptional<PawnColour> deniedPawnColour;
+    private OptionalValue<PawnColour> deniedPawnColour;
     private boolean denyTowerInfluence;
     private boolean increasedInfluence;
     private boolean increasedMotherNatureMovement;
@@ -29,7 +29,7 @@ public class EffectTracker implements Serializable {
      * When called, this method will reset all effects to the disabled state.
      */
     public void reset() {
-        this.deniedPawnColour = SerializableOptional.empty();
+        this.deniedPawnColour = OptionalValue.empty();
         this.denyTowerInfluence = false;
         this.increasedInfluence = false;
         this.increasedMotherNatureMovement = false;
@@ -100,9 +100,9 @@ public class EffectTracker implements Serializable {
     }
 
     /**
-     * @return the denied {@link PawnColour} wrapped in a {@link SerializableOptional}
+     * @return the denied {@link PawnColour} wrapped in a {@link OptionalValue}
      */
-    public SerializableOptional<PawnColour> getDeniedPawnColour() {
+    public OptionalValue<PawnColour> getDeniedPawnColour() {
         return deniedPawnColour;
     }
 
@@ -112,6 +112,6 @@ public class EffectTracker implements Serializable {
      * @param pawnColour the {@link PawnColour} to be denied
      */
     public void setDeniedPawnColour(PawnColour pawnColour) {
-        this.deniedPawnColour = SerializableOptional.of(pawnColour);
+        this.deniedPawnColour = OptionalValue.of(pawnColour);
     }
 }

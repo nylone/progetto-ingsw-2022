@@ -2,7 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -112,10 +112,10 @@ public class ModelTest {
                 gb_sim_2.getMutableIslandField().getMutableGroups(), 6);
         // act
         // calculating influencer of the empty island
-        SerializableOptional<TeamID> actual = gb_sim_2.getInfluencerOf(empty);
+        OptionalValue<TeamID> actual = gb_sim_2.getInfluencerOf(empty);
         // assert
         // check that no one should control the empty island
-        assertEquals(SerializableOptional.empty(), actual);
+        assertEquals(OptionalValue.empty(), actual);
 
     }
 

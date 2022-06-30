@@ -3,8 +3,8 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Misc.Pair;
-import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
@@ -46,7 +46,7 @@ public class Card10 extends StatelessEffect {
     @Override
     public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
         //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from diningRoom
-        SerializableOptional<List<Pair<PawnColour, PawnColour>>> optionalPawnPair = input.getTargetPawnPairs();
+        OptionalValue<List<Pair<PawnColour, PawnColour>>> optionalPawnPair = input.getTargetPawnPairs();
         // make sure that:
         if (
                 optionalPawnPair.isEmpty() || // target pawn pairs was set as parameter
@@ -71,8 +71,8 @@ public class Card10 extends StatelessEffect {
         PlayerBoard playerBoard = input.getCaller();
         Map<PawnColour, Integer> entranceMap = new EnumMap<>(PawnColour.class); // counts user entrance total colours
         for (PawnColour pawn : playerBoard.getEntranceStudents().stream()
-                .filter(SerializableOptional::isPresent)
-                .map(SerializableOptional::get)
+                .filter(OptionalValue::isPresent)
+                .map(OptionalValue::get)
                 .toList()) {
             entranceMap.merge(pawn, 1, Integer::sum);
         }

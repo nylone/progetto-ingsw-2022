@@ -4,7 +4,7 @@ import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.FullContainerException;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Logger;
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.Enums.*;
 
 import java.io.*;
@@ -209,19 +209,19 @@ public class Model implements Serializable {
     }
 
     /**
-     * @return a non-empty {@link SerializableOptional} containing the winners of the game if {@link #isGameOver()} returns true,
-     * else an empty {@link SerializableOptional}
+     * @return a non-empty {@link OptionalValue} containing the winners of the game if {@link #isGameOver()} returns true,
+     * else an empty {@link OptionalValue}
      */
-    public SerializableOptional<List<PlayerBoard>> getWinners() {
+    public OptionalValue<List<PlayerBoard>> getWinners() {
         if (!isGameOver()) {
-            return SerializableOptional.empty();
+            return OptionalValue.empty();
         }
 
         PlayerBoard currentPlayer = this.getMutableTurnOrder().getMutableCurrentPlayer();
 
         // immediate win for 3 islands left
         if (this.getMutableIslandField().getMutableGroups().size() == 3) {
-            return SerializableOptional.of(this.getMutablePlayerBoardsByTeamID(this.getTeamMapper().getTeamID(currentPlayer)));
+            return OptionalValue.of(this.getMutablePlayerBoardsByTeamID(this.getTeamMapper().getTeamID(currentPlayer)));
         }
 
         // calculate best players depending on tower storage.
@@ -243,7 +243,7 @@ public class Model implements Serializable {
                 .takeWhile(e -> this.getOwnTeamTeacherCount(e) == firstPlayerTeamTeacherCount)
                 .toList();
 
-        return SerializableOptional.of(winners);
+        return OptionalValue.of(winners);
     }
 
     /**
@@ -373,7 +373,7 @@ public class Model implements Serializable {
      */
     public void actMotherNaturePower(IslandGroup mnp) {
         if (mnp.getMutableNoEntryTiles().isEmpty()) {
-            SerializableOptional<TeamID> optInfluencer = getInfluencerOf(mnp);
+            OptionalValue<TeamID> optInfluencer = getInfluencerOf(mnp);
             if (optInfluencer.isPresent()) {
                 TeamID newInfluencer = optInfluencer.get();
                 if (
@@ -391,9 +391,9 @@ public class Model implements Serializable {
 
     /**
      * @param ig the {@link IslandGroup} to find the influencer of
-     * @return the {@link TeamID} that holds influence over ig, wrapped in a {@link SerializableOptional}
+     * @return the {@link TeamID} that holds influence over ig, wrapped in a {@link OptionalValue}
      */
-    public SerializableOptional<TeamID> getInfluencerOf(IslandGroup ig) {
+    public OptionalValue<TeamID> getInfluencerOf(IslandGroup ig) {
         Map<PawnColour, Integer> sc = ig.getStudentCount();
         Map<TeamID, Integer> ic = new HashMap<>(); // maps the team with the influence count
 
@@ -429,13 +429,13 @@ public class Model implements Serializable {
 
         switch (tbi.size()) {
             case 0:
-                return SerializableOptional.empty();
+                return OptionalValue.empty();
             case 1:
-                return SerializableOptional.of(tbi.get(0).getKey());
+                return OptionalValue.of(tbi.get(0).getKey());
             default: {
                 if (tbi.get(0).getValue() > tbi.get(1).getValue())
-                    return SerializableOptional.of(tbi.get(0).getKey());
-                else return ig.getTowerColour().flatMap(tc -> SerializableOptional.of(tc.getTeamID()));
+                    return OptionalValue.of(tbi.get(0).getKey());
+                else return ig.getTowerColour().flatMap(tc -> OptionalValue.of(tc.getTeamID()));
             }
         }
     }

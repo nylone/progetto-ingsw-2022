@@ -2,7 +2,7 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Actions.*;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.AssistantCard;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class EndTurnOfActionPhaseTest {
 
     Model model = new Model(GameMode.ADVANCED, "ale", "teo");
-    Controller gh = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>());
+    Controller gh = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
 
     @Test
     public void testExecute() throws Exception {

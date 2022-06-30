@@ -4,8 +4,8 @@ import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Misc.Pair;
-import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.CharacterCard;
 import it.polimi.ingsw.Model.CharacterCardInput;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -23,9 +23,9 @@ public class PlayCharacterCard extends PlayerAction {
     private static final long serialVersionUID = 207L; // convention: 2 for controller, (01 -> 99) for objects
 
     private final int selectedCard; // mandatory
-    private final SerializableOptional<Integer> optTargetIsland;
-    private final SerializableOptional<PawnColour> optTargetPawn;
-    private final SerializableOptional<List<Pair<PawnColour, PawnColour>>> optTargetPawnPairs;
+    private final OptionalValue<Integer> optTargetIsland;
+    private final OptionalValue<PawnColour> optTargetPawn;
+    private final OptionalValue<List<Pair<PawnColour, PawnColour>>> optTargetPawnPairs;
 
     /**
      * Create a new instance of this class with the following inputs:
@@ -39,9 +39,9 @@ public class PlayCharacterCard extends PlayerAction {
     public PlayCharacterCard(
             int playerBoardId,
             int selectedCard,
-            SerializableOptional<Integer> optTargetIsland,
-            SerializableOptional<PawnColour> optTargetPawn,
-            SerializableOptional<List<Pair<PawnColour, PawnColour>>> optTargetPawnPairs) {
+            OptionalValue<Integer> optTargetIsland,
+            OptionalValue<PawnColour> optTargetPawn,
+            OptionalValue<List<Pair<PawnColour, PawnColour>>> optTargetPawnPairs) {
         super(playerBoardId, true);
         this.selectedCard = selectedCard;
         this.optTargetIsland = optTargetIsland;
@@ -64,17 +64,17 @@ public class PlayCharacterCard extends PlayerAction {
      *                Some actions may use this {@link List} to check for duplicates.
      * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
      *                the actions declares and what the Model offers.
-     * @return An empty {@link SerializableOptional} in case of a successful validation. Otherwise the returned {@link SerializableOptional}
+     * @return An empty {@link OptionalValue} in case of a successful validation. Otherwise the returned {@link OptionalValue}
      * contains the related {@link InputValidationException}
      */
     @Override
-    protected SerializableOptional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
+    protected OptionalValue<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
         if (ctx.getGameMode() != GameMode.ADVANCED) {
-            return SerializableOptional.of(new GenericInputValidationException("Character Card", "can't be played in simple mode"));
+            return OptionalValue.of(new GenericInputValidationException("Character Card", "can't be played in simple mode"));
         }
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.ACTION) {
-            return SerializableOptional.of(new GenericInputValidationException("History", "the game is not in the correct phase"));
+            return OptionalValue.of(new GenericInputValidationException("History", "the game is not in the correct phase"));
         }
 
         // generate the input object before validation
@@ -82,25 +82,25 @@ public class PlayCharacterCard extends PlayerAction {
         try {
             cardInput = generateCharacterCardInput(caller, ctx);
         } catch (InvalidContainerIndexException e) {
-            return SerializableOptional.of(new InvalidElementException("Target Island"));
+            return OptionalValue.of(new InvalidElementException("Target Island"));
         }
 
         if (!(this.selectedCard >= 0 && this.selectedCard < 3)) { //selectedCard out of bounds
-            return SerializableOptional.of(new InvalidElementException("Character Card"));
+            return OptionalValue.of(new InvalidElementException("Character Card"));
         }
         CharacterCard selectedCard = ctx.getCharacterCards().get(this.selectedCard);
         if (caller.getCoinBalance() < selectedCard.getCost()) {
-            return SerializableOptional.of(new GenericInputValidationException("Character Card",
+            return OptionalValue.of(new GenericInputValidationException("Character Card",
                     "can't be played due to insufficient coin balance"));
         }
 
         try {
             selectedCard.checkInput(cardInput);
         } catch (InputValidationException e) {
-            return SerializableOptional.of(e);
+            return OptionalValue.of(e);
         }
 
-        return SerializableOptional.empty();
+        return OptionalValue.empty();
     }
 
     @Override

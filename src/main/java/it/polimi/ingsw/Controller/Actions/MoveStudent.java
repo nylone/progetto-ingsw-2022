@@ -5,7 +5,7 @@ import it.polimi.ingsw.Controller.MoveDestination;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Model;
@@ -56,45 +56,45 @@ public class MoveStudent extends PlayerAction {
      *                Some actions may use this {@link List} to check for duplicates.
      * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
      *                the actions declares and what the Model offers.
-     * @return An empty {@link SerializableOptional} in case of a successful validation. Otherwise the returned {@link SerializableOptional}
+     * @return An empty {@link OptionalValue} in case of a successful validation. Otherwise the returned {@link OptionalValue}
      * contains the related {@link InputValidationException}
      */
     @Override
-    protected SerializableOptional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
+    protected OptionalValue<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
         int maxCount = ctx.getMutablePlayerBoards().size() == 3 ? 4 : 3;
         int entranceSize = ctx.getMutablePlayerBoards().size() == 3 ? 9 : 7;
         PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.ACTION) {
-            return SerializableOptional.of(new GenericInputValidationException("GamePhase", "the game is not in the correct phase"));
+            return OptionalValue.of(new GenericInputValidationException("GamePhase", "the game is not in the correct phase"));
         }
         if (history.size() > 0) {
             if (!(history.get(history.size() - 1).getClass() == MoveStudent.class || history.get(history.size() - 1).getClass() == PlayCharacterCard.class)) {
-                return SerializableOptional.of(new GenericInputValidationException("History", "MoveStudent can only be preceded by a PlayCharacterCard action or MoveStudent action"));
+                return OptionalValue.of(new GenericInputValidationException("History", "MoveStudent can only be preceded by a PlayCharacterCard action or MoveStudent action"));
             }
         }
         if (countSimilarClassOccurrences(MoveStudent.class, history) >= maxCount) {
-            return SerializableOptional.of(new GenericInputValidationException("History", "only " + maxCount + " pawns can be moved from entrance"));
+            return OptionalValue.of(new GenericInputValidationException("History", "only " + maxCount + " pawns can be moved from entrance"));
         }
 
         if (!(this.selectedEntrancePosition >= 0 && this.selectedEntrancePosition < entranceSize)) {
-            return SerializableOptional.of(new InvalidElementException("Index Target Entrance Position"));
+            return OptionalValue.of(new InvalidElementException("Index Target Entrance Position"));
         }
         if (caller.getEntranceStudents().get(this.selectedEntrancePosition).isEmpty()) {
-            return SerializableOptional.of(new InvalidElementException("Target Entrance Position"));
+            return OptionalValue.of(new InvalidElementException("Target Entrance Position"));
         }
 
         if (this.destination.getDestinationType() == DestinationType.ISLAND) {
             int islandId = this.destination.getIslandID();
             if (islandId < 0 || islandId > 12) {
-                return SerializableOptional.of(new InvalidElementException("Target Island")); // target ti out of bounds for id
+                return OptionalValue.of(new InvalidElementException("Target Island")); // target ti out of bounds for id
             }
         } else if (this.destination.getDestinationType() == DestinationType.DININGROOM) {
             if (caller.isDiningRoomFull(caller.getEntranceStudents().get(this.selectedEntrancePosition).get())) {
-                return SerializableOptional.of(new GenericInputValidationException("DiningRoom",
+                return OptionalValue.of(new GenericInputValidationException("DiningRoom",
                         "can't contain the pawn without overflowing."));
             }
         }
-        return SerializableOptional.empty();
+        return OptionalValue.empty();
     }
 
 

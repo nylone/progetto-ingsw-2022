@@ -3,8 +3,8 @@ package it.polimi.ingsw.Client.CLI;
 import it.polimi.ingsw.Controller.Actions.*;
 import it.polimi.ingsw.Controller.MoveDestination;
 import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Misc.Pair;
-import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.GamePhase;
@@ -201,13 +201,13 @@ public class CliWriter implements Runnable {
                 //get Island's ID
                 Integer IslandId = getInt();
                 //create playCharacterCard's controller action
-                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.of(IslandId), SerializableOptional.of(pawnToMove), SerializableOptional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.of(IslandId), OptionalValue.of(pawnToMove), OptionalValue.empty());
                 //create playerActionRequest message to send to the server
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card02 ignored -> {
                 //create playCharacterCard's controller action
-                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
                 //create playerActionRequest message to send to the server
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
@@ -216,13 +216,13 @@ public class CliWriter implements Runnable {
                 //get Island's ID
                 Integer IslandId = getInt();
                 //create playCharacterCard's controller action
-                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.of(IslandId), SerializableOptional.empty(), SerializableOptional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.of(IslandId), OptionalValue.empty(), OptionalValue.empty());
                 //create playerActionRequest message to send to the server
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card04 ignored2 -> {
                 //create playCharacterCard's controller action
-                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
                 //create playerActionRequest message to send to the server
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
@@ -231,13 +231,13 @@ public class CliWriter implements Runnable {
                 //get Island's ID
                 Integer IslandId = getInt();
                 //create playCharacterCard's controller action
-                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.of(IslandId), SerializableOptional.empty(), SerializableOptional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.of(IslandId), OptionalValue.empty(), OptionalValue.empty());
                 //create playerActionRequest message to send to the server
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card06 ignored4 -> {
                 //create playCharacterCard's controller action
-                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
                 //create playerActionRequest message to send to the server
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
@@ -247,7 +247,7 @@ public class CliWriter implements Runnable {
                 //create List of Pairs which will contain up to 3 pairs of pawns
                 List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
                 //index containing pawn's index in currentPlayers' entrance
-                SerializableOptional<Integer> PawnPosition;
+                OptionalValue<Integer> PawnPosition;
                 //index containing pawn's index inside the card
                 int cardIndex;
                 outerWhile:
@@ -279,12 +279,12 @@ public class CliWriter implements Runnable {
                     //repeat the loop until the user has selected 3 pairs or pressed 'enter'
                 } while (pairs.size() < 3);
                 //create playCharacterCard's controller action
-                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.of(pairs));
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.of(pairs));
                 //create playerActionRequest message to send to the server
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
             case Card08 ignored5 -> {
-                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
                 //create playerActionRequest message to send to the server
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
@@ -299,7 +299,7 @@ public class CliWriter implements Runnable {
                 //create List of Pairs which will contain up to 2 pairs of pawns
                 List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
                 //index containing pawn's index in currentPlayers' entrance
-                SerializableOptional<Integer> PawnPosition;
+                OptionalValue<Integer> PawnPosition;
                 outerWhile:
                 do {
                     System.out.println("Insert entrance's position containing the pawn to move, or 'enter' to conclude the choice");
@@ -349,9 +349,9 @@ public class CliWriter implements Runnable {
                 //create playCharacterCard's controller action
                 playCharacterCard = new PlayCharacterCard(currentPlayer.getId(),
                         selected,
-                        SerializableOptional.empty(),
-                        SerializableOptional.empty(),
-                        SerializableOptional.of(pairs));
+                        OptionalValue.empty(),
+                        OptionalValue.empty(),
+                        OptionalValue.of(pairs));
                 //create playerActionRequest message to send to the server
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
@@ -369,7 +369,7 @@ public class CliWriter implements Runnable {
                     }
                 } while (true);
                 //create playCharacterCard's controller action
-                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.empty(), SerializableOptional.of((PawnColour) card11.getState().get(cardIndex)), SerializableOptional.empty());
+                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of((PawnColour) card11.getState().get(cardIndex)), OptionalValue.empty());
                 //create playerActionRequest message to send to the server
                 playerActionRequest = new PlayerActionRequest(playCharacterCard);
             }
@@ -686,7 +686,7 @@ public class CliWriter implements Runnable {
 
         System.out.println("Type the island id to move the selected student there or press 'Enter' to send it to the dining room");
         //get destination ('enter' for dining room or island's ID)
-        SerializableOptional<Integer> choice = getOptionalInt();
+        OptionalValue<Integer> choice = getOptionalInt();
         //create MoveStudent object
         MoveStudent moveStudent;
         if (choice.isEmpty()) {
@@ -846,7 +846,7 @@ public class CliWriter implements Runnable {
      * @return the integer read from command line or Optional.empty if the user pressed "Enter"
      * @throws IOException if an I/O error occurs
      */
-    private SerializableOptional<Integer> getOptionalInt() throws IOException {
+    private OptionalValue<Integer> getOptionalInt() throws IOException {
         int result;
         while (true) {
             try {
@@ -856,7 +856,7 @@ public class CliWriter implements Runnable {
                     throw new IOException();
                 //if user has typed 'enter' then return Optional.empty
                 if (text.equals(""))
-                    return SerializableOptional.empty();
+                    return OptionalValue.empty();
                 //try to parse String from stdIn to Integer
                 result = Integer.parseInt(text);
                 break;
@@ -865,7 +865,7 @@ public class CliWriter implements Runnable {
             }
             //repeat until the String is a valid number
         }
-        return SerializableOptional.of(result);
+        return OptionalValue.of(result);
     }
 
     /**
@@ -886,23 +886,23 @@ public class CliWriter implements Runnable {
             //get the input from stdIn, every switch's case create a playCharacterCard with selected pawnColour
             switch (stdIn.readLine().toLowerCase()) {
                 case "red" -> {
-                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.empty(), SerializableOptional.of(PawnColour.RED), SerializableOptional.empty());
+                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.RED), OptionalValue.empty());
                     repeat = false;
                 }
                 case "yellow" -> {
-                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.empty(), SerializableOptional.of(PawnColour.YELLOW), SerializableOptional.empty());
+                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.YELLOW), OptionalValue.empty());
                     repeat = false;
                 }
                 case "green" -> {
-                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.empty(), SerializableOptional.of(PawnColour.GREEN), SerializableOptional.empty());
+                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.GREEN), OptionalValue.empty());
                     repeat = false;
                 }
                 case "pink" -> {
-                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.empty(), SerializableOptional.of(PawnColour.PINK), SerializableOptional.empty());
+                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.PINK), OptionalValue.empty());
                     repeat = false;
                 }
                 case "blue" -> {
-                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, SerializableOptional.empty(), SerializableOptional.of(PawnColour.BLUE), SerializableOptional.empty());
+                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.BLUE), OptionalValue.empty());
                     repeat = false;
                 }
                 case default -> System.out.println("Colour not valid, try again");

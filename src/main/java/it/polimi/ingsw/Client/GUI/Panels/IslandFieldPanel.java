@@ -10,7 +10,7 @@ import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
 import it.polimi.ingsw.Controller.Actions.MoveStudent;
 import it.polimi.ingsw.Controller.Actions.PlayCharacterCard;
 import it.polimi.ingsw.Controller.MoveDestination;
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.IslandGroup;
 import it.polimi.ingsw.Model.Model;
@@ -42,15 +42,15 @@ public class IslandFieldPanel extends JPanel {
     /**
      * Optional Integer containing student's index inside player's PlayerBoard's entrance (necessary when sending MoveStudentAction to Server)
      */
-    private SerializableOptional<Integer> entrancePositionToMove = SerializableOptional.empty();
+    private OptionalValue<Integer> entrancePositionToMove = OptionalValue.empty();
     /**
      * Optional Integer containing card's index inside game (0 to 2), it can be empty if no characterCard has been played
      */
-    private SerializableOptional<Integer> selectedCharacterCard = SerializableOptional.empty();
+    private OptionalValue<Integer> selectedCharacterCard = OptionalValue.empty();
     /**
      * Pawn from character card that player wants to move inside an island
      */
-    private SerializableOptional<PawnColour> pawnFromCharacterCard = SerializableOptional.empty();
+    private OptionalValue<PawnColour> pawnFromCharacterCard = OptionalValue.empty();
     /**
      * Status of islandField
      */
@@ -60,10 +60,10 @@ public class IslandFieldPanel extends JPanel {
     public IslandFieldPanel(Model model, SocketWrapper sw, GUISocketListener guiSocketListener) {
         //set IslandFieldPanel's actionType basing on previous actions performed by current Player
         if (guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
-            this.setActionType(ActionType.NONE, SerializableOptional.empty());
+            this.setActionType(ActionType.NONE, OptionalValue.empty());
         } else if ((model.getMutablePlayerBoards().size() != 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) == 3) ||
                 (model.getMutablePlayerBoards().size() == 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) == 4)) {
-            this.setActionType(ActionType.MOVEMOTHERNATURE, SerializableOptional.empty());
+            this.setActionType(ActionType.MOVEMOTHERNATURE, OptionalValue.empty());
         }
         this.setOpaque(true);
         this.setBackground(new Color(105, 186, 233));
@@ -106,16 +106,16 @@ public class IslandFieldPanel extends JPanel {
                         //create playCharacterCard action
                         if (pawnFromCharacterCard.isPresent()) {
                             playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                    selectedCharacterCard.get(), SerializableOptional.of(islandGroups.get(finalI).getMutableIslands().get(0).getId())
-                                    , pawnFromCharacterCard, SerializableOptional.empty());
+                                    selectedCharacterCard.get(), OptionalValue.of(islandGroups.get(finalI).getMutableIslands().get(0).getId())
+                                    , pawnFromCharacterCard, OptionalValue.empty());
                         } else {
                             playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),
-                                    selectedCharacterCard.get(), SerializableOptional.of(islandGroups.get(finalI).getMutableIslands().get(0).getId())
-                                    , SerializableOptional.empty(), SerializableOptional.empty());
+                                    selectedCharacterCard.get(), OptionalValue.of(islandGroups.get(finalI).getMutableIslands().get(0).getId())
+                                    , OptionalValue.empty(), OptionalValue.empty());
                         }
                         PlayerActionRequest playerActionRequest = new PlayerActionRequest(playCharacterCard);
                         //reset islandFieldPanel's actionType to NONE
-                        this.setActionType(ActionType.NONE, SerializableOptional.empty());
+                        this.setActionType(ActionType.NONE, OptionalValue.empty());
                         this.guiSocketListener.savePlayerActionRequest(playCharacterCard);
                         try {
                             //send playCharacterCard request to Server
@@ -131,7 +131,7 @@ public class IslandFieldPanel extends JPanel {
                         //save moveStudentAction request inside guiReader
                         this.guiSocketListener.savePlayerActionRequest(moveStudent);
                         try {
-                            this.setActionType(ActionType.NONE, SerializableOptional.empty());
+                            this.setActionType(ActionType.NONE, OptionalValue.empty());
                             sw.sendMessage(playerAction);
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
@@ -232,7 +232,7 @@ public class IslandFieldPanel extends JPanel {
      * @param actionType actionType that IslandFieldPanel will assume
      * @param toRemove   PlayerBoard's entrance's index containing the student to move (Optional.empty if action type is not MOVESTUDENT)
      */
-    public void setActionType(ActionType actionType, SerializableOptional<Integer> toRemove) {
+    public void setActionType(ActionType actionType, OptionalValue<Integer> toRemove) {
         if (actionType == ActionType.MOVESTUDENT) {
             this.actionType = actionType;
             this.entrancePositionToMove = toRemove;
@@ -309,7 +309,7 @@ public class IslandFieldPanel extends JPanel {
      * @param card       card's index inside game
      * @param toMove     possible pawn to move
      */
-    public void setCharacterCardAction(ActionType actionType, SerializableOptional<Integer> card, SerializableOptional<PawnColour> toMove) {
+    public void setCharacterCardAction(ActionType actionType, OptionalValue<Integer> card, OptionalValue<PawnColour> toMove) {
         this.actionType = actionType;
         if (card.isEmpty()) return;
         this.selectedCharacterCard = card;

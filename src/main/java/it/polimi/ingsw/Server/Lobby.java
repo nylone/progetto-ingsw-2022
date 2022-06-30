@@ -5,7 +5,7 @@ import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
 import it.polimi.ingsw.Exceptions.Operation.OperationException;
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Server.Messages.Events.ClientEvent;
 import it.polimi.ingsw.Server.Messages.Events.Internal.ClientConnectEvent;
@@ -131,7 +131,7 @@ public class Lobby {
             }
             notifyPlayers(new GameStartEvent(nickToID));
             this.controller = Controller.createGame(gameMode,
-                    SerializableOptional.of(this),
+                    OptionalValue.of(this),
                     players.toArray(String[]::new)
             );
         }

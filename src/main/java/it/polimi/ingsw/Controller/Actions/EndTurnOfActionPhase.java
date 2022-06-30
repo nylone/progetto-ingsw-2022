@@ -2,7 +2,7 @@ package it.polimi.ingsw.Controller.Actions;
 
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.Enums.GamePhase;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -41,20 +41,20 @@ public class EndTurnOfActionPhase extends PlayerAction {
      *                Some actions may use this {@link List} to check for duplicates.
      * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
      *                the actions declares and what the Model offers.
-     * @return An empty {@link SerializableOptional} in case of a successful validation. Otherwise the returned {@link SerializableOptional}
+     * @return An empty {@link OptionalValue} in case of a successful validation. Otherwise the returned {@link OptionalValue}
      * contains the related {@link InputValidationException}
      */
     @Override
-    protected SerializableOptional<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
+    protected OptionalValue<InputValidationException> customValidation(List<PlayerAction> history, Model ctx) {
 
         if (countSimilarClassOccurrences(ChooseCloudTile.class, history) != 1) {
-            return SerializableOptional.of(new GenericInputValidationException("History", "ChooseCloudTile action has not been executed"));
+            return OptionalValue.of(new GenericInputValidationException("History", "ChooseCloudTile action has not been executed"));
         }
         if (!(history.get(history.size() - 1).getClass() == ChooseCloudTile.class || (history.get(history.size() - 1).getClass() == PlayCharacterCard.class))) {
-            return SerializableOptional.of(new GenericInputValidationException("History", "this action can only be executed after a ChooseCloudTile action or PlayCharacterCard action"));
+            return OptionalValue.of(new GenericInputValidationException("History", "this action can only be executed after a ChooseCloudTile action or PlayCharacterCard action"));
         }
 
-        return SerializableOptional.empty();
+        return OptionalValue.empty();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Misc.SerializableOptional;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Server.Lobby;
 import it.polimi.ingsw.Server.Messages.Events.Internal.GameOverEvent;
 import it.polimi.ingsw.Server.Messages.Events.Internal.ModelUpdateEvent;
@@ -12,18 +12,18 @@ import java.util.Objects;
  * whenever a meaningful change to the underlying data is carried out.
  */
 public class ModelWrapper {
-    private final SerializableOptional<Lobby> toNotify;
+    private final OptionalValue<Lobby> toNotify;
     private Model model;
 
     /**
-     * Wraps a {@link Model} along with a {@link SerializableOptional}<{@link Lobby}> object to allow for easy notification
+     * Wraps a {@link Model} along with a {@link OptionalValue}<{@link Lobby}> object to allow for easy notification
      * to the view (ie the lobby component) of any and all changes to the model that are carried through this object's method:
      * {@link #editModel(ModelModifier, boolean)}
      *
      * @param model a non null reference to the Model
      * @param lobby a non null optional value (can obviously be empty, but not null)
      */
-    public ModelWrapper(Model model, SerializableOptional<Lobby> lobby) {
+    public ModelWrapper(Model model, OptionalValue<Lobby> lobby) {
         Objects.requireNonNull(model);
         Objects.requireNonNull(lobby);
 

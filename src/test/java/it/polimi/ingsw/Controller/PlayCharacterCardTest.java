@@ -7,8 +7,8 @@ import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
 import it.polimi.ingsw.Exceptions.Container.FullContainerException;
 import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Misc.Pair;
-import it.polimi.ingsw.Misc.SerializableOptional;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -34,9 +34,9 @@ public class PlayCharacterCardTest {
         int initialBalance = player.getCoinBalance();
         StatefulEffect cardStateful = (StatefulEffect) model.getCharacterCards().get(0);
         PawnColour fromCard = (PawnColour) (cardStateful).getState().get(0);
-        PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.of(0),
-                SerializableOptional.of((PawnColour) (cardStateful).getState().get(0)),
-                SerializableOptional.empty());
+        PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.of(0),
+                OptionalValue.of((PawnColour) (cardStateful).getState().get(0)),
+                OptionalValue.empty());
 
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
@@ -55,7 +55,7 @@ public class PlayCharacterCardTest {
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
-        playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+        playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - model.getCharacterCards().get(0).getCost() + 1);
@@ -72,7 +72,7 @@ public class PlayCharacterCardTest {
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
-        playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.of(0), SerializableOptional.empty(), SerializableOptional.empty());
+        playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.of(0), OptionalValue.empty(), OptionalValue.empty());
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         MoveDestination moveDestination = MoveDestination.toIsland(0);
@@ -102,7 +102,7 @@ public class PlayCharacterCardTest {
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
-        playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+        playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - model.getCharacterCards().get(0).getCost() + 1);
@@ -119,7 +119,7 @@ public class PlayCharacterCardTest {
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
-        playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.of(0), SerializableOptional.empty(), SerializableOptional.empty());
+        playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.of(0), OptionalValue.empty(), OptionalValue.empty());
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - model.getCharacterCards().get(0).getCost() + 1);
@@ -138,7 +138,7 @@ public class PlayCharacterCardTest {
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
-        playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+        playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - model.getCharacterCards().get(0).getCost() + 1);
@@ -158,14 +158,14 @@ public class PlayCharacterCardTest {
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
         pairs.add(new Pair<>(player.getEntranceStudents().get(0).get(), (PawnColour) cardStateful.getState().get(0)));
         pairs.add(new Pair<>(player.getEntranceStudents().get(1).get(), (PawnColour) cardStateful.getState().get(1)));
-        playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.of(pairs));
+        playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.of(pairs));
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - model.getCharacterCards().get(0).getCost() + 1);
         assertEquals(model.getCoinReserve(), initialReserve + model.getCharacterCards().get(0).getCost() - 2);
         cardStateful = (StatefulEffect) model.getCharacterCards().get(0);
         assertTrue(cardStateful.getState().containsAll(pairs.stream().map(Pair::first).toList()));
-        assertTrue(player.getEntranceStudents().containsAll(pairs.stream().map(p -> SerializableOptional.of(p.second())).toList()));
+        assertTrue(player.getEntranceStudents().containsAll(pairs.stream().map(p -> OptionalValue.of(p.second())).toList()));
 
          /*
         -------------------------------------------
@@ -177,7 +177,7 @@ public class PlayCharacterCardTest {
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
-        playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+        playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - model.getCharacterCards().get(0).getCost() + 1);
@@ -195,7 +195,7 @@ public class PlayCharacterCardTest {
         initialReserve = model.getCoinReserve();
         initialBalance = player.getCoinBalance();
         PawnColour pawnColour = Utils.random(Arrays.asList(PawnColour.BLUE, PawnColour.RED, PawnColour.YELLOW, PawnColour.GREEN, PawnColour.PINK));
-        playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.of(pawnColour), SerializableOptional.empty());
+        playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.empty(), OptionalValue.of(pawnColour), OptionalValue.empty());
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - model.getCharacterCards().get(0).getCost() + 1);
@@ -231,14 +231,14 @@ public class PlayCharacterCardTest {
         pairs.add(new Pair<>(player.getEntranceStudents().get(5).get(), secondPawnDiningRoom));
         int firstCount = player.getDiningRoomCount(pairs.get(0).first());
         int secondCount = player.getDiningRoomCount(pairs.get(1).first());
-        playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.of(pairs));
+        playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.of(pairs));
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - model.getCharacterCards().get(0).getCost() + 1);
         assertEquals(model.getCoinReserve(), initialReserve + model.getCharacterCards().get(0).getCost() - 2);
         assertTrue(player.getDiningRoomCount(pairs.get(0).first()) >= firstCount - 2 && player.getDiningRoomCount(pairs.get(0).first()) <= firstCount + 2); //equals 2 if students taken from entrance have the same colour
         assertTrue(player.getDiningRoomCount(pairs.get(1).first()) >= secondCount - 2 && player.getDiningRoomCount(pairs.get(1).first()) <= secondCount + 2);
-        assertTrue(player.getEntranceStudents().containsAll(pairs.stream().map(p -> SerializableOptional.of(p.second())).toList()));
+        assertTrue(player.getEntranceStudents().containsAll(pairs.stream().map(p -> OptionalValue.of(p.second())).toList()));
 
         /*
         -------------------------------------------
@@ -252,7 +252,7 @@ public class PlayCharacterCardTest {
         initialBalance = player.getCoinBalance();
         cardStateful = (StatefulEffect) model.getCharacterCards().get(0);
         PawnColour chosenPawn = (PawnColour) cardStateful.getState().get(0);
-        playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.of(chosenPawn), SerializableOptional.empty());
+        playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.empty(), OptionalValue.of(chosenPawn), OptionalValue.empty());
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - model.getCharacterCards().get(0).getCost() + 1);
@@ -275,7 +275,7 @@ public class PlayCharacterCardTest {
         moveStudent = new MoveStudent(player.getId(), 1, moveDestination);
         gh.executeAction(moveStudent);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.of(chosenPawn), SerializableOptional.empty());
+        playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.empty(), OptionalValue.of(chosenPawn), OptionalValue.empty());
         gh.executeAction(playCharacterCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         assertEquals(player.getCoinBalance(), initialBalance - model.getCharacterCards().get(0).getCost() + 1);
@@ -336,7 +336,7 @@ public class PlayCharacterCardTest {
     }
 
     private Controller initializeGameHandlerAndPlayAssistantCard(Model model) throws InputValidationException {
-        Controller controller = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>());
+        Controller controller = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
@@ -361,7 +361,7 @@ public class PlayCharacterCardTest {
         Model model = initializeGameBoard(60, 3, 12);
         Controller gh = initializeGameHandlerAndPlayAssistantCard(model);
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+        PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
         gh.executeAction(playAction);
     }
 
@@ -382,7 +382,7 @@ public class PlayCharacterCardTest {
         characterCards.add(new Card01(model));
         characterCards.add(new Card02(model));
         characterCards.add(new Card03(model));
-        Controller gh = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>());
+        Controller gh = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
@@ -400,9 +400,9 @@ public class PlayCharacterCardTest {
         }
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         StatefulEffect card1 = (StatefulEffect) model.getCharacterCards().get(0);
-        PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.of(0),
-                SerializableOptional.of((PawnColour) (card1).getState().get(0)),
-                SerializableOptional.empty());
+        PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.of(0),
+                OptionalValue.of((PawnColour) (card1).getState().get(0)),
+                OptionalValue.empty());
 
         gh.executeAction(playCharacterCard);
         try {
@@ -416,9 +416,9 @@ public class PlayCharacterCardTest {
     @Test
     public void simpleModePlayAttempt() throws Exception {
         Model model = new Model(GameMode.SIMPLE, "ale", "teo");
-        Controller gh = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>(6));
+        Controller gh = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>(6));
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+        PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
         try {
             gh.executeAction(playAction);
         } catch (GenericInputValidationException exception) {
@@ -430,9 +430,9 @@ public class PlayCharacterCardTest {
     @Test
     public void noAssistantCardPlayed() throws Exception {
         Model model = new Model(GameMode.SIMPLE, "ale", "teo");
-        Controller gh = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>(6));
+        Controller gh = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>(6));
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+        PlayCharacterCard playAction = new PlayCharacterCard(player.getId(), 5, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
         try {
             gh.executeAction(playAction);
         } catch (GenericInputValidationException exception) {
@@ -446,7 +446,7 @@ public class PlayCharacterCardTest {
         Model model = initializeGameBoard(20, 0, 2);
         Controller gh = initializeGameHandlerAndPlayAssistantCard(model);
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+        PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
         try {
             gh.executeAction(playCharacterCard);
         } catch (GenericInputValidationException exception) {
@@ -459,8 +459,8 @@ public class PlayCharacterCardTest {
     public void CharacterCardActionOutOfPhase() throws Exception {
         Model model = initializeGameBoard(40, 2, 2);
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        Controller controller = new Controller(new ModelWrapper(model, SerializableOptional.empty()), new ArrayList<>());
-        PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, SerializableOptional.empty(), SerializableOptional.empty(), SerializableOptional.empty());
+        Controller controller = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
+        PlayCharacterCard playCharacterCard = new PlayCharacterCard(player.getId(), 0, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());
 
         try {
             controller.executeAction(playCharacterCard);
