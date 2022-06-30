@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import it.polimi.ingsw.Misc.OptionalValue;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -22,7 +23,6 @@ public abstract class CharacterCard implements Serializable {
         this.context = context;
     }
 
-
     public final int getId() {
         return this.id;
     }
@@ -40,12 +40,12 @@ public abstract class CharacterCard implements Serializable {
      * unsafeApplyEffect. Keep in mind this function does not alterate the gamestate.
      *
      * @param input user's input object
-     * @return can only return true as a value, only returns it when the input is correct
-     * @throws InputValidationException whenever the input is invalid
+     * @return a non empty {@link OptionalValue} containing a validation error. Or an empty one when the input is correct
      */
-    public final boolean checkInput(CharacterCardInput input) throws InputValidationException {
+    public final OptionalValue<InputValidationException> checkInput(CharacterCardInput input) {
         if (input.getCaller() == null || !input.getCaller().getNickname().equals(this.context.getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {
-            throw new InvalidElementException("Card Caller");
+
+            return OptionalValue.of(new InvalidElementException("Card Caller"));
         }
         return overridableCheckInput(input);
     }
@@ -57,10 +57,9 @@ public abstract class CharacterCard implements Serializable {
      * checks to this function. So don't check the correct user in this function as it is pointless.
      *
      * @param input user's input object
-     * @return can only return true as a value, only returns it when the input is correct
-     * @throws InputValidationException whenever the input is invalid
+     * @return a non empty {@link OptionalValue} containing a validation error. Or an empty one when the input is correct
      */
-    protected abstract boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException;
+    protected abstract OptionalValue<InputValidationException> overridableCheckInput(CharacterCardInput input);
 
 
     /**

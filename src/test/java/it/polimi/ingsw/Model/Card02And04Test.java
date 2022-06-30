@@ -37,7 +37,7 @@ public class Card02And04Test {
 
         // act
         // activates the card to validate teachers control
-        if (card.overridableCheckInput(new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer())))
+        if (card.overridableCheckInput(new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer())).isEmpty())
             card.unsafeApplyEffect(activateCardAction);
 
         // assert
@@ -51,12 +51,12 @@ public class Card02And04Test {
     }
 
     @Test
-    public void checkEffectCard04IsWorking() throws Exception {
+    public void checkEffectCard04IsWorking() {
         Model gb = new Model(GameMode.ADVANCED, "ale", "teo"); // advanced mode needed for character cards
         Card04 card04 = new Card04(gb);
         CharacterCardInput activateCardAction = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
 
-        if (card04.overridableCheckInput(activateCardAction))
+        if (card04.overridableCheckInput(activateCardAction).isEmpty())
             card04.unsafeUseCard(activateCardAction);
 
         assertTrue(gb.getMutableEffects().isMotherNatureMovementIncreased());

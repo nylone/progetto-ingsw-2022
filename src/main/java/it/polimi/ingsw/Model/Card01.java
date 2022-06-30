@@ -6,6 +6,7 @@ import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
 import it.polimi.ingsw.Logger;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
 
@@ -67,31 +68,31 @@ public class Card01 extends StatefulEffect {
      *              </ul>
      */
     @Override
-    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
+    public OptionalValue<InputValidationException> overridableCheckInput(CharacterCardInput input) {
         //check if input contains a valid island
         if (input.getTargetIsland().isEmpty()) {
-            throw new InvalidElementException("Target Island");
+            return OptionalValue.of(new InvalidElementException("Target Island"));
         }
         //check if input contains a valid pawnColour
         if (input.getTargetPawn().isEmpty()) {
-            throw new InvalidElementException("Target Pawn Colour");
+            return OptionalValue.of(new InvalidElementException("Target Pawn Colour"));
         }
         Island ti = input.getTargetIsland().get();
         if (ti.getId() < 0 || ti.getId() >= 12) {
-            throw new InvalidElementException("Target Island"); // target ti out of bounds for id
+            return OptionalValue.of(new InvalidElementException("Target Island")); // target ti out of bounds for id
         }
         if (!this.context.getMutableIslandField().getMutableIslands().contains(ti)) {
-            throw new InvalidElementException("Target Island"); // target ti not in field
+            return OptionalValue.of(new InvalidElementException("Target Island")); // target ti not in field
         } // note: if island is in field then the island must also be in a group, due to how islandfield works.
         // find if the target pawn colour is present in the card's stored pawn
         if (Arrays.stream(this.students).noneMatch(cell -> cell == input.getTargetPawn().get())) {
-            throw new InvalidElementException("Target Pawn Colour");
+            return OptionalValue.of(new InvalidElementException("Target Pawn Colour"));
         }
         //if StudentBag is empty then the card could not be filled anymore
         if (context.getMutableStudentBag().getSize() == 0) {
-            throw new GenericInputValidationException("Student Bag", "is empty");
+            return OptionalValue.of(new GenericInputValidationException("Student Bag", "is empty"));
         }
-        return true;
+        return OptionalValue.empty();
     }
 
     /**

@@ -44,7 +44,7 @@ public class Card10 extends StatelessEffect {
      *              </ul>
      */
     @Override
-    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
+    public OptionalValue<InputValidationException> overridableCheckInput(CharacterCardInput input) {
         //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from diningRoom
         OptionalValue<List<Pair<PawnColour, PawnColour>>> optionalPawnPair = input.getTargetPawnPairs();
         // make sure that:
@@ -55,7 +55,7 @@ public class Card10 extends StatelessEffect {
                         optionalPawnPair.get().stream().anyMatch(p -> p.first() == null || p.second() == null) // no null values in pair
         ) {
             // in case throw exception for invalid element in input
-            throw new InvalidElementException("Target Pawn Pairs");
+            return OptionalValue.of(new InvalidElementException("Target Pawn Pairs"));
         }
         // explode pawnpairs into respective arrays of elements
         List<Pair<PawnColour, PawnColour>> pawnPairs = optionalPawnPair.get();
@@ -79,7 +79,7 @@ public class Card10 extends StatelessEffect {
 
         // make sure the elements coming from user (first) are also mapped to entrance
         if (!canMapFit(entranceMap, comingFromEntrance)) {
-            throw new InvalidElementException("Target Pawn Pairs");
+            return OptionalValue.of(new InvalidElementException("Target Pawn Pairs"));
         }
 
         Map<PawnColour, Integer> diningRoomMap = new EnumMap<>(PawnColour.class); // counts user diningRoom total colours
@@ -88,19 +88,19 @@ public class Card10 extends StatelessEffect {
         }
         // make sure the elements coming from diningRoom (second) are also mapped to the diningroom
         if (!canMapFit(diningRoomMap, comingFromDiningRoom)) {
-            throw new InvalidElementException("Target Pawn Pairs");
+            return OptionalValue.of(new InvalidElementException("Target Pawn Pairs"));
         }
 
         // validate size of dining room
         for (PawnColour p : comingFromEntrance.keySet()) {
             if (playerBoard.getDiningRoomCount(p) - comingFromDiningRoom.getOrDefault(p, 0) + comingFromEntrance.getOrDefault(p, 0) > 10) {
-                throw new GenericInputValidationException("Dining Room",
+                return OptionalValue.of(new GenericInputValidationException("Dining Room",
                         "can't contain " + pawnPairs.size()
-                                + "elements without overflowing on one of its lanes.");
+                                + "elements without overflowing on one of its lanes."));
             }
         }
 
-        return true; // all checks passed, return true
+        return OptionalValue.empty(); // all checks passed, return true
     }
 
     /**

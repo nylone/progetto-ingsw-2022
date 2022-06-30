@@ -30,7 +30,7 @@ public class Card11Test {
 
         // act
         // card should move student to dining room
-        if (card11.checkInput(input)) card11.unsafeApplyEffect(input);
+        if (card11.checkInput(input).isEmpty()) card11.unsafeApplyEffect(input);
 
         assertEquals(1, pb.getDiningRoomCount(toAdd)); // one student should be added to the correct dining row
         assertEquals(4, card11.getState().size()); // checks if the card was filled up
@@ -42,7 +42,7 @@ public class Card11Test {
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         // creates a wrong input which will not be filled with information
         CharacterCardInput input = new CharacterCardInput(pb);
-        if (card11.checkInput(input)) card11.unsafeApplyEffect(input);
+        throw card11.checkInput(input).get();
     }
 
     @Test
@@ -60,7 +60,7 @@ public class Card11Test {
         }
         // checks that card doesn't allow to add student to a full dining room row
         InputValidationException exception = assertThrows(InputValidationException.class, () -> {
-            if (card11.checkInput(input)) card11.unsafeApplyEffect(input);
+            throw card11.checkInput(input).get();
         });
 
         // checks the specific exception error message
@@ -81,12 +81,9 @@ public class Card11Test {
             g.getMutableStudentBag().extract();
         }
         // it should not be possible to activate card if student bag is empty
-        try {
-            card.checkInput(input);
-        } catch (GenericInputValidationException e) {
+            InputValidationException e = card.checkInput(input).get();
             Assert.assertEquals("An error occurred while validating: Student Bag\n" +
                     "The error was: is empty", e.getMessage());
-        }
     }
 
     @Test
@@ -104,12 +101,12 @@ public class Card11Test {
             }
         }
         // it should not be possible to activate card if student is not on the card
-        try {
-            card.checkInput(input);
-        } catch (InvalidElementException e) {
+
+            InputValidationException e = card.checkInput(input).get();
+
             Assert.assertEquals("An error occurred while validating: Target Pawn Colour\n" +
                     "The error was: element Target Pawn Colour was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
-        }
+
     }
 
 }

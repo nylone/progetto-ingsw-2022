@@ -47,7 +47,7 @@ public class Card10Test {
 
         // act
         // activates the card to swap the selected students
-        if (card10.checkInput(input)) card10.unsafeUseCard(input);
+        if (card10.checkInput(input).isEmpty()) card10.unsafeUseCard(input);
 
         // assert
         // check that students have been added to the dining room
@@ -71,7 +71,7 @@ public class Card10Test {
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         // creates a wrong input which will not be filled with information
         CharacterCardInput input = new CharacterCardInput(pb);
-        if (card10.checkInput(input)) card10.unsafeApplyEffect(input);
+        throw card10.checkInput(input).get();
     }
 
     // todo
@@ -85,7 +85,7 @@ public class Card10Test {
         List<Pair<PawnColour, PawnColour>> pairs = new ArrayList<>();
         pairs.add(new Pair<>(pb.getEntranceStudents().get(0).get(), PawnColour.RED));
         pairs.add(new Pair<>(null, PawnColour.YELLOW));
-        if (card10.checkInput(input)) card10.unsafeApplyEffect(input);
+        throw card10.checkInput(input).get();
     }
 
     /**
@@ -116,8 +116,7 @@ public class Card10Test {
         input.setTargetPawnPairs(pairs);
 
         // act
-        if (card10.checkInput(input)) card10.unsafeUseCard(input);
-
+        throw card10.checkInput(input).get();
     }
 
     /**
@@ -150,6 +149,6 @@ public class Card10Test {
         input.setTargetPawnPairs(pairs);
 
         // act
-        if (card10.checkInput(input)) card10.unsafeUseCard(input);
+        throw card10.checkInput(input).get();
     }
 }

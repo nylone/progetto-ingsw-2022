@@ -94,13 +94,7 @@ public class PlayCharacterCard extends PlayerAction {
                     "can't be played due to insufficient coin balance"));
         }
 
-        try {
-            selectedCard.checkInput(cardInput);
-        } catch (InputValidationException e) {
-            return OptionalValue.of(e);
-        }
-
-        return OptionalValue.empty();
+        return selectedCard.checkInput(cardInput);
     }
 
     @Override

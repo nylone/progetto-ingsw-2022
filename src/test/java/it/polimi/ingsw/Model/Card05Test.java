@@ -40,7 +40,7 @@ public class Card05Test {
 
         // act
         // activates the card to resolve the influence on the island
-        if (card05.checkInput(input)) card05.unsafeApplyEffect(input);
+        if (card05.checkInput(input).isEmpty()) card05.unsafeApplyEffect(input);
         assertEquals(3, card05.getState().size()); // 3 tiles left after one use
         // the island group contains the NoEntryTile
         assertEquals(1, field.getMutableIslandGroupById(1).getMutableNoEntryTiles().size());
@@ -64,7 +64,7 @@ public class Card05Test {
     public void checkInputException() throws Exception {
         // creates a wrong input which will not be filled with information
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
-        if (card05.checkInput(input)) card05.unsafeApplyEffect(input);
+        throw card05.checkInput(input).get();
     }
 
     /**
@@ -80,7 +80,7 @@ public class Card05Test {
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         Island island = new Island(13);
         input.setTargetIsland(island);
-        if (card05.checkInput(input)) card05.unsafeApplyEffect(input);
+        throw card05.checkInput(input).get();
     }
 
     /**
@@ -96,7 +96,7 @@ public class Card05Test {
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         Island island = new Island(8);
         input.setTargetIsland(island);
-        if (card05.checkInput(input)) card05.unsafeApplyEffect(input);
+        throw card05.checkInput(input).get();
     }
 
     /**
@@ -115,11 +115,11 @@ public class Card05Test {
         input.setTargetIsland(field.getMutableIslandById(1));
         // emptying card of all of its entry tiles
         for (int i = 0; i < 4; i++) {
-            if (card05.checkInput(input)) card05.unsafeApplyEffect(input);
+            if (card05.checkInput(input).isEmpty()) card05.unsafeApplyEffect(input);
         }
 
         // act
         // trying to use card when it is empty
-        if (card05.checkInput(input)) card05.unsafeApplyEffect(input);
+        throw card05.checkInput(input).get();
     }
 }

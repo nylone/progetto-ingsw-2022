@@ -48,7 +48,7 @@ public class Card03Test {
 
         // act
         // activates the card to resolve the influence on the island
-        if (card.checkInput(input)) card.unsafeApplyEffect(input);
+        if (card.checkInput(input).isEmpty()) card.unsafeApplyEffect(input);
 
         // assert
         // tower colour should reflect influence given to first player
@@ -68,7 +68,7 @@ public class Card03Test {
     public void checkInvalidInput() throws Exception {
         // creates a wrong input which will not be filled with information
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
-        if (card.checkInput(input)) card.unsafeApplyEffect(input);
+        throw card.checkInput(input).get();
     }
 
     /**
@@ -84,7 +84,7 @@ public class Card03Test {
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         Island island = new Island(13);
         input.setTargetIsland(island);
-        if (card.checkInput(input)) ;
+        throw card.checkInput(input).get();
     }
 
     /**
@@ -100,6 +100,6 @@ public class Card03Test {
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         Island island = new Island(8);
         input.setTargetIsland(island);
-        if (card.checkInput(input)) card.unsafeApplyEffect(input);
+        throw card.checkInput(input).get();
     }
 }

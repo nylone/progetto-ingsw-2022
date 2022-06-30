@@ -40,10 +40,12 @@ public class Card07 extends StatefulEffect {
         }
     }
 
+    @Override
     public ArrayList<Object> getState() {
         return new ArrayList<>(Arrays.asList(students));
     }
 
+    @Override
     public StateType getStateType() {
         return stateType;
     }
@@ -65,7 +67,7 @@ public class Card07 extends StatefulEffect {
      *               <li>a valid PawnColour from card</li>
      *              </ul>
      */
-    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
+    public OptionalValue<InputValidationException> overridableCheckInput(CharacterCardInput input) {
         //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from card
         OptionalValue<List<Pair<PawnColour, PawnColour>>> optionalPawnPair = input.getTargetPawnPairs();
         PlayerBoard playerBoard = input.getCaller();
@@ -77,7 +79,7 @@ public class Card07 extends StatefulEffect {
                         optionalPawnPair.get().stream().anyMatch(p -> p.first() == null || p.second() == null) // no null values in pair
         ) {
             // in case throw exception for invalid element in input
-            throw new InvalidElementException("Target Pawn Pairs");
+            return OptionalValue.of(new InvalidElementException("Target Pawn Pairs"));
         }
 
 
@@ -102,7 +104,7 @@ public class Card07 extends StatefulEffect {
         }
         // make sure the elements coming from user (first) are also mapped to entrance
         if (!canMapFit(entranceMap, firstMap)) {
-            throw new InvalidElementException("Target Pawn Pairs");
+            return OptionalValue.of(new InvalidElementException("Target Pawn Pairs"));
         }
 
         // get card storage counts per colour
@@ -112,18 +114,18 @@ public class Card07 extends StatefulEffect {
         }
         // make sure the elements coming from card (second) are also mapped to the card state
         if (!canMapFit(cardMap, secondMap)) {
-            throw new InvalidElementException("Target Pawn Pairs");
+            return OptionalValue.of(new InvalidElementException("Target Pawn Pairs"));
         }
         if (playerBoard.getEntranceSpaceLeft() + pawnPairs.size() >= playerBoard.getEntranceSize()) {
-            throw new GenericInputValidationException("Entrance",
+            return OptionalValue.of(new GenericInputValidationException("Entrance",
                     "does not contain " + pawnPairs.size()
-                            + " pawns");
+                            + " pawns"));
         }
         if (context.getMutableStudentBag().getSize() == 0) {
-            throw new GenericInputValidationException("Student Bag", "is empty");
+            return OptionalValue.of(new GenericInputValidationException("Student Bag", "is empty"));
         }
 
-        return true;
+        return OptionalValue.empty();
     }
 
     /**

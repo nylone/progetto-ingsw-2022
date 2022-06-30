@@ -44,7 +44,7 @@ public class Card01Test {
 
         // act
         // activates the card to move the student to the island
-        if (card.checkInput(input)) card.unsafeApplyEffect(input);
+        if (card.checkInput(input).isEmpty()) card.unsafeApplyEffect(input);
 
         // assert
         assertEquals(4, initialSize); // card should be initialized with 4 students
@@ -74,7 +74,7 @@ public class Card01Test {
 
         // act
         // activates the card to move the student to the island
-        if (card.checkInput(input)) card.unsafeApplyEffect(input);
+        if (card.checkInput(input).isEmpty()) card.unsafeApplyEffect(input);
 
         // assert
         // the size of students on island should be incremented by one
@@ -88,11 +88,9 @@ public class Card01Test {
      * <br>
      * The island could be wrong, the selected student could be not hold by the card, or the input object
      * could be constructed wrongly in some other ways.
-     *
-     * @throws Exception an invalid input has been used to activate the card
      */
     @Test
-    public void NoIslandException() throws Exception {
+    public void NoIslandException() {
         // arrange
         Model g = new Model(GameMode.ADVANCED, "ari", "teo");
         // creates a wrong input which will not be filled with information
@@ -100,12 +98,10 @@ public class Card01Test {
         Card01 card = new Card01(g);
 
         // act
-        try {
-            card.checkInput(input);
-        } catch (InvalidElementException e) {
+            InputValidationException e = card.checkInput(input).get();
+
             Assert.assertEquals("An error occurred while validating: Target Island\n" +
                     "The error was: element Target Island was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
-        }
     }
 
     @Test
@@ -115,12 +111,9 @@ public class Card01Test {
         CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
         Card01 card = new Card01(g);
         input.setTargetIsland(g.getMutableIslandField().getMutableIslandById(0));
-        try {
-            card.checkInput(input);
-        } catch (InvalidElementException e) {
+            InputValidationException e = card.checkInput(input).get();
             Assert.assertEquals("An error occurred while validating: Target Pawn Colour\n" +
                     "The error was: element Target Pawn Colour was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
-        }
     }
 
     @Test
@@ -140,16 +133,13 @@ public class Card01Test {
                 break;
             }
         }
-        try {
-            card.checkInput(input);
-        } catch (InvalidElementException e) {
+            InputValidationException e = card.checkInput(input).get();
             Assert.assertEquals("An error occurred while validating: Target Pawn Colour\n" +
                     "The error was: element Target Pawn Colour was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
-        }
     }
 
     @Test(expected = InputValidationException.class)
-    public void checkInvalidIslandInput() throws Exception {
+    public void checkInvalidIslandInput() throws InputValidationException {
         Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
         Card01 card = new Card01(gb);
         // creates a wrong input (player will select an invalid island)
@@ -157,7 +147,7 @@ public class Card01Test {
         Island island = new Island(13);
         input.setTargetPawn((PawnColour) card.getState().get(0));
         input.setTargetIsland(island);
-        if (card.checkInput(input)) ;
+        throw card.checkInput(input).get();
     }
 
     @Test(expected = InputValidationException.class)
@@ -168,7 +158,7 @@ public class Card01Test {
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
         Island island = new Island(8);
         input.setTargetIsland(island);
-        if (card05.checkInput(input)) card05.unsafeApplyEffect(input);
+        throw card05.checkInput(input).get();
     }
 
     @Test
@@ -183,25 +173,20 @@ public class Card01Test {
         while (!g.getMutableStudentBag().isEmpty()) {
             g.getMutableStudentBag().extract();
         }
-        try {
-            card.checkInput(input);
-        } catch (GenericInputValidationException e) {
+            InputValidationException e = card.checkInput(input).get();
             Assert.assertEquals("An error occurred while validating: Student Bag\n" +
                     "The error was: is empty", e.getMessage());
-        }
     }
 
     @Test
     public void EmptyStudentBagExceptionCardConstructor() {
         Model g = new Model(GameMode.ADVANCED, "ari", "teo");
-        // creates a wrong input which will not be filled with information
-        Card01 card;
         //create a new Card until student bag has 5 students or fewer
         do {
-            card = new Card01(g);
+            new Card01(g);
         } while (g.getMutableStudentBag().getSize() >= 4);
         try {
-            card = new Card01(g);
+            new Card01(g);
         } catch (RuntimeException e) {
             assertEquals("it.polimi.ingsw.Exceptions.Container.EmptyContainerException: An error occurred on: StudentBag\n" +
                     "The error was: StudentBag was found empty.", e.getMessage());

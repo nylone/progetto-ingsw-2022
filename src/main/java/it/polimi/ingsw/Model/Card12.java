@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+import it.polimi.ingsw.Misc.OptionalValue;
 
 import java.io.Serial;
 
@@ -28,11 +29,11 @@ public class Card12 extends StatelessEffect {
      *               <li>A valid PawnColour</li>
      *              </ul>
      */
-    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
+    public OptionalValue<InputValidationException> overridableCheckInput(CharacterCardInput input) {
         if (input.getTargetPawn().isEmpty()) {
-            throw new InvalidElementException("Target Pawn Colour");
+            return OptionalValue.of(new InvalidElementException("Target Pawn Colour"));
         }
-        return true;
+        return OptionalValue.empty();
     }
 
     /**

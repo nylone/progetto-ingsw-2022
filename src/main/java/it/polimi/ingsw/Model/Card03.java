@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
+import it.polimi.ingsw.Misc.OptionalValue;
 
 import java.io.Serial;
 
@@ -28,18 +29,19 @@ public class Card03 extends StatelessEffect {
      *               <li>A valid island's ID </li>
      *              </ul>
      */
-    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
+    public OptionalValue<InputValidationException> overridableCheckInput(CharacterCardInput input) {
         if (input.getTargetIsland().isEmpty()) {
-            throw new InvalidElementException("Target Island"); // target ti not set
+            return OptionalValue.of(new InvalidElementException("Target Island")); // target ti not set
         }
         Island ti = input.getTargetIsland().get();
-        if (ti.getId() < 0 || ti.getId() >= 12) {
-            throw new InvalidElementException("Target Island"); // target ti out of bounds for id
+        int tiID = ti.getId();
+        if (tiID < 0 || tiID >= 12) {
+            return OptionalValue.of(new InvalidElementException("Target Island")); // target ti out of bounds for id
         }
         if (!this.context.getMutableIslandField().getMutableIslands().contains(ti)) {
-            throw new InvalidElementException("Target Island"); // target ti not in field
+            return OptionalValue.of(new InvalidElementException("Target Island")); // target ti not in field
         }
-        return true;
+        return OptionalValue.empty();
     }
 
     /**

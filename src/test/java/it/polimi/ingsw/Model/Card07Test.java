@@ -33,7 +33,7 @@ public class Card07Test {
      *                   (by definition)
      */
     @Test
-    public void checkUse() throws Exception {
+    public void checkUse() {
         Card07 card = new Card07(gb);
         assertEquals(6, card.getState().size()); // check whether the card contains 6 items initially
         assertSame(card.getStateType(), StateType.PAWNCOLOUR); // check whether the card contains students specifically
@@ -51,7 +51,7 @@ public class Card07Test {
 
         // act
         // activates the card to swap the selected students
-        if (card.checkInput(input)) card.unsafeUseCard(input);
+        if (card.checkInput(input).isEmpty()) card.unsafeUseCard(input);
 
         // assert
         // checks if the students from the entrance are on the card
@@ -73,7 +73,7 @@ public class Card07Test {
         PlayerBoard pb = gb.getMutablePlayerBoard(0);
         // creates a wrong input which will not be filled with information
         CharacterCardInput input = new CharacterCardInput(pb);
-        if (card.checkInput(input)) card.unsafeUseCard(input);
+        throw card.checkInput(input).get();
     }
 
     /**
@@ -98,11 +98,11 @@ public class Card07Test {
         pairs.add(new Pair<>(pb.getEntranceStudents().get(2).get(), null));
         pb.removeStudentFromEntrance(2);
         input.setTargetPawnPairs(pairs);
-        if (card.checkInput(input)) card.unsafeUseCard(input);
+        throw card.checkInput(input).get();
     }
 
     @Test
-    public void PawnNotPresentInCard() throws Exception {
+    public void PawnNotPresentInCard() {
         Model g = new Model(GameMode.ADVANCED, "ari", "teo");
         // creates a wrong input which will not be filled with information
         CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
@@ -121,24 +121,21 @@ public class Card07Test {
                 }
             }
             if (pair == null) {
+                g = new Model(GameMode.ADVANCED, "ari", "teo");
                 input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
                 pawnColourIntegerEnumMap.clear();
+                card = new Card07(g);
                 for (PawnColour p : card.getState().stream().map(o -> (PawnColour) o).toList()) {
                     pawnColourIntegerEnumMap.merge(p, 1, Integer::sum);
                 }
-                g = new Model(GameMode.ADVANCED, "ari", "teo");
-                card = new Card07(g);
             } else {
                 break;
             }
-        } while (pair == null);
+        } while (true);
         input.setTargetPawnPairs(new ArrayList<>(List.of(pair)));
-        try {
-            card.checkInput(input);
-        } catch (InvalidElementException e) {
-            Assert.assertEquals("An error occurred while validating: Target Pawn Pairs\n" +
-                    "The error was: element Target Pawn Pairs was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
-        }
+        InputValidationException e = card.checkInput(input).get();
+        Assert.assertEquals("An error occurred while validating: Target Pawn Pairs\n" +
+                "The error was: element Target Pawn Pairs was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
     }
 
     @Test
@@ -153,25 +150,22 @@ public class Card07Test {
         }
         Pair<PawnColour, PawnColour> pair = new Pair<>(PawnColour.RED, (PawnColour) card.getState().get(0));
         input.setTargetPawnPairs(new ArrayList<>(List.of(pair)));
-        try {
-            card.checkInput(input);
-        } catch (InvalidElementException e) {
+            InputValidationException e = card.checkInput(input).get();
             Assert.assertEquals("An error occurred while validating: Target Pawn Pairs\n" +
                     "The error was: element Target Pawn Pairs was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
-        }
+
     }
 
     @Test
     public void EmptyStudentBagExceptionCardConstructor() {
         Model g = new Model(GameMode.ADVANCED, "ari", "teo");
         // creates a wrong input which will not be filled with information
-        Card07 card;
         //create a new Card until student bag has 5 students or fewer
         do {
-            card = new Card07(g);
+            new Card07(g);
         } while (g.getMutableStudentBag().getSize() >= 6);
         try {
-            card = new Card07(g);
+            new Card07(g);
         } catch (RuntimeException e) {
             assertEquals("it.polimi.ingsw.Exceptions.Container.EmptyContainerException: An error occurred on: StudentBag\n" +
                     "The error was: StudentBag was found empty.", e.getMessage());
@@ -193,11 +187,11 @@ public class Card07Test {
         while (!g.getMutableStudentBag().isEmpty()) {
             g.getMutableStudentBag().extract();
         }
-        try {
-            card.checkInput(input);
-        } catch (GenericInputValidationException e) {
+
+            InputValidationException e = card.checkInput(input).get();
+
             Assert.assertEquals("An error occurred while validating: Student Bag\n" +
                     "The error was: is empty", e.getMessage());
-        }
+
     }
 }

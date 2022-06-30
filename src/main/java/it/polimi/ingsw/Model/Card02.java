@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 
 import java.io.Serial;
@@ -25,8 +26,8 @@ public class Card02 extends StatelessEffect {
      * @param input No extra parameters required
      */
     @Override
-    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
-        return true;
+    public OptionalValue<InputValidationException> overridableCheckInput(CharacterCardInput input) {
+        return OptionalValue.empty();
     }
 
     /**

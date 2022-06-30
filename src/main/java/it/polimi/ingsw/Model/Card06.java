@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+import it.polimi.ingsw.Misc.OptionalValue;
 
 import java.io.Serial;
 
@@ -20,8 +21,8 @@ public class Card06 extends StatelessEffect {
      *
      * @param input No extra parameters required
      */
-    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
-        return true; // nothing to check
+    public OptionalValue<InputValidationException> overridableCheckInput(CharacterCardInput input) {
+        return OptionalValue.empty(); // nothing to check
     }
 
     /**

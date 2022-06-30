@@ -144,7 +144,7 @@ public class MoveMotherNatureTest {
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         Card04 card04 = new Card04(model);
         CharacterCardInput input = new CharacterCardInput(player);
-        if (card04.checkInput(input)) card04.unsafeUseCard(input);
+        if (card04.checkInput(input).isEmpty()) card04.unsafeUseCard(input);
         int invalidMovement = model.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement() + 3;
         PlayerAction action = new MoveMotherNature(player.getId(), invalidMovement);
 
@@ -185,7 +185,7 @@ public class MoveMotherNatureTest {
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         Card04 card04 = new Card04(model);
         CharacterCardInput input = new CharacterCardInput(player);
-        if (card04.checkInput(input)) card04.unsafeUseCard(input);
+        if (card04.checkInput(input).isEmpty()) card04.unsafeUseCard(input);
         int invalidMovement = model.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement() + 3;
         PlayerAction action = new MoveMotherNature(player.getId(), invalidMovement);
 

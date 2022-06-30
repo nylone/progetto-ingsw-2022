@@ -30,7 +30,7 @@ public class Card12Test {
             input.setTargetPawn(p);
             // act
             // should remove students of the selected colours (red first, then blue) from dining room of each player
-            if (card.checkInput(input)) card.unsafeApplyEffect(input);
+            if (card.checkInput(input).isEmpty()) card.unsafeApplyEffect(input);
         }
         // checks that dining room rows have been correctly emptied
         for (PlayerBoard player : gb.getMutablePlayerBoards()) {
@@ -44,7 +44,6 @@ public class Card12Test {
         PlayerBoard pb = gb.getMutableTurnOrder().getMutableCurrentPlayer();
         // creates a wrong input which will not be filled with information
         CharacterCardInput input = new CharacterCardInput(pb);
-        // act
-        if (card.checkInput(input)) card.unsafeApplyEffect(input);
+        throw card.checkInput(input).get();
     }
 }

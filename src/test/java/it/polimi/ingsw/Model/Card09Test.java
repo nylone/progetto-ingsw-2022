@@ -33,7 +33,7 @@ public class Card09Test {
 
         // act
         // activates the card to set the flag
-        if (card09.checkInput(input)) card09.unsafeApplyEffect(input);
+        if (card09.checkInput(input).isEmpty()) card09.unsafeApplyEffect(input);
 
         // assert
         // check if the flag has been activated
@@ -53,6 +53,6 @@ public class Card09Test {
     public void checkInvalidInput() throws Exception {
         // creates a wrong input which will not be filled with information (colour to be excluded)
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
-        if (card09.checkInput(input)) card09.unsafeApplyEffect(input);
+        throw card09.checkInput(input).get();
     }
 }

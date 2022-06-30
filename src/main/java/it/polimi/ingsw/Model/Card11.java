@@ -6,6 +6,7 @@ import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
 import it.polimi.ingsw.Logger;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
 
@@ -55,27 +56,27 @@ public class Card11 extends StatefulEffect {
      *              </ul>
      */
     @Override
-    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
+    public OptionalValue<InputValidationException> overridableCheckInput(CharacterCardInput input) {
         if (input.getTargetPawn().isEmpty()) {
-            throw new InvalidElementException("Target Pawn Colour");
+            return OptionalValue.of(new InvalidElementException("Target Pawn Colour"));
         }
         // find if the target pawn colour is present in the card's stored pawn
         if (Arrays.stream(this.students).noneMatch(cell -> cell == input.getTargetPawn().get())) {
-            throw new InvalidElementException("Target Pawn Colour");
+            return OptionalValue.of(new InvalidElementException("Target Pawn Colour"));
         }
 
         PlayerBoard playerBoard = input.getCaller();
         // validate size of dining room
         if (playerBoard.isDiningRoomFull(input.getTargetPawn().get())) {
-            throw new GenericInputValidationException("Dining Room",
+            return OptionalValue.of(new GenericInputValidationException("Dining Room",
                     "can't contain " + input.getTargetPawn().get()
-                            + "without overflowing.");
+                            + "without overflowing."));
         }
         if (context.getMutableStudentBag().getSize() == 0) {
-            throw new GenericInputValidationException("Student Bag", "is empty");
+            return OptionalValue.of(new GenericInputValidationException("Student Bag", "is empty"));
         }
         //all tests passed
-        return true;
+        return OptionalValue.empty();
     }
 
     /**

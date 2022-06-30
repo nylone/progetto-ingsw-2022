@@ -4,6 +4,7 @@ import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Exceptions.Operation.FailedOperationException;
+import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Model.Enums.StateType;
 
 import java.io.Serial;
@@ -56,23 +57,23 @@ public class Card05 extends StatefulEffect {
      *               <li>A valid island's ID </li>
      *              </ul>
      */
-    public boolean overridableCheckInput(CharacterCardInput input) throws InputValidationException {
+    public OptionalValue<InputValidationException> overridableCheckInput(CharacterCardInput input) {
         if (input.getTargetIsland().isEmpty()) {
-            throw new InvalidElementException("Target Island"); // target ti not set
+            return OptionalValue.of(new InvalidElementException("Target Island")); // target ti not set
         }
         Island ti = input.getTargetIsland().get();
         if (ti.getId() < 0 || ti.getId() >= 12) {
-            throw new InvalidElementException("Target Island"); // target ti out of bounds for id
+            return OptionalValue.of(new InvalidElementException("Target Island")); // target ti out of bounds for id
         }
         if (!this.context.getMutableIslandField().getMutableIslands().contains(ti)) {
-            throw new InvalidElementException("Target Island"); // target ti not in field
+            return OptionalValue.of(new InvalidElementException("Target Island")); // target ti not in field
         } // note: if island is in field then the island must also be in a group, due to how islandfield works.
         if (tiles.size() == 0) {
-            throw new GenericInputValidationException("Card05",
-                    "has finished all its NoEntryTile(s)");
+            return OptionalValue.of(new GenericInputValidationException("Card05",
+                    "has finished all its NoEntryTile(s)"));
         }
         //all tests passed
-        return true;
+        return OptionalValue.empty();
     }
 
     /**
