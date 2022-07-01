@@ -565,6 +565,7 @@ public class CliWriter implements Runnable {
                 try {
                     //get UUID from stdIn
                     id = UUID.fromString(stdIn.readLine());
+                    repeat = false;
                 } catch (IllegalArgumentException e) {
                     System.out.println("UUID not valid, try again");
                     repeat = true;
