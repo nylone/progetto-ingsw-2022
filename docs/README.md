@@ -37,7 +37,8 @@ Follow [this link](https://nylone.github.io/ing-sw-2022-rampone-rossi-salerno/ja
 
 ## Other Deliverables for the project review
 
-All requested deliverables for use in the project review and assessment can be found [here](deliverables).
+All requested deliverables for use in the project review and assessment can be found 
+[here](https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno/tree/main/deliverables).
 
 ## Building and Running
 
