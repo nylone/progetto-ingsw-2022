@@ -205,13 +205,17 @@ public class ClientView {
             //only if the CharacterCard has a stateful effect then print it's content
             if (characterCard instanceof StatefulEffect) {
                 System.out.print("\t");
+                // this index is used to identify students position on cards that hold any
+                int indexOfStudentOnCard = 0;
                 for (Object o : ((StatefulEffect) characterCard).getState()) {
                     switch (o) {
-                        //if the content is a NoENtryTile then print 'X'
+                        //if the content is a NoEntryTile then print 'X'
                         case NoEntryTile ignored -> System.out.print(" X ");
                         //if the content is a pawn then print it's colour
-                        case PawnColour pawnColour ->
-                                System.out.print(Symbols.colorizeStudent(pawnColour, "  " + Symbols.PAWN));
+                        case PawnColour pawnColour -> {
+                            System.out.print("  " + Symbols.colorizeBackgroundStudent(pawnColour, String.valueOf(indexOfStudentOnCard)));
+                            indexOfStudentOnCard++;
+                        }
                         case default -> System.out.println("Card's object not valid");
                     }
                 }
