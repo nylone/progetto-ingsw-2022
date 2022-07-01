@@ -11,6 +11,7 @@ import it.polimi.ingsw.Server.Messages.Events.Requests.*;
 import it.polimi.ingsw.Server.Messages.ServerResponses.*;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.LobbyInfo;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -232,7 +233,11 @@ public class LobbyServer implements Runnable {
                 }
             } catch (Exception e) {
                 Logger.severe(e.getMessage());
-                e.printStackTrace();
+                try {
+                    this.sw.close();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
     }
