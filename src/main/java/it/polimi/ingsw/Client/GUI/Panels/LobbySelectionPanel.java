@@ -111,22 +111,18 @@ public class LobbySelectionPanel extends JTabbedPane {
                 UUID id = UUID.fromString(idString);
                 try {
                     sw.sendMessage(new ConnectLobbyRequest(id));
-                    boolean again = true;
-                    do {
-                        Message response = sw.awaitMessage();
-                        if (response instanceof LobbyConnected lobbyConnected) {
-                            if (lobbyConnected.getStatusCode() == StatusCode.Success) {
-                                //Switch to a new LobbySelectionPanel if user has been accepted by Server
-                                window.changeView(new GameStartingPanel(ctx, false, lobbyConnected.getLobbyID()));
-                                again = false;
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE);
-                                connect.setEnabled(true);
-                            }
+                    Message response = sw.awaitMessage();
+                    if (response instanceof LobbyConnected lobbyConnected) {
+                        if (lobbyConnected.getStatusCode() == StatusCode.Success) {
+                            //Switch to a new LobbySelectionPanel if user has been accepted by Server
+                            window.changeView(new GameStartingPanel(ctx, false, lobbyConnected.getLobbyID()));
                         } else {
-                            throw new IllegalStateException("Unexpected value: " + response);
+                            JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE);
+                            connect.setEnabled(true);
                         }
-                    } while (again);
+                    } else {
+                        throw new IllegalStateException("Unexpected value: " + response);
+                    }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Error in the connection with the server",
                             "Error", JOptionPane.INFORMATION_MESSAGE);
