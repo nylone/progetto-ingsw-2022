@@ -73,7 +73,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     0%
   </span>
   <span class="absValue">
-    (0/59)
+    (0/62)
   </span>
 </td>
 </tr>
@@ -292,76 +292,80 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">205</i>&nbsp;            //only if the CharacterCard has a stateful effect then print it&#39;s content
 <b class="nc"><i class="no-highlight">206</i>&nbsp;            if (characterCard instanceof StatefulEffect) {</b>
 <b class="nc"><i class="no-highlight">207</i>&nbsp;                System.out.print(&quot;\t&quot;);</b>
-<b class="nc"><i class="no-highlight">208</i>&nbsp;                for (Object o : ((StatefulEffect) characterCard).getState()) {</b>
-<b class="nc"><i class="no-highlight">209</i>&nbsp;                    switch (o) {</b>
-<i class="no-highlight">210</i>&nbsp;                        //if the content is a NoENtryTile then print &#39;X&#39;
-<b class="nc"><i class="no-highlight">211</i>&nbsp;                        case NoEntryTile ignored -&gt; System.out.print(&quot; X &quot;);</b>
-<i class="no-highlight">212</i>&nbsp;                        //if the content is a pawn then print it&#39;s colour
-<b class="nc"><i class="no-highlight">213</i>&nbsp;                        case PawnColour pawnColour -&gt;</b>
-<b class="nc"><i class="no-highlight">214</i>&nbsp;                                System.out.print(Symbols.colorizeStudent(pawnColour, &quot;  &quot; + Symbols.PAWN));</b>
-<b class="nc"><i class="no-highlight">215</i>&nbsp;                        case default -&gt; System.out.println(&quot;Card&#39;s object not valid&quot;);</b>
-<i class="no-highlight">216</i>&nbsp;                    }
-<b class="nc"><i class="no-highlight">217</i>&nbsp;                }</b>
-<i class="no-highlight">218</i>&nbsp;            }
-<b class="nc"><i class="no-highlight">219</i>&nbsp;            System.out.println(&quot;\n&quot;);</b>
-<b class="nc"><i class="no-highlight">220</i>&nbsp;        }</b>
-<i class="no-highlight">221</i>&nbsp;    }
-<i class="no-highlight">222</i>&nbsp;
-<i class="no-highlight">223</i>&nbsp;    /**
-<i class="no-highlight">224</i>&nbsp;     * get Client&#39;s nickname
-<i class="no-highlight">225</i>&nbsp;     *
-<i class="no-highlight">226</i>&nbsp;     * @return String containing the nickname
-<i class="no-highlight">227</i>&nbsp;     */
-<i class="no-highlight">228</i>&nbsp;    public String getNickname() {
-<b class="nc"><i class="no-highlight">229</i>&nbsp;        return Nickname;</b>
-<i class="no-highlight">230</i>&nbsp;    }
-<i class="no-highlight">231</i>&nbsp;
-<i class="no-highlight">232</i>&nbsp;    /**
-<i class="no-highlight">233</i>&nbsp;     * Set Client&#39;s nickname
-<i class="no-highlight">234</i>&nbsp;     *
-<i class="no-highlight">235</i>&nbsp;     * @param nickname String containing Client&#39;s nickname
-<i class="no-highlight">236</i>&nbsp;     */
-<i class="no-highlight">237</i>&nbsp;    public void setNickname(String nickname) {
-<b class="nc"><i class="no-highlight">238</i>&nbsp;        this.Nickname = nickname;</b>
-<i class="no-highlight">239</i>&nbsp;    }
-<i class="no-highlight">240</i>&nbsp;
-<i class="no-highlight">241</i>&nbsp;    public void disconnectViewFromServer() {
-<b class="nc"><i class="no-highlight">242</i>&nbsp;        disconnectView();</b>
-<b class="nc"><i class="no-highlight">243</i>&nbsp;        setConnected(false);</b>
-<i class="no-highlight">244</i>&nbsp;    }
-<i class="no-highlight">245</i>&nbsp;
-<i class="no-highlight">246</i>&nbsp;    /**
-<i class="no-highlight">247</i>&nbsp;     * Method to disconnect the view from lobby (when the game ends or is closed for any reason)
-<i class="no-highlight">248</i>&nbsp;     */
-<i class="no-highlight">249</i>&nbsp;    public void disconnectView() {
-<b class="nc"><i class="no-highlight">250</i>&nbsp;        setIsInLobby(false);</b>
-<b class="nc"><i class="no-highlight">251</i>&nbsp;        setAdmin(null);</b>
-<b class="nc"><i class="no-highlight">252</i>&nbsp;        setGame(null);</b>
-<b class="nc"><i class="no-highlight">253</i>&nbsp;        setGameStarted(false);</b>
-<i class="no-highlight">254</i>&nbsp;    }
-<i class="no-highlight">255</i>&nbsp;
-<i class="no-highlight">256</i>&nbsp;    /**
-<i class="no-highlight">257</i>&nbsp;     * Set Client&#39;s status inside a lobby (connected to a lobby or not)
-<i class="no-highlight">258</i>&nbsp;     *
-<i class="no-highlight">259</i>&nbsp;     * @param inLobby boolean representing whether the client is in lobby or not
-<i class="no-highlight">260</i>&nbsp;     */
-<i class="no-highlight">261</i>&nbsp;    public void setIsInLobby(boolean inLobby) {
-<b class="nc"><i class="no-highlight">262</i>&nbsp;        this.isInLobby = inLobby;</b>
-<i class="no-highlight">263</i>&nbsp;    }
-<i class="no-highlight">264</i>&nbsp;
-<i class="no-highlight">265</i>&nbsp;    /**
-<i class="no-highlight">266</i>&nbsp;     * Set game&#39;s model
-<i class="no-highlight">267</i>&nbsp;     *
-<i class="no-highlight">268</i>&nbsp;     * @param game GameBoard containing game&#39;s model
-<i class="no-highlight">269</i>&nbsp;     */
-<i class="no-highlight">270</i>&nbsp;    public void setGame(Model game) {
-<b class="nc"><i class="no-highlight">271</i>&nbsp;        this.model = game;</b>
-<i class="no-highlight">272</i>&nbsp;    }
-<i class="no-highlight">273</i>&nbsp;
-<i class="no-highlight">274</i>&nbsp;
-<i class="no-highlight">275</i>&nbsp;}
-<i class="no-highlight">276</i>&nbsp;
+<i class="no-highlight">208</i>&nbsp;                // this index is used to identify students position on cards that hold any
+<b class="nc"><i class="no-highlight">209</i>&nbsp;                int indexOfStudentOnCard = 0;</b>
+<b class="nc"><i class="no-highlight">210</i>&nbsp;                for (Object o : ((StatefulEffect) characterCard).getState()) {</b>
+<b class="nc"><i class="no-highlight">211</i>&nbsp;                    switch (o) {</b>
+<i class="no-highlight">212</i>&nbsp;                        //if the content is a NoEntryTile then print &#39;X&#39;
+<b class="nc"><i class="no-highlight">213</i>&nbsp;                        case NoEntryTile ignored -&gt; System.out.print(&quot; X &quot;);</b>
+<i class="no-highlight">214</i>&nbsp;                        //if the content is a pawn then print it&#39;s colour
+<b class="nc"><i class="no-highlight">215</i>&nbsp;                        case PawnColour pawnColour -&gt; {</b>
+<b class="nc"><i class="no-highlight">216</i>&nbsp;                            System.out.print(&quot;  &quot; + Symbols.colorizeBackgroundStudent(pawnColour, String.valueOf(indexOfStudentOnCard)));</b>
+<b class="nc"><i class="no-highlight">217</i>&nbsp;                            indexOfStudentOnCard++;</b>
+<b class="nc"><i class="no-highlight">218</i>&nbsp;                        }</b>
+<b class="nc"><i class="no-highlight">219</i>&nbsp;                        case default -&gt; System.out.println(&quot;Card&#39;s object not valid&quot;);</b>
+<i class="no-highlight">220</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">221</i>&nbsp;                }</b>
+<i class="no-highlight">222</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">223</i>&nbsp;            System.out.println(&quot;\n&quot;);</b>
+<b class="nc"><i class="no-highlight">224</i>&nbsp;        }</b>
+<i class="no-highlight">225</i>&nbsp;    }
+<i class="no-highlight">226</i>&nbsp;
+<i class="no-highlight">227</i>&nbsp;    /**
+<i class="no-highlight">228</i>&nbsp;     * get Client&#39;s nickname
+<i class="no-highlight">229</i>&nbsp;     *
+<i class="no-highlight">230</i>&nbsp;     * @return String containing the nickname
+<i class="no-highlight">231</i>&nbsp;     */
+<i class="no-highlight">232</i>&nbsp;    public String getNickname() {
+<b class="nc"><i class="no-highlight">233</i>&nbsp;        return Nickname;</b>
+<i class="no-highlight">234</i>&nbsp;    }
+<i class="no-highlight">235</i>&nbsp;
+<i class="no-highlight">236</i>&nbsp;    /**
+<i class="no-highlight">237</i>&nbsp;     * Set Client&#39;s nickname
+<i class="no-highlight">238</i>&nbsp;     *
+<i class="no-highlight">239</i>&nbsp;     * @param nickname String containing Client&#39;s nickname
+<i class="no-highlight">240</i>&nbsp;     */
+<i class="no-highlight">241</i>&nbsp;    public void setNickname(String nickname) {
+<b class="nc"><i class="no-highlight">242</i>&nbsp;        this.Nickname = nickname;</b>
+<i class="no-highlight">243</i>&nbsp;    }
+<i class="no-highlight">244</i>&nbsp;
+<i class="no-highlight">245</i>&nbsp;    public void disconnectViewFromServer() {
+<b class="nc"><i class="no-highlight">246</i>&nbsp;        disconnectView();</b>
+<b class="nc"><i class="no-highlight">247</i>&nbsp;        setConnected(false);</b>
+<i class="no-highlight">248</i>&nbsp;    }
+<i class="no-highlight">249</i>&nbsp;
+<i class="no-highlight">250</i>&nbsp;    /**
+<i class="no-highlight">251</i>&nbsp;     * Method to disconnect the view from lobby (when the game ends or is closed for any reason)
+<i class="no-highlight">252</i>&nbsp;     */
+<i class="no-highlight">253</i>&nbsp;    public void disconnectView() {
+<b class="nc"><i class="no-highlight">254</i>&nbsp;        setIsInLobby(false);</b>
+<b class="nc"><i class="no-highlight">255</i>&nbsp;        setAdmin(null);</b>
+<b class="nc"><i class="no-highlight">256</i>&nbsp;        setGame(null);</b>
+<b class="nc"><i class="no-highlight">257</i>&nbsp;        setGameStarted(false);</b>
+<i class="no-highlight">258</i>&nbsp;    }
+<i class="no-highlight">259</i>&nbsp;
+<i class="no-highlight">260</i>&nbsp;    /**
+<i class="no-highlight">261</i>&nbsp;     * Set Client&#39;s status inside a lobby (connected to a lobby or not)
+<i class="no-highlight">262</i>&nbsp;     *
+<i class="no-highlight">263</i>&nbsp;     * @param inLobby boolean representing whether the client is in lobby or not
+<i class="no-highlight">264</i>&nbsp;     */
+<i class="no-highlight">265</i>&nbsp;    public void setIsInLobby(boolean inLobby) {
+<b class="nc"><i class="no-highlight">266</i>&nbsp;        this.isInLobby = inLobby;</b>
+<i class="no-highlight">267</i>&nbsp;    }
+<i class="no-highlight">268</i>&nbsp;
+<i class="no-highlight">269</i>&nbsp;    /**
+<i class="no-highlight">270</i>&nbsp;     * Set game&#39;s model
+<i class="no-highlight">271</i>&nbsp;     *
+<i class="no-highlight">272</i>&nbsp;     * @param game GameBoard containing game&#39;s model
+<i class="no-highlight">273</i>&nbsp;     */
+<i class="no-highlight">274</i>&nbsp;    public void setGame(Model game) {
+<b class="nc"><i class="no-highlight">275</i>&nbsp;        this.model = game;</b>
+<i class="no-highlight">276</i>&nbsp;    }
 <i class="no-highlight">277</i>&nbsp;
+<i class="no-highlight">278</i>&nbsp;
+<i class="no-highlight">279</i>&nbsp;}
+<i class="no-highlight">280</i>&nbsp;
+<i class="no-highlight">281</i>&nbsp;
 </div>
 </pre>
 </div>
@@ -388,7 +392,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-07-01 18:11</div>
+    <div style="float:right;">generated on 2022-07-01 18:44</div>
 </div>
 </body>
 </html>

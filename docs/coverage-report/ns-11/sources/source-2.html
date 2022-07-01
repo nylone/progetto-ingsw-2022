@@ -62,7 +62,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     0%
   </span>
   <span class="absValue">
-    (0/134)
+    (0/137)
   </span>
 </td>
 </tr>
@@ -127,7 +127,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     0%
   </span>
   <span class="absValue">
-    (0/140)
+    (0/143)
   </span>
 </td>
 </tr>
@@ -151,267 +151,272 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">11</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.*;
 <i class="no-highlight">12</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.LobbyInfo;
 <i class="no-highlight">13</i>&nbsp;
-<i class="no-highlight">14</i>&nbsp;import java.util.*;
-<i class="no-highlight">15</i>&nbsp;import java.util.concurrent.ArrayBlockingQueue;
-<i class="no-highlight">16</i>&nbsp;import java.util.concurrent.BlockingQueue;
-<i class="no-highlight">17</i>&nbsp;import java.util.concurrent.ConcurrentHashMap;
-<i class="no-highlight">18</i>&nbsp;import java.util.function.Predicate;
-<i class="no-highlight">19</i>&nbsp;
-<i class="no-highlight">20</i>&nbsp;/**
-<i class="no-highlight">21</i>&nbsp; * Handler of game events, responsible for communication of game related information with a single client.
-<i class="no-highlight">22</i>&nbsp; */
-<i class="no-highlight">23</i>&nbsp;public class LobbyServer implements Runnable {
-<b class="nc"><i class="no-highlight">24</i>&nbsp;    protected static final Map&lt;UUID, Lobby&gt; lobbyMap = new ConcurrentHashMap&lt;&gt;();</b>
-<b class="nc"><i class="no-highlight">25</i>&nbsp;    private static final Set&lt;String&gt; connectedNicknames = new HashSet&lt;&gt;();</b>
-<i class="no-highlight">26</i>&nbsp;    private final SocketWrapper sw;
-<i class="no-highlight">27</i>&nbsp;    private final BlockingQueue&lt;ClientEvent&gt; eventQueue;
-<i class="no-highlight">28</i>&nbsp;
-<i class="no-highlight">29</i>&nbsp;    /**
-<i class="no-highlight">30</i>&nbsp;     * Creates the server around a {@link SocketWrapper}
-<i class="no-highlight">31</i>&nbsp;     *
-<i class="no-highlight">32</i>&nbsp;     * @param sw the socket to use to communicate with the client
-<i class="no-highlight">33</i>&nbsp;     */
-<b class="nc"><i class="no-highlight">34</i>&nbsp;    private LobbyServer(SocketWrapper sw) {</b>
-<b class="nc"><i class="no-highlight">35</i>&nbsp;        this.sw = sw;</b>
-<b class="nc"><i class="no-highlight">36</i>&nbsp;        this.eventQueue = new ArrayBlockingQueue&lt;&gt;(10);</b>
-<i class="no-highlight">37</i>&nbsp;    }
-<i class="no-highlight">38</i>&nbsp;
-<i class="no-highlight">39</i>&nbsp;    /**
-<i class="no-highlight">40</i>&nbsp;     * Start a server on the provided socket wrapper
-<i class="no-highlight">41</i>&nbsp;     *
-<i class="no-highlight">42</i>&nbsp;     * @param socketWrapper the wrapped connection to the client of the server
-<i class="no-highlight">43</i>&nbsp;     */
-<i class="no-highlight">44</i>&nbsp;    public static void spawn(SocketWrapper socketWrapper) {
-<b class="nc"><i class="no-highlight">45</i>&nbsp;        LobbyServer lobbyServer = new LobbyServer(socketWrapper);</b>
-<b class="nc"><i class="no-highlight">46</i>&nbsp;        new Thread(lobbyServer).start();</b>
-<b class="nc"><i class="no-highlight">47</i>&nbsp;        SocketListener.subscribe(socketWrapper, lobbyServer.getEventQueue());</b>
-<i class="no-highlight">48</i>&nbsp;    }
-<i class="no-highlight">49</i>&nbsp;
-<i class="no-highlight">50</i>&nbsp;    /**
-<i class="no-highlight">51</i>&nbsp;     * Get the event queue this server listens on
-<i class="no-highlight">52</i>&nbsp;     *
-<i class="no-highlight">53</i>&nbsp;     * @return the {@link BlockingQueue&lt;ClientEvent&gt;} linked to this server
-<i class="no-highlight">54</i>&nbsp;     */
-<i class="no-highlight">55</i>&nbsp;    private BlockingQueue&lt;ClientEvent&gt; getEventQueue() {
-<b class="nc"><i class="no-highlight">56</i>&nbsp;        return this.eventQueue;</b>
-<i class="no-highlight">57</i>&nbsp;    }
-<i class="no-highlight">58</i>&nbsp;
-<i class="no-highlight">59</i>&nbsp;    /**
-<i class="no-highlight">60</i>&nbsp;     * When run, polls for events from the client and sends appropriate responses while handling interactions with the game
-<i class="no-highlight">61</i>&nbsp;     */
-<i class="no-highlight">62</i>&nbsp;    @Override
-<i class="no-highlight">63</i>&nbsp;    public void run() {
-<b class="nc"><i class="no-highlight">64</i>&nbsp;        String nickname = &quot;unknown&quot;;</b>
-<b class="nc"><i class="no-highlight">65</i>&nbsp;        int playerID = -1;</b>
-<b class="nc"><i class="no-highlight">66</i>&nbsp;        Lobby currentLobby = null;</b>
-<b class="nc"><i class="no-highlight">67</i>&nbsp;        State state = State.ACCEPT_PHASE;</b>
-<i class="no-highlight">68</i>&nbsp;        while (true) {
-<i class="no-highlight">69</i>&nbsp;            try {
-<b class="nc"><i class="no-highlight">70</i>&nbsp;                ClientEvent event = this.eventQueue.take();</b>
-<b class="nc"><i class="no-highlight">71</i>&nbsp;                Logger.info(&quot;Lobby server received a new Event: &quot; + event.getClass());</b>
-<b class="nc"><i class="no-highlight">72</i>&nbsp;                if (event instanceof SocketClosedEvent) {</b>
-<b class="nc"><i class="no-highlight">73</i>&nbsp;                    if (currentLobby != null) {</b>
-<b class="nc"><i class="no-highlight">74</i>&nbsp;                        currentLobby.disconnectPlayer(nickname);</b>
-<i class="no-highlight">75</i>&nbsp;                    }
-<b class="nc"><i class="no-highlight">76</i>&nbsp;                    synchronized (connectedNicknames) {</b>
-<b class="nc"><i class="no-highlight">77</i>&nbsp;                        connectedNicknames.remove(nickname);</b>
-<b class="nc"><i class="no-highlight">78</i>&nbsp;                    }</b>
-<b class="nc"><i class="no-highlight">79</i>&nbsp;                    Logger.info(&quot;Lobby server was closed for player: &quot; +</b>
-<i class="no-highlight">80</i>&nbsp;                            nickname +
-<i class="no-highlight">81</i>&nbsp;                            &quot; on address &quot; +
-<b class="nc"><i class="no-highlight">82</i>&nbsp;                            this.sw.getInetAddress());</b>
-<i class="no-highlight">83</i>&nbsp;                    return;
-<i class="no-highlight">84</i>&nbsp;                } else {
-<b class="nc"><i class="no-highlight">85</i>&nbsp;                    switch (state) {</b>
-<i class="no-highlight">86</i>&nbsp;                        case ACCEPT_PHASE -&gt; {
-<b class="nc"><i class="no-highlight">87</i>&nbsp;                            if (event instanceof DeclarePlayerRequest castedEvent) {</b>
-<b class="nc"><i class="no-highlight">88</i>&nbsp;                                nickname = castedEvent.getNickname();</b>
-<b class="nc"><i class="no-highlight">89</i>&nbsp;                                synchronized (connectedNicknames) {</b>
-<b class="nc"><i class="no-highlight">90</i>&nbsp;                                    if (connectedNicknames.contains(nickname)) {</b>
-<b class="nc"><i class="no-highlight">91</i>&nbsp;                                        sw.sendMessage(LobbyAccept.fail());</b>
-<i class="no-highlight">92</i>&nbsp;                                    } else {
-<b class="nc"><i class="no-highlight">93</i>&nbsp;                                        connectedNicknames.add(nickname);</b>
-<b class="nc"><i class="no-highlight">94</i>&nbsp;                                        List&lt;LobbyInfo&gt; publicLobbies = lobbyMap.values().stream()</b>
-<b class="nc"><i class="no-highlight">95</i>&nbsp;                                                .filter(Lobby::isPublic)</b>
-<b class="nc"><i class="no-highlight">96</i>&nbsp;                                                .filter(Predicate.not(Lobby::isGameInProgress))</b>
-<b class="nc"><i class="no-highlight">97</i>&nbsp;                                                .map(LobbyInfo::new)</b>
-<b class="nc"><i class="no-highlight">98</i>&nbsp;                                                .toList();</b>
-<b class="nc"><i class="no-highlight">99</i>&nbsp;                                        sw.sendMessage(LobbyAccept.success(publicLobbies));</b>
-<b class="nc"><i class="no-highlight">100</i>&nbsp;                                        state = State.REDIRECT_PHASE;</b>
-<i class="no-highlight">101</i>&nbsp;                                    }
-<b class="nc"><i class="no-highlight">102</i>&nbsp;                                }</b>
-<i class="no-highlight">103</i>&nbsp;                            } else {
-<b class="nc"><i class="no-highlight">104</i>&nbsp;                                sw.sendMessage(new InvalidRequest());</b>
-<i class="no-highlight">105</i>&nbsp;                            }
-<b class="nc"><i class="no-highlight">106</i>&nbsp;                        }</b>
-<i class="no-highlight">107</i>&nbsp;                        case REDIRECT_PHASE -&gt; {
-<i class="no-highlight">108</i>&nbsp;                            // redirect phase: wait for valid lobby action
-<i class="no-highlight">109</i>&nbsp;                            // either:
-<i class="no-highlight">110</i>&nbsp;                            // - create
-<i class="no-highlight">111</i>&nbsp;                            // - join or rejoin
-<b class="nc"><i class="no-highlight">112</i>&nbsp;                            switch (event) {</b>
-<b class="nc"><i class="no-highlight">113</i>&nbsp;                                case CreateLobbyRequest castedEvent -&gt; {</b>
-<b class="nc"><i class="no-highlight">114</i>&nbsp;                                    if (castedEvent.getMaxPlayers() &lt; 1 || castedEvent.getMaxPlayers() &gt; 4) {</b>
-<b class="nc"><i class="no-highlight">115</i>&nbsp;                                        sw.sendMessage(LobbyRedirect.fail());</b>
-<b class="nc"><i class="no-highlight">116</i>&nbsp;                                        break;</b>
-<i class="no-highlight">117</i>&nbsp;                                    }
-<b class="nc"><i class="no-highlight">118</i>&nbsp;                                    UUID lobbyID = generateUUID();</b>
-<b class="nc"><i class="no-highlight">119</i>&nbsp;                                    currentLobby = new Lobby(</b>
-<i class="no-highlight">120</i>&nbsp;                                            lobbyID,
-<b class="nc"><i class="no-highlight">121</i>&nbsp;                                            castedEvent.isPublic(),</b>
-<b class="nc"><i class="no-highlight">122</i>&nbsp;                                            castedEvent.getMaxPlayers(),</b>
-<i class="no-highlight">123</i>&nbsp;                                            nickname
-<i class="no-highlight">124</i>&nbsp;                                    );
-<b class="nc"><i class="no-highlight">125</i>&nbsp;                                    currentLobby.addPlayer(nickname, this.getEventQueue());</b>
-<b class="nc"><i class="no-highlight">126</i>&nbsp;                                    lobbyMap.put(lobbyID, currentLobby);</b>
-<b class="nc"><i class="no-highlight">127</i>&nbsp;                                    state = State.GAME_START_PHASE;</b>
-<b class="nc"><i class="no-highlight">128</i>&nbsp;                                    sw.sendMessage(LobbyRedirect.success(lobbyID, currentLobby.getAdmin()));</b>
-<b class="nc"><i class="no-highlight">129</i>&nbsp;                                }</b>
-<b class="nc"><i class="no-highlight">130</i>&nbsp;                                case ConnectLobbyRequest castedEvent -&gt; {</b>
-<b class="nc"><i class="no-highlight">131</i>&nbsp;                                    UUID lobbyID = castedEvent.getCode();</b>
-<b class="nc"><i class="no-highlight">132</i>&nbsp;                                    if (!lobbyMap.containsKey(lobbyID) || !lobbyMap.get(lobbyID).addPlayer(nickname, this.getEventQueue())) {</b>
-<b class="nc"><i class="no-highlight">133</i>&nbsp;                                        sw.sendMessage(LobbyRedirect.fail());</b>
-<b class="nc"><i class="no-highlight">134</i>&nbsp;                                        break;</b>
-<i class="no-highlight">135</i>&nbsp;                                    }
-<b class="nc"><i class="no-highlight">136</i>&nbsp;                                    currentLobby = lobbyMap.get(lobbyID);</b>
-<b class="nc"><i class="no-highlight">137</i>&nbsp;                                    sw.sendMessage(LobbyRedirect.success(lobbyID, currentLobby.getAdmin()));</b>
-<b class="nc"><i class="no-highlight">138</i>&nbsp;                                    state = State.GAME_START_PHASE;</b>
-<b class="nc"><i class="no-highlight">139</i>&nbsp;                                }</b>
-<b class="nc"><i class="no-highlight">140</i>&nbsp;                                case default -&gt; sw.sendMessage(new InvalidRequest());</b>
-<i class="no-highlight">141</i>&nbsp;                            }
-<b class="nc"><i class="no-highlight">142</i>&nbsp;                        }</b>
-<i class="no-highlight">143</i>&nbsp;                        case GAME_START_PHASE -&gt; {
-<i class="no-highlight">144</i>&nbsp;                            // wait phase: wait for valid lobby action
-<i class="no-highlight">145</i>&nbsp;                            // either:
-<i class="no-highlight">146</i>&nbsp;                            // - start (only from admin)
-<i class="no-highlight">147</i>&nbsp;                            // - start (as admin event reaction)
-<b class="nc"><i class="no-highlight">148</i>&nbsp;                            switch (event) {</b>
-<b class="nc"><i class="no-highlight">149</i>&nbsp;                                case LobbyClosedEvent ignored -&gt; {</b>
-<b class="nc"><i class="no-highlight">150</i>&nbsp;                                    currentLobby = null;</b>
-<b class="nc"><i class="no-highlight">151</i>&nbsp;                                    state = State.REDIRECT_PHASE;</b>
-<b class="nc"><i class="no-highlight">152</i>&nbsp;                                    sw.sendMessage(new LobbyClosed());</b>
-<b class="nc"><i class="no-highlight">153</i>&nbsp;                                }</b>
-<b class="nc"><i class="no-highlight">154</i>&nbsp;                                case ClientConnectEvent clientConnectedEvent -&gt;</b>
-<b class="nc"><i class="no-highlight">155</i>&nbsp;                                        sw.sendMessage(new ClientConnected(clientConnectedEvent.getNickname(), clientConnectedEvent.getPlayers()));</b>
-<b class="nc"><i class="no-highlight">156</i>&nbsp;                                case ClientDisconnectEvent clientDisconnectedEvent -&gt;</b>
-<b class="nc"><i class="no-highlight">157</i>&nbsp;                                        sw.sendMessage(new ClientDisconnected(clientDisconnectedEvent.getNickname(), clientDisconnectedEvent.getPlayers()));</b>
-<b class="nc"><i class="no-highlight">158</i>&nbsp;                                case StartGameRequest castedEvent -&gt; {</b>
-<b class="nc"><i class="no-highlight">159</i>&nbsp;                                    if (!currentLobby.getAdmin().equals(nickname)) {</b>
-<b class="nc"><i class="no-highlight">160</i>&nbsp;                                        sw.sendMessage(GameInit.fail(&quot;Only the admin of the lobby can start the game.&quot;));</b>
-<i class="no-highlight">161</i>&nbsp;                                        return;
-<i class="no-highlight">162</i>&nbsp;                                    }
-<b class="nc"><i class="no-highlight">163</i>&nbsp;                                    if (!currentLobby.isLobbyFull()) {</b>
-<b class="nc"><i class="no-highlight">164</i>&nbsp;                                        sw.sendMessage(GameInit.fail(&quot;The lobby has not been filled&quot;));</b>
-<i class="no-highlight">165</i>&nbsp;                                        return;
-<i class="no-highlight">166</i>&nbsp;                                    }
-<b class="nc"><i class="no-highlight">167</i>&nbsp;                                    if (currentLobby.isGameInProgress()) {</b>
-<b class="nc"><i class="no-highlight">168</i>&nbsp;                                        sw.sendMessage(GameInit.fail(&quot;The game has already started&quot;));</b>
-<i class="no-highlight">169</i>&nbsp;                                        return;
-<i class="no-highlight">170</i>&nbsp;                                    }
-<i class="no-highlight">171</i>&nbsp;                                    try {
-<b class="nc"><i class="no-highlight">172</i>&nbsp;                                        currentLobby.startGame(castedEvent.getGameMode());</b>
-<b class="nc"><i class="no-highlight">173</i>&nbsp;                                    } catch (InputValidationException e) {</b>
-<b class="nc"><i class="no-highlight">174</i>&nbsp;                                        sw.sendMessage(GameInit.fail(e.getMessage()));</b>
-<i class="no-highlight">175</i>&nbsp;                                        return;
-<b class="nc"><i class="no-highlight">176</i>&nbsp;                                    }</b>
-<i class="no-highlight">177</i>&nbsp;                                    // code executes only when a gameLobby was created
-<b class="nc"><i class="no-highlight">178</i>&nbsp;                                    sw.sendMessage(GameInit.success());</b>
-<b class="nc"><i class="no-highlight">179</i>&nbsp;                                }</b>
-<b class="nc"><i class="no-highlight">180</i>&nbsp;                                case GameStartEvent gameStartEvent -&gt; {</b>
-<b class="nc"><i class="no-highlight">181</i>&nbsp;                                    state = State.GAME_IN_PROGRESS_PHASE;</b>
-<b class="nc"><i class="no-highlight">182</i>&nbsp;                                    playerID = gameStartEvent.nickToID().get(nickname);</b>
-<b class="nc"><i class="no-highlight">183</i>&nbsp;                                    sw.sendMessage(new GameStarted());</b>
-<b class="nc"><i class="no-highlight">184</i>&nbsp;                                }</b>
-<b class="nc"><i class="no-highlight">185</i>&nbsp;                                case default -&gt; sw.sendMessage(new InvalidRequest());</b>
-<i class="no-highlight">186</i>&nbsp;                            }
-<b class="nc"><i class="no-highlight">187</i>&nbsp;                        }</b>
-<i class="no-highlight">188</i>&nbsp;                        case GAME_IN_PROGRESS_PHASE -&gt; {
-<i class="no-highlight">189</i>&nbsp;                            // wait phase: wait for valid lobby action
-<i class="no-highlight">190</i>&nbsp;                            // either:
-<i class="no-highlight">191</i>&nbsp;                            // - start (only from admin)
-<i class="no-highlight">192</i>&nbsp;                            // - start (as admin event reaction)
-<b class="nc"><i class="no-highlight">193</i>&nbsp;                            switch (event) {</b>
-<b class="nc"><i class="no-highlight">194</i>&nbsp;                                case LobbyClosedEvent ignored -&gt; {</b>
-<b class="nc"><i class="no-highlight">195</i>&nbsp;                                    currentLobby = null;</b>
-<b class="nc"><i class="no-highlight">196</i>&nbsp;                                    state = State.REDIRECT_PHASE;</b>
-<b class="nc"><i class="no-highlight">197</i>&nbsp;                                    sw.sendMessage(new LobbyClosed());</b>
-<b class="nc"><i class="no-highlight">198</i>&nbsp;                                }</b>
-<b class="nc"><i class="no-highlight">199</i>&nbsp;                                case ModelUpdateEvent modelUpdateEvent -&gt;</b>
-<b class="nc"><i class="no-highlight">200</i>&nbsp;                                        sw.sendMessage(new ModelUpdated(modelUpdateEvent.getModel()));</b>
-<b class="nc"><i class="no-highlight">201</i>&nbsp;                                case GameOverEvent gameOverEvent -&gt; {</b>
-<b class="nc"><i class="no-highlight">202</i>&nbsp;                                    sw.sendMessage(new GameOver(gameOverEvent.winners()));</b>
-<b class="nc"><i class="no-highlight">203</i>&nbsp;                                    currentLobby.close();</b>
-<b class="nc"><i class="no-highlight">204</i>&nbsp;                                }</b>
-<b class="nc"><i class="no-highlight">205</i>&nbsp;                                case PlayerActionRequest playerActionRequest -&gt; {</b>
-<i class="no-highlight">206</i>&nbsp;                                    try {
-<b class="nc"><i class="no-highlight">207</i>&nbsp;                                        PlayerAction pa = playerActionRequest.getAction();</b>
-<b class="nc"><i class="no-highlight">208</i>&nbsp;                                        if (pa.getPlayerBoardID() == playerID) {</b>
-<i class="no-highlight">209</i>&nbsp;                                            PlayerActionFeedback feedback;
-<i class="no-highlight">210</i>&nbsp;                                            try {
-<b class="nc"><i class="no-highlight">211</i>&nbsp;                                                currentLobby.executeAction(pa);</b>
-<b class="nc"><i class="no-highlight">212</i>&nbsp;                                                feedback = PlayerActionFeedback.success();</b>
-<b class="nc"><i class="no-highlight">213</i>&nbsp;                                            } catch (InputValidationException e) {</b>
-<b class="nc"><i class="no-highlight">214</i>&nbsp;                                                feedback = PlayerActionFeedback.fail(e.getMessage());</b>
-<b class="nc"><i class="no-highlight">215</i>&nbsp;                                            }</b>
-<b class="nc"><i class="no-highlight">216</i>&nbsp;                                            sw.sendMessage(feedback);</b>
-<b class="nc"><i class="no-highlight">217</i>&nbsp;                                        } else {</b>
-<b class="nc"><i class="no-highlight">218</i>&nbsp;                                            sw.sendMessage(PlayerActionFeedback.fail(&quot;The action that was sent is malformed.&quot;));</b>
-<i class="no-highlight">219</i>&nbsp;                                        }
-<b class="nc"><i class="no-highlight">220</i>&nbsp;                                    } catch (OperationException e) {</b>
-<b class="nc"><i class="no-highlight">221</i>&nbsp;                                        Logger.severe(&quot;Supposedly unreachable statement was reached:\n&quot; + e.getMessage());</b>
-<b class="nc"><i class="no-highlight">222</i>&nbsp;                                        sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));</b>
-<b class="nc"><i class="no-highlight">223</i>&nbsp;                                        throw new RuntimeException(e);</b>
-<b class="nc"><i class="no-highlight">224</i>&nbsp;                                    }</b>
-<i class="no-highlight">225</i>&nbsp;                                }
-<b class="nc"><i class="no-highlight">226</i>&nbsp;                                case ClientDisconnectEvent clientDisconnectedEvent -&gt;</b>
-<b class="nc"><i class="no-highlight">227</i>&nbsp;                                        sw.sendMessage(new ClientDisconnected(clientDisconnectedEvent.getNickname(), clientDisconnectedEvent.getPlayers()));</b>
-<b class="nc"><i class="no-highlight">228</i>&nbsp;                                case default -&gt; sw.sendMessage(new InvalidRequest());</b>
-<i class="no-highlight">229</i>&nbsp;                            }
-<i class="no-highlight">230</i>&nbsp;                        }
-<i class="no-highlight">231</i>&nbsp;                    }
-<i class="no-highlight">232</i>&nbsp;                }
-<b class="nc"><i class="no-highlight">233</i>&nbsp;            } catch (Exception e) {</b>
-<b class="nc"><i class="no-highlight">234</i>&nbsp;                Logger.severe(e.getMessage());</b>
-<b class="nc"><i class="no-highlight">235</i>&nbsp;                e.printStackTrace();</b>
-<b class="nc"><i class="no-highlight">236</i>&nbsp;            }</b>
-<i class="no-highlight">237</i>&nbsp;        }
-<i class="no-highlight">238</i>&nbsp;    }
-<i class="no-highlight">239</i>&nbsp;
-<i class="no-highlight">240</i>&nbsp;    /**
-<i class="no-highlight">241</i>&nbsp;     * generates a unique UUID for a lobby
-<i class="no-highlight">242</i>&nbsp;     *
-<i class="no-highlight">243</i>&nbsp;     * @return a not yet in use UUID for the lobby
-<i class="no-highlight">244</i>&nbsp;     */
-<i class="no-highlight">245</i>&nbsp;    private static UUID generateUUID() {
-<b class="nc"><i class="no-highlight">246</i>&nbsp;        UUID id = UUID.randomUUID();</b>
-<b class="nc"><i class="no-highlight">247</i>&nbsp;        while (lobbyMap.containsKey(id)) {</b>
-<b class="nc"><i class="no-highlight">248</i>&nbsp;            id = UUID.randomUUID();</b>
-<i class="no-highlight">249</i>&nbsp;        }
-<b class="nc"><i class="no-highlight">250</i>&nbsp;        return id;</b>
-<i class="no-highlight">251</i>&nbsp;    }
-<i class="no-highlight">252</i>&nbsp;
-<i class="no-highlight">253</i>&nbsp;    /**
-<i class="no-highlight">254</i>&nbsp;     * Represents the various stages of the connection between client and server
-<i class="no-highlight">255</i>&nbsp;     */
-<b class="nc"><i class="no-highlight">256</i>&nbsp;    private enum State {</b>
-<i class="no-highlight">257</i>&nbsp;        /**
-<i class="no-highlight">258</i>&nbsp;         * client has not identified itself yet
-<i class="no-highlight">259</i>&nbsp;         */
-<b class="nc"><i class="no-highlight">260</i>&nbsp;        ACCEPT_PHASE,</b>
-<i class="no-highlight">261</i>&nbsp;        /**
-<i class="no-highlight">262</i>&nbsp;         * client now has a name, but is not part of a lobby
-<i class="no-highlight">263</i>&nbsp;         */
-<b class="nc"><i class="no-highlight">264</i>&nbsp;        REDIRECT_PHASE,</b>
-<i class="no-highlight">265</i>&nbsp;        /**
-<i class="no-highlight">266</i>&nbsp;         * client is part of a lobby, waiting for the game to start
-<i class="no-highlight">267</i>&nbsp;         */
-<b class="nc"><i class="no-highlight">268</i>&nbsp;        GAME_START_PHASE,</b>
-<i class="no-highlight">269</i>&nbsp;        /**
-<i class="no-highlight">270</i>&nbsp;         * client is now in a game, playing
-<i class="no-highlight">271</i>&nbsp;         */
-<b class="nc"><i class="no-highlight">272</i>&nbsp;        GAME_IN_PROGRESS_PHASE,</b>
-<i class="no-highlight">273</i>&nbsp;    }
-<i class="no-highlight">274</i>&nbsp;}
+<i class="no-highlight">14</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">15</i>&nbsp;import java.util.*;
+<i class="no-highlight">16</i>&nbsp;import java.util.concurrent.ArrayBlockingQueue;
+<i class="no-highlight">17</i>&nbsp;import java.util.concurrent.BlockingQueue;
+<i class="no-highlight">18</i>&nbsp;import java.util.concurrent.ConcurrentHashMap;
+<i class="no-highlight">19</i>&nbsp;import java.util.function.Predicate;
+<i class="no-highlight">20</i>&nbsp;
+<i class="no-highlight">21</i>&nbsp;/**
+<i class="no-highlight">22</i>&nbsp; * Handler of game events, responsible for communication of game related information with a single client.
+<i class="no-highlight">23</i>&nbsp; */
+<i class="no-highlight">24</i>&nbsp;public class LobbyServer implements Runnable {
+<b class="nc"><i class="no-highlight">25</i>&nbsp;    protected static final Map&lt;UUID, Lobby&gt; lobbyMap = new ConcurrentHashMap&lt;&gt;();</b>
+<b class="nc"><i class="no-highlight">26</i>&nbsp;    private static final Set&lt;String&gt; connectedNicknames = new HashSet&lt;&gt;();</b>
+<i class="no-highlight">27</i>&nbsp;    private final SocketWrapper sw;
+<i class="no-highlight">28</i>&nbsp;    private final BlockingQueue&lt;ClientEvent&gt; eventQueue;
+<i class="no-highlight">29</i>&nbsp;
+<i class="no-highlight">30</i>&nbsp;    /**
+<i class="no-highlight">31</i>&nbsp;     * Creates the server around a {@link SocketWrapper}
+<i class="no-highlight">32</i>&nbsp;     *
+<i class="no-highlight">33</i>&nbsp;     * @param sw the socket to use to communicate with the client
+<i class="no-highlight">34</i>&nbsp;     */
+<b class="nc"><i class="no-highlight">35</i>&nbsp;    private LobbyServer(SocketWrapper sw) {</b>
+<b class="nc"><i class="no-highlight">36</i>&nbsp;        this.sw = sw;</b>
+<b class="nc"><i class="no-highlight">37</i>&nbsp;        this.eventQueue = new ArrayBlockingQueue&lt;&gt;(10);</b>
+<i class="no-highlight">38</i>&nbsp;    }
+<i class="no-highlight">39</i>&nbsp;
+<i class="no-highlight">40</i>&nbsp;    /**
+<i class="no-highlight">41</i>&nbsp;     * Start a server on the provided socket wrapper
+<i class="no-highlight">42</i>&nbsp;     *
+<i class="no-highlight">43</i>&nbsp;     * @param socketWrapper the wrapped connection to the client of the server
+<i class="no-highlight">44</i>&nbsp;     */
+<i class="no-highlight">45</i>&nbsp;    public static void spawn(SocketWrapper socketWrapper) {
+<b class="nc"><i class="no-highlight">46</i>&nbsp;        LobbyServer lobbyServer = new LobbyServer(socketWrapper);</b>
+<b class="nc"><i class="no-highlight">47</i>&nbsp;        new Thread(lobbyServer).start();</b>
+<b class="nc"><i class="no-highlight">48</i>&nbsp;        SocketListener.subscribe(socketWrapper, lobbyServer.getEventQueue());</b>
+<i class="no-highlight">49</i>&nbsp;    }
+<i class="no-highlight">50</i>&nbsp;
+<i class="no-highlight">51</i>&nbsp;    /**
+<i class="no-highlight">52</i>&nbsp;     * Get the event queue this server listens on
+<i class="no-highlight">53</i>&nbsp;     *
+<i class="no-highlight">54</i>&nbsp;     * @return the {@link BlockingQueue&lt;ClientEvent&gt;} linked to this server
+<i class="no-highlight">55</i>&nbsp;     */
+<i class="no-highlight">56</i>&nbsp;    private BlockingQueue&lt;ClientEvent&gt; getEventQueue() {
+<b class="nc"><i class="no-highlight">57</i>&nbsp;        return this.eventQueue;</b>
+<i class="no-highlight">58</i>&nbsp;    }
+<i class="no-highlight">59</i>&nbsp;
+<i class="no-highlight">60</i>&nbsp;    /**
+<i class="no-highlight">61</i>&nbsp;     * When run, polls for events from the client and sends appropriate responses while handling interactions with the game
+<i class="no-highlight">62</i>&nbsp;     */
+<i class="no-highlight">63</i>&nbsp;    @Override
+<i class="no-highlight">64</i>&nbsp;    public void run() {
+<b class="nc"><i class="no-highlight">65</i>&nbsp;        String nickname = &quot;unknown&quot;;</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;        int playerID = -1;</b>
+<b class="nc"><i class="no-highlight">67</i>&nbsp;        Lobby currentLobby = null;</b>
+<b class="nc"><i class="no-highlight">68</i>&nbsp;        State state = State.ACCEPT_PHASE;</b>
+<i class="no-highlight">69</i>&nbsp;        while (true) {
+<i class="no-highlight">70</i>&nbsp;            try {
+<b class="nc"><i class="no-highlight">71</i>&nbsp;                ClientEvent event = this.eventQueue.take();</b>
+<b class="nc"><i class="no-highlight">72</i>&nbsp;                Logger.info(&quot;Lobby server received a new Event: &quot; + event.getClass());</b>
+<b class="nc"><i class="no-highlight">73</i>&nbsp;                if (event instanceof SocketClosedEvent) {</b>
+<b class="nc"><i class="no-highlight">74</i>&nbsp;                    if (currentLobby != null) {</b>
+<b class="nc"><i class="no-highlight">75</i>&nbsp;                        currentLobby.disconnectPlayer(nickname);</b>
+<i class="no-highlight">76</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">77</i>&nbsp;                    synchronized (connectedNicknames) {</b>
+<b class="nc"><i class="no-highlight">78</i>&nbsp;                        connectedNicknames.remove(nickname);</b>
+<b class="nc"><i class="no-highlight">79</i>&nbsp;                    }</b>
+<b class="nc"><i class="no-highlight">80</i>&nbsp;                    Logger.info(&quot;Lobby server was closed for player: &quot; +</b>
+<i class="no-highlight">81</i>&nbsp;                            nickname +
+<i class="no-highlight">82</i>&nbsp;                            &quot; on address &quot; +
+<b class="nc"><i class="no-highlight">83</i>&nbsp;                            this.sw.getInetAddress());</b>
+<i class="no-highlight">84</i>&nbsp;                    return;
+<i class="no-highlight">85</i>&nbsp;                } else {
+<b class="nc"><i class="no-highlight">86</i>&nbsp;                    switch (state) {</b>
+<i class="no-highlight">87</i>&nbsp;                        case ACCEPT_PHASE -&gt; {
+<b class="nc"><i class="no-highlight">88</i>&nbsp;                            if (event instanceof DeclarePlayerRequest castedEvent) {</b>
+<b class="nc"><i class="no-highlight">89</i>&nbsp;                                nickname = castedEvent.getNickname();</b>
+<b class="nc"><i class="no-highlight">90</i>&nbsp;                                synchronized (connectedNicknames) {</b>
+<b class="nc"><i class="no-highlight">91</i>&nbsp;                                    if (connectedNicknames.contains(nickname)) {</b>
+<b class="nc"><i class="no-highlight">92</i>&nbsp;                                        sw.sendMessage(LobbyAccept.fail());</b>
+<i class="no-highlight">93</i>&nbsp;                                    } else {
+<b class="nc"><i class="no-highlight">94</i>&nbsp;                                        connectedNicknames.add(nickname);</b>
+<b class="nc"><i class="no-highlight">95</i>&nbsp;                                        List&lt;LobbyInfo&gt; publicLobbies = lobbyMap.values().stream()</b>
+<b class="nc"><i class="no-highlight">96</i>&nbsp;                                                .filter(Lobby::isPublic)</b>
+<b class="nc"><i class="no-highlight">97</i>&nbsp;                                                .filter(Predicate.not(Lobby::isGameInProgress))</b>
+<b class="nc"><i class="no-highlight">98</i>&nbsp;                                                .map(LobbyInfo::new)</b>
+<b class="nc"><i class="no-highlight">99</i>&nbsp;                                                .toList();</b>
+<b class="nc"><i class="no-highlight">100</i>&nbsp;                                        sw.sendMessage(LobbyAccept.success(publicLobbies));</b>
+<b class="nc"><i class="no-highlight">101</i>&nbsp;                                        state = State.REDIRECT_PHASE;</b>
+<i class="no-highlight">102</i>&nbsp;                                    }
+<b class="nc"><i class="no-highlight">103</i>&nbsp;                                }</b>
+<i class="no-highlight">104</i>&nbsp;                            } else {
+<b class="nc"><i class="no-highlight">105</i>&nbsp;                                sw.sendMessage(new InvalidRequest());</b>
+<i class="no-highlight">106</i>&nbsp;                            }
+<b class="nc"><i class="no-highlight">107</i>&nbsp;                        }</b>
+<i class="no-highlight">108</i>&nbsp;                        case REDIRECT_PHASE -&gt; {
+<i class="no-highlight">109</i>&nbsp;                            // redirect phase: wait for valid lobby action
+<i class="no-highlight">110</i>&nbsp;                            // either:
+<i class="no-highlight">111</i>&nbsp;                            // - create
+<i class="no-highlight">112</i>&nbsp;                            // - join or rejoin
+<b class="nc"><i class="no-highlight">113</i>&nbsp;                            switch (event) {</b>
+<b class="nc"><i class="no-highlight">114</i>&nbsp;                                case CreateLobbyRequest castedEvent -&gt; {</b>
+<b class="nc"><i class="no-highlight">115</i>&nbsp;                                    if (castedEvent.getMaxPlayers() &lt; 1 || castedEvent.getMaxPlayers() &gt; 4) {</b>
+<b class="nc"><i class="no-highlight">116</i>&nbsp;                                        sw.sendMessage(LobbyRedirect.fail());</b>
+<b class="nc"><i class="no-highlight">117</i>&nbsp;                                        break;</b>
+<i class="no-highlight">118</i>&nbsp;                                    }
+<b class="nc"><i class="no-highlight">119</i>&nbsp;                                    UUID lobbyID = generateUUID();</b>
+<b class="nc"><i class="no-highlight">120</i>&nbsp;                                    currentLobby = new Lobby(</b>
+<i class="no-highlight">121</i>&nbsp;                                            lobbyID,
+<b class="nc"><i class="no-highlight">122</i>&nbsp;                                            castedEvent.isPublic(),</b>
+<b class="nc"><i class="no-highlight">123</i>&nbsp;                                            castedEvent.getMaxPlayers(),</b>
+<i class="no-highlight">124</i>&nbsp;                                            nickname
+<i class="no-highlight">125</i>&nbsp;                                    );
+<b class="nc"><i class="no-highlight">126</i>&nbsp;                                    currentLobby.addPlayer(nickname, this.getEventQueue());</b>
+<b class="nc"><i class="no-highlight">127</i>&nbsp;                                    lobbyMap.put(lobbyID, currentLobby);</b>
+<b class="nc"><i class="no-highlight">128</i>&nbsp;                                    state = State.GAME_START_PHASE;</b>
+<b class="nc"><i class="no-highlight">129</i>&nbsp;                                    sw.sendMessage(LobbyRedirect.success(lobbyID, currentLobby.getAdmin()));</b>
+<b class="nc"><i class="no-highlight">130</i>&nbsp;                                }</b>
+<b class="nc"><i class="no-highlight">131</i>&nbsp;                                case ConnectLobbyRequest castedEvent -&gt; {</b>
+<b class="nc"><i class="no-highlight">132</i>&nbsp;                                    UUID lobbyID = castedEvent.getCode();</b>
+<b class="nc"><i class="no-highlight">133</i>&nbsp;                                    if (!lobbyMap.containsKey(lobbyID) || !lobbyMap.get(lobbyID).addPlayer(nickname, this.getEventQueue())) {</b>
+<b class="nc"><i class="no-highlight">134</i>&nbsp;                                        sw.sendMessage(LobbyRedirect.fail());</b>
+<b class="nc"><i class="no-highlight">135</i>&nbsp;                                        break;</b>
+<i class="no-highlight">136</i>&nbsp;                                    }
+<b class="nc"><i class="no-highlight">137</i>&nbsp;                                    currentLobby = lobbyMap.get(lobbyID);</b>
+<b class="nc"><i class="no-highlight">138</i>&nbsp;                                    sw.sendMessage(LobbyRedirect.success(lobbyID, currentLobby.getAdmin()));</b>
+<b class="nc"><i class="no-highlight">139</i>&nbsp;                                    state = State.GAME_START_PHASE;</b>
+<b class="nc"><i class="no-highlight">140</i>&nbsp;                                }</b>
+<b class="nc"><i class="no-highlight">141</i>&nbsp;                                case default -&gt; sw.sendMessage(new InvalidRequest());</b>
+<i class="no-highlight">142</i>&nbsp;                            }
+<b class="nc"><i class="no-highlight">143</i>&nbsp;                        }</b>
+<i class="no-highlight">144</i>&nbsp;                        case GAME_START_PHASE -&gt; {
+<i class="no-highlight">145</i>&nbsp;                            // wait phase: wait for valid lobby action
+<i class="no-highlight">146</i>&nbsp;                            // either:
+<i class="no-highlight">147</i>&nbsp;                            // - start (only from admin)
+<i class="no-highlight">148</i>&nbsp;                            // - start (as admin event reaction)
+<b class="nc"><i class="no-highlight">149</i>&nbsp;                            switch (event) {</b>
+<b class="nc"><i class="no-highlight">150</i>&nbsp;                                case LobbyClosedEvent ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">151</i>&nbsp;                                    currentLobby = null;</b>
+<b class="nc"><i class="no-highlight">152</i>&nbsp;                                    state = State.REDIRECT_PHASE;</b>
+<b class="nc"><i class="no-highlight">153</i>&nbsp;                                    sw.sendMessage(new LobbyClosed());</b>
+<b class="nc"><i class="no-highlight">154</i>&nbsp;                                }</b>
+<b class="nc"><i class="no-highlight">155</i>&nbsp;                                case ClientConnectEvent clientConnectedEvent -&gt;</b>
+<b class="nc"><i class="no-highlight">156</i>&nbsp;                                        sw.sendMessage(new ClientConnected(clientConnectedEvent.getNickname(), clientConnectedEvent.getPlayers()));</b>
+<b class="nc"><i class="no-highlight">157</i>&nbsp;                                case ClientDisconnectEvent clientDisconnectedEvent -&gt;</b>
+<b class="nc"><i class="no-highlight">158</i>&nbsp;                                        sw.sendMessage(new ClientDisconnected(clientDisconnectedEvent.getNickname(), clientDisconnectedEvent.getPlayers()));</b>
+<b class="nc"><i class="no-highlight">159</i>&nbsp;                                case StartGameRequest castedEvent -&gt; {</b>
+<b class="nc"><i class="no-highlight">160</i>&nbsp;                                    if (!currentLobby.getAdmin().equals(nickname)) {</b>
+<b class="nc"><i class="no-highlight">161</i>&nbsp;                                        sw.sendMessage(GameInit.fail(&quot;Only the admin of the lobby can start the game.&quot;));</b>
+<i class="no-highlight">162</i>&nbsp;                                        return;
+<i class="no-highlight">163</i>&nbsp;                                    }
+<b class="nc"><i class="no-highlight">164</i>&nbsp;                                    if (!currentLobby.isLobbyFull()) {</b>
+<b class="nc"><i class="no-highlight">165</i>&nbsp;                                        sw.sendMessage(GameInit.fail(&quot;The lobby has not been filled&quot;));</b>
+<i class="no-highlight">166</i>&nbsp;                                        return;
+<i class="no-highlight">167</i>&nbsp;                                    }
+<b class="nc"><i class="no-highlight">168</i>&nbsp;                                    if (currentLobby.isGameInProgress()) {</b>
+<b class="nc"><i class="no-highlight">169</i>&nbsp;                                        sw.sendMessage(GameInit.fail(&quot;The game has already started&quot;));</b>
+<i class="no-highlight">170</i>&nbsp;                                        return;
+<i class="no-highlight">171</i>&nbsp;                                    }
+<i class="no-highlight">172</i>&nbsp;                                    try {
+<b class="nc"><i class="no-highlight">173</i>&nbsp;                                        currentLobby.startGame(castedEvent.getGameMode());</b>
+<b class="nc"><i class="no-highlight">174</i>&nbsp;                                    } catch (InputValidationException e) {</b>
+<b class="nc"><i class="no-highlight">175</i>&nbsp;                                        sw.sendMessage(GameInit.fail(e.getMessage()));</b>
+<i class="no-highlight">176</i>&nbsp;                                        return;
+<b class="nc"><i class="no-highlight">177</i>&nbsp;                                    }</b>
+<i class="no-highlight">178</i>&nbsp;                                    // code executes only when a gameLobby was created
+<b class="nc"><i class="no-highlight">179</i>&nbsp;                                    sw.sendMessage(GameInit.success());</b>
+<b class="nc"><i class="no-highlight">180</i>&nbsp;                                }</b>
+<b class="nc"><i class="no-highlight">181</i>&nbsp;                                case GameStartEvent gameStartEvent -&gt; {</b>
+<b class="nc"><i class="no-highlight">182</i>&nbsp;                                    state = State.GAME_IN_PROGRESS_PHASE;</b>
+<b class="nc"><i class="no-highlight">183</i>&nbsp;                                    playerID = gameStartEvent.nickToID().get(nickname);</b>
+<b class="nc"><i class="no-highlight">184</i>&nbsp;                                    sw.sendMessage(new GameStarted());</b>
+<b class="nc"><i class="no-highlight">185</i>&nbsp;                                }</b>
+<b class="nc"><i class="no-highlight">186</i>&nbsp;                                case default -&gt; sw.sendMessage(new InvalidRequest());</b>
+<i class="no-highlight">187</i>&nbsp;                            }
+<b class="nc"><i class="no-highlight">188</i>&nbsp;                        }</b>
+<i class="no-highlight">189</i>&nbsp;                        case GAME_IN_PROGRESS_PHASE -&gt; {
+<i class="no-highlight">190</i>&nbsp;                            // wait phase: wait for valid lobby action
+<i class="no-highlight">191</i>&nbsp;                            // either:
+<i class="no-highlight">192</i>&nbsp;                            // - start (only from admin)
+<i class="no-highlight">193</i>&nbsp;                            // - start (as admin event reaction)
+<b class="nc"><i class="no-highlight">194</i>&nbsp;                            switch (event) {</b>
+<b class="nc"><i class="no-highlight">195</i>&nbsp;                                case LobbyClosedEvent ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">196</i>&nbsp;                                    currentLobby = null;</b>
+<b class="nc"><i class="no-highlight">197</i>&nbsp;                                    state = State.REDIRECT_PHASE;</b>
+<b class="nc"><i class="no-highlight">198</i>&nbsp;                                    sw.sendMessage(new LobbyClosed());</b>
+<b class="nc"><i class="no-highlight">199</i>&nbsp;                                }</b>
+<b class="nc"><i class="no-highlight">200</i>&nbsp;                                case ModelUpdateEvent modelUpdateEvent -&gt;</b>
+<b class="nc"><i class="no-highlight">201</i>&nbsp;                                        sw.sendMessage(new ModelUpdated(modelUpdateEvent.getModel()));</b>
+<b class="nc"><i class="no-highlight">202</i>&nbsp;                                case GameOverEvent gameOverEvent -&gt; {</b>
+<b class="nc"><i class="no-highlight">203</i>&nbsp;                                    sw.sendMessage(new GameOver(gameOverEvent.winners()));</b>
+<b class="nc"><i class="no-highlight">204</i>&nbsp;                                    currentLobby.close();</b>
+<b class="nc"><i class="no-highlight">205</i>&nbsp;                                }</b>
+<b class="nc"><i class="no-highlight">206</i>&nbsp;                                case PlayerActionRequest playerActionRequest -&gt; {</b>
+<i class="no-highlight">207</i>&nbsp;                                    try {
+<b class="nc"><i class="no-highlight">208</i>&nbsp;                                        PlayerAction pa = playerActionRequest.getAction();</b>
+<b class="nc"><i class="no-highlight">209</i>&nbsp;                                        if (pa.getPlayerBoardID() == playerID) {</b>
+<i class="no-highlight">210</i>&nbsp;                                            PlayerActionFeedback feedback;
+<i class="no-highlight">211</i>&nbsp;                                            try {
+<b class="nc"><i class="no-highlight">212</i>&nbsp;                                                currentLobby.executeAction(pa);</b>
+<b class="nc"><i class="no-highlight">213</i>&nbsp;                                                feedback = PlayerActionFeedback.success();</b>
+<b class="nc"><i class="no-highlight">214</i>&nbsp;                                            } catch (InputValidationException e) {</b>
+<b class="nc"><i class="no-highlight">215</i>&nbsp;                                                feedback = PlayerActionFeedback.fail(e.getMessage());</b>
+<b class="nc"><i class="no-highlight">216</i>&nbsp;                                            }</b>
+<b class="nc"><i class="no-highlight">217</i>&nbsp;                                            sw.sendMessage(feedback);</b>
+<b class="nc"><i class="no-highlight">218</i>&nbsp;                                        } else {</b>
+<b class="nc"><i class="no-highlight">219</i>&nbsp;                                            sw.sendMessage(PlayerActionFeedback.fail(&quot;The action that was sent is malformed.&quot;));</b>
+<i class="no-highlight">220</i>&nbsp;                                        }
+<b class="nc"><i class="no-highlight">221</i>&nbsp;                                    } catch (OperationException e) {</b>
+<b class="nc"><i class="no-highlight">222</i>&nbsp;                                        Logger.severe(&quot;Supposedly unreachable statement was reached:\n&quot; + e.getMessage());</b>
+<b class="nc"><i class="no-highlight">223</i>&nbsp;                                        sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));</b>
+<b class="nc"><i class="no-highlight">224</i>&nbsp;                                        throw new RuntimeException(e);</b>
+<b class="nc"><i class="no-highlight">225</i>&nbsp;                                    }</b>
+<i class="no-highlight">226</i>&nbsp;                                }
+<b class="nc"><i class="no-highlight">227</i>&nbsp;                                case ClientDisconnectEvent clientDisconnectedEvent -&gt;</b>
+<b class="nc"><i class="no-highlight">228</i>&nbsp;                                        sw.sendMessage(new ClientDisconnected(clientDisconnectedEvent.getNickname(), clientDisconnectedEvent.getPlayers()));</b>
+<b class="nc"><i class="no-highlight">229</i>&nbsp;                                case default -&gt; sw.sendMessage(new InvalidRequest());</b>
+<i class="no-highlight">230</i>&nbsp;                            }
+<i class="no-highlight">231</i>&nbsp;                        }
+<i class="no-highlight">232</i>&nbsp;                    }
+<i class="no-highlight">233</i>&nbsp;                }
+<b class="nc"><i class="no-highlight">234</i>&nbsp;            } catch (Exception e) {</b>
+<b class="nc"><i class="no-highlight">235</i>&nbsp;                Logger.severe(e.getMessage());</b>
+<i class="no-highlight">236</i>&nbsp;                try {
+<b class="nc"><i class="no-highlight">237</i>&nbsp;                    this.sw.close();</b>
+<b class="nc"><i class="no-highlight">238</i>&nbsp;                } catch (IOException ex) {</b>
+<b class="nc"><i class="no-highlight">239</i>&nbsp;                    throw new RuntimeException(ex);</b>
+<b class="nc"><i class="no-highlight">240</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">241</i>&nbsp;            }</b>
+<i class="no-highlight">242</i>&nbsp;        }
+<i class="no-highlight">243</i>&nbsp;    }
+<i class="no-highlight">244</i>&nbsp;
+<i class="no-highlight">245</i>&nbsp;    /**
+<i class="no-highlight">246</i>&nbsp;     * generates a unique UUID for a lobby
+<i class="no-highlight">247</i>&nbsp;     *
+<i class="no-highlight">248</i>&nbsp;     * @return a not yet in use UUID for the lobby
+<i class="no-highlight">249</i>&nbsp;     */
+<i class="no-highlight">250</i>&nbsp;    private static UUID generateUUID() {
+<b class="nc"><i class="no-highlight">251</i>&nbsp;        UUID id = UUID.randomUUID();</b>
+<b class="nc"><i class="no-highlight">252</i>&nbsp;        while (lobbyMap.containsKey(id)) {</b>
+<b class="nc"><i class="no-highlight">253</i>&nbsp;            id = UUID.randomUUID();</b>
+<i class="no-highlight">254</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">255</i>&nbsp;        return id;</b>
+<i class="no-highlight">256</i>&nbsp;    }
+<i class="no-highlight">257</i>&nbsp;
+<i class="no-highlight">258</i>&nbsp;    /**
+<i class="no-highlight">259</i>&nbsp;     * Represents the various stages of the connection between client and server
+<i class="no-highlight">260</i>&nbsp;     */
+<b class="nc"><i class="no-highlight">261</i>&nbsp;    private enum State {</b>
+<i class="no-highlight">262</i>&nbsp;        /**
+<i class="no-highlight">263</i>&nbsp;         * client has not identified itself yet
+<i class="no-highlight">264</i>&nbsp;         */
+<b class="nc"><i class="no-highlight">265</i>&nbsp;        ACCEPT_PHASE,</b>
+<i class="no-highlight">266</i>&nbsp;        /**
+<i class="no-highlight">267</i>&nbsp;         * client now has a name, but is not part of a lobby
+<i class="no-highlight">268</i>&nbsp;         */
+<b class="nc"><i class="no-highlight">269</i>&nbsp;        REDIRECT_PHASE,</b>
+<i class="no-highlight">270</i>&nbsp;        /**
+<i class="no-highlight">271</i>&nbsp;         * client is part of a lobby, waiting for the game to start
+<i class="no-highlight">272</i>&nbsp;         */
+<b class="nc"><i class="no-highlight">273</i>&nbsp;        GAME_START_PHASE,</b>
+<i class="no-highlight">274</i>&nbsp;        /**
+<i class="no-highlight">275</i>&nbsp;         * client is now in a game, playing
+<i class="no-highlight">276</i>&nbsp;         */
+<b class="nc"><i class="no-highlight">277</i>&nbsp;        GAME_IN_PROGRESS_PHASE,</b>
+<i class="no-highlight">278</i>&nbsp;    }
+<i class="no-highlight">279</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -438,7 +443,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-07-01 18:11</div>
+    <div style="float:right;">generated on 2022-07-01 18:44</div>
 </div>
 </body>
 </html>

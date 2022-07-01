@@ -1,0 +1,161 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PawnColour</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Model.Enums</a>
+</div>
+
+<h1>Coverage Summary for Class: PawnColour (it.polimi.ingsw.Model.Enums)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PawnColour</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66,7%
+  </span>
+  <span class="absValue">
+    (2/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    46,2%
+  </span>
+  <span class="absValue">
+    (6/13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Model.Enums;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import java.io.Serial;
+<i class="no-highlight">4</i>&nbsp;import java.io.Serializable;
+<i class="no-highlight">5</i>&nbsp;
+<i class="no-highlight">6</i>&nbsp;/**
+<i class="no-highlight">7</i>&nbsp; * Represents the colour of many pawns on the game boards, like Students and Teachers.
+<i class="no-highlight">8</i>&nbsp; */
+<b class="fc"><i class="no-highlight">9</i>&nbsp;public enum PawnColour implements Serializable {</b>
+<b class="fc"><i class="no-highlight">10</i>&nbsp;    GREEN,</b>
+<b class="fc"><i class="no-highlight">11</i>&nbsp;    RED,</b>
+<b class="fc"><i class="no-highlight">12</i>&nbsp;    YELLOW,</b>
+<b class="fc"><i class="no-highlight">13</i>&nbsp;    PINK,</b>
+<b class="fc"><i class="no-highlight">14</i>&nbsp;    BLUE;</b>
+<i class="no-highlight">15</i>&nbsp;    @Serial
+<i class="no-highlight">16</i>&nbsp;    private static final long serialVersionUID = 125L; // convention: 1 for model, (01 -&gt; 99) for objects
+<i class="no-highlight">17</i>&nbsp;
+<i class="no-highlight">18</i>&nbsp;    /**
+<i class="no-highlight">19</i>&nbsp;     * Convert a string to a valid PawnColour
+<i class="no-highlight">20</i>&nbsp;     *
+<i class="no-highlight">21</i>&nbsp;     * @param text string containing a colour
+<i class="no-highlight">22</i>&nbsp;     * @return the appropriate PawnColour or null when the string does not represent a valid pawnColour
+<i class="no-highlight">23</i>&nbsp;     */
+<i class="no-highlight">24</i>&nbsp;    public static PawnColour getPawnColourFromText(String text) {
+<b class="nc"><i class="no-highlight">25</i>&nbsp;        switch (text.toUpperCase().trim()) {</b>
+<i class="no-highlight">26</i>&nbsp;            case &quot;RED&quot; -&gt; {
+<b class="nc"><i class="no-highlight">27</i>&nbsp;                return PawnColour.RED;</b>
+<i class="no-highlight">28</i>&nbsp;            }
+<i class="no-highlight">29</i>&nbsp;            case &quot;BLUE&quot; -&gt; {
+<b class="nc"><i class="no-highlight">30</i>&nbsp;                return PawnColour.BLUE;</b>
+<i class="no-highlight">31</i>&nbsp;            }
+<i class="no-highlight">32</i>&nbsp;            case &quot;PINK&quot; -&gt; {
+<b class="nc"><i class="no-highlight">33</i>&nbsp;                return PawnColour.PINK;</b>
+<i class="no-highlight">34</i>&nbsp;            }
+<i class="no-highlight">35</i>&nbsp;            case &quot;YELLOW&quot; -&gt; {
+<b class="nc"><i class="no-highlight">36</i>&nbsp;                return PawnColour.YELLOW;</b>
+<i class="no-highlight">37</i>&nbsp;            }
+<i class="no-highlight">38</i>&nbsp;            case &quot;GREEN&quot; -&gt; {
+<b class="nc"><i class="no-highlight">39</i>&nbsp;                return PawnColour.GREEN;</b>
+<i class="no-highlight">40</i>&nbsp;            }
+<i class="no-highlight">41</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">42</i>&nbsp;        return null;</b>
+<i class="no-highlight">43</i>&nbsp;    }
+<i class="no-highlight">44</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:43</div>
+</div>
+</body>
+</html>

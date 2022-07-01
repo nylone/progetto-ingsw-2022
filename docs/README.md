@@ -27,7 +27,9 @@ Eriantys is the game chosen as the (2021/2022) project of the Software Engineeri
 
 ## Test coverage
 
-Follow [this link](https://nylone.github.io/ing-sw-2022-rampone-rossi-salerno/coverage-report) for an unfiltered version of the coverage report.
+Follow [this link](https://nylone.github.io/ing-sw-2022-rampone-rossi-salerno/coverage-report) for an unfiltered version
+of the coverage report or follow [this link](https://nylone.github.io/ing-sw-2022-rampone-rossi-salerno/filtered-coverage-report)
+for one of only Model and Controller.
 
 ## Javadocs
 

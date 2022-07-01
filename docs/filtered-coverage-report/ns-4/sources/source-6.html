@@ -1,0 +1,165 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TowerColour</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Model.Enums</a>
+</div>
+
+<h1>Coverage Summary for Class: TowerColour (it.polimi.ingsw.Model.Enums)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TowerColour</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (9/10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Model.Enums;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import java.io.Serial;
+<i class="no-highlight">4</i>&nbsp;import java.io.Serializable;
+<i class="no-highlight">5</i>&nbsp;
+<i class="no-highlight">6</i>&nbsp;/**
+<i class="no-highlight">7</i>&nbsp; * Towers are bound to a colour, and each colour is bound to a team. This enum represents the colour-team link
+<i class="no-highlight">8</i>&nbsp; */
+<b class="fc"><i class="no-highlight">9</i>&nbsp;public enum TowerColour implements Serializable {</b>
+<b class="fc"><i class="no-highlight">10</i>&nbsp;    BLACK(TeamID.ONE),</b>
+<b class="fc"><i class="no-highlight">11</i>&nbsp;    WHITE(TeamID.TWO),</b>
+<b class="fc"><i class="no-highlight">12</i>&nbsp;    GRAY(TeamID.THREE);</b>
+<i class="no-highlight">13</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;    @Serial
+<i class="no-highlight">15</i>&nbsp;    private static final long serialVersionUID = 132L; // convention: 1 for model, (01 -&gt; 99) for objects
+<i class="no-highlight">16</i>&nbsp;    private final TeamID teamID;
+<i class="no-highlight">17</i>&nbsp;
+<i class="no-highlight">18</i>&nbsp;    /**
+<i class="no-highlight">19</i>&nbsp;     * Internal constructor of the enum
+<i class="no-highlight">20</i>&nbsp;     *
+<i class="no-highlight">21</i>&nbsp;     * @param teamId the team to bind the tower to
+<i class="no-highlight">22</i>&nbsp;     */
+<b class="fc"><i class="no-highlight">23</i>&nbsp;    TowerColour(TeamID teamId) {</b>
+<b class="fc"><i class="no-highlight">24</i>&nbsp;        this.teamID = teamId;</b>
+<i class="no-highlight">25</i>&nbsp;    }
+<i class="no-highlight">26</i>&nbsp;
+<i class="no-highlight">27</i>&nbsp;    /**
+<i class="no-highlight">28</i>&nbsp;     * Get the {@link TowerColour} connected to a {@link TeamID}
+<i class="no-highlight">29</i>&nbsp;     *
+<i class="no-highlight">30</i>&nbsp;     * @param tID the {@link TeamID} enum representing a team
+<i class="no-highlight">31</i>&nbsp;     * @return the {@link TowerColour} bound to a particular {@link TeamID}
+<i class="no-highlight">32</i>&nbsp;     */
+<i class="no-highlight">33</i>&nbsp;    public static TowerColour fromTeamId(TeamID tID) {
+<b class="pc"><i class="no-highlight">34</i>&nbsp;        for (TowerColour e : TowerColour.values()) {</b>
+<b class="fc"><i class="no-highlight">35</i>&nbsp;            if (e.teamID == tID) return e;</b>
+<i class="no-highlight">36</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">37</i>&nbsp;        throw new RuntimeException();</b>
+<i class="no-highlight">38</i>&nbsp;    }
+<i class="no-highlight">39</i>&nbsp;
+<i class="no-highlight">40</i>&nbsp;    /**
+<i class="no-highlight">41</i>&nbsp;     * Get the {@link TeamID} bound to a specific color of the tower
+<i class="no-highlight">42</i>&nbsp;     *
+<i class="no-highlight">43</i>&nbsp;     * @return the {@link TeamID} bound to the current {@link TowerColour} variant
+<i class="no-highlight">44</i>&nbsp;     */
+<i class="no-highlight">45</i>&nbsp;    public TeamID getTeamID() {
+<b class="fc"><i class="no-highlight">46</i>&nbsp;        return teamID;</b>
+<i class="no-highlight">47</i>&nbsp;    }
+<i class="no-highlight">48</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:43</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,189 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > MoveDestination</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Controller</a>
+</div>
+
+<h1>Coverage Summary for Class: MoveDestination (it.polimi.ingsw.Controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MoveDestination</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91,7%
+  </span>
+  <span class="absValue">
+    (11/12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Controller;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Controller.Actions.MoveStudent;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">5</i>&nbsp;
+<i class="no-highlight">6</i>&nbsp;import java.io.Serial;
+<i class="no-highlight">7</i>&nbsp;import java.io.Serializable;
+<i class="no-highlight">8</i>&nbsp;
+<i class="no-highlight">9</i>&nbsp;/**
+<i class="no-highlight">10</i>&nbsp; * This class is used by {@link MoveStudent} to direct a pawn from the entrance to the correct destination
+<i class="no-highlight">11</i>&nbsp; */
+<i class="no-highlight">12</i>&nbsp;public class MoveDestination implements Serializable {
+<i class="no-highlight">13</i>&nbsp;    @Serial
+<i class="no-highlight">14</i>&nbsp;    private static final long serialVersionUID = 203L; // convention: 2 for controller, (01 -&gt; 99) for objects
+<i class="no-highlight">15</i>&nbsp;    private final DestinationType destinationType;
+<i class="no-highlight">16</i>&nbsp;    private final OptionalValue&lt;Integer&gt; islandID;
+<i class="no-highlight">17</i>&nbsp;
+<i class="no-highlight">18</i>&nbsp;    /**
+<i class="no-highlight">19</i>&nbsp;     * Constructor used to point to an island
+<i class="no-highlight">20</i>&nbsp;     *
+<i class="no-highlight">21</i>&nbsp;     * @param islandID the id of the island to point to
+<i class="no-highlight">22</i>&nbsp;     */
+<b class="fc"><i class="no-highlight">23</i>&nbsp;    private MoveDestination(int islandID) {</b>
+<b class="fc"><i class="no-highlight">24</i>&nbsp;        this.destinationType = DestinationType.ISLAND;</b>
+<b class="fc"><i class="no-highlight">25</i>&nbsp;        this.islandID = OptionalValue.of(islandID);</b>
+<i class="no-highlight">26</i>&nbsp;    }
+<i class="no-highlight">27</i>&nbsp;
+<i class="no-highlight">28</i>&nbsp;    /**
+<i class="no-highlight">29</i>&nbsp;     * Constructor used to point to the dining room
+<i class="no-highlight">30</i>&nbsp;     */
+<b class="fc"><i class="no-highlight">31</i>&nbsp;    private MoveDestination() {</b>
+<b class="fc"><i class="no-highlight">32</i>&nbsp;        this.destinationType = DestinationType.DININGROOM;</b>
+<b class="fc"><i class="no-highlight">33</i>&nbsp;        this.islandID = OptionalValue.empty();</b>
+<i class="no-highlight">34</i>&nbsp;    }
+<i class="no-highlight">35</i>&nbsp;
+<i class="no-highlight">36</i>&nbsp;    /**
+<i class="no-highlight">37</i>&nbsp;     * call this method if you wish to point to the dining room
+<i class="no-highlight">38</i>&nbsp;     *
+<i class="no-highlight">39</i>&nbsp;     * @return a new object pointing to the dining room
+<i class="no-highlight">40</i>&nbsp;     */
+<i class="no-highlight">41</i>&nbsp;    public static MoveDestination toDiningRoom() {
+<b class="fc"><i class="no-highlight">42</i>&nbsp;        return new MoveDestination();</b>
+<i class="no-highlight">43</i>&nbsp;    }
+<i class="no-highlight">44</i>&nbsp;
+<i class="no-highlight">45</i>&nbsp;    /**
+<i class="no-highlight">46</i>&nbsp;     * call this method if you wish to point to an island
+<i class="no-highlight">47</i>&nbsp;     *
+<i class="no-highlight">48</i>&nbsp;     * @param islandID the id of the island to point to
+<i class="no-highlight">49</i>&nbsp;     * @return a new object pointing to the desired island id
+<i class="no-highlight">50</i>&nbsp;     */
+<i class="no-highlight">51</i>&nbsp;    public static MoveDestination toIsland(int islandID) {
+<b class="fc"><i class="no-highlight">52</i>&nbsp;        return new MoveDestination(islandID);</b>
+<i class="no-highlight">53</i>&nbsp;    }
+<i class="no-highlight">54</i>&nbsp;
+<i class="no-highlight">55</i>&nbsp;    /**
+<i class="no-highlight">56</i>&nbsp;     * @return the {@link DestinationType} selected during creation of the object
+<i class="no-highlight">57</i>&nbsp;     */
+<i class="no-highlight">58</i>&nbsp;    public DestinationType getDestinationType() {
+<b class="fc"><i class="no-highlight">59</i>&nbsp;        return destinationType;</b>
+<i class="no-highlight">60</i>&nbsp;    }
+<i class="no-highlight">61</i>&nbsp;
+<i class="no-highlight">62</i>&nbsp;    /**
+<i class="no-highlight">63</i>&nbsp;     * @return the ID of the island this class is pointing to, or null if the {@link DestinationType} is {@link DestinationType#DININGROOM}
+<i class="no-highlight">64</i>&nbsp;     */
+<i class="no-highlight">65</i>&nbsp;    public Integer getIslandID() {
+<b class="pc"><i class="no-highlight">66</i>&nbsp;        if (this.destinationType == DestinationType.ISLAND &amp;&amp; this.islandID.isPresent()) {</b>
+<b class="fc"><i class="no-highlight">67</i>&nbsp;            return this.islandID.get();</b>
+<i class="no-highlight">68</i>&nbsp;        } else {
+<b class="nc"><i class="no-highlight">69</i>&nbsp;            return null;</b>
+<i class="no-highlight">70</i>&nbsp;        }
+<i class="no-highlight">71</i>&nbsp;    }
+<i class="no-highlight">72</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:43</div>
+</div>
+</body>
+</html>

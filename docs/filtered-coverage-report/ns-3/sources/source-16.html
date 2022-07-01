@@ -1,0 +1,631 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Model</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Model</a>
+</div>
+
+<h1>Coverage Summary for Class: Model (it.polimi.ingsw.Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Model</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (31/31)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    77,3%
+  </span>
+  <span class="absValue">
+    (68/88)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93%
+  </span>
+  <span class="absValue">
+    (160/172)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Model;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Exceptions.Container.FullContainerException;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Logger;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Model.Enums.*;
+<i class="no-highlight">9</i>&nbsp;
+<i class="no-highlight">10</i>&nbsp;import java.io.*;
+<i class="no-highlight">11</i>&nbsp;import java.util.*;
+<i class="no-highlight">12</i>&nbsp;import java.util.stream.Collectors;
+<i class="no-highlight">13</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;/**
+<i class="no-highlight">15</i>&nbsp; * As the name suggests, this class is the game&#39;s Model. The Model&#39;s role is to keep track of the game&#39;s state and
+<i class="no-highlight">16</i>&nbsp; * provide the tools to modify it. This class is not able to detect changes to the underlying data. If you wish for that
+<i class="no-highlight">17</i>&nbsp; * functionality look at {@link ModelWrapper}
+<i class="no-highlight">18</i>&nbsp; */
+<i class="no-highlight">19</i>&nbsp;public class Model implements Serializable {
+<i class="no-highlight">20</i>&nbsp;    @Serial
+<i class="no-highlight">21</i>&nbsp;    private static final long serialVersionUID = 101L; // convention: 1 for model, (01 -&gt; 99) for objects
+<i class="no-highlight">22</i>&nbsp;    private final IslandField islandField;
+<i class="no-highlight">23</i>&nbsp;    private final GameMode gameMode;
+<i class="no-highlight">24</i>&nbsp;    private final StudentBag studentBag;
+<i class="no-highlight">25</i>&nbsp;    private final List&lt;PlayerBoard&gt; playerBoards;
+<i class="no-highlight">26</i>&nbsp;    private final Map&lt;PawnColour, PlayerBoard&gt; teachers;
+<i class="no-highlight">27</i>&nbsp;    private final TeamMapper teamMap;
+<i class="no-highlight">28</i>&nbsp;    private final TurnOrder turnOrder;
+<i class="no-highlight">29</i>&nbsp;    private final EffectTracker effects;
+<i class="no-highlight">30</i>&nbsp;    private final List&lt;Cloud&gt; clouds;
+<i class="no-highlight">31</i>&nbsp;    private final List&lt;CharacterCard&gt; characterCards;
+<i class="no-highlight">32</i>&nbsp;    private int coinReserve;
+<i class="no-highlight">33</i>&nbsp;
+<i class="no-highlight">34</i>&nbsp;    /**
+<i class="no-highlight">35</i>&nbsp;     * Constructs a DEBUG ONLY version of the model, to be used for testing purposes.
+<i class="no-highlight">36</i>&nbsp;     *
+<i class="no-highlight">37</i>&nbsp;     * @param islandField        provide a reference to an external {@link IslandField}
+<i class="no-highlight">38</i>&nbsp;     * @param gameMode           select the game mode
+<i class="no-highlight">39</i>&nbsp;     * @param studentBag         provide a reference to an external {@link StudentBag}
+<i class="no-highlight">40</i>&nbsp;     * @param playerBoards       provide references to external {@link PlayerBoard}s
+<i class="no-highlight">41</i>&nbsp;     * @param teachers           provide a map from a {@link PawnColour} to one of the external {@link PlayerBoard}s
+<i class="no-highlight">42</i>&nbsp;     * @param teamMap            provide a reference to an external {@link TeamMapper}
+<i class="no-highlight">43</i>&nbsp;     * @param turnOrder          provide a reference to an external {@link TurnOrder}
+<i class="no-highlight">44</i>&nbsp;     * @param effects            provide a reference to an external {@link EffectTracker}
+<i class="no-highlight">45</i>&nbsp;     * @param clouds             provide references to external {@link Cloud}s
+<i class="no-highlight">46</i>&nbsp;     * @param characterCards     provide references to external {@link CharacterCard}s
+<i class="no-highlight">47</i>&nbsp;     * @param coinReserve        select the amount of coins left in the bank
+<i class="no-highlight">48</i>&nbsp;     * @param coinPerPlayerBoard this number times the amount of players will be subtracted from coinReserve
+<i class="no-highlight">49</i>&nbsp;     */
+<i class="no-highlight">50</i>&nbsp;    public Model(
+<i class="no-highlight">51</i>&nbsp;            IslandField islandField,
+<i class="no-highlight">52</i>&nbsp;            GameMode gameMode,
+<i class="no-highlight">53</i>&nbsp;            StudentBag studentBag,
+<i class="no-highlight">54</i>&nbsp;            List&lt;PlayerBoard&gt; playerBoards,
+<i class="no-highlight">55</i>&nbsp;            Map&lt;PawnColour, PlayerBoard&gt; teachers,
+<i class="no-highlight">56</i>&nbsp;            TeamMapper teamMap,
+<i class="no-highlight">57</i>&nbsp;            TurnOrder turnOrder,
+<i class="no-highlight">58</i>&nbsp;            EffectTracker effects,
+<i class="no-highlight">59</i>&nbsp;            List&lt;Cloud&gt; clouds,
+<i class="no-highlight">60</i>&nbsp;            List&lt;CharacterCard&gt; characterCards,
+<i class="no-highlight">61</i>&nbsp;            int coinReserve,
+<i class="no-highlight">62</i>&nbsp;            int coinPerPlayerBoard
+<b class="fc"><i class="no-highlight">63</i>&nbsp;    ) {</b>
+<b class="fc"><i class="no-highlight">64</i>&nbsp;        this.islandField = islandField;</b>
+<b class="fc"><i class="no-highlight">65</i>&nbsp;        this.gameMode = gameMode;</b>
+<b class="fc"><i class="no-highlight">66</i>&nbsp;        this.studentBag = studentBag;</b>
+<b class="fc"><i class="no-highlight">67</i>&nbsp;        this.playerBoards = playerBoards;</b>
+<b class="fc"><i class="no-highlight">68</i>&nbsp;        this.teachers = teachers;</b>
+<b class="fc"><i class="no-highlight">69</i>&nbsp;        this.teamMap = teamMap;</b>
+<b class="fc"><i class="no-highlight">70</i>&nbsp;        this.turnOrder = turnOrder;</b>
+<b class="fc"><i class="no-highlight">71</i>&nbsp;        this.effects = effects;</b>
+<b class="fc"><i class="no-highlight">72</i>&nbsp;        this.clouds = clouds;</b>
+<b class="fc"><i class="no-highlight">73</i>&nbsp;        this.characterCards = characterCards;</b>
+<b class="fc"><i class="no-highlight">74</i>&nbsp;        this.coinReserve = coinReserve - coinPerPlayerBoard * playerBoards.size();</b>
+<i class="no-highlight">75</i>&nbsp;    }
+<i class="no-highlight">76</i>&nbsp;
+<i class="no-highlight">77</i>&nbsp;    /**
+<i class="no-highlight">78</i>&nbsp;     * Construct a Model object
+<i class="no-highlight">79</i>&nbsp;     *
+<i class="no-highlight">80</i>&nbsp;     * @param gameMode        selects the {@link GameMode}
+<i class="no-highlight">81</i>&nbsp;     * @param playerNicknames a vararg list of {@link String} representing each player. The first nickname (at index 0) will
+<i class="no-highlight">82</i>&nbsp;     *                        receive ID = 0, the second ID = 1, and so on and so forth.
+<i class="no-highlight">83</i>&nbsp;     */
+<b class="fc"><i class="no-highlight">84</i>&nbsp;    public Model(GameMode gameMode, String... playerNicknames) {</b>
+<b class="fc"><i class="no-highlight">85</i>&nbsp;        final int nop = playerNicknames.length;</b>
+<b class="fc"><i class="no-highlight">86</i>&nbsp;        this.islandField = new IslandField();</b>
+<b class="fc"><i class="no-highlight">87</i>&nbsp;        this.gameMode = gameMode;</b>
+<b class="fc"><i class="no-highlight">88</i>&nbsp;        this.studentBag = new StudentBag(24);</b>
+<b class="fc"><i class="no-highlight">89</i>&nbsp;        this.playerBoards = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">90</i>&nbsp;        this.teachers = new EnumMap&lt;&gt;(PawnColour.class);</b>
+<b class="fc"><i class="no-highlight">91</i>&nbsp;        this.coinReserve = 20 - nop; // hp: we assume 20 as amount of available coins just like the real game.</b>
+<i class="no-highlight">92</i>&nbsp;
+<b class="fc"><i class="no-highlight">93</i>&nbsp;        for (int i = 0; i &lt; nop; i++) {</b>
+<b class="fc"><i class="no-highlight">94</i>&nbsp;            this.playerBoards.add(new PlayerBoard(i, nop, playerNicknames[i], this.studentBag));</b>
+<i class="no-highlight">95</i>&nbsp;        } // add generate player based on nickname and store it
+<b class="fc"><i class="no-highlight">96</i>&nbsp;        this.turnOrder = new TurnOrder(playerBoards);</b>
+<b class="fc"><i class="no-highlight">97</i>&nbsp;        this.teamMap = new TeamMapper(this.playerBoards);</b>
+<b class="fc"><i class="no-highlight">98</i>&nbsp;        if (this.gameMode.equals(GameMode.ADVANCED)) {</b>
+<b class="fc"><i class="no-highlight">99</i>&nbsp;            this.characterCards = CharacterDeckGenerator.generateCardSet(this);</b>
+<b class="fc"><i class="no-highlight">100</i>&nbsp;            this.coinReserve = 20 - nop;</b>
+<i class="no-highlight">101</i>&nbsp;        } else {
+<b class="fc"><i class="no-highlight">102</i>&nbsp;            this.characterCards = null;</b>
+<i class="no-highlight">103</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">104</i>&nbsp;        this.effects = new EffectTracker();</b>
+<b class="fc"><i class="no-highlight">105</i>&nbsp;        this.clouds = new ArrayList&lt;&gt;(nop);</b>
+<i class="no-highlight">106</i>&nbsp;        //2 players: 2 cloud tiles - 3 players: 3 cloud tiles: 4 players: 4 cloud tiles
+<b class="fc"><i class="no-highlight">107</i>&nbsp;        for (int i = 0; i &lt; nop; i++) {</b>
+<b class="fc"><i class="no-highlight">108</i>&nbsp;            clouds.add(new Cloud(i));</b>
+<i class="no-highlight">109</i>&nbsp;        }
+<i class="no-highlight">110</i>&nbsp;        try {
+<b class="fc"><i class="no-highlight">111</i>&nbsp;            refillClouds();</b>
+<b class="nc"><i class="no-highlight">112</i>&nbsp;        } catch (FullContainerException e) {</b>
+<b class="nc"><i class="no-highlight">113</i>&nbsp;            Logger.severe(e.getMessage());</b>
+<b class="nc"><i class="no-highlight">114</i>&nbsp;            throw new RuntimeException(e);</b>
+<b class="fc"><i class="no-highlight">115</i>&nbsp;        }</b>
+<i class="no-highlight">116</i>&nbsp;    }
+<i class="no-highlight">117</i>&nbsp;
+<i class="no-highlight">118</i>&nbsp;    /**
+<i class="no-highlight">119</i>&nbsp;     * Refill the cloud tiles
+<i class="no-highlight">120</i>&nbsp;     *
+<i class="no-highlight">121</i>&nbsp;     * @throws FullContainerException if one or more cloud tiles were found full while trying to fill them up
+<i class="no-highlight">122</i>&nbsp;     */
+<i class="no-highlight">123</i>&nbsp;    public void refillClouds() throws FullContainerException {
+<b class="fc"><i class="no-highlight">124</i>&nbsp;        for (Cloud cloud : this.clouds) {</b>
+<b class="fc"><i class="no-highlight">125</i>&nbsp;            cloud.fill(studentBag.multipleExtraction(this.playerBoards.size() == 3 ? 4 : 3));</b>
+<b class="fc"><i class="no-highlight">126</i>&nbsp;        }</b>
+<i class="no-highlight">127</i>&nbsp;    }
+<i class="no-highlight">128</i>&nbsp;
+<i class="no-highlight">129</i>&nbsp;    /**
+<i class="no-highlight">130</i>&nbsp;     * Serializes the game model to a new object.
+<i class="no-highlight">131</i>&nbsp;     *
+<i class="no-highlight">132</i>&nbsp;     * @return a copy of the GameBoard object or null if the Serialization was not possible &lt;br&gt;
+<i class="no-highlight">133</i>&nbsp;     * &lt;b&gt;Note:&lt;/b&gt; once called, all changes to the original GameBoard object won&#39;t be reflected in the instance returned
+<i class="no-highlight">134</i>&nbsp;     * by this method
+<i class="no-highlight">135</i>&nbsp;     */
+<i class="no-highlight">136</i>&nbsp;    public Model copy() {
+<i class="no-highlight">137</i>&nbsp;        try {
+<b class="fc"><i class="no-highlight">138</i>&nbsp;            ByteArrayInputStream stream = new ByteArrayInputStream(getSerializedModel());</b>
+<b class="fc"><i class="no-highlight">139</i>&nbsp;            ObjectInputStream reader = new ObjectInputStream(stream);</b>
+<b class="fc"><i class="no-highlight">140</i>&nbsp;            return (Model) reader.readObject();</b>
+<b class="nc"><i class="no-highlight">141</i>&nbsp;        } catch (Exception e) {</b>
+<b class="nc"><i class="no-highlight">142</i>&nbsp;            e.printStackTrace();</b>
+<i class="no-highlight">143</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">144</i>&nbsp;        return null; // never executed under normal circumstances</b>
+<i class="no-highlight">145</i>&nbsp;    }
+<i class="no-highlight">146</i>&nbsp;
+<i class="no-highlight">147</i>&nbsp;    /**
+<i class="no-highlight">148</i>&nbsp;     * Serializes the game model to a new de-serializable byte array.
+<i class="no-highlight">149</i>&nbsp;     *
+<i class="no-highlight">150</i>&nbsp;     * @return a copy of the GameBoard object. &lt;br&gt;
+<i class="no-highlight">151</i>&nbsp;     * &lt;b&gt;Note:&lt;/b&gt; once called, all changes to the original GameBoard object won&#39;t be reflected in the instance returned
+<i class="no-highlight">152</i>&nbsp;     * by this method
+<i class="no-highlight">153</i>&nbsp;     */
+<i class="no-highlight">154</i>&nbsp;    private byte[] getSerializedModel() throws IOException {
+<b class="fc"><i class="no-highlight">155</i>&nbsp;        ByteArrayOutputStream out = new ByteArrayOutputStream();</b>
+<b class="fc"><i class="no-highlight">156</i>&nbsp;        ObjectOutputStream writer = new ObjectOutputStream(out);</b>
+<b class="fc"><i class="no-highlight">157</i>&nbsp;        writer.writeObject(this);</b>
+<b class="fc"><i class="no-highlight">158</i>&nbsp;        return out.toByteArray();</b>
+<i class="no-highlight">159</i>&nbsp;    }
+<i class="no-highlight">160</i>&nbsp;
+<i class="no-highlight">161</i>&nbsp;    /**
+<i class="no-highlight">162</i>&nbsp;     * @return the amount of coins left in the bank, not yet collected by players
+<i class="no-highlight">163</i>&nbsp;     */
+<i class="no-highlight">164</i>&nbsp;    public int getCoinReserve() {
+<b class="fc"><i class="no-highlight">165</i>&nbsp;        return coinReserve;</b>
+<i class="no-highlight">166</i>&nbsp;    }
+<i class="no-highlight">167</i>&nbsp;
+<i class="no-highlight">168</i>&nbsp;    /**
+<i class="no-highlight">169</i>&nbsp;     * @return an Unmodifiable {@link List} of the {@link CharacterCard}s currently in the game
+<i class="no-highlight">170</i>&nbsp;     */
+<i class="no-highlight">171</i>&nbsp;    public List&lt;CharacterCard&gt; getCharacterCards() {
+<b class="fc"><i class="no-highlight">172</i>&nbsp;        return List.copyOf(this.characterCards);</b>
+<i class="no-highlight">173</i>&nbsp;    }
+<i class="no-highlight">174</i>&nbsp;
+<i class="no-highlight">175</i>&nbsp;    /**
+<i class="no-highlight">176</i>&nbsp;     * @return the {@link GameMode} this Model is running
+<i class="no-highlight">177</i>&nbsp;     */
+<i class="no-highlight">178</i>&nbsp;    public GameMode getGameMode() {
+<b class="fc"><i class="no-highlight">179</i>&nbsp;        return gameMode;</b>
+<i class="no-highlight">180</i>&nbsp;    }
+<i class="no-highlight">181</i>&nbsp;
+<i class="no-highlight">182</i>&nbsp;    /**
+<i class="no-highlight">183</i>&nbsp;     * @return an Unmodifiable {@link Map} from {@link PawnColour} to {@link PlayerBoard}, mapping a teacher&#39;s colour to
+<i class="no-highlight">184</i>&nbsp;     * its owner. If the teacher has no owner, the mapping will be null.
+<i class="no-highlight">185</i>&nbsp;     */
+<i class="no-highlight">186</i>&nbsp;    public Map&lt;PawnColour, PlayerBoard&gt; getTeachers() {
+<b class="fc"><i class="no-highlight">187</i>&nbsp;        return Map.copyOf(this.teachers);</b>
+<i class="no-highlight">188</i>&nbsp;    }
+<i class="no-highlight">189</i>&nbsp;
+<i class="no-highlight">190</i>&nbsp;    /**
+<i class="no-highlight">191</i>&nbsp;     * Accessing a {@link PlayerBoard} can only be done through its ID since the nicknames can be non-unique
+<i class="no-highlight">192</i>&nbsp;     *
+<i class="no-highlight">193</i>&nbsp;     * @param id the ID of the {@link PlayerBoard} to fetch for
+<i class="no-highlight">194</i>&nbsp;     * @return the fetched {@link PlayerBoard}
+<i class="no-highlight">195</i>&nbsp;     * @throws InvalidContainerIndexException if no board can be found matching the given ID
+<i class="no-highlight">196</i>&nbsp;     */
+<i class="no-highlight">197</i>&nbsp;    public PlayerBoard getMutablePlayerBoard(int id) throws InvalidContainerIndexException {
+<b class="fc"><i class="no-highlight">198</i>&nbsp;        return playerBoards.stream()</b>
+<b class="fc"><i class="no-highlight">199</i>&nbsp;                .filter(p -&gt; p.getId() == id)</b>
+<b class="fc"><i class="no-highlight">200</i>&nbsp;                .findAny()</b>
+<b class="fc"><i class="no-highlight">201</i>&nbsp;                .orElseThrow(() -&gt; new InvalidContainerIndexException(&quot;Playerboards&quot;));</b>
+<i class="no-highlight">202</i>&nbsp;    }
+<i class="no-highlight">203</i>&nbsp;
+<i class="no-highlight">204</i>&nbsp;    /**
+<i class="no-highlight">205</i>&nbsp;     * @return a reference to the {@link EffectTracker}
+<i class="no-highlight">206</i>&nbsp;     */
+<i class="no-highlight">207</i>&nbsp;    public EffectTracker getMutableEffects() {
+<b class="fc"><i class="no-highlight">208</i>&nbsp;        return effects;</b>
+<i class="no-highlight">209</i>&nbsp;    }
+<i class="no-highlight">210</i>&nbsp;
+<i class="no-highlight">211</i>&nbsp;    /**
+<i class="no-highlight">212</i>&nbsp;     * @return a non-empty {@link OptionalValue} containing the winners of the game if {@link #isGameOver()} returns true,
+<i class="no-highlight">213</i>&nbsp;     * else an empty {@link OptionalValue}
+<i class="no-highlight">214</i>&nbsp;     */
+<i class="no-highlight">215</i>&nbsp;    public OptionalValue&lt;List&lt;PlayerBoard&gt;&gt; getWinners() {
+<b class="fc"><i class="no-highlight">216</i>&nbsp;        if (!isGameOver()) {</b>
+<b class="fc"><i class="no-highlight">217</i>&nbsp;            return OptionalValue.empty();</b>
+<i class="no-highlight">218</i>&nbsp;        }
+<i class="no-highlight">219</i>&nbsp;
+<b class="fc"><i class="no-highlight">220</i>&nbsp;        PlayerBoard currentPlayer = this.getMutableTurnOrder().getMutableCurrentPlayer();</b>
+<i class="no-highlight">221</i>&nbsp;
+<i class="no-highlight">222</i>&nbsp;        // immediate win for 3 islands left
+<b class="pc"><i class="no-highlight">223</i>&nbsp;        if (this.getMutableIslandField().getMutableGroups().size() == 3) {</b>
+<b class="nc"><i class="no-highlight">224</i>&nbsp;            return OptionalValue.of(this.getMutablePlayerBoardsByTeamID(this.getTeamMapper().getTeamID(currentPlayer)));</b>
+<i class="no-highlight">225</i>&nbsp;        }
+<i class="no-highlight">226</i>&nbsp;
+<i class="no-highlight">227</i>&nbsp;        // calculate best players depending on tower storage.
+<b class="fc"><i class="no-highlight">228</i>&nbsp;        List&lt;PlayerBoard&gt; sortByTowerAndTeacherCount = this.getMutablePlayerBoards().stream()</b>
+<b class="fc"><i class="no-highlight">229</i>&nbsp;                .sorted((e1, e2) -&gt; {</b>
+<b class="fc"><i class="no-highlight">230</i>&nbsp;                    int countE1 = this.getTeamMapper().getMutableTowerStorage(e1).getTowerCount();</b>
+<b class="fc"><i class="no-highlight">231</i>&nbsp;                    int countE2 = this.getTeamMapper().getMutableTowerStorage(e2).getTowerCount();</b>
+<b class="fc"><i class="no-highlight">232</i>&nbsp;                    if (countE1 != countE2) return countE1 - countE2;</b>
+<i class="no-highlight">233</i>&nbsp;                    else {
+<b class="fc"><i class="no-highlight">234</i>&nbsp;                        return -this.getOwnTeamTeacherCount(e1) + this.getOwnTeamTeacherCount(e2);</b>
+<i class="no-highlight">235</i>&nbsp;                    }
+<i class="no-highlight">236</i>&nbsp;                })
+<b class="fc"><i class="no-highlight">237</i>&nbsp;                .toList();</b>
+<b class="fc"><i class="no-highlight">238</i>&nbsp;        PlayerBoard firstPlayer = sortByTowerAndTeacherCount.get(0);</b>
+<b class="fc"><i class="no-highlight">239</i>&nbsp;        int firstPlayerTeamTeacherCount = this.getOwnTeamTeacherCount(firstPlayer);</b>
+<b class="fc"><i class="no-highlight">240</i>&nbsp;        int firstPlayerTowerCount = this.getTeamMapper().getMutableTowerStorage(firstPlayer).getTowerCount();</b>
+<b class="fc"><i class="no-highlight">241</i>&nbsp;        List&lt;PlayerBoard&gt; winners = sortByTowerAndTeacherCount.stream()</b>
+<b class="fc"><i class="no-highlight">242</i>&nbsp;                .takeWhile(e -&gt; this.getTeamMapper().getMutableTowerStorage(e).getTowerCount() == firstPlayerTowerCount)</b>
+<b class="fc"><i class="no-highlight">243</i>&nbsp;                .takeWhile(e -&gt; this.getOwnTeamTeacherCount(e) == firstPlayerTeamTeacherCount)</b>
+<b class="fc"><i class="no-highlight">244</i>&nbsp;                .toList();</b>
+<i class="no-highlight">245</i>&nbsp;
+<b class="fc"><i class="no-highlight">246</i>&nbsp;        return OptionalValue.of(winners);</b>
+<i class="no-highlight">247</i>&nbsp;    }
+<i class="no-highlight">248</i>&nbsp;
+<i class="no-highlight">249</i>&nbsp;    /**
+<i class="no-highlight">250</i>&nbsp;     * Checks to see if the game is over, this function should be called at the end of each complete set of changes to the
+<i class="no-highlight">251</i>&nbsp;     * Model.
+<i class="no-highlight">252</i>&nbsp;     *
+<i class="no-highlight">253</i>&nbsp;     * @return true if the game is over, else false.
+<i class="no-highlight">254</i>&nbsp;     */
+<i class="no-highlight">255</i>&nbsp;    public boolean isGameOver() {
+<i class="no-highlight">256</i>&nbsp;        // Check if current player has no towers left
+<b class="fc"><i class="no-highlight">257</i>&nbsp;        PlayerBoard currentPlayer = this.getMutableTurnOrder().getMutableCurrentPlayer();</b>
+<b class="fc"><i class="no-highlight">258</i>&nbsp;        boolean noTowersLeft = this.getTeamMapper().getMutableTowerStorage(currentPlayer).getTowerCount() == 0;</b>
+<i class="no-highlight">259</i>&nbsp;        // Check if only three island groups remain
+<b class="pc"><i class="no-highlight">260</i>&nbsp;        boolean threeIslandsLeft = this.getMutableIslandField().getMutableGroups().size() &lt;= 3;</b>
+<i class="no-highlight">261</i>&nbsp;        // Check if all assistant cards have been used
+<b class="fc"><i class="no-highlight">262</i>&nbsp;        boolean allCardsUsed = this.getMutableTurnOrder().getMutableCurrentPlayer()</b>
+<b class="fc"><i class="no-highlight">263</i>&nbsp;                .getMutableAssistantCards().stream()</b>
+<b class="fc"><i class="no-highlight">264</i>&nbsp;                .allMatch(AssistantCard::getUsed);</b>
+<i class="no-highlight">265</i>&nbsp;        // Check if bag is empty
+<b class="fc"><i class="no-highlight">266</i>&nbsp;        boolean emptyBag = this.getMutableStudentBag().isEmpty();</b>
+<b class="fc"><i class="no-highlight">267</i>&nbsp;        boolean noViableCloudTiles = this.getClouds().stream().allMatch(cloud -&gt; cloud.getContents().size() == 0);</b>
+<i class="no-highlight">268</i>&nbsp;
+<b class="pc"><i class="no-highlight">269</i>&nbsp;        return noTowersLeft ||</b>
+<i class="no-highlight">270</i>&nbsp;                threeIslandsLeft ||
+<b class="pc"><i class="no-highlight">271</i>&nbsp;                this.getMutableTurnOrder().getGamePhase() == GamePhase.SETUP &amp;&amp;</b>
+<i class="no-highlight">272</i>&nbsp;                        (allCardsUsed || (emptyBag &amp;&amp; noViableCloudTiles));
+<i class="no-highlight">273</i>&nbsp;    }
+<i class="no-highlight">274</i>&nbsp;
+<i class="no-highlight">275</i>&nbsp;    /**
+<i class="no-highlight">276</i>&nbsp;     * @return a reference to the {@link TurnOrder}
+<i class="no-highlight">277</i>&nbsp;     */
+<i class="no-highlight">278</i>&nbsp;    public TurnOrder getMutableTurnOrder() {
+<b class="fc"><i class="no-highlight">279</i>&nbsp;        return turnOrder;</b>
+<i class="no-highlight">280</i>&nbsp;    }
+<i class="no-highlight">281</i>&nbsp;
+<i class="no-highlight">282</i>&nbsp;    /**
+<i class="no-highlight">283</i>&nbsp;     * @return a reference to the {@link Island}
+<i class="no-highlight">284</i>&nbsp;     */
+<i class="no-highlight">285</i>&nbsp;    public IslandField getMutableIslandField() {
+<b class="fc"><i class="no-highlight">286</i>&nbsp;        return islandField;</b>
+<i class="no-highlight">287</i>&nbsp;    }
+<i class="no-highlight">288</i>&nbsp;
+<i class="no-highlight">289</i>&nbsp;    /**
+<i class="no-highlight">290</i>&nbsp;     * In case there are 4 players, teams are enabled.
+<i class="no-highlight">291</i>&nbsp;     *
+<i class="no-highlight">292</i>&nbsp;     * @param teamID the ID of the team you wish to fetch for
+<i class="no-highlight">293</i>&nbsp;     * @return an Unmodifiable {@link List} of {@link PlayerBoard}/s that are part of the specified Team
+<i class="no-highlight">294</i>&nbsp;     */
+<i class="no-highlight">295</i>&nbsp;    public List&lt;PlayerBoard&gt; getMutablePlayerBoardsByTeamID(TeamID teamID) {
+<b class="fc"><i class="no-highlight">296</i>&nbsp;        return this.getMutablePlayerBoards().stream()</b>
+<b class="fc"><i class="no-highlight">297</i>&nbsp;                .filter(player -&gt; teamID.equals(this.getTeamMapper().getTeamID(player)))</b>
+<b class="fc"><i class="no-highlight">298</i>&nbsp;                .toList();</b>
+<i class="no-highlight">299</i>&nbsp;    }
+<i class="no-highlight">300</i>&nbsp;
+<i class="no-highlight">301</i>&nbsp;    /**
+<i class="no-highlight">302</i>&nbsp;     * @return a reference to the {@link TeamMapper}
+<i class="no-highlight">303</i>&nbsp;     */
+<i class="no-highlight">304</i>&nbsp;    public TeamMapper getTeamMapper() {
+<b class="fc"><i class="no-highlight">305</i>&nbsp;        return teamMap;</b>
+<i class="no-highlight">306</i>&nbsp;    }
+<i class="no-highlight">307</i>&nbsp;
+<i class="no-highlight">308</i>&nbsp;    /**
+<i class="no-highlight">309</i>&nbsp;     * @return an Unmodifiable {@link List} of the {@link PlayerBoard}s (which can be modified)
+<i class="no-highlight">310</i>&nbsp;     */
+<i class="no-highlight">311</i>&nbsp;    public List&lt;PlayerBoard&gt; getMutablePlayerBoards() {
+<b class="fc"><i class="no-highlight">312</i>&nbsp;        return List.copyOf(playerBoards);</b>
+<i class="no-highlight">313</i>&nbsp;    }
+<i class="no-highlight">314</i>&nbsp;
+<i class="no-highlight">315</i>&nbsp;    /**
+<i class="no-highlight">316</i>&nbsp;     * @param pb the {@link PlayerBoard} you wish to search the owned teachers of
+<i class="no-highlight">317</i>&nbsp;     * @return the amount of teachers linked to such player
+<i class="no-highlight">318</i>&nbsp;     */
+<i class="no-highlight">319</i>&nbsp;    private int getOwnTeamTeacherCount(PlayerBoard pb) {
+<b class="fc"><i class="no-highlight">320</i>&nbsp;        return this.getOwnTeamTeacherCount(this.getTeamMapper().getTeamID(pb));</b>
+<i class="no-highlight">321</i>&nbsp;    }
+<i class="no-highlight">322</i>&nbsp;
+<i class="no-highlight">323</i>&nbsp;    /**
+<i class="no-highlight">324</i>&nbsp;     * @return a reference to the {@link StudentBag}
+<i class="no-highlight">325</i>&nbsp;     */
+<i class="no-highlight">326</i>&nbsp;    public StudentBag getMutableStudentBag() {
+<b class="fc"><i class="no-highlight">327</i>&nbsp;        return studentBag;</b>
+<i class="no-highlight">328</i>&nbsp;    }
+<i class="no-highlight">329</i>&nbsp;
+<i class="no-highlight">330</i>&nbsp;    /**
+<i class="no-highlight">331</i>&nbsp;     * @return an Unmodifiable {@link List} of the {@link Cloud}s (which can be modified)
+<i class="no-highlight">332</i>&nbsp;     */
+<i class="no-highlight">333</i>&nbsp;    public List&lt;Cloud&gt; getClouds() {
+<b class="fc"><i class="no-highlight">334</i>&nbsp;        return List.copyOf(this.clouds);</b>
+<i class="no-highlight">335</i>&nbsp;    }
+<i class="no-highlight">336</i>&nbsp;
+<i class="no-highlight">337</i>&nbsp;    /**
+<i class="no-highlight">338</i>&nbsp;     * @param teamID the {@link TeamID} you wish to search the owned teachers of
+<i class="no-highlight">339</i>&nbsp;     * @return the amount of teachers linked to such team
+<i class="no-highlight">340</i>&nbsp;     */
+<i class="no-highlight">341</i>&nbsp;    private int getOwnTeamTeacherCount(TeamID teamID) {
+<b class="fc"><i class="no-highlight">342</i>&nbsp;        return this.getMutablePlayerBoardsByTeamID(teamID).stream()</b>
+<b class="fc"><i class="no-highlight">343</i>&nbsp;                .map(this::getOwnTeachers)</b>
+<b class="fc"><i class="no-highlight">344</i>&nbsp;                .mapToInt(List::size)</b>
+<b class="fc"><i class="no-highlight">345</i>&nbsp;                .sum();</b>
+<i class="no-highlight">346</i>&nbsp;    }
+<i class="no-highlight">347</i>&nbsp;
+<i class="no-highlight">348</i>&nbsp;    /**
+<i class="no-highlight">349</i>&nbsp;     * @param pb the {@link PlayerBoard} you wish to search the owned teachers of
+<i class="no-highlight">350</i>&nbsp;     * @return an Unmodifiable {@link List} of the {@link PawnColour}s representing the teachers owned by pb
+<i class="no-highlight">351</i>&nbsp;     */
+<i class="no-highlight">352</i>&nbsp;    public List&lt;PawnColour&gt; getOwnTeachers(PlayerBoard pb) {
+<b class="fc"><i class="no-highlight">353</i>&nbsp;        return this.teachers.entrySet().stream()</b>
+<b class="fc"><i class="no-highlight">354</i>&nbsp;                .filter(e -&gt; e.getValue().equals(pb))</b>
+<b class="fc"><i class="no-highlight">355</i>&nbsp;                .map(Map.Entry::getKey)</b>
+<b class="fc"><i class="no-highlight">356</i>&nbsp;                .toList();</b>
+<i class="no-highlight">357</i>&nbsp;    }
+<i class="no-highlight">358</i>&nbsp;
+<i class="no-highlight">359</i>&nbsp;    /**
+<i class="no-highlight">360</i>&nbsp;     * Mother nature can move to an island and, once moved there must act out its power
+<i class="no-highlight">361</i>&nbsp;     *
+<i class="no-highlight">362</i>&nbsp;     * @param steps the steps mother nature will take (can be both positive or negative or zero)
+<i class="no-highlight">363</i>&nbsp;     */
+<i class="no-highlight">364</i>&nbsp;    public void moveAndActMotherNature(int steps) {
+<b class="fc"><i class="no-highlight">365</i>&nbsp;        this.islandField.moveMotherNature(steps);</b>
+<b class="fc"><i class="no-highlight">366</i>&nbsp;        actMotherNaturePower(this.islandField.getMutableMotherNaturePosition());</b>
+<i class="no-highlight">367</i>&nbsp;    }
+<i class="no-highlight">368</i>&nbsp;
+<i class="no-highlight">369</i>&nbsp;    /**
+<i class="no-highlight">370</i>&nbsp;     * Acts out mother nature&#39;s power, unifying {@link IslandGroup}s adjacent to mnp
+<i class="no-highlight">371</i>&nbsp;     *
+<i class="no-highlight">372</i>&nbsp;     * @param mnp an {@link IslandGroup} representing Mother nature&#39;s position.
+<i class="no-highlight">373</i>&nbsp;     */
+<i class="no-highlight">374</i>&nbsp;    public void actMotherNaturePower(IslandGroup mnp) {
+<b class="pc"><i class="no-highlight">375</i>&nbsp;        if (mnp.getMutableNoEntryTiles().isEmpty()) {</b>
+<b class="fc"><i class="no-highlight">376</i>&nbsp;            OptionalValue&lt;TeamID&gt; optInfluencer = getInfluencerOf(mnp);</b>
+<b class="fc"><i class="no-highlight">377</i>&nbsp;            if (optInfluencer.isPresent()) {</b>
+<b class="fc"><i class="no-highlight">378</i>&nbsp;                TeamID newInfluencer = optInfluencer.get();</b>
+<b class="fc"><i class="no-highlight">379</i>&nbsp;                if (</b>
+<b class="pc"><i class="no-highlight">380</i>&nbsp;                        mnp.getTowerColour().isEmpty() ||</b>
+<b class="nc"><i class="no-highlight">381</i>&nbsp;                                mnp.getTowerColour().get() != TowerColour.fromTeamId(newInfluencer)</b>
+<i class="no-highlight">382</i>&nbsp;                ) {
+<b class="fc"><i class="no-highlight">383</i>&nbsp;                    mnp.swapTower(this.teamMap.getMutableTowerStorage(newInfluencer));</b>
+<i class="no-highlight">384</i>&nbsp;                }
+<i class="no-highlight">385</i>&nbsp;            }
+<b class="fc"><i class="no-highlight">386</i>&nbsp;            this.islandField.joinGroups();</b>
+<b class="fc"><i class="no-highlight">387</i>&nbsp;        } else {</b>
+<b class="nc"><i class="no-highlight">388</i>&nbsp;            mnp.resetNoEntry();</b>
+<i class="no-highlight">389</i>&nbsp;        }
+<i class="no-highlight">390</i>&nbsp;    }
+<i class="no-highlight">391</i>&nbsp;
+<i class="no-highlight">392</i>&nbsp;    /**
+<i class="no-highlight">393</i>&nbsp;     * @param ig the {@link IslandGroup} to find the influencer of
+<i class="no-highlight">394</i>&nbsp;     * @return the {@link TeamID} that holds influence over ig, wrapped in a {@link OptionalValue}
+<i class="no-highlight">395</i>&nbsp;     */
+<i class="no-highlight">396</i>&nbsp;    public OptionalValue&lt;TeamID&gt; getInfluencerOf(IslandGroup ig) {
+<b class="fc"><i class="no-highlight">397</i>&nbsp;        Map&lt;PawnColour, Integer&gt; sc = ig.getStudentCount();</b>
+<b class="fc"><i class="no-highlight">398</i>&nbsp;        Map&lt;TeamID, Integer&gt; ic = new HashMap&lt;&gt;(); // maps the team with the influence count</b>
+<i class="no-highlight">399</i>&nbsp;
+<b class="fc"><i class="no-highlight">400</i>&nbsp;        for (Map.Entry&lt;PawnColour, Integer&gt; e : sc.entrySet()) {</b>
+<b class="fc"><i class="no-highlight">401</i>&nbsp;            PawnColour colour = e.getKey();</b>
+<b class="fc"><i class="no-highlight">402</i>&nbsp;            if (teachers.get(colour) == null) {</b>
+<b class="fc"><i class="no-highlight">403</i>&nbsp;                continue;</b>
+<i class="no-highlight">404</i>&nbsp;            } //
+<b class="fc"><i class="no-highlight">405</i>&nbsp;            int count = e.getValue();</b>
+<b class="fc"><i class="no-highlight">406</i>&nbsp;            if (effects.isPawnColourDenied()) {</b>
+<b class="fc"><i class="no-highlight">407</i>&nbsp;                if (colour == effects.getDeniedPawnColour().get()) {</b>
+<b class="fc"><i class="no-highlight">408</i>&nbsp;                    continue;</b>
+<i class="no-highlight">409</i>&nbsp;                }
+<i class="no-highlight">410</i>&nbsp;            }
+<b class="fc"><i class="no-highlight">411</i>&nbsp;            ic.merge(this.teamMap.getTeamID(this.teachers.get(colour)), count, Integer::sum);</b>
+<b class="fc"><i class="no-highlight">412</i>&nbsp;        }</b>
+<i class="no-highlight">413</i>&nbsp;
+<b class="pc"><i class="no-highlight">414</i>&nbsp;        if (!effects.isTowerInfluenceDenied()) {</b>
+<b class="fc"><i class="no-highlight">415</i>&nbsp;            ig.getTowerColour()</b>
+<b class="fc"><i class="no-highlight">416</i>&nbsp;                    .ifPresent(tc -&gt; ic.merge(tc.getTeamID(), ig.getTowerCount(), Integer::sum));</b>
+<i class="no-highlight">417</i>&nbsp;        }
+<i class="no-highlight">418</i>&nbsp;
+<b class="fc"><i class="no-highlight">419</i>&nbsp;        if (effects.isInfluenceIncreased()) {</b>
+<b class="fc"><i class="no-highlight">420</i>&nbsp;            TeamID currentTeam = this.teamMap.getTeamID(turnOrder.getMutableCurrentPlayer());</b>
+<b class="fc"><i class="no-highlight">421</i>&nbsp;            ic.merge(currentTeam, 2, Integer::sum);</b>
+<i class="no-highlight">422</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">423</i>&nbsp;        List&lt;Map.Entry&lt;TeamID, Integer&gt;&gt; tbi = ic.entrySet().stream() // tbi is team by influence</b>
+<b class="fc"><i class="no-highlight">424</i>&nbsp;                .sorted(Comparator.comparingInt(Map.Entry::getValue))</b>
+<b class="fc"><i class="no-highlight">425</i>&nbsp;                .collect(Collectors.toCollection(ArrayList::new));</b>
+<b class="fc"><i class="no-highlight">426</i>&nbsp;        Collections.reverse(tbi);</b>
+<i class="no-highlight">427</i>&nbsp;
+<b class="fc"><i class="no-highlight">428</i>&nbsp;        this.effects.reset();</b>
+<i class="no-highlight">429</i>&nbsp;
+<b class="fc"><i class="no-highlight">430</i>&nbsp;        switch (tbi.size()) {</b>
+<i class="no-highlight">431</i>&nbsp;            case 0:
+<b class="fc"><i class="no-highlight">432</i>&nbsp;                return OptionalValue.empty();</b>
+<i class="no-highlight">433</i>&nbsp;            case 1:
+<b class="fc"><i class="no-highlight">434</i>&nbsp;                return OptionalValue.of(tbi.get(0).getKey());</b>
+<i class="no-highlight">435</i>&nbsp;            default: {
+<b class="fc"><i class="no-highlight">436</i>&nbsp;                if (tbi.get(0).getValue() &gt; tbi.get(1).getValue())</b>
+<b class="fc"><i class="no-highlight">437</i>&nbsp;                    return OptionalValue.of(tbi.get(0).getKey());</b>
+<b class="fc"><i class="no-highlight">438</i>&nbsp;                else return ig.getTowerColour().flatMap(tc -&gt; OptionalValue.of(tc.getTeamID()));</b>
+<i class="no-highlight">439</i>&nbsp;            }
+<i class="no-highlight">440</i>&nbsp;        }
+<i class="no-highlight">441</i>&nbsp;    }
+<i class="no-highlight">442</i>&nbsp;
+<i class="no-highlight">443</i>&nbsp;    /**
+<i class="no-highlight">444</i>&nbsp;     * Adds a student to the dining room of a player.
+<i class="no-highlight">445</i>&nbsp;     *
+<i class="no-highlight">446</i>&nbsp;     * @param student the {@link PawnColour} of the student you wish to add
+<i class="no-highlight">447</i>&nbsp;     * @param pb      the {@link PlayerBoard} you wish to add student to
+<i class="no-highlight">448</i>&nbsp;     * @throws FullContainerException if the dining room has no more free space to fit the student
+<i class="no-highlight">449</i>&nbsp;     */
+<i class="no-highlight">450</i>&nbsp;    public void addStudentToDiningRoom(PawnColour student, PlayerBoard pb) throws FullContainerException {
+<b class="fc"><i class="no-highlight">451</i>&nbsp;        boolean shouldGiveCoin = pb.unsafeAddStudentToDiningRoom(student);</b>
+<b class="pc"><i class="no-highlight">452</i>&nbsp;        if (shouldGiveCoin &amp;&amp; this.coinReserve &gt; 0) {</b>
+<b class="nc"><i class="no-highlight">453</i>&nbsp;            this.coinReserve -= 1;</b>
+<b class="nc"><i class="no-highlight">454</i>&nbsp;            pb.addCoin();</b>
+<i class="no-highlight">455</i>&nbsp;        }
+<i class="no-highlight">456</i>&nbsp;        // trigger calculation of new teacher placements
+<b class="fc"><i class="no-highlight">457</i>&nbsp;        PlayerBoard owner = this.teachers.get(student);</b>
+<b class="fc"><i class="no-highlight">458</i>&nbsp;        if (</b>
+<i class="no-highlight">459</i>&nbsp;                owner == null ||
+<b class="pc"><i class="no-highlight">460</i>&nbsp;                        owner.getDiningRoomCount(student) &lt; pb.getDiningRoomCount(student) ||</b>
+<i class="no-highlight">461</i>&nbsp;                        (
+<b class="pc"><i class="no-highlight">462</i>&nbsp;                                this.effects.isAlternativeTeacherAssignmentEnabled() &amp;&amp;</b>
+<b class="nc"><i class="no-highlight">463</i>&nbsp;                                        owner.getDiningRoomCount(student) == pb.getDiningRoomCount(student)</b>
+<i class="no-highlight">464</i>&nbsp;                        )
+<i class="no-highlight">465</i>&nbsp;        ) {
+<b class="fc"><i class="no-highlight">466</i>&nbsp;            this.setTeacher(student, pb);</b>
+<i class="no-highlight">467</i>&nbsp;        }
+<i class="no-highlight">468</i>&nbsp;    }
+<i class="no-highlight">469</i>&nbsp;
+<i class="no-highlight">470</i>&nbsp;    /**
+<i class="no-highlight">471</i>&nbsp;     * Given a teacher, assigns it to a player
+<i class="no-highlight">472</i>&nbsp;     *
+<i class="no-highlight">473</i>&nbsp;     * @param teacher the {@link PawnColour} of the teacher you wish to select
+<i class="no-highlight">474</i>&nbsp;     * @param player  the {@link PlayerBoard} you wish to link teacher to
+<i class="no-highlight">475</i>&nbsp;     */
+<i class="no-highlight">476</i>&nbsp;    protected void setTeacher(PawnColour teacher, PlayerBoard player) {
+<b class="fc"><i class="no-highlight">477</i>&nbsp;        if (player != null) {</b>
+<b class="fc"><i class="no-highlight">478</i>&nbsp;            teachers.put(teacher, player);</b>
+<i class="no-highlight">479</i>&nbsp;        } else {
+<b class="fc"><i class="no-highlight">480</i>&nbsp;            teachers.remove(teacher);</b>
+<i class="no-highlight">481</i>&nbsp;        }
+<i class="no-highlight">482</i>&nbsp;    }
+<i class="no-highlight">483</i>&nbsp;
+<i class="no-highlight">484</i>&nbsp;    /**
+<i class="no-highlight">485</i>&nbsp;     * Removes a student to the dining room of a player.
+<i class="no-highlight">486</i>&nbsp;     *
+<i class="no-highlight">487</i>&nbsp;     * @param student the {@link PawnColour} of the student you wish to remove
+<i class="no-highlight">488</i>&nbsp;     * @param pb      the {@link PlayerBoard} you wish to remove student from
+<i class="no-highlight">489</i>&nbsp;     * @throws EmptyContainerException if the dining room has no more students to remove
+<i class="no-highlight">490</i>&nbsp;     */
+<i class="no-highlight">491</i>&nbsp;    public void removeStudentFromDiningRoom(PawnColour student, PlayerBoard pb) throws EmptyContainerException {
+<b class="fc"><i class="no-highlight">492</i>&nbsp;        pb.unsafeRemoveStudentFromDiningRoom(student);</b>
+<i class="no-highlight">493</i>&nbsp;
+<i class="no-highlight">494</i>&nbsp;        // trigger calculation of new teacher placements
+<b class="fc"><i class="no-highlight">495</i>&nbsp;        PlayerBoard owner = this.teachers.get(student);</b>
+<i class="no-highlight">496</i>&nbsp;        // if we were the owner of teacher, we need to find the correct teacher owner
+<b class="pc"><i class="no-highlight">497</i>&nbsp;        if (owner != null &amp;&amp; owner.equals(pb)) {</b>
+<b class="fc"><i class="no-highlight">498</i>&nbsp;            for (PlayerBoard player : this.playerBoards) {</b>
+<b class="pc"><i class="no-highlight">499</i>&nbsp;                if (player.getDiningRoomCount(student) &gt; owner.getDiningRoomCount(student)) owner = player;</b>
+<b class="fc"><i class="no-highlight">500</i>&nbsp;            }</b>
+<b class="pc"><i class="no-highlight">501</i>&nbsp;            if (owner.getDiningRoomCount(student) == 0) {</b>
+<b class="fc"><i class="no-highlight">502</i>&nbsp;                owner = null;</b>
+<i class="no-highlight">503</i>&nbsp;            }
+<b class="fc"><i class="no-highlight">504</i>&nbsp;            this.setTeacher(student, owner);</b>
+<i class="no-highlight">505</i>&nbsp;        }
+<i class="no-highlight">506</i>&nbsp;    }
+<i class="no-highlight">507</i>&nbsp;
+<i class="no-highlight">508</i>&nbsp;    /**
+<i class="no-highlight">509</i>&nbsp;     * @param amount the amount of currency to bring back into the bank
+<i class="no-highlight">510</i>&nbsp;     */
+<i class="no-highlight">511</i>&nbsp;    public void addCoinToReserve(int amount) {
+<b class="fc"><i class="no-highlight">512</i>&nbsp;        this.coinReserve += amount;</b>
+<i class="no-highlight">513</i>&nbsp;    }
+<i class="no-highlight">514</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:43</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,211 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ChooseCloudTile</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Controller.Actions</a>
+</div>
+
+<h1>Coverage Summary for Class: ChooseCloudTile (it.polimi.ingsw.Controller.Actions)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ChooseCloudTile</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    72,2%
+  </span>
+  <span class="absValue">
+    (13/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87,5%
+  </span>
+  <span class="absValue">
+    (21/24)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Controller.Actions;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Model.Cloud;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Model.Model;
+<i class="no-highlight">9</i>&nbsp;import it.polimi.ingsw.Model.PlayerBoard;
+<i class="no-highlight">10</i>&nbsp;
+<i class="no-highlight">11</i>&nbsp;import java.io.Serial;
+<i class="no-highlight">12</i>&nbsp;import java.util.List;
+<i class="no-highlight">13</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;import static it.polimi.ingsw.Misc.Utils.countSimilarClassOccurrences;
+<i class="no-highlight">15</i>&nbsp;
+<i class="no-highlight">16</i>&nbsp;/**
+<i class="no-highlight">17</i>&nbsp; * {@link PlayerAction} allowing a user to choose one of many cloud tiles present on the gameboard. This action is
+<i class="no-highlight">18</i>&nbsp; * linked to the Action Phase
+<i class="no-highlight">19</i>&nbsp; */
+<i class="no-highlight">20</i>&nbsp;public class ChooseCloudTile extends PlayerAction {
+<i class="no-highlight">21</i>&nbsp;
+<i class="no-highlight">22</i>&nbsp;    @Serial
+<i class="no-highlight">23</i>&nbsp;    private static final long serialVersionUID = 201L; // convention: 2 for controller, (01 -&gt; 99) for objects
+<i class="no-highlight">24</i>&nbsp;    private final int selectedTile;
+<i class="no-highlight">25</i>&nbsp;
+<i class="no-highlight">26</i>&nbsp;    /**
+<i class="no-highlight">27</i>&nbsp;     * Create a new instance of this class with the following inputs:
+<i class="no-highlight">28</i>&nbsp;     *
+<i class="no-highlight">29</i>&nbsp;     * @param playerBoardId the ID of the current {@link PlayerBoard}
+<i class="no-highlight">30</i>&nbsp;     * @param selectedTile  the ID of the {@link Cloud} the player has chosen
+<i class="no-highlight">31</i>&nbsp;     */
+<i class="no-highlight">32</i>&nbsp;    public ChooseCloudTile(int playerBoardId, int selectedTile) {
+<b class="fc"><i class="no-highlight">33</i>&nbsp;        super(playerBoardId, true);</b>
+<b class="fc"><i class="no-highlight">34</i>&nbsp;        this.selectedTile = selectedTile;</b>
+<i class="no-highlight">35</i>&nbsp;    }
+<i class="no-highlight">36</i>&nbsp;
+<i class="no-highlight">37</i>&nbsp;    /**
+<i class="no-highlight">38</i>&nbsp;     * {@inheritDoc}
+<i class="no-highlight">39</i>&nbsp;     * &lt;ul&gt;
+<i class="no-highlight">40</i>&nbsp;     *     &lt;li&gt;This action can be called only after having called one and only one {@link MoveMotherNature} action&lt;/li&gt;
+<i class="no-highlight">41</i>&nbsp;     *     &lt;li&gt;The previous {@link PlayerAction}s must be either {@link MoveMotherNature} or {@link PlayCharacterCard}&lt;/li&gt;
+<i class="no-highlight">42</i>&nbsp;     *     &lt;li&gt;The distance declared to move must be within acceptable ranges&lt;/li&gt;
+<i class="no-highlight">43</i>&nbsp;     *     &lt;li&gt;The Player who calls the action must have enough space in its &quot;entrance&quot; field to allow for all pawns on the
+<i class="no-highlight">44</i>&nbsp;     *          tile to be transferred&lt;/li&gt;
+<i class="no-highlight">45</i>&nbsp;     *     &lt;li&gt;The selected cloud tile must not be empty (unless no other non-empty cloud tiles are present)&lt;/li&gt;
+<i class="no-highlight">46</i>&nbsp;     * &lt;/ul&gt;
+<i class="no-highlight">47</i>&nbsp;     *
+<i class="no-highlight">48</i>&nbsp;     * @param history the controller stores a {@link List} of previous {@link PlayerAction}s related to the player taking
+<i class="no-highlight">49</i>&nbsp;     *                the current turn (at every new turn, the history is cleared).
+<i class="no-highlight">50</i>&nbsp;     *                Some actions may use this {@link List} to check for duplicates.
+<i class="no-highlight">51</i>&nbsp;     * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
+<i class="no-highlight">52</i>&nbsp;     *                the actions declares and what the Model offers.
+<i class="no-highlight">53</i>&nbsp;     * @return An empty {@link OptionalValue} in case of a successful validation. Otherwise the returned {@link OptionalValue}
+<i class="no-highlight">54</i>&nbsp;     * contains the related {@link InputValidationException}
+<i class="no-highlight">55</i>&nbsp;     */
+<i class="no-highlight">56</i>&nbsp;    @Override
+<i class="no-highlight">57</i>&nbsp;    protected OptionalValue&lt;InputValidationException&gt; customValidation(List&lt;PlayerAction&gt; history, Model ctx) {
+<b class="fc"><i class="no-highlight">58</i>&nbsp;        if (countSimilarClassOccurrences(MoveMotherNature.class, history) != 1) {</b>
+<b class="fc"><i class="no-highlight">59</i>&nbsp;            return OptionalValue.of(new GenericInputValidationException(&quot;History&quot;, &quot;MoveMotherNature action has not been executed&quot;));</b>
+<i class="no-highlight">60</i>&nbsp;        }
+<b class="pc"><i class="no-highlight">61</i>&nbsp;        if (!(history.get(history.size() - 1).getClass() == MoveMotherNature.class || (history.get(history.size() - 1).getClass() == PlayCharacterCard.class))) {</b>
+<b class="nc"><i class="no-highlight">62</i>&nbsp;            return OptionalValue.of(new GenericInputValidationException(&quot;History&quot;, &quot;This action can only be executed after a MoveMotherNature action or PlayCharacterCard action&quot;));</b>
+<i class="no-highlight">63</i>&nbsp;        }
+<b class="pc"><i class="no-highlight">64</i>&nbsp;        if (!(this.selectedTile &gt;= 0 &amp;&amp; selectedTile &lt;= ctx.getClouds().size() - 1)) {</b>
+<b class="fc"><i class="no-highlight">65</i>&nbsp;            return OptionalValue.of(new InvalidElementException(&quot;Cloud&quot;));</b>
+<i class="no-highlight">66</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">67</i>&nbsp;        PlayerBoard caller = ctx.getMutableTurnOrder().getMutableCurrentPlayer();</b>
+<b class="fc"><i class="no-highlight">68</i>&nbsp;        Cloud selectedCloud = ctx.getClouds().get(selectedTile);</b>
+<b class="fc"><i class="no-highlight">69</i>&nbsp;        if (!(caller.getEntranceSpaceLeft() &gt;= selectedCloud.getContents().size())) {</b>
+<b class="fc"><i class="no-highlight">70</i>&nbsp;            return OptionalValue.of(new GenericInputValidationException(&quot;Entrance&quot;,</b>
+<b class="fc"><i class="no-highlight">71</i>&nbsp;                    &quot;can&#39;t contain &quot; + selectedCloud.getContents().size()</b>
+<i class="no-highlight">72</i>&nbsp;                            + &quot; elements without overflowing.&quot;));
+<i class="no-highlight">73</i>&nbsp;        }
+<b class="pc"><i class="no-highlight">74</i>&nbsp;        if (ctx.getClouds().stream().anyMatch(cloud -&gt; cloud.getContents().size() != 0)) {</b>
+<b class="fc"><i class="no-highlight">75</i>&nbsp;            if (selectedCloud.getContents().size() == 0) {</b>
+<b class="fc"><i class="no-highlight">76</i>&nbsp;                return OptionalValue.of(new GenericInputValidationException(&quot;Cloud&quot;,</b>
+<i class="no-highlight">77</i>&nbsp;                        &quot;has already been emptied&quot;));
+<i class="no-highlight">78</i>&nbsp;            }
+<i class="no-highlight">79</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">80</i>&nbsp;        return OptionalValue.empty();</b>
+<i class="no-highlight">81</i>&nbsp;    }
+<i class="no-highlight">82</i>&nbsp;
+<i class="no-highlight">83</i>&nbsp;    @Override
+<i class="no-highlight">84</i>&nbsp;    public void unsafeExecute(Model ctx) {
+<b class="fc"><i class="no-highlight">85</i>&nbsp;        Cloud selectedCloud = ctx.getClouds().get(selectedTile); //get cloud</b>
+<i class="no-highlight">86</i>&nbsp;        try {
+<b class="fc"><i class="no-highlight">87</i>&nbsp;            ctx.getMutableTurnOrder()</b>
+<b class="fc"><i class="no-highlight">88</i>&nbsp;                    .getMutableCurrentPlayer()</b>
+<b class="fc"><i class="no-highlight">89</i>&nbsp;                    .addStudentsToEntrance(selectedCloud.extractContents());//fill playerboard&#39;s entrance</b>
+<b class="nc"><i class="no-highlight">90</i>&nbsp;        } catch (Exception e) {</b>
+<b class="nc"><i class="no-highlight">91</i>&nbsp;            e.printStackTrace();</b>
+<b class="fc"><i class="no-highlight">92</i>&nbsp;        }</b>
+<i class="no-highlight">93</i>&nbsp;    }
+<i class="no-highlight">94</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:43</div>
+</div>
+</body>
+</html>

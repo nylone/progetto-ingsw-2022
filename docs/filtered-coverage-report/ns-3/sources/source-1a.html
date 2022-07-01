@@ -1,0 +1,148 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > StatefulEffect</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Model</a>
+</div>
+
+<h1>Coverage Summary for Class: StatefulEffect (it.polimi.ingsw.Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StatefulEffect</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Model;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Model.Enums.StateType;
+<i class="no-highlight">4</i>&nbsp;
+<i class="no-highlight">5</i>&nbsp;import java.io.Serial;
+<i class="no-highlight">6</i>&nbsp;import java.io.Serializable;
+<i class="no-highlight">7</i>&nbsp;import java.util.List;
+<i class="no-highlight">8</i>&nbsp;
+<i class="no-highlight">9</i>&nbsp;/**
+<i class="no-highlight">10</i>&nbsp; * A {@link CharacterCard} that implements an effect linked to some internal state
+<i class="no-highlight">11</i>&nbsp; */
+<i class="no-highlight">12</i>&nbsp;public abstract class StatefulEffect extends CharacterCard implements Serializable {
+<i class="no-highlight">13</i>&nbsp;    @Serial
+<i class="no-highlight">14</i>&nbsp;    private static final long serialVersionUID = 127L; // convention: 1 for model, (01 -&gt; 99) for objects
+<i class="no-highlight">15</i>&nbsp;    protected StateType stateType;
+<i class="no-highlight">16</i>&nbsp;
+<i class="no-highlight">17</i>&nbsp;    /**
+<i class="no-highlight">18</i>&nbsp;     * Construct a stateful card object
+<i class="no-highlight">19</i>&nbsp;     *
+<i class="no-highlight">20</i>&nbsp;     * @param id        the ID of the card
+<i class="no-highlight">21</i>&nbsp;     * @param cost      the cost of the card
+<i class="no-highlight">22</i>&nbsp;     * @param stateType the {@link StateType} of the card
+<i class="no-highlight">23</i>&nbsp;     * @param context   a reference to the Model, to apply the effect.
+<i class="no-highlight">24</i>&nbsp;     */
+<i class="no-highlight">25</i>&nbsp;    public StatefulEffect(int id, int cost, StateType stateType, Model context) {
+<b class="fc"><i class="no-highlight">26</i>&nbsp;        super(id, cost, context);</b>
+<b class="fc"><i class="no-highlight">27</i>&nbsp;        this.stateType = stateType;</b>
+<i class="no-highlight">28</i>&nbsp;    }
+<i class="no-highlight">29</i>&nbsp;
+<i class="no-highlight">30</i>&nbsp;    /**
+<i class="no-highlight">31</i>&nbsp;     * Get the internal state of the card. Use {@link #getStateType()} to know how to interpret it.
+<i class="no-highlight">32</i>&nbsp;     *
+<i class="no-highlight">33</i>&nbsp;     * @return a {@link List} of the state objects
+<i class="no-highlight">34</i>&nbsp;     */
+<i class="no-highlight">35</i>&nbsp;    public abstract List&lt;Object&gt; getState();
+<i class="no-highlight">36</i>&nbsp;
+<i class="no-highlight">37</i>&nbsp;    /**
+<i class="no-highlight">38</i>&nbsp;     * Get the type of state this card uses.
+<i class="no-highlight">39</i>&nbsp;     *
+<i class="no-highlight">40</i>&nbsp;     * @return a variant of {@link StateType}
+<i class="no-highlight">41</i>&nbsp;     */
+<i class="no-highlight">42</i>&nbsp;    public abstract StateType getStateType();
+<i class="no-highlight">43</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:43</div>
+</div>
+</body>
+</html>

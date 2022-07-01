@@ -1,0 +1,233 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ModelWrapper</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Model</a>
+</div>
+
+<h1>Coverage Summary for Class: ModelWrapper (it.polimi.ingsw.Model)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ModelWrapper</td>
+<td class="coverageStat">
+  <span class="percent">
+    83,3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81,8%
+  </span>
+  <span class="absValue">
+    (18/22)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ModelWrapper$ModelModifier</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    83,3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81,8%
+  </span>
+  <span class="absValue">
+    (18/22)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Model;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Server.Lobby;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Internal.GameOverEvent;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Internal.ModelUpdateEvent;
+<i class="no-highlight">7</i>&nbsp;
+<i class="no-highlight">8</i>&nbsp;import java.util.Objects;
+<i class="no-highlight">9</i>&nbsp;
+<i class="no-highlight">10</i>&nbsp;/**
+<i class="no-highlight">11</i>&nbsp; * This class is used by the controller to enact the game logic and (optionally) notifies the view (ie the server)
+<i class="no-highlight">12</i>&nbsp; * whenever a meaningful change to the underlying data is carried out.
+<i class="no-highlight">13</i>&nbsp; */
+<i class="no-highlight">14</i>&nbsp;public class ModelWrapper {
+<i class="no-highlight">15</i>&nbsp;    private final OptionalValue&lt;Lobby&gt; toNotify;
+<i class="no-highlight">16</i>&nbsp;    private Model model;
+<i class="no-highlight">17</i>&nbsp;
+<i class="no-highlight">18</i>&nbsp;    /**
+<i class="no-highlight">19</i>&nbsp;     * Wraps a {@link Model} along with a {@link OptionalValue}&lt;{@link Lobby}&gt; object to allow for easy notification
+<i class="no-highlight">20</i>&nbsp;     * to the view (ie the lobby component) of any and all changes to the model that are carried through this object&#39;s method:
+<i class="no-highlight">21</i>&nbsp;     * {@link #editModel(ModelModifier, boolean)}
+<i class="no-highlight">22</i>&nbsp;     *
+<i class="no-highlight">23</i>&nbsp;     * @param model a non null reference to the Model
+<i class="no-highlight">24</i>&nbsp;     * @param lobby a non null optional value (can obviously be empty, but not null)
+<i class="no-highlight">25</i>&nbsp;     */
+<b class="fc"><i class="no-highlight">26</i>&nbsp;    public ModelWrapper(Model model, OptionalValue&lt;Lobby&gt; lobby) {</b>
+<b class="fc"><i class="no-highlight">27</i>&nbsp;        Objects.requireNonNull(model);</b>
+<b class="fc"><i class="no-highlight">28</i>&nbsp;        Objects.requireNonNull(lobby);</b>
+<i class="no-highlight">29</i>&nbsp;
+<b class="fc"><i class="no-highlight">30</i>&nbsp;        this.model = model;</b>
+<b class="fc"><i class="no-highlight">31</i>&nbsp;        this.toNotify = lobby;</b>
+<b class="fc"><i class="no-highlight">32</i>&nbsp;        notifyLobby();</b>
+<i class="no-highlight">33</i>&nbsp;    }
+<i class="no-highlight">34</i>&nbsp;
+<i class="no-highlight">35</i>&nbsp;    /**
+<i class="no-highlight">36</i>&nbsp;     * When called, notifies all clients connected to the lobby of a {@link ModelUpdateEvent} and also (if necessary)
+<i class="no-highlight">37</i>&nbsp;     * of a {@link GameOverEvent}
+<i class="no-highlight">38</i>&nbsp;     */
+<i class="no-highlight">39</i>&nbsp;    private void notifyLobby() {
+<b class="fc"><i class="no-highlight">40</i>&nbsp;        this.toNotify.ifPresent(lobby -&gt; {</b>
+<b class="fc"><i class="no-highlight">41</i>&nbsp;            lobby.notifyPlayers(new ModelUpdateEvent(this.modelCopy(true)));</b>
+<b class="fc"><i class="no-highlight">42</i>&nbsp;            this.model.getWinners().ifPresent(winners -&gt;</b>
+<b class="nc"><i class="no-highlight">43</i>&nbsp;                    lobby.notifyPlayers(new GameOverEvent(winners.stream()</b>
+<b class="nc"><i class="no-highlight">44</i>&nbsp;                            .map(PlayerBoard::getNickname)</b>
+<b class="nc"><i class="no-highlight">45</i>&nbsp;                            .toList())));</b>
+<i class="no-highlight">46</i>&nbsp;        });
+<i class="no-highlight">47</i>&nbsp;    }
+<i class="no-highlight">48</i>&nbsp;
+<i class="no-highlight">49</i>&nbsp;    /**
+<i class="no-highlight">50</i>&nbsp;     * When called, returns a copy of the Model object
+<i class="no-highlight">51</i>&nbsp;     *
+<i class="no-highlight">52</i>&nbsp;     * @param sanitize if set to true, tells the method to remove the {@link StudentBag} reference to prevent
+<i class="no-highlight">53</i>&nbsp;     *                 peeking at the contents of the bag
+<i class="no-highlight">54</i>&nbsp;     * @return an optionally sanitized clone of the wrapped {@link Model} object
+<i class="no-highlight">55</i>&nbsp;     */
+<i class="no-highlight">56</i>&nbsp;    public Model modelCopy(boolean sanitize) {
+<b class="fc"><i class="no-highlight">57</i>&nbsp;        Model copy = model.copy();</b>
+<b class="fc"><i class="no-highlight">58</i>&nbsp;        if (sanitize) {</b>
+<b class="fc"><i class="no-highlight">59</i>&nbsp;            copy.getMutableStudentBag().removeContentReference();</b>
+<i class="no-highlight">60</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">61</i>&nbsp;        return copy;</b>
+<i class="no-highlight">62</i>&nbsp;    }
+<i class="no-highlight">63</i>&nbsp;
+<i class="no-highlight">64</i>&nbsp;    /**
+<i class="no-highlight">65</i>&nbsp;     * When called, allows a {@link ModelModifier} type of function to carry out changes to the {@link Model}, then notifies
+<i class="no-highlight">66</i>&nbsp;     * the lobby of such changes
+<i class="no-highlight">67</i>&nbsp;     *
+<i class="no-highlight">68</i>&nbsp;     * @param modelModifier       a function or method that can be linked to the {@link ModelModifier} interface
+<i class="no-highlight">69</i>&nbsp;     * @param keepUnsafeReference if set to true, the model reference is kept unaltered after a successful edit action, allowing for
+<i class="no-highlight">70</i>&nbsp;     *                            debugging introspection of the model. If unsure, set it to false for best security.
+<i class="no-highlight">71</i>&nbsp;     * @throws Exception the modelModifier can optionally throw Exceptions, which will be escalated to the caller.
+<i class="no-highlight">72</i>&nbsp;     */
+<i class="no-highlight">73</i>&nbsp;    public void editModel(ModelModifier modelModifier, boolean keepUnsafeReference) throws Exception {
+<i class="no-highlight">74</i>&nbsp;        Model toModify;
+<b class="pc"><i class="no-highlight">75</i>&nbsp;        if (keepUnsafeReference) {</b>
+<b class="fc"><i class="no-highlight">76</i>&nbsp;            toModify = this.model;</b>
+<i class="no-highlight">77</i>&nbsp;        } else {
+<b class="nc"><i class="no-highlight">78</i>&nbsp;            toModify = modelCopy(false);</b>
+<i class="no-highlight">79</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">80</i>&nbsp;        modelModifier.modifyModel(toModify);</b>
+<b class="fc"><i class="no-highlight">81</i>&nbsp;        this.model = toModify;</b>
+<b class="fc"><i class="no-highlight">82</i>&nbsp;        notifyLobby();</b>
+<i class="no-highlight">83</i>&nbsp;    }
+<i class="no-highlight">84</i>&nbsp;
+<i class="no-highlight">85</i>&nbsp;    /**
+<i class="no-highlight">86</i>&nbsp;     * An interface that covers methods trying to access the Model. Read {@link #modifyModel(Model)} for more information
+<i class="no-highlight">87</i>&nbsp;     */
+<i class="no-highlight">88</i>&nbsp;    public interface ModelModifier {
+<i class="no-highlight">89</i>&nbsp;        /**
+<i class="no-highlight">90</i>&nbsp;         * The function responsible for changes to the {@link Model}
+<i class="no-highlight">91</i>&nbsp;         *
+<i class="no-highlight">92</i>&nbsp;         * @param model a reference to the {@link Model} object. In order to grant safe access to the model, the reference ceases to hold
+<i class="no-highlight">93</i>&nbsp;         *              meaning once this function terminates
+<i class="no-highlight">94</i>&nbsp;         * @throws Exception the modelModifier can optionally throw Exceptions, which will be escalated to the caller.
+<i class="no-highlight">95</i>&nbsp;         */
+<i class="no-highlight">96</i>&nbsp;        void modifyModel(Model model) throws Exception;
+<i class="no-highlight">97</i>&nbsp;    }
+<i class="no-highlight">98</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:43</div>
+</div>
+</body>
+</html>

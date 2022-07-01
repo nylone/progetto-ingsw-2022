@@ -1,0 +1,200 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PlayAssistantCard</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Controller.Actions</a>
+</div>
+
+<h1>Coverage Summary for Class: PlayAssistantCard (it.polimi.ingsw.Controller.Actions)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PlayAssistantCard</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (9/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    94,4%
+  </span>
+  <span class="absValue">
+    (17/18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Controller.Actions;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Exceptions.Operation.OperationException;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Model.AssistantCard;
+<i class="no-highlight">9</i>&nbsp;import it.polimi.ingsw.Model.Enums.GamePhase;
+<i class="no-highlight">10</i>&nbsp;import it.polimi.ingsw.Model.Model;
+<i class="no-highlight">11</i>&nbsp;import it.polimi.ingsw.Model.PlayerBoard;
+<i class="no-highlight">12</i>&nbsp;import it.polimi.ingsw.Model.TurnOrder;
+<i class="no-highlight">13</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;import java.io.Serial;
+<i class="no-highlight">15</i>&nbsp;import java.util.List;
+<i class="no-highlight">16</i>&nbsp;
+<i class="no-highlight">17</i>&nbsp;
+<i class="no-highlight">18</i>&nbsp;/**
+<i class="no-highlight">19</i>&nbsp; * This {@link PlayerAction} allows the caller to select the desired assistant card to be played this round. This action
+<i class="no-highlight">20</i>&nbsp; * is linked to the Setup (Preparation) Phase.
+<i class="no-highlight">21</i>&nbsp; */
+<i class="no-highlight">22</i>&nbsp;public class PlayAssistantCard extends PlayerAction {
+<i class="no-highlight">23</i>&nbsp;    @Serial
+<i class="no-highlight">24</i>&nbsp;    private static final long serialVersionUID = 206L; // convention: 2 for controller, (01 -&gt; 99) for objects
+<i class="no-highlight">25</i>&nbsp;
+<i class="no-highlight">26</i>&nbsp;    private final int selectedAssistant;
+<i class="no-highlight">27</i>&nbsp;
+<i class="no-highlight">28</i>&nbsp;    /**
+<i class="no-highlight">29</i>&nbsp;     * Create a new instance of this class with the following inputs:
+<i class="no-highlight">30</i>&nbsp;     *
+<i class="no-highlight">31</i>&nbsp;     * @param playerBoardId     the ID of the current {@link PlayerBoard}
+<i class="no-highlight">32</i>&nbsp;     * @param selectedAssistant the priority of the {@link AssistantCard} to be selected
+<i class="no-highlight">33</i>&nbsp;     */
+<i class="no-highlight">34</i>&nbsp;    public PlayAssistantCard(int playerBoardId, int selectedAssistant) {
+<b class="fc"><i class="no-highlight">35</i>&nbsp;        super(playerBoardId, true);</b>
+<b class="fc"><i class="no-highlight">36</i>&nbsp;        this.selectedAssistant = selectedAssistant - 1;</b>
+<i class="no-highlight">37</i>&nbsp;    }
+<i class="no-highlight">38</i>&nbsp;
+<i class="no-highlight">39</i>&nbsp;    /**
+<i class="no-highlight">40</i>&nbsp;     * {@inheritDoc}
+<i class="no-highlight">41</i>&nbsp;     * &lt;ul&gt;
+<i class="no-highlight">42</i>&nbsp;     *     &lt;li&gt;The {@link GamePhase} must be {@link GamePhase#SETUP}&lt;/li&gt;
+<i class="no-highlight">43</i>&nbsp;     *     &lt;li&gt;The selected assistant card must be within bounds (always greater or equal to 0, always lesser or equal to the size of
+<i class="no-highlight">44</i>&nbsp;     *     the player&#39;s assistants deck&lt;/li&gt;
+<i class="no-highlight">45</i>&nbsp;     *     &lt;li&gt;The player must play a card that has not been chosen by other players before (unless there are no other cards left to choose from)&lt;/li&gt;
+<i class="no-highlight">46</i>&nbsp;     *     &lt;li&gt;The selected {@link AssistantCard} can only be used once by the player&lt;/li&gt;
+<i class="no-highlight">47</i>&nbsp;     * &lt;/ul&gt;
+<i class="no-highlight">48</i>&nbsp;     *
+<i class="no-highlight">49</i>&nbsp;     * @param history the controller stores a {@link List} of previous {@link PlayerAction}s related to the player taking
+<i class="no-highlight">50</i>&nbsp;     *                the current turn (at every new turn, the history is cleared).
+<i class="no-highlight">51</i>&nbsp;     *                Some actions may use this {@link List} to check for duplicates.
+<i class="no-highlight">52</i>&nbsp;     * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
+<i class="no-highlight">53</i>&nbsp;     *                the actions declares and what the Model offers.
+<i class="no-highlight">54</i>&nbsp;     * @return An empty {@link OptionalValue} in case of a successful validation. Otherwise the returned {@link OptionalValue}
+<i class="no-highlight">55</i>&nbsp;     * contains the related {@link InputValidationException}
+<i class="no-highlight">56</i>&nbsp;     */
+<i class="no-highlight">57</i>&nbsp;    @Override
+<i class="no-highlight">58</i>&nbsp;    protected OptionalValue&lt;InputValidationException&gt; customValidation(List&lt;PlayerAction&gt; history, Model ctx) {
+<b class="fc"><i class="no-highlight">59</i>&nbsp;        PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();</b>
+<b class="fc"><i class="no-highlight">60</i>&nbsp;        TurnOrder turnOrder = ctx.getMutableTurnOrder();</b>
+<b class="fc"><i class="no-highlight">61</i>&nbsp;        if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.SETUP) {</b>
+<b class="fc"><i class="no-highlight">62</i>&nbsp;            return OptionalValue.of(new GenericInputValidationException(&quot;Assitant Card&quot;, &quot;may only be used during the setup phase&quot;));</b>
+<i class="no-highlight">63</i>&nbsp;        }
+<b class="pc"><i class="no-highlight">64</i>&nbsp;        if (!(this.selectedAssistant &gt;= 0 &amp;&amp; this.selectedAssistant &lt;= currentPlayer.getMutableAssistantCards().size() - 1)) {</b>
+<b class="fc"><i class="no-highlight">65</i>&nbsp;            return OptionalValue.of(new InvalidElementException(&quot;Assitant Card&quot;));</b>
+<i class="no-highlight">66</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">67</i>&nbsp;        AssistantCard selectedCard = currentPlayer.getMutableAssistantCards().get(selectedAssistant);</b>
+<b class="pc"><i class="no-highlight">68</i>&nbsp;        if (selectedCard.getUsed()) {</b>
+<b class="nc"><i class="no-highlight">69</i>&nbsp;            return OptionalValue.of(new GenericInputValidationException(&quot;Assitant Card&quot;, &quot;can only be used once&quot;));</b>
+<i class="no-highlight">70</i>&nbsp;        }
+<b class="pc"><i class="no-highlight">71</i>&nbsp;        if (ctx.getMutableTurnOrder().isAlreadyInSelection(selectedCard) &amp;&amp; turnOrder.canPlayUniqueCard(currentPlayer)) {</b>
+<b class="fc"><i class="no-highlight">72</i>&nbsp;            return OptionalValue.of(new GenericInputValidationException(&quot;Assitant Card&quot;, &quot;has already been selected by another player&quot;));</b>
+<i class="no-highlight">73</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">74</i>&nbsp;        return OptionalValue.empty();</b>
+<i class="no-highlight">75</i>&nbsp;    }
+<i class="no-highlight">76</i>&nbsp;
+<i class="no-highlight">77</i>&nbsp;    public void unsafeExecute(Model ctx) throws InputValidationException, OperationException {
+<b class="fc"><i class="no-highlight">78</i>&nbsp;        PlayerBoard pb = ctx.getMutableTurnOrder().getMutableCurrentPlayer();</b>
+<b class="fc"><i class="no-highlight">79</i>&nbsp;        AssistantCard sa = pb.getMutableAssistantCards().get(selectedAssistant);</b>
+<b class="fc"><i class="no-highlight">80</i>&nbsp;        ctx.getMutableTurnOrder().setSelectedCard(pb, sa);</b>
+<b class="fc"><i class="no-highlight">81</i>&nbsp;        ctx.getMutableTurnOrder().stepToNextPlayer();</b>
+<i class="no-highlight">82</i>&nbsp;    }
+<i class="no-highlight">83</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:43</div>
+</div>
+</body>
+</html>
