@@ -18,7 +18,7 @@ public class ControllerTest {
         //Model model = new Model(GameMode.ADVANCED, "ale", "teo");
         Lobby lobby = new Lobby(UUID.randomUUID(), true, 2, "ale");
         Controller controller = Controller.createGame(GameMode.ADVANCED, OptionalValue.of(lobby), "ale", "teo");
-        assertTrue(controller!=null);
+        assertTrue(controller != null);
     }
 
     @Test(expected = GenericInputValidationException.class)

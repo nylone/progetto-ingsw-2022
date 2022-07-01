@@ -219,9 +219,9 @@ public class ChooseCloudTileTest {
         gh.executeAction(action);
         //try to pick one empty cloud
         ChooseCloudTile chooseCloudTile = new ChooseCloudTile(player.getId(), 0);
-       try {
+        try {
             gh.executeAction(chooseCloudTile);
-       } catch (GenericInputValidationException exception) {
+        } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: Cloud\n" +
                     "The error was: has already been emptied", exception.getMessage());
         }

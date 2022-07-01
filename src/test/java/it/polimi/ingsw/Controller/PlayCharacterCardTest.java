@@ -347,9 +347,10 @@ public class PlayCharacterCardTest {
 
     /**
      * Support method to create a model by using its constructor for debug purposes
-     * @param coinReserve coins available
+     *
+     * @param coinReserve   coins available
      * @param coinPerPlayer amount of coins that every player will have
-     * @param card card that will be available in game
+     * @param card          card that will be available in game
      * @return custom model
      */
     private Model initializeModel(int coinReserve, int coinPerPlayer, int card) {
@@ -412,6 +413,7 @@ public class PlayCharacterCardTest {
 
     /**
      * Support method used to create a Controller and execute SETUP-PHASE
+     *
      * @param model model that will be handled by GameHandler
      * @return Controller necessary to execute actions inside tests
      * @throws InputValidationException error related to playAssistantCard actions

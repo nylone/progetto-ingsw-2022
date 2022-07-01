@@ -21,10 +21,6 @@ import java.util.List;
  */
 public class GUISocketListener implements Runnable {
     /**
-     * JTabbedPane containing all others JPanels
-     */
-    private GameInProgressPanel gameInProgressPanel;
-    /**
      * List of actions executed by current player and their feedbacks
      */
     private final List<Pair<PlayerAction, PlayerActionFeedback>> requestAndFeedback = new ArrayList<>();
@@ -36,6 +32,10 @@ public class GUISocketListener implements Runnable {
      * SocketWrapper used to communicate with Server
      */
     private final SocketWrapper sw;
+    /**
+     * JTabbedPane containing all others JPanels
+     */
+    private GameInProgressPanel gameInProgressPanel;
     /**
      * Last player's request sent to Server
      */

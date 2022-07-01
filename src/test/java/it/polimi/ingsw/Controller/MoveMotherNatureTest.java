@@ -102,6 +102,7 @@ public class MoveMotherNatureTest {
                     "The error was: element DistanceToMove was found to be invalid (eg: null, out of bounds or otherwise incorrect).", exception.getMessage());
         }
     }
+
     @Test
     public void exceedingMovementExceptionWithCard4Active() throws Exception {
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();

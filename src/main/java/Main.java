@@ -41,33 +41,35 @@ public class Main {
     public static void main(String... args) throws UnknownHostException {
         InetAddress serverBinding = InetAddress.getByAddress(new byte[]{0, 0, 0, 0});
         int serverPort = 8080;
-            // if the args are coherent
-            if (args.length >= 1 &&
-                    Arrays.stream(args).anyMatch(arg -> arg.equals("s") || arg.equals("g") || arg.equals("c") || arg.equals("h") || arg.equals("-h")) &&
-                    Arrays.stream(args).filter(arg -> arg.equals("s")).count() <= 1 &&
-                    Arrays.stream(args).filter(arg -> arg.equals("c")).count() <= 1 &&
-                    Arrays.stream(args).filter(arg -> arg.equals("h") || arg.equals("-h")).count() <= 1 &&
-                    Arrays.stream(args).filter(arg -> arg.equals("-d")).count() <= 1 &&
-                    Arrays.stream(args).filter(arg -> arg.equals("-local")).count() <= 1 &&
-                    Arrays.stream(args).filter(arg -> arg.startsWith("-port:")).count() <= 1
-            ) { // parse arguments
-                for (String arg : args) {
-                    switch (arg.trim().toLowerCase()) {
-                        case "-d" -> Logger.enable(true);
-                        case "-local" -> serverBinding = InetAddress.getLoopbackAddress();
-                        case String a && a.startsWith("-port:") -> serverPort = Integer.parseInt(a.substring(6));
-                        case default -> {}
+        // if the args are coherent
+        if (args.length >= 1 &&
+                Arrays.stream(args).anyMatch(arg -> arg.equals("s") || arg.equals("g") || arg.equals("c") || arg.equals("h") || arg.equals("-h")) &&
+                Arrays.stream(args).filter(arg -> arg.equals("s")).count() <= 1 &&
+                Arrays.stream(args).filter(arg -> arg.equals("c")).count() <= 1 &&
+                Arrays.stream(args).filter(arg -> arg.equals("h") || arg.equals("-h")).count() <= 1 &&
+                Arrays.stream(args).filter(arg -> arg.equals("-d")).count() <= 1 &&
+                Arrays.stream(args).filter(arg -> arg.equals("-local")).count() <= 1 &&
+                Arrays.stream(args).filter(arg -> arg.startsWith("-port:")).count() <= 1
+        ) { // parse arguments
+            for (String arg : args) {
+                switch (arg.trim().toLowerCase()) {
+                    case "-d" -> Logger.enable(true);
+                    case "-local" -> serverBinding = InetAddress.getLoopbackAddress();
+                    case String a && a.startsWith("-port:") -> serverPort = Integer.parseInt(a.substring(6));
+                    case default -> {
                     }
                 }
-                for (String arg : args) {
-                    switch (arg.trim().toLowerCase()) {
-                        case "h", "-h" -> System.out.println(HELP_MESSAGE);
-                        case "c" -> new Thread(new CLI()).start();
-                        case "g" -> new Thread(new GUI()).start();
-                        case "s" -> new Thread(new WelcomeServer(serverPort, serverBinding)).start();
-                        case default -> {}
+            }
+            for (String arg : args) {
+                switch (arg.trim().toLowerCase()) {
+                    case "h", "-h" -> System.out.println(HELP_MESSAGE);
+                    case "c" -> new Thread(new CLI()).start();
+                    case "g" -> new Thread(new GUI()).start();
+                    case "s" -> new Thread(new WelcomeServer(serverPort, serverBinding)).start();
+                    case default -> {
                     }
                 }
+            }
         } else {
             System.out.println(HELP_MESSAGE);
         }

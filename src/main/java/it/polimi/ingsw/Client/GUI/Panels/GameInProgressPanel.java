@@ -150,7 +150,7 @@ public class GameInProgressPanel extends JTabbedPane {
                 JLabel resLabel = new JLabel(text.toString());
                 resLabel.setFont(new Font("Monospaced", Font.BOLD, 17));
                 SwingUtilities.invokeLater(() ->
-                JOptionPane.showMessageDialog(null, resLabel, "Turn change", JOptionPane.INFORMATION_MESSAGE));
+                        JOptionPane.showMessageDialog(null, resLabel, "Turn change", JOptionPane.INFORMATION_MESSAGE));
             }
         } else {
             this.add("WINNERS", new EndGamePanel(model.getWinners().get(), ctx));
