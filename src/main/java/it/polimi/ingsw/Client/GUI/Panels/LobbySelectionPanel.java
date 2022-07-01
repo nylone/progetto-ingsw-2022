@@ -108,7 +108,14 @@ public class LobbySelectionPanel extends JTabbedPane {
                 // normalize id
                 String idString = lobbyID.getText().trim();
                 lobbyID.setText(idString);
-                UUID id = UUID.fromString(idString);
+                UUID id;
+                try {
+                    id = UUID.fromString(idString);
+                } catch (IllegalArgumentException e) {
+                    JOptionPane.showMessageDialog(null, "You first have to select a lobby!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                    connect.setEnabled(true);
+                    return;
+                }
                 try {
                     sw.sendMessage(new ConnectLobbyRequest(id));
                     Message response = sw.awaitMessage();

@@ -7,19 +7,19 @@ Eriantys is the game chosen as the (2021/2022) project of the Software Engineeri
 
 ## Implemented Functionalities
 
-| Functionality                            | Status |
-|:-----------------------------------------|:------:|
-| Simplified ruleset                       |   ✅    |
-| Advanced ruleset                         |   ✅    |
-| Basic server requirements                |   ✅    |
-| Basic CLI requirements                   |   ✅    |
-| Basic GUI requirements                   |   ✅    |
-| All 12 Character cards                   |   ✅    |
-| 2, 3 and 4 players game                  |   ✅    |
-| Multiple games runnin on the same server |   ✅    |
-| Public and private lobbies on server     |   ✅    |
-| Persistence                              |   ❌    |
-| Disconnection resilience                 |   ❌    |
+| Functionality                             | Status |
+|:------------------------------------------|:------:|
+| Simplified ruleset                        |   ✅    |
+| Advanced ruleset                          |   ✅    |
+| Basic server requirements                 |   ✅    |
+| Basic CLI requirements                    |   ✅    |
+| Basic GUI requirements                    |   ✅    |
+| All 12 Character cards                    |   ✅    |
+| 2, 3 and 4 players game                   |   ✅    |
+| Multiple games running on the same server |   ✅    |
+| Public and private lobbies on server      |   ✅    |
+| Persistence                               |   ❌    |
+| Disconnection resilience                  |   ❌    |
 
 #### Legend
 
@@ -35,6 +35,10 @@ for one of only Model and Controller.
 
 Follow [this link](https://nylone.github.io/ing-sw-2022-rampone-rossi-salerno/javadocs) to access the javadocs page for this project.
 
+## Other Deliverables for the project review
+
+All requested deliverables for use in the project review and assessment can be found [here](deliverables).
+
 ## Building and Running
 
 Make sure you have the latest [**Java 18**](https://jdk.java.net/18/) jdk installed
@@ -43,9 +47,9 @@ before you attempt to build or run this project.
 If you wish to build the package from source (on most Linux based distros):
 
 ```
-git clone https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno.git # clone the repo
-cd ing-sw-2022-rampone-rossi-salerno # cd into the root of the repo
-mvn clean install # tell maven to generate the package from source
+git clone https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno.git   # clone the repo
+cd ing-sw-2022-rampone-rossi-salerno                                        # cd into the root of the repo
+mvn clean install                                                           # tell maven to generate the package from source
 ```
 
 Otherwise: you can download the latest release from the
