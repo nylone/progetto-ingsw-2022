@@ -1,11 +1,14 @@
 package it.polimi.ingsw.Misc;
 
+import it.polimi.ingsw.Model.Island;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class UtilsTest {
@@ -38,4 +41,23 @@ public class UtilsTest {
 
     }
 
+    @Test
+    public void sortingElements() {
+        // arrange
+        Island i1 = new Island(1);
+        Island i2 = new Island(2);
+        Island i3 = new Island(3);
+        List<Island> unorderedIslands = List.of(i3, i2, i1, i2, i1, i1);
+        List<Island> expectedOrder = List.of(i1, i1, i1, i2, i2, i3);
+
+        // act
+        // sorts the initial array by frequency from highest to lowest
+        ArrayList<Island> sorted = (ArrayList<Island>) Utils.sortByFrequency(unorderedIslands);
+
+        // assert
+        // checks all the elements are maintained
+        assertEquals(sorted.size(), unorderedIslands.size());
+        // checks that elements have been ordered correctly
+        assertEquals(expectedOrder, sorted);
+    }
 }

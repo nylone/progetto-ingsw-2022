@@ -85,7 +85,7 @@ public class Utils {
     }
 
     /**
-     * Given a {@link List}, sorts its elements in order of frequency from lowest to highest
+     * Given a {@link List}, sorts its elements in order of frequency from highest to lowest
      *
      * @param array the list to sort
      * @param <T>   the type of the elements in the list
