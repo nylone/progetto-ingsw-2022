@@ -12,6 +12,11 @@ import java.util.concurrent.CyclicBarrier;
 
 public class ClientReader implements Runnable {
     /**
+     * The reference to the CLIWriter class (used only in CLI mode)
+     */
+
+    final CyclicBarrier cyclicBarrier;
+    /**
      * The socketWrapper used to receive messages from the server
      */
     private final SocketWrapper socketWrapper;
@@ -19,11 +24,6 @@ public class ClientReader implements Runnable {
      * The object used to store the client's game data
      */
     private final ClientView clientView;
-    /**
-     * The reference to the CLIWriter class (used only in CLI mode)
-     */
-
-    final CyclicBarrier cyclicBarrier;
 
 
     //CLI-only constructor

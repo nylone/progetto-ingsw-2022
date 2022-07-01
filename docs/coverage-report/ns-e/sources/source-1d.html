@@ -102,8 +102,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">15</i>&nbsp;public class TeamMapper implements Serializable {
 <i class="no-highlight">16</i>&nbsp;    @Serial
 <i class="no-highlight">17</i>&nbsp;    private static final long serialVersionUID = 136L; // convention: 1 for model, (01 -&gt; 99) for objects
-<i class="no-highlight">18</i>&nbsp;    Map&lt;PlayerBoard, TeamID&gt; playerTeamMap;
-<i class="no-highlight">19</i>&nbsp;    Map&lt;TeamID, TowerStorage&gt; towerStorageMap;
+<i class="no-highlight">18</i>&nbsp;    final Map&lt;PlayerBoard, TeamID&gt; playerTeamMap;
+<i class="no-highlight">19</i>&nbsp;    final Map&lt;TeamID, TowerStorage&gt; towerStorageMap;
 <i class="no-highlight">20</i>&nbsp;
 <i class="no-highlight">21</i>&nbsp;    /**
 <i class="no-highlight">22</i>&nbsp;     * Creates a new mapper. If the players are not 4, every player gets put into its own special team. If 4 players
@@ -193,7 +193,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-07-01 18:44</div>
+    <div style="float:right;">generated on 2022-07-01 23:08</div>
 </div>
 </body>
 </html>

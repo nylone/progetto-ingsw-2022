@@ -100,118 +100,108 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">13</i>&nbsp;import java.io.Serial;
 <i class="no-highlight">14</i>&nbsp;import java.util.ArrayList;
 <i class="no-highlight">15</i>&nbsp;import java.util.Arrays;
-<i class="no-highlight">16</i>&nbsp;
+<i class="no-highlight">16</i>&nbsp;import java.util.List;
 <i class="no-highlight">17</i>&nbsp;
-<i class="no-highlight">18</i>&nbsp;/**
-<i class="no-highlight">19</i>&nbsp; * Character Card#1
-<i class="no-highlight">20</i>&nbsp; * In setup, draw 4 Students and place them on this card. &lt;br&gt;
-<i class="no-highlight">21</i>&nbsp; * EFFECT: Take 1 Student from this card and place it on
-<i class="no-highlight">22</i>&nbsp; * an Island of your choice. Then, draw a new Student from the Bag and place it on this card.
-<i class="no-highlight">23</i>&nbsp; */
-<i class="no-highlight">24</i>&nbsp;
-<i class="no-highlight">25</i>&nbsp;public class Card01 extends StatefulEffect {
-<i class="no-highlight">26</i>&nbsp;    @Serial
-<i class="no-highlight">27</i>&nbsp;    private static final long serialVersionUID = 103L; // convention: 1 for model, (01 -&gt; 99) for objects
-<b class="fc"><i class="no-highlight">28</i>&nbsp;    private final PawnColour[] students = new PawnColour[4]; // array containing card&#39;s pawns</b>
-<i class="no-highlight">29</i>&nbsp;
-<i class="no-highlight">30</i>&nbsp;    public Card01(Model ctx) {
-<b class="fc"><i class="no-highlight">31</i>&nbsp;        super(1, 1, StateType.PAWNCOLOUR, ctx);</b>
-<b class="fc"><i class="no-highlight">32</i>&nbsp;        for (int i = 0; i &lt; 4; i++) {</b>
-<i class="no-highlight">33</i>&nbsp;            try {
-<b class="fc"><i class="no-highlight">34</i>&nbsp;                this.students[i] = ctx.getMutableStudentBag().extract();</b>
-<b class="fc"><i class="no-highlight">35</i>&nbsp;            } catch (EmptyContainerException e) {</b>
-<i class="no-highlight">36</i>&nbsp;                // should never happen
-<b class="fc"><i class="no-highlight">37</i>&nbsp;                Logger.severe(&quot;student bag was found empty while adding a student to Card01. Critical, unrecoverable, error&quot;);</b>
-<b class="fc"><i class="no-highlight">38</i>&nbsp;                throw new RuntimeException(e);</b>
-<b class="fc"><i class="no-highlight">39</i>&nbsp;            }</b>
-<i class="no-highlight">40</i>&nbsp;        }
-<i class="no-highlight">41</i>&nbsp;    }
-<i class="no-highlight">42</i>&nbsp;
-<i class="no-highlight">43</i>&nbsp;    /**
-<i class="no-highlight">44</i>&nbsp;     * Get card&#39;s content
-<i class="no-highlight">45</i>&nbsp;     *
-<i class="no-highlight">46</i>&nbsp;     * @return ArrayList of Objects with pawns (Can be cast to {@link PawnColour})
-<i class="no-highlight">47</i>&nbsp;     */
-<i class="no-highlight">48</i>&nbsp;    public ArrayList&lt;Object&gt; getState() {
-<b class="fc"><i class="no-highlight">49</i>&nbsp;        return new ArrayList&lt;&gt;(Arrays.asList(students));</b>
-<i class="no-highlight">50</i>&nbsp;    }
-<i class="no-highlight">51</i>&nbsp;
-<i class="no-highlight">52</i>&nbsp;    /**
-<i class="no-highlight">53</i>&nbsp;     * Get card&#39;s stateType
-<i class="no-highlight">54</i>&nbsp;     *
-<i class="no-highlight">55</i>&nbsp;     * @return card&#39;s stateType
-<i class="no-highlight">56</i>&nbsp;     */
-<i class="no-highlight">57</i>&nbsp;    public StateType getStateType() {
-<b class="fc"><i class="no-highlight">58</i>&nbsp;        return stateType;</b>
-<i class="no-highlight">59</i>&nbsp;    }
-<i class="no-highlight">60</i>&nbsp;
-<i class="no-highlight">61</i>&nbsp;    /**
-<i class="no-highlight">62</i>&nbsp;     * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
-<i class="no-highlight">63</i>&nbsp;     *
-<i class="no-highlight">64</i>&nbsp;     * @param input CharacterCardInput should contain:
-<i class="no-highlight">65</i>&nbsp;     *              &lt;ul&gt;
-<i class="no-highlight">66</i>&nbsp;     *               &lt;li&gt;A valid island&#39;s ID &lt;/li&gt;
-<i class="no-highlight">67</i>&nbsp;     *               &lt;li&gt;a valid PawnColour from card&lt;/li&gt;
-<i class="no-highlight">68</i>&nbsp;     *              &lt;/ul&gt;
-<i class="no-highlight">69</i>&nbsp;     */
-<i class="no-highlight">70</i>&nbsp;    @Override
-<i class="no-highlight">71</i>&nbsp;    public OptionalValue&lt;InputValidationException&gt; overridableCheckInput(CharacterCardInput input) {
-<i class="no-highlight">72</i>&nbsp;        //check if input contains a valid island
-<b class="fc"><i class="no-highlight">73</i>&nbsp;        if (input.getTargetIsland().isEmpty()) {</b>
-<b class="fc"><i class="no-highlight">74</i>&nbsp;            return OptionalValue.of(new InvalidElementException(&quot;Target Island&quot;));</b>
-<i class="no-highlight">75</i>&nbsp;        }
-<i class="no-highlight">76</i>&nbsp;        //check if input contains a valid pawnColour
-<b class="fc"><i class="no-highlight">77</i>&nbsp;        if (input.getTargetPawn().isEmpty()) {</b>
-<b class="fc"><i class="no-highlight">78</i>&nbsp;            return OptionalValue.of(new InvalidElementException(&quot;Target Pawn Colour&quot;));</b>
-<i class="no-highlight">79</i>&nbsp;        }
-<b class="fc"><i class="no-highlight">80</i>&nbsp;        Island ti = input.getTargetIsland().get();</b>
-<b class="pc"><i class="no-highlight">81</i>&nbsp;        if (ti.getId() &lt; 0 || ti.getId() &gt;= 12) {</b>
-<b class="fc"><i class="no-highlight">82</i>&nbsp;            return OptionalValue.of(new InvalidElementException(&quot;Target Island&quot;)); // target ti out of bounds for id</b>
-<i class="no-highlight">83</i>&nbsp;        }
-<b class="pc"><i class="no-highlight">84</i>&nbsp;        if (!this.context.getMutableIslandField().getMutableIslands().contains(ti)) {</b>
-<b class="nc"><i class="no-highlight">85</i>&nbsp;            return OptionalValue.of(new InvalidElementException(&quot;Target Island&quot;)); // target ti not in field</b>
-<i class="no-highlight">86</i>&nbsp;        } // note: if island is in field then the island must also be in a group, due to how islandfield works.
-<i class="no-highlight">87</i>&nbsp;        // find if the target pawn colour is present in the card&#39;s stored pawn
-<b class="fc"><i class="no-highlight">88</i>&nbsp;        if (Arrays.stream(this.students).noneMatch(cell -&gt; cell == input.getTargetPawn().get())) {</b>
-<b class="fc"><i class="no-highlight">89</i>&nbsp;            return OptionalValue.of(new InvalidElementException(&quot;Target Pawn Colour&quot;));</b>
-<i class="no-highlight">90</i>&nbsp;        }
-<i class="no-highlight">91</i>&nbsp;        //if StudentBag is empty then the card could not be filled anymore
-<b class="fc"><i class="no-highlight">92</i>&nbsp;        if (context.getMutableStudentBag().getSize() == 0) {</b>
-<b class="fc"><i class="no-highlight">93</i>&nbsp;            return OptionalValue.of(new GenericInputValidationException(&quot;Student Bag&quot;, &quot;is empty&quot;));</b>
-<i class="no-highlight">94</i>&nbsp;        }
-<b class="fc"><i class="no-highlight">95</i>&nbsp;        return OptionalValue.empty();</b>
-<i class="no-highlight">96</i>&nbsp;    }
-<i class="no-highlight">97</i>&nbsp;
-<i class="no-highlight">98</i>&nbsp;    /**
-<i class="no-highlight">99</i>&nbsp;     * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
-<i class="no-highlight">100</i>&nbsp;     */
-<i class="no-highlight">101</i>&nbsp;    @Override
-<i class="no-highlight">102</i>&nbsp;    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
-<b class="fc"><i class="no-highlight">103</i>&nbsp;        PawnColour movedPawn = input.getTargetPawn().get();</b>
-<i class="no-highlight">104</i>&nbsp;        // add target pawn to island
-<b class="fc"><i class="no-highlight">105</i>&nbsp;        input.getTargetIsland().get().addStudent(movedPawn);</b>
-<i class="no-highlight">106</i>&nbsp;        // find first occurrence of same target pawn in card state and swap it with a new pawn
-<b class="pc"><i class="no-highlight">107</i>&nbsp;        for (int i = 0; i &lt; 4; i++) {</b>
-<b class="fc"><i class="no-highlight">108</i>&nbsp;            if (this.students[i] == movedPawn) {</b>
-<b class="fc"><i class="no-highlight">109</i>&nbsp;                this.students[i] = context.getMutableStudentBag().extract();</b>
-<i class="no-highlight">110</i>&nbsp;                return; // repeat this action only once per loop
-<i class="no-highlight">111</i>&nbsp;            }
-<i class="no-highlight">112</i>&nbsp;        }
-<b class="nc"><i class="no-highlight">113</i>&nbsp;        throw new FailedOperationException(&quot;Card01.unsafeApplyEffect&quot;, &quot;Target pawn was not contained in card&#39;s state&quot;);</b>
-<i class="no-highlight">114</i>&nbsp;    }
-<i class="no-highlight">115</i>&nbsp;
-<i class="no-highlight">116</i>&nbsp;   /*//test-purpose only
-<i class="no-highlight">117</i>&nbsp;    @Override
-<i class="no-highlight">118</i>&nbsp;    public String toString() {
-<i class="no-highlight">119</i>&nbsp;        return &quot;Card01{&quot; +
-<i class="no-highlight">120</i>&nbsp;                &quot;id=&quot; + id +
-<i class="no-highlight">121</i>&nbsp;                &quot;, cost=&quot; + cost +
-<i class="no-highlight">122</i>&nbsp;                &quot;, timeUsed=&quot; + timeUsed +
-<i class="no-highlight">123</i>&nbsp;                &quot;, context=&quot; + context +
-<i class="no-highlight">124</i>&nbsp;                &#39;}&#39;;
-<i class="no-highlight">125</i>&nbsp;    }
-<i class="no-highlight">126</i>&nbsp;    //*/
-<i class="no-highlight">127</i>&nbsp;}
+<i class="no-highlight">18</i>&nbsp;
+<i class="no-highlight">19</i>&nbsp;/**
+<i class="no-highlight">20</i>&nbsp; * Character Card#1
+<i class="no-highlight">21</i>&nbsp; * In setup, draw 4 Students and place them on this card. &lt;br&gt;
+<i class="no-highlight">22</i>&nbsp; * EFFECT: Take 1 Student from this card and place it on
+<i class="no-highlight">23</i>&nbsp; * an Island of your choice. Then, draw a new Student from the Bag and place it on this card.
+<i class="no-highlight">24</i>&nbsp; */
+<i class="no-highlight">25</i>&nbsp;
+<i class="no-highlight">26</i>&nbsp;public class Card01 extends StatefulEffect {
+<i class="no-highlight">27</i>&nbsp;    @Serial
+<i class="no-highlight">28</i>&nbsp;    private static final long serialVersionUID = 103L; // convention: 1 for model, (01 -&gt; 99) for objects
+<b class="fc"><i class="no-highlight">29</i>&nbsp;    private final PawnColour[] students = new PawnColour[4]; // array containing card&#39;s pawns</b>
+<i class="no-highlight">30</i>&nbsp;
+<i class="no-highlight">31</i>&nbsp;    public Card01(Model ctx) {
+<b class="fc"><i class="no-highlight">32</i>&nbsp;        super(1, 1, StateType.PAWNCOLOUR, ctx);</b>
+<b class="fc"><i class="no-highlight">33</i>&nbsp;        for (int i = 0; i &lt; 4; i++) {</b>
+<i class="no-highlight">34</i>&nbsp;            try {
+<b class="fc"><i class="no-highlight">35</i>&nbsp;                this.students[i] = ctx.getMutableStudentBag().extract();</b>
+<b class="fc"><i class="no-highlight">36</i>&nbsp;            } catch (EmptyContainerException e) {</b>
+<i class="no-highlight">37</i>&nbsp;                // should never happen
+<b class="fc"><i class="no-highlight">38</i>&nbsp;                Logger.severe(&quot;student bag was found empty while adding a student to Card01. Critical, unrecoverable, error&quot;);</b>
+<b class="fc"><i class="no-highlight">39</i>&nbsp;                throw new RuntimeException(e);</b>
+<b class="fc"><i class="no-highlight">40</i>&nbsp;            }</b>
+<i class="no-highlight">41</i>&nbsp;        }
+<i class="no-highlight">42</i>&nbsp;    }
+<i class="no-highlight">43</i>&nbsp;
+<i class="no-highlight">44</i>&nbsp;    /**
+<i class="no-highlight">45</i>&nbsp;     * Get card&#39;s content
+<i class="no-highlight">46</i>&nbsp;     *
+<i class="no-highlight">47</i>&nbsp;     * @return List of Objects with pawns (Can be cast to {@link PawnColour})
+<i class="no-highlight">48</i>&nbsp;     */
+<i class="no-highlight">49</i>&nbsp;    public List&lt;Object&gt; getState() {
+<b class="fc"><i class="no-highlight">50</i>&nbsp;        return new ArrayList&lt;&gt;(Arrays.asList(students));</b>
+<i class="no-highlight">51</i>&nbsp;    }
+<i class="no-highlight">52</i>&nbsp;
+<i class="no-highlight">53</i>&nbsp;    /**
+<i class="no-highlight">54</i>&nbsp;     * Get card&#39;s stateType
+<i class="no-highlight">55</i>&nbsp;     *
+<i class="no-highlight">56</i>&nbsp;     * @return card&#39;s stateType
+<i class="no-highlight">57</i>&nbsp;     */
+<i class="no-highlight">58</i>&nbsp;    public StateType getStateType() {
+<b class="fc"><i class="no-highlight">59</i>&nbsp;        return stateType;</b>
+<i class="no-highlight">60</i>&nbsp;    }
+<i class="no-highlight">61</i>&nbsp;
+<i class="no-highlight">62</i>&nbsp;    /**
+<i class="no-highlight">63</i>&nbsp;     * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+<i class="no-highlight">64</i>&nbsp;     *
+<i class="no-highlight">65</i>&nbsp;     * @param input CharacterCardInput should contain:
+<i class="no-highlight">66</i>&nbsp;     *              &lt;ul&gt;
+<i class="no-highlight">67</i>&nbsp;     *               &lt;li&gt;A valid island&#39;s ID &lt;/li&gt;
+<i class="no-highlight">68</i>&nbsp;     *               &lt;li&gt;a valid PawnColour from card&lt;/li&gt;
+<i class="no-highlight">69</i>&nbsp;     *              &lt;/ul&gt;
+<i class="no-highlight">70</i>&nbsp;     */
+<i class="no-highlight">71</i>&nbsp;    @Override
+<i class="no-highlight">72</i>&nbsp;    public OptionalValue&lt;InputValidationException&gt; overridableCheckInput(CharacterCardInput input) {
+<i class="no-highlight">73</i>&nbsp;        //check if input contains a valid island
+<b class="fc"><i class="no-highlight">74</i>&nbsp;        if (input.getTargetIsland().isEmpty()) {</b>
+<b class="fc"><i class="no-highlight">75</i>&nbsp;            return OptionalValue.of(new InvalidElementException(&quot;Target Island&quot;));</b>
+<i class="no-highlight">76</i>&nbsp;        }
+<i class="no-highlight">77</i>&nbsp;        //check if input contains a valid pawnColour
+<b class="fc"><i class="no-highlight">78</i>&nbsp;        if (input.getTargetPawn().isEmpty()) {</b>
+<b class="fc"><i class="no-highlight">79</i>&nbsp;            return OptionalValue.of(new InvalidElementException(&quot;Target Pawn Colour&quot;));</b>
+<i class="no-highlight">80</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">81</i>&nbsp;        Island ti = input.getTargetIsland().get();</b>
+<b class="pc"><i class="no-highlight">82</i>&nbsp;        if (ti.getId() &lt; 0 || ti.getId() &gt;= 12) {</b>
+<b class="fc"><i class="no-highlight">83</i>&nbsp;            return OptionalValue.of(new InvalidElementException(&quot;Target Island&quot;)); // target ti out of bounds for id</b>
+<i class="no-highlight">84</i>&nbsp;        }
+<b class="pc"><i class="no-highlight">85</i>&nbsp;        if (!this.context.getMutableIslandField().getMutableIslands().contains(ti)) {</b>
+<b class="nc"><i class="no-highlight">86</i>&nbsp;            return OptionalValue.of(new InvalidElementException(&quot;Target Island&quot;)); // target ti not in field</b>
+<i class="no-highlight">87</i>&nbsp;        } // note: if island is in field then the island must also be in a group, due to how islandfield works.
+<i class="no-highlight">88</i>&nbsp;        // find if the target pawn colour is present in the card&#39;s stored pawn
+<b class="fc"><i class="no-highlight">89</i>&nbsp;        if (Arrays.stream(this.students).noneMatch(cell -&gt; cell == input.getTargetPawn().get())) {</b>
+<b class="fc"><i class="no-highlight">90</i>&nbsp;            return OptionalValue.of(new InvalidElementException(&quot;Target Pawn Colour&quot;));</b>
+<i class="no-highlight">91</i>&nbsp;        }
+<i class="no-highlight">92</i>&nbsp;        //if StudentBag is empty then the card could not be filled anymore
+<b class="fc"><i class="no-highlight">93</i>&nbsp;        if (context.getMutableStudentBag().getSize() == 0) {</b>
+<b class="fc"><i class="no-highlight">94</i>&nbsp;            return OptionalValue.of(new GenericInputValidationException(&quot;Student Bag&quot;, &quot;is empty&quot;));</b>
+<i class="no-highlight">95</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">96</i>&nbsp;        return OptionalValue.empty();</b>
+<i class="no-highlight">97</i>&nbsp;    }
+<i class="no-highlight">98</i>&nbsp;
+<i class="no-highlight">99</i>&nbsp;    /**
+<i class="no-highlight">100</i>&nbsp;     * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
+<i class="no-highlight">101</i>&nbsp;     */
+<i class="no-highlight">102</i>&nbsp;    @Override
+<i class="no-highlight">103</i>&nbsp;    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
+<b class="fc"><i class="no-highlight">104</i>&nbsp;        PawnColour movedPawn = input.getTargetPawn().get();</b>
+<i class="no-highlight">105</i>&nbsp;        // add target pawn to island
+<b class="fc"><i class="no-highlight">106</i>&nbsp;        input.getTargetIsland().get().addStudent(movedPawn);</b>
+<i class="no-highlight">107</i>&nbsp;        // find first occurrence of same target pawn in card state and swap it with a new pawn
+<b class="pc"><i class="no-highlight">108</i>&nbsp;        for (int i = 0; i &lt; 4; i++) {</b>
+<b class="fc"><i class="no-highlight">109</i>&nbsp;            if (this.students[i] == movedPawn) {</b>
+<b class="fc"><i class="no-highlight">110</i>&nbsp;                this.students[i] = context.getMutableStudentBag().extract();</b>
+<i class="no-highlight">111</i>&nbsp;                return; // repeat this action only once per loop
+<i class="no-highlight">112</i>&nbsp;            }
+<i class="no-highlight">113</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">114</i>&nbsp;        throw new FailedOperationException(&quot;Card01.unsafeApplyEffect&quot;, &quot;Target pawn was not contained in card&#39;s state&quot;);</b>
+<i class="no-highlight">115</i>&nbsp;    }
+<i class="no-highlight">116</i>&nbsp;
+<i class="no-highlight">117</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -238,7 +228,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-07-01 18:44</div>
+    <div style="float:right;">generated on 2022-07-01 23:08</div>
 </div>
 </body>
 </html>

@@ -150,57 +150,58 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">63</i>&nbsp;     *                 receive {@link ModelUpdateEvent} and {@link GameOverEvent}
 <i class="no-highlight">64</i>&nbsp;     * @param players  a list of minimum 2 and maximum 4 strings containing the nicknames of the players.
 <i class="no-highlight">65</i>&nbsp;     *                 In the case of 4 players: players at index 0 and 2 go together against players at index 1 and 3
-<i class="no-highlight">66</i>&nbsp;     * @throws InputValidationException if the supplied players are less than 2 or more than 4
-<i class="no-highlight">67</i>&nbsp;     */
-<i class="no-highlight">68</i>&nbsp;    public static Controller createGame(GameMode gameMode, OptionalValue&lt;Lobby&gt; lobby, String... players) throws InputValidationException {
-<b class="fc"><i class="no-highlight">69</i>&nbsp;        Objects.requireNonNull(gameMode);</b>
-<b class="fc"><i class="no-highlight">70</i>&nbsp;        Objects.requireNonNull(lobby);</b>
-<b class="fc"><i class="no-highlight">71</i>&nbsp;        Objects.requireNonNull(players);</b>
-<i class="no-highlight">72</i>&nbsp;
-<b class="pc"><i class="no-highlight">73</i>&nbsp;        if (players.length &gt; 1 &amp;&amp; players.length &lt;= 4) {</b>
-<b class="fc"><i class="no-highlight">74</i>&nbsp;            return new Controller(new ModelWrapper(new Model(gameMode, players), lobby));</b>
-<i class="no-highlight">75</i>&nbsp;        } else {
-<b class="fc"><i class="no-highlight">76</i>&nbsp;            throw new GenericInputValidationException(&quot;Players&quot;, &quot;The number of players must be 2, 3 or 4.\n&quot; +</b>
-<i class="no-highlight">77</i>&nbsp;                    &quot;Players received: &quot; + players.length);
-<i class="no-highlight">78</i>&nbsp;        }
-<i class="no-highlight">79</i>&nbsp;    }
-<i class="no-highlight">80</i>&nbsp;
-<i class="no-highlight">81</i>&nbsp;    /**
-<i class="no-highlight">82</i>&nbsp;     * An execution request handler. Actions are passed in, validated and (if possible) executed. &lt;br&gt;
-<i class="no-highlight">83</i>&nbsp;     * Warning: this request is not thread safe, that job is delegated to the caller to handle.
-<i class="no-highlight">84</i>&nbsp;     * &lt;p&gt;
-<i class="no-highlight">85</i>&nbsp;     * Note: if this Controller was generated using the debug constructor, then references to the model, once modified, are
-<i class="no-highlight">86</i>&nbsp;     * going to be kept unsafe, generally decreasing the security of the editing mechanism.
-<i class="no-highlight">87</i>&nbsp;     *
-<i class="no-highlight">88</i>&nbsp;     * @param action the action to be validated and executed.
-<i class="no-highlight">89</i>&nbsp;     * @throws InputValidationException thrown when validation fails, carries information about the error. If thrown,
-<i class="no-highlight">90</i>&nbsp;     *                                  the model is guaranteed to not have been modified.
-<i class="no-highlight">91</i>&nbsp;     */
-<i class="no-highlight">92</i>&nbsp;    public void executeAction(PlayerAction action) throws InputValidationException {
-<b class="fc"><i class="no-highlight">93</i>&nbsp;        Model model = this.modelWrapper.modelCopy(false);</b>
-<b class="fc"><i class="no-highlight">94</i>&nbsp;        OptionalValue&lt;InputValidationException&gt; validation = action.validate(this.getHistory(), model);</b>
-<b class="fc"><i class="no-highlight">95</i>&nbsp;        if (validation.isPresent()) throw validation.get();</b>
-<i class="no-highlight">96</i>&nbsp;        // as right now we are abusing the hell out of exception throwing
-<i class="no-highlight">97</i>&nbsp;        try {
-<b class="fc"><i class="no-highlight">98</i>&nbsp;            this.modelWrapper.editModel(action::unsafeExecute, unsafeReferences);</b>
-<b class="nc"><i class="no-highlight">99</i>&nbsp;        } catch (Exception e) {</b>
-<b class="nc"><i class="no-highlight">100</i>&nbsp;            e.printStackTrace();</b>
-<b class="fc"><i class="no-highlight">101</i>&nbsp;        }</b>
-<i class="no-highlight">102</i>&nbsp;
-<b class="fc"><i class="no-highlight">103</i>&nbsp;        history.add(action);</b>
-<b class="fc"><i class="no-highlight">104</i>&nbsp;        if (action.getClass() == EndTurnOfActionPhase.class || action.getClass() == PlayAssistantCard.class) {</b>
-<b class="fc"><i class="no-highlight">105</i>&nbsp;            this.history.clear();</b>
-<i class="no-highlight">106</i>&nbsp;        }
-<i class="no-highlight">107</i>&nbsp;    }
-<i class="no-highlight">108</i>&nbsp;
-<i class="no-highlight">109</i>&nbsp;    /**
-<i class="no-highlight">110</i>&nbsp;     * @return an immutable copy of the list of player actions.&lt;br&gt;
-<i class="no-highlight">111</i>&nbsp;     * &lt;b&gt;Note:&lt;/b&gt; the single actions are immutable by default, so do not get cloned
-<i class="no-highlight">112</i>&nbsp;     */
-<i class="no-highlight">113</i>&nbsp;    private List&lt;PlayerAction&gt; getHistory() {
-<b class="fc"><i class="no-highlight">114</i>&nbsp;        return List.copyOf(history);</b>
-<i class="no-highlight">115</i>&nbsp;    }
-<i class="no-highlight">116</i>&nbsp;}
+<i class="no-highlight">66</i>&nbsp;     * @return the generated controller
+<i class="no-highlight">67</i>&nbsp;     * @throws InputValidationException if the supplied players are less than 2 or more than 4
+<i class="no-highlight">68</i>&nbsp;     */
+<i class="no-highlight">69</i>&nbsp;    public static Controller createGame(GameMode gameMode, OptionalValue&lt;Lobby&gt; lobby, String... players) throws InputValidationException {
+<b class="fc"><i class="no-highlight">70</i>&nbsp;        Objects.requireNonNull(gameMode);</b>
+<b class="fc"><i class="no-highlight">71</i>&nbsp;        Objects.requireNonNull(lobby);</b>
+<b class="fc"><i class="no-highlight">72</i>&nbsp;        Objects.requireNonNull(players);</b>
+<i class="no-highlight">73</i>&nbsp;
+<b class="pc"><i class="no-highlight">74</i>&nbsp;        if (players.length &gt; 1 &amp;&amp; players.length &lt;= 4) {</b>
+<b class="fc"><i class="no-highlight">75</i>&nbsp;            return new Controller(new ModelWrapper(new Model(gameMode, players), lobby));</b>
+<i class="no-highlight">76</i>&nbsp;        } else {
+<b class="fc"><i class="no-highlight">77</i>&nbsp;            throw new GenericInputValidationException(&quot;Players&quot;, &quot;The number of players must be 2, 3 or 4.\n&quot; +</b>
+<i class="no-highlight">78</i>&nbsp;                    &quot;Players received: &quot; + players.length);
+<i class="no-highlight">79</i>&nbsp;        }
+<i class="no-highlight">80</i>&nbsp;    }
+<i class="no-highlight">81</i>&nbsp;
+<i class="no-highlight">82</i>&nbsp;    /**
+<i class="no-highlight">83</i>&nbsp;     * An execution request handler. Actions are passed in, validated and (if possible) executed. &lt;br&gt;
+<i class="no-highlight">84</i>&nbsp;     * Warning: this request is not thread safe, that job is delegated to the caller to handle.
+<i class="no-highlight">85</i>&nbsp;     * &lt;p&gt;
+<i class="no-highlight">86</i>&nbsp;     * Note: if this Controller was generated using the debug constructor, then references to the model, once modified, are
+<i class="no-highlight">87</i>&nbsp;     * going to be kept unsafe, generally decreasing the security of the editing mechanism.
+<i class="no-highlight">88</i>&nbsp;     *
+<i class="no-highlight">89</i>&nbsp;     * @param action the action to be validated and executed.
+<i class="no-highlight">90</i>&nbsp;     * @throws InputValidationException thrown when validation fails, carries information about the error. If thrown,
+<i class="no-highlight">91</i>&nbsp;     *                                  the model is guaranteed to not have been modified.
+<i class="no-highlight">92</i>&nbsp;     */
+<i class="no-highlight">93</i>&nbsp;    public void executeAction(PlayerAction action) throws InputValidationException {
+<b class="fc"><i class="no-highlight">94</i>&nbsp;        Model model = this.modelWrapper.modelCopy(false);</b>
+<b class="fc"><i class="no-highlight">95</i>&nbsp;        OptionalValue&lt;InputValidationException&gt; validation = action.validate(this.getHistory(), model);</b>
+<b class="fc"><i class="no-highlight">96</i>&nbsp;        if (validation.isPresent()) throw validation.get();</b>
+<i class="no-highlight">97</i>&nbsp;        // as right now we are abusing the hell out of exception throwing
+<i class="no-highlight">98</i>&nbsp;        try {
+<b class="fc"><i class="no-highlight">99</i>&nbsp;            this.modelWrapper.editModel(action::unsafeExecute, unsafeReferences);</b>
+<b class="nc"><i class="no-highlight">100</i>&nbsp;        } catch (Exception e) {</b>
+<b class="nc"><i class="no-highlight">101</i>&nbsp;            e.printStackTrace();</b>
+<b class="fc"><i class="no-highlight">102</i>&nbsp;        }</b>
+<i class="no-highlight">103</i>&nbsp;
+<b class="fc"><i class="no-highlight">104</i>&nbsp;        history.add(action);</b>
+<b class="fc"><i class="no-highlight">105</i>&nbsp;        if (action.getClass() == EndTurnOfActionPhase.class || action.getClass() == PlayAssistantCard.class) {</b>
+<b class="fc"><i class="no-highlight">106</i>&nbsp;            this.history.clear();</b>
+<i class="no-highlight">107</i>&nbsp;        }
+<i class="no-highlight">108</i>&nbsp;    }
+<i class="no-highlight">109</i>&nbsp;
+<i class="no-highlight">110</i>&nbsp;    /**
+<i class="no-highlight">111</i>&nbsp;     * @return an immutable copy of the list of player actions.&lt;br&gt;
+<i class="no-highlight">112</i>&nbsp;     * &lt;b&gt;Note:&lt;/b&gt; the single actions are immutable by default, so do not get cloned
+<i class="no-highlight">113</i>&nbsp;     */
+<i class="no-highlight">114</i>&nbsp;    private List&lt;PlayerAction&gt; getHistory() {
+<b class="fc"><i class="no-highlight">115</i>&nbsp;        return List.copyOf(history);</b>
+<i class="no-highlight">116</i>&nbsp;    }
+<i class="no-highlight">117</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -227,7 +228,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-07-01 18:43</div>
+    <div style="float:right;">generated on 2022-07-01 23:10</div>
 </div>
 </body>
 </html>

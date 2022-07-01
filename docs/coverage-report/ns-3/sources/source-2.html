@@ -62,7 +62,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     0%
   </span>
   <span class="absValue">
-    (0/374)
+    (0/373)
   </span>
 </td>
 </tr>
@@ -108,7 +108,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     0%
   </span>
   <span class="absValue">
-    (0/375)
+    (0/374)
   </span>
 </td>
 </tr>
@@ -123,924 +123,923 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">2</i>&nbsp;
 <i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Controller.Actions.*;
 <i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Controller.MoveDestination;
-<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
-<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
-<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Misc.Pair;
-<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Model.*;
-<i class="no-highlight">9</i>&nbsp;import it.polimi.ingsw.Model.Enums.GameMode;
-<i class="no-highlight">10</i>&nbsp;import it.polimi.ingsw.Model.Enums.GamePhase;
-<i class="no-highlight">11</i>&nbsp;import it.polimi.ingsw.Model.Enums.PawnColour;
-<i class="no-highlight">12</i>&nbsp;import it.polimi.ingsw.Network.SocketWrapper;
-<i class="no-highlight">13</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Requests.*;
-<i class="no-highlight">14</i>&nbsp;
-<i class="no-highlight">15</i>&nbsp;import java.io.BufferedReader;
-<i class="no-highlight">16</i>&nbsp;import java.io.IOException;
-<i class="no-highlight">17</i>&nbsp;import java.util.ArrayList;
-<i class="no-highlight">18</i>&nbsp;import java.util.List;
-<i class="no-highlight">19</i>&nbsp;import java.util.UUID;
-<i class="no-highlight">20</i>&nbsp;import java.util.concurrent.BrokenBarrierException;
-<i class="no-highlight">21</i>&nbsp;import java.util.concurrent.CyclicBarrier;
-<i class="no-highlight">22</i>&nbsp;import java.util.stream.Collectors;
-<i class="no-highlight">23</i>&nbsp;import java.util.stream.IntStream;
-<i class="no-highlight">24</i>&nbsp;
-<i class="no-highlight">25</i>&nbsp;/**
-<i class="no-highlight">26</i>&nbsp; * This class takes Client&#39;s commands from terminal, provides support to the user and sends the command to the Server by using the SocketWrapper
-<i class="no-highlight">27</i>&nbsp; */
-<i class="no-highlight">28</i>&nbsp;public class CliWriter implements Runnable {
-<i class="no-highlight">29</i>&nbsp;
-<i class="no-highlight">30</i>&nbsp;    /**
-<i class="no-highlight">31</i>&nbsp;     * socket wrapper to connect the Client to the Server
-<i class="no-highlight">32</i>&nbsp;     */
-<i class="no-highlight">33</i>&nbsp;    private final SocketWrapper socketWrapper;
-<i class="no-highlight">34</i>&nbsp;    /**
-<i class="no-highlight">35</i>&nbsp;     * used to store the client&#39;s game data
-<i class="no-highlight">36</i>&nbsp;     */
-<i class="no-highlight">37</i>&nbsp;    private final ClientView clientView;
-<i class="no-highlight">38</i>&nbsp;    /**
-<i class="no-highlight">39</i>&nbsp;     * used to acquire text from command line
-<i class="no-highlight">40</i>&nbsp;     */
-<i class="no-highlight">41</i>&nbsp;    private final BufferedReader stdIn;
-<i class="no-highlight">42</i>&nbsp;    /**
-<i class="no-highlight">43</i>&nbsp;     * used to synchronize CliWriter and CliReader, useful when the first one needs to wait the second one
-<i class="no-highlight">44</i>&nbsp;     */
-<i class="no-highlight">45</i>&nbsp;    CyclicBarrier cyclicBarrier;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Misc.Pair;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Model.*;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Model.Enums.GameMode;
+<i class="no-highlight">9</i>&nbsp;import it.polimi.ingsw.Model.Enums.GamePhase;
+<i class="no-highlight">10</i>&nbsp;import it.polimi.ingsw.Model.Enums.PawnColour;
+<i class="no-highlight">11</i>&nbsp;import it.polimi.ingsw.Network.SocketWrapper;
+<i class="no-highlight">12</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Requests.*;
+<i class="no-highlight">13</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;import java.io.BufferedReader;
+<i class="no-highlight">15</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">16</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">17</i>&nbsp;import java.util.List;
+<i class="no-highlight">18</i>&nbsp;import java.util.UUID;
+<i class="no-highlight">19</i>&nbsp;import java.util.concurrent.BrokenBarrierException;
+<i class="no-highlight">20</i>&nbsp;import java.util.concurrent.CyclicBarrier;
+<i class="no-highlight">21</i>&nbsp;import java.util.stream.Collectors;
+<i class="no-highlight">22</i>&nbsp;import java.util.stream.IntStream;
+<i class="no-highlight">23</i>&nbsp;
+<i class="no-highlight">24</i>&nbsp;/**
+<i class="no-highlight">25</i>&nbsp; * This class takes Client&#39;s commands from terminal, provides support to the user and sends the command to the Server by using the SocketWrapper
+<i class="no-highlight">26</i>&nbsp; */
+<i class="no-highlight">27</i>&nbsp;public class CliWriter implements Runnable {
+<i class="no-highlight">28</i>&nbsp;
+<i class="no-highlight">29</i>&nbsp;    /**
+<i class="no-highlight">30</i>&nbsp;     * used to synchronize CliWriter and CliReader, useful when the first one needs to wait the second one
+<i class="no-highlight">31</i>&nbsp;     */
+<i class="no-highlight">32</i>&nbsp;    final CyclicBarrier cyclicBarrier;
+<i class="no-highlight">33</i>&nbsp;    /**
+<i class="no-highlight">34</i>&nbsp;     * socket wrapper to connect the Client to the Server
+<i class="no-highlight">35</i>&nbsp;     */
+<i class="no-highlight">36</i>&nbsp;    private final SocketWrapper socketWrapper;
+<i class="no-highlight">37</i>&nbsp;    /**
+<i class="no-highlight">38</i>&nbsp;     * used to store the client&#39;s game data
+<i class="no-highlight">39</i>&nbsp;     */
+<i class="no-highlight">40</i>&nbsp;    private final ClientView clientView;
+<i class="no-highlight">41</i>&nbsp;    /**
+<i class="no-highlight">42</i>&nbsp;     * used to acquire text from command line
+<i class="no-highlight">43</i>&nbsp;     */
+<i class="no-highlight">44</i>&nbsp;    private final BufferedReader stdIn;
+<i class="no-highlight">45</i>&nbsp;
 <i class="no-highlight">46</i>&nbsp;
-<i class="no-highlight">47</i>&nbsp;
-<b class="nc"><i class="no-highlight">48</i>&nbsp;    public CliWriter(SocketWrapper socketWrapper, ClientView clientView, BufferedReader bufferedReader, CyclicBarrier cyclicBarrier) {</b>
-<b class="nc"><i class="no-highlight">49</i>&nbsp;        this.socketWrapper = socketWrapper;</b>
-<b class="nc"><i class="no-highlight">50</i>&nbsp;        this.clientView = clientView;</b>
-<b class="nc"><i class="no-highlight">51</i>&nbsp;        this.stdIn = bufferedReader;</b>
-<b class="nc"><i class="no-highlight">52</i>&nbsp;        this.cyclicBarrier = cyclicBarrier;</b>
-<i class="no-highlight">53</i>&nbsp;    }
-<i class="no-highlight">54</i>&nbsp;
-<i class="no-highlight">55</i>&nbsp;    @Override
-<i class="no-highlight">56</i>&nbsp;    public void run() {
-<i class="no-highlight">57</i>&nbsp;        try {
-<i class="no-highlight">58</i>&nbsp;            //wait for the CliReader to receive the confirmation of successful connection to the server
-<b class="nc"><i class="no-highlight">59</i>&nbsp;            cyclicBarrier.await();</b>
-<b class="nc"><i class="no-highlight">60</i>&nbsp;        } catch (BrokenBarrierException | InterruptedException e) {</b>
-<b class="nc"><i class="no-highlight">61</i>&nbsp;            throw new RuntimeException(e);</b>
-<b class="nc"><i class="no-highlight">62</i>&nbsp;        }</b>
-<i class="no-highlight">63</i>&nbsp;        //exit the Thread whether the client was not able to connect to the server
-<b class="nc"><i class="no-highlight">64</i>&nbsp;        if (!this.clientView.isConnected()) {</b>
-<i class="no-highlight">65</i>&nbsp;            return;
-<i class="no-highlight">66</i>&nbsp;        }
-<i class="no-highlight">67</i>&nbsp;        try {
-<b class="nc"><i class="no-highlight">68</i>&nbsp;            System.out.println(</b>
-<i class="no-highlight">69</i>&nbsp;                    &quot;&quot;&quot;
-<i class="no-highlight">70</i>&nbsp;                            ERIANTYS
-<i class="no-highlight">71</i>&nbsp;                            Welcome Player
-<i class="no-highlight">72</i>&nbsp;                            &quot;&quot;&quot;
-<i class="no-highlight">73</i>&nbsp;            );
-<i class="no-highlight">74</i>&nbsp;            String nickname;
-<i class="no-highlight">75</i>&nbsp;            while (true) {
-<b class="nc"><i class="no-highlight">76</i>&nbsp;                System.out.println(&quot;Insert Username:&quot;);</b>
-<i class="no-highlight">77</i>&nbsp;                //acquire Username from stdIn
-<b class="nc"><i class="no-highlight">78</i>&nbsp;                nickname = stdIn.readLine();</b>
-<b class="nc"><i class="no-highlight">79</i>&nbsp;                if (!this.clientView.isConnected()) return;</b>
-<i class="no-highlight">80</i>&nbsp;                //whether at least one between nickname and password is empty then repeat the login process
-<b class="nc"><i class="no-highlight">81</i>&nbsp;                if (nickname.equals(&quot;&quot;)) {</b>
-<b class="nc"><i class="no-highlight">82</i>&nbsp;                    System.out.println(&quot;Username not well formatted&quot;);</b>
-<i class="no-highlight">83</i>&nbsp;                } else {
-<b class="nc"><i class="no-highlight">84</i>&nbsp;                    if (!this.clientView.isConnected()) return;</b>
-<i class="no-highlight">85</i>&nbsp;                    //create and initialize the DeclarePlayer request
-<b class="nc"><i class="no-highlight">86</i>&nbsp;                    DeclarePlayerRequest dp = new DeclarePlayerRequest(nickname);</b>
-<i class="no-highlight">87</i>&nbsp;                    //send the request to the server
-<b class="nc"><i class="no-highlight">88</i>&nbsp;                    socketWrapper.sendMessage(dp);</b>
-<i class="no-highlight">89</i>&nbsp;                    //wait for the CliReader to receive the confirmation of successful login
-<b class="nc"><i class="no-highlight">90</i>&nbsp;                    cyclicBarrier.await();</b>
-<i class="no-highlight">91</i>&nbsp;                    //check if this Client is connected
-<b class="nc"><i class="no-highlight">92</i>&nbsp;                    if (this.clientView.isLogged()) {</b>
-<b class="nc"><i class="no-highlight">93</i>&nbsp;                        break;</b>
-<i class="no-highlight">94</i>&nbsp;                    }
-<b class="nc"><i class="no-highlight">95</i>&nbsp;                }</b>
-<i class="no-highlight">96</i>&nbsp;                //repeat until user has typed Username and password correctly (syntactically) or typed password is wrong
-<i class="no-highlight">97</i>&nbsp;            }
-<i class="no-highlight">98</i>&nbsp;            //set nickname in clientView object
-<b class="nc"><i class="no-highlight">99</i>&nbsp;            this.clientView.setNickname(nickname);</b>
-<i class="no-highlight">100</i>&nbsp;            String input;
-<b class="nc"><i class="no-highlight">101</i>&nbsp;            if (!this.clientView.isConnected()) Thread.currentThread().interrupt();</b>
-<i class="no-highlight">102</i>&nbsp;            while (true) {
-<i class="no-highlight">103</i>&nbsp;                //acquire command from stdIn
-<b class="nc"><i class="no-highlight">104</i>&nbsp;                input = stdIn.readLine();</b>
-<b class="nc"><i class="no-highlight">105</i>&nbsp;                if (!this.clientView.isConnected()) return;</b>
-<i class="no-highlight">106</i>&nbsp;                //execute command
-<b class="nc"><i class="no-highlight">107</i>&nbsp;                elaborateInput(input);</b>
-<i class="no-highlight">108</i>&nbsp;            }
-<b class="nc"><i class="no-highlight">109</i>&nbsp;        } catch (IOException | InvalidContainerIndexException | BrokenBarrierException e) {</b>
-<b class="nc"><i class="no-highlight">110</i>&nbsp;            System.out.println(&quot;IO exception when reading from stdIn.&quot;);</b>
-<b class="nc"><i class="no-highlight">111</i>&nbsp;            e.printStackTrace();</b>
-<b class="nc"><i class="no-highlight">112</i>&nbsp;        } catch (InterruptedException e) {</b>
-<b class="nc"><i class="no-highlight">113</i>&nbsp;            throw new RuntimeException(e);</b>
-<b class="nc"><i class="no-highlight">114</i>&nbsp;        }</b>
-<i class="no-highlight">115</i>&nbsp;    }
-<i class="no-highlight">116</i>&nbsp;
-<i class="no-highlight">117</i>&nbsp;    /**
-<i class="no-highlight">118</i>&nbsp;     * This method, given a String, executes the proper method according to User&#39;s request
-<i class="no-highlight">119</i>&nbsp;     *
-<i class="no-highlight">120</i>&nbsp;     * @param userInput: text containing the command
-<i class="no-highlight">121</i>&nbsp;     * @throws IOException the integer read from command line
-<i class="no-highlight">122</i>&nbsp;     */
-<i class="no-highlight">123</i>&nbsp;    private void elaborateInput(String userInput) throws IOException, InvalidContainerIndexException {
-<b class="nc"><i class="no-highlight">124</i>&nbsp;        switch (userInput.toLowerCase()) {</b>
-<b class="nc"><i class="no-highlight">125</i>&nbsp;            case &quot;showactions&quot; -&gt; printActions();</b>
-<b class="nc"><i class="no-highlight">126</i>&nbsp;            case &quot;createlobby&quot; -&gt; createLobby();</b>
-<b class="nc"><i class="no-highlight">127</i>&nbsp;            case &quot;joinlobby&quot; -&gt; joinLobby();</b>
-<b class="nc"><i class="no-highlight">128</i>&nbsp;            case &quot;startgame&quot; -&gt; startGame();</b>
-<i class="no-highlight">129</i>&nbsp;            case &quot;charactercardinfo&quot; -&gt; {
-<b class="nc"><i class="no-highlight">130</i>&nbsp;                if (checkActionRequest()) return;</b>
-<b class="nc"><i class="no-highlight">131</i>&nbsp;                characterCardInfo();</b>
-<b class="nc"><i class="no-highlight">132</i>&nbsp;            }</b>
-<i class="no-highlight">133</i>&nbsp;            case &quot;playassistantcard&quot; -&gt; {
-<b class="nc"><i class="no-highlight">134</i>&nbsp;                if (checkActionRequest()) return;</b>
-<b class="nc"><i class="no-highlight">135</i>&nbsp;                playAssistantCard();</b>
-<b class="nc"><i class="no-highlight">136</i>&nbsp;            }</b>
-<i class="no-highlight">137</i>&nbsp;            case &quot;playcharactercard&quot; -&gt; {
-<b class="nc"><i class="no-highlight">138</i>&nbsp;                if (checkActionRequest()) return;</b>
-<b class="nc"><i class="no-highlight">139</i>&nbsp;                playCharacterCard();</b>
-<b class="nc"><i class="no-highlight">140</i>&nbsp;            }</b>
-<i class="no-highlight">141</i>&nbsp;            case &quot;movestudent&quot; -&gt; {
-<b class="nc"><i class="no-highlight">142</i>&nbsp;                if (checkActionRequest()) return;</b>
-<b class="nc"><i class="no-highlight">143</i>&nbsp;                moveStudent();</b>
-<b class="nc"><i class="no-highlight">144</i>&nbsp;            }</b>
-<i class="no-highlight">145</i>&nbsp;            case &quot;movemothernature&quot; -&gt; {
-<b class="nc"><i class="no-highlight">146</i>&nbsp;                if (checkActionRequest()) return;</b>
-<b class="nc"><i class="no-highlight">147</i>&nbsp;                moveMotherNature();</b>
-<b class="nc"><i class="no-highlight">148</i>&nbsp;            }</b>
-<i class="no-highlight">149</i>&nbsp;            case &quot;choosecloud&quot; -&gt; {
-<b class="nc"><i class="no-highlight">150</i>&nbsp;                if (checkActionRequest()) return;</b>
-<b class="nc"><i class="no-highlight">151</i>&nbsp;                chooseCloud();</b>
-<b class="nc"><i class="no-highlight">152</i>&nbsp;            }</b>
-<i class="no-highlight">153</i>&nbsp;            case &quot;endturn&quot; -&gt; {
-<b class="nc"><i class="no-highlight">154</i>&nbsp;                if (checkActionRequest()) return;</b>
-<b class="nc"><i class="no-highlight">155</i>&nbsp;                endTurn();</b>
-<b class="nc"><i class="no-highlight">156</i>&nbsp;            }</b>
-<b class="nc"><i class="no-highlight">157</i>&nbsp;            default -&gt; System.out.println(&quot;Command not valid&quot;);</b>
-<i class="no-highlight">158</i>&nbsp;        }
-<i class="no-highlight">159</i>&nbsp;    }
-<i class="no-highlight">160</i>&nbsp;
-<i class="no-highlight">161</i>&nbsp;    /**
-<i class="no-highlight">162</i>&nbsp;     * This method, after checking the gameMode, takes CharacterCard&#39;s number and extracts the characteCard; basing on CharacterCard type
-<i class="no-highlight">163</i>&nbsp;     * the methods create dynamically the CharacterCardInput by requesting the user only the right input.
-<i class="no-highlight">164</i>&nbsp;     *
-<i class="no-highlight">165</i>&nbsp;     * @throws IOException input has gone wrong
-<i class="no-highlight">166</i>&nbsp;     */
-<i class="no-highlight">167</i>&nbsp;    private void playCharacterCard() throws IOException {
-<i class="no-highlight">168</i>&nbsp;        //check for GameMode&#39;s validity
-<b class="nc"><i class="no-highlight">169</i>&nbsp;        if (this.clientView.getModel().getGameMode() == GameMode.SIMPLE) {</b>
-<b class="nc"><i class="no-highlight">170</i>&nbsp;            System.out.println(&quot;Command valid only in Advanced GameMode&quot;);</b>
-<i class="no-highlight">171</i>&nbsp;            return;
-<i class="no-highlight">172</i>&nbsp;        }
-<i class="no-highlight">173</i>&nbsp;        //Get selected characterCard&#39;s index
-<b class="nc"><i class="no-highlight">174</i>&nbsp;        int selected = getCharacterCardIndex();</b>
-<b class="nc"><i class="no-highlight">175</i>&nbsp;        int finalSelected = selected;</b>
-<i class="no-highlight">176</i>&nbsp;        //get current player
-<b class="nc"><i class="no-highlight">177</i>&nbsp;        PlayerBoard currentPlayer = this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer();</b>
-<i class="no-highlight">178</i>&nbsp;        //extract CharacterCard from GameBoard
-<b class="nc"><i class="no-highlight">179</i>&nbsp;        CharacterCard characterCard = this.clientView.getModel().getCharacterCards().stream().filter(characterCard1 -&gt; characterCard1.getId() == finalSelected).findFirst().get();</b>
-<i class="no-highlight">180</i>&nbsp;        //get selected characterCard&#39;s index from gameBoard
-<b class="nc"><i class="no-highlight">181</i>&nbsp;        selected = IntStream.range(0, 3).filter(i -&gt; this.clientView.getModel().getCharacterCards().get(i).getId() == characterCard.getId()).findFirst().orElse(selected);</b>
-<i class="no-highlight">182</i>&nbsp;        PlayCharacterCard playCharacterCard;
-<i class="no-highlight">183</i>&nbsp;        PlayerActionRequest playerActionRequest;
-<i class="no-highlight">184</i>&nbsp;        //pattern matching switch responsible for redirecting user to right input creation
-<b class="nc"><i class="no-highlight">185</i>&nbsp;        switch (characterCard) {</b>
-<b class="nc"><i class="no-highlight">186</i>&nbsp;            case Card01 card01 -&gt; {</b>
-<i class="no-highlight">187</i>&nbsp;                PawnColour pawnToMove;
-<b class="nc"><i class="no-highlight">188</i>&nbsp;                System.out.println(&quot;Type student&#39;s position (from 0 to 3) to move&quot;);</b>
-<i class="no-highlight">189</i>&nbsp;                //Get selected pawn&#39;s index from 0 to 3 (Card01 contains 4 students)
-<i class="no-highlight">190</i>&nbsp;                while (true) {
-<b class="nc"><i class="no-highlight">191</i>&nbsp;                    selected = getInt();</b>
-<b class="nc"><i class="no-highlight">192</i>&nbsp;                    if (selected &lt; 0 || selected &gt; 3) {</b>
-<b class="nc"><i class="no-highlight">193</i>&nbsp;                        System.out.println(&quot;Index not valid, try again&quot;);</b>
-<i class="no-highlight">194</i>&nbsp;                    } else {
-<i class="no-highlight">195</i>&nbsp;                        break;
-<i class="no-highlight">196</i>&nbsp;                    }
-<i class="no-highlight">197</i>&nbsp;                }
-<i class="no-highlight">198</i>&nbsp;                //get selected pawn having the index
-<b class="nc"><i class="no-highlight">199</i>&nbsp;                pawnToMove = (PawnColour) card01.getState().get(selected);</b>
-<b class="nc"><i class="no-highlight">200</i>&nbsp;                System.out.println(&quot;Type target island&#39;s id&quot;);</b>
-<i class="no-highlight">201</i>&nbsp;                //get Island&#39;s ID
-<b class="nc"><i class="no-highlight">202</i>&nbsp;                Integer IslandId = getInt();</b>
-<i class="no-highlight">203</i>&nbsp;                //create playCharacterCard&#39;s controller action
-<b class="nc"><i class="no-highlight">204</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.of(IslandId), OptionalValue.of(pawnToMove), OptionalValue.empty());</b>
-<i class="no-highlight">205</i>&nbsp;                //create playerActionRequest message to send to the server
-<b class="nc"><i class="no-highlight">206</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
-<b class="nc"><i class="no-highlight">207</i>&nbsp;            }</b>
-<b class="nc"><i class="no-highlight">208</i>&nbsp;            case Card02 ignored -&gt; {</b>
-<i class="no-highlight">209</i>&nbsp;                //create playCharacterCard&#39;s controller action
-<b class="nc"><i class="no-highlight">210</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());</b>
-<i class="no-highlight">211</i>&nbsp;                //create playerActionRequest message to send to the server
-<b class="nc"><i class="no-highlight">212</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
-<b class="nc"><i class="no-highlight">213</i>&nbsp;            }</b>
-<b class="nc"><i class="no-highlight">214</i>&nbsp;            case Card03 ignored1 -&gt; {</b>
-<b class="nc"><i class="no-highlight">215</i>&nbsp;                System.out.println(&quot;Type target island&#39;s id&quot;);</b>
-<i class="no-highlight">216</i>&nbsp;                //get Island&#39;s ID
-<b class="nc"><i class="no-highlight">217</i>&nbsp;                Integer IslandId = getInt();</b>
-<i class="no-highlight">218</i>&nbsp;                //create playCharacterCard&#39;s controller action
-<b class="nc"><i class="no-highlight">219</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.of(IslandId), OptionalValue.empty(), OptionalValue.empty());</b>
-<i class="no-highlight">220</i>&nbsp;                //create playerActionRequest message to send to the server
-<b class="nc"><i class="no-highlight">221</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
-<b class="nc"><i class="no-highlight">222</i>&nbsp;            }</b>
-<b class="nc"><i class="no-highlight">223</i>&nbsp;            case Card04 ignored2 -&gt; {</b>
-<i class="no-highlight">224</i>&nbsp;                //create playCharacterCard&#39;s controller action
-<b class="nc"><i class="no-highlight">225</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());</b>
-<i class="no-highlight">226</i>&nbsp;                //create playerActionRequest message to send to the server
-<b class="nc"><i class="no-highlight">227</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
-<b class="nc"><i class="no-highlight">228</i>&nbsp;            }</b>
-<b class="nc"><i class="no-highlight">229</i>&nbsp;            case Card05 ignored3 -&gt; {</b>
-<b class="nc"><i class="no-highlight">230</i>&nbsp;                System.out.println(&quot;Type target island&#39;s id&quot;);</b>
-<i class="no-highlight">231</i>&nbsp;                //get Island&#39;s ID
-<b class="nc"><i class="no-highlight">232</i>&nbsp;                Integer IslandId = getInt();</b>
-<i class="no-highlight">233</i>&nbsp;                //create playCharacterCard&#39;s controller action
-<b class="nc"><i class="no-highlight">234</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.of(IslandId), OptionalValue.empty(), OptionalValue.empty());</b>
-<i class="no-highlight">235</i>&nbsp;                //create playerActionRequest message to send to the server
-<b class="nc"><i class="no-highlight">236</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
-<b class="nc"><i class="no-highlight">237</i>&nbsp;            }</b>
-<b class="nc"><i class="no-highlight">238</i>&nbsp;            case Card06 ignored4 -&gt; {</b>
-<i class="no-highlight">239</i>&nbsp;                //create playCharacterCard&#39;s controller action
-<b class="nc"><i class="no-highlight">240</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());</b>
-<i class="no-highlight">241</i>&nbsp;                //create playerActionRequest message to send to the server
-<b class="nc"><i class="no-highlight">242</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
-<b class="nc"><i class="no-highlight">243</i>&nbsp;            }</b>
-<b class="nc"><i class="no-highlight">244</i>&nbsp;            case Card07 card07 -&gt; {</b>
-<b class="nc"><i class="no-highlight">245</i>&nbsp;                System.out.println(&quot;You can now type up to 3 pairs to exchange, the first element coming from the entrance and the second one from the card\n&quot; +</b>
-<i class="no-highlight">246</i>&nbsp;                        &quot;Press &#39;enter&#39; after a pair if you want to exchange less than 3 pairs&quot;);
-<i class="no-highlight">247</i>&nbsp;                //create List of Pairs which will contain up to 3 pairs of pawns
-<b class="nc"><i class="no-highlight">248</i>&nbsp;                List&lt;Pair&lt;PawnColour, PawnColour&gt;&gt; pairs = new ArrayList&lt;&gt;();</b>
-<i class="no-highlight">249</i>&nbsp;                //index containing pawn&#39;s index in currentPlayers&#39; entrance
-<i class="no-highlight">250</i>&nbsp;                OptionalValue&lt;Integer&gt; PawnPosition;
-<i class="no-highlight">251</i>&nbsp;                //index containing pawn&#39;s index inside the card
-<i class="no-highlight">252</i>&nbsp;                int cardIndex;
-<i class="no-highlight">253</i>&nbsp;                outerWhile:
-<i class="no-highlight">254</i>&nbsp;                do {
-<b class="nc"><i class="no-highlight">255</i>&nbsp;                    System.out.println(&quot;Insert entrance&#39;s position containing the pawn to move, or &#39;enter&#39; to conclude the choice&quot;);</b>
-<i class="no-highlight">256</i>&nbsp;                    do {
-<i class="no-highlight">257</i>&nbsp;                        //get pawn&#39;s index (that one coming from entrance)
-<b class="nc"><i class="no-highlight">258</i>&nbsp;                        PawnPosition = getOptionalInt();</b>
-<i class="no-highlight">259</i>&nbsp;                        //if user pressed &#39;enter&#39; the input will interrupt (the user can choose less than 3 pairs)
-<b class="nc"><i class="no-highlight">260</i>&nbsp;                        if (PawnPosition.isEmpty()) break outerWhile;</b>
-<i class="no-highlight">261</i>&nbsp;                        //check whether user typed an invalid index
-<b class="nc"><i class="no-highlight">262</i>&nbsp;                        if (PawnPosition.get() &lt; 0 || PawnPosition.get() &gt;= currentPlayer.getEntranceStudents().size())</b>
-<b class="nc"><i class="no-highlight">263</i>&nbsp;                            System.out.println(&quot;Target Entrance Position invalid&quot;);</b>
-<i class="no-highlight">264</i>&nbsp;                        else break;
-<i class="no-highlight">265</i>&nbsp;                    } while (true);
-<b class="nc"><i class="no-highlight">266</i>&nbsp;                    System.out.println(&quot;Select pawn&#39;s index from card&quot;);</b>
-<i class="no-highlight">267</i>&nbsp;                    do {
-<i class="no-highlight">268</i>&nbsp;                        //get pawn&#39;s index (that one coming from the card)
-<b class="nc"><i class="no-highlight">269</i>&nbsp;                        cardIndex = getInt();</b>
-<i class="no-highlight">270</i>&nbsp;                        //check whether user typed an invalid index
-<b class="nc"><i class="no-highlight">271</i>&nbsp;                        if (cardIndex &lt; 0 || cardIndex &gt;= card07.getState().size())</b>
-<b class="nc"><i class="no-highlight">272</i>&nbsp;                            System.out.println(&quot;Target Card Position invalid&quot;);</b>
-<i class="no-highlight">273</i>&nbsp;                        else {
-<i class="no-highlight">274</i>&nbsp;                            break;
-<i class="no-highlight">275</i>&nbsp;                        }
-<i class="no-highlight">276</i>&nbsp;                    } while (true);
-<i class="no-highlight">277</i>&nbsp;                    //add to the list containing the pairs the one just chosen by the user
-<b class="nc"><i class="no-highlight">278</i>&nbsp;                    pairs.add(new Pair&lt;&gt;(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), (PawnColour) card07.getState().get(cardIndex)));</b>
-<i class="no-highlight">279</i>&nbsp;                    //repeat the loop until the user has selected 3 pairs or pressed &#39;enter&#39;
-<b class="nc"><i class="no-highlight">280</i>&nbsp;                } while (pairs.size() &lt; 3);</b>
-<i class="no-highlight">281</i>&nbsp;                //create playCharacterCard&#39;s controller action
-<b class="nc"><i class="no-highlight">282</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.of(pairs));</b>
-<i class="no-highlight">283</i>&nbsp;                //create playerActionRequest message to send to the server
-<b class="nc"><i class="no-highlight">284</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
-<b class="nc"><i class="no-highlight">285</i>&nbsp;            }</b>
-<b class="nc"><i class="no-highlight">286</i>&nbsp;            case Card08 ignored5 -&gt; {</b>
-<b class="nc"><i class="no-highlight">287</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());</b>
-<i class="no-highlight">288</i>&nbsp;                //create playerActionRequest message to send to the server
-<b class="nc"><i class="no-highlight">289</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
-<b class="nc"><i class="no-highlight">290</i>&nbsp;            }</b>
-<b class="nc"><i class="no-highlight">291</i>&nbsp;            case Card09 ignored6 -&gt; {</b>
-<b class="nc"><i class="no-highlight">292</i>&nbsp;                System.out.println(&quot;type the colour to make it irrelevant during this turn&quot;);</b>
-<i class="no-highlight">293</i>&nbsp;                //create playerActionRequest message to send to the server
-<b class="nc"><i class="no-highlight">294</i>&nbsp;                playerActionRequest = createPlayerActionByPawnColour(selected, currentPlayer);</b>
-<b class="nc"><i class="no-highlight">295</i>&nbsp;            }</b>
-<b class="nc"><i class="no-highlight">296</i>&nbsp;            case Card10 ignored7 -&gt; {</b>
-<b class="nc"><i class="no-highlight">297</i>&nbsp;                System.out.println(&quot;You can now type up to 2 pairs to exchange, the first element coming from the entrance and the second one from the dining room\n&quot; +</b>
-<i class="no-highlight">298</i>&nbsp;                        &quot;Press &#39;enter&#39; after a pair if you want to exchange less than 2 pairs&quot;);
-<i class="no-highlight">299</i>&nbsp;                //create List of Pairs which will contain up to 2 pairs of pawns
-<b class="nc"><i class="no-highlight">300</i>&nbsp;                List&lt;Pair&lt;PawnColour, PawnColour&gt;&gt; pairs = new ArrayList&lt;&gt;();</b>
-<i class="no-highlight">301</i>&nbsp;                //index containing pawn&#39;s index in currentPlayers&#39; entrance
-<i class="no-highlight">302</i>&nbsp;                OptionalValue&lt;Integer&gt; PawnPosition;
-<i class="no-highlight">303</i>&nbsp;                outerWhile:
-<i class="no-highlight">304</i>&nbsp;                do {
-<b class="nc"><i class="no-highlight">305</i>&nbsp;                    System.out.println(&quot;Insert entrance&#39;s position containing the pawn to move, or &#39;enter&#39; to conclude the choice&quot;);</b>
-<i class="no-highlight">306</i>&nbsp;                    do {
-<i class="no-highlight">307</i>&nbsp;                        //get pawn&#39;s index (that one coming from entrance)
-<b class="nc"><i class="no-highlight">308</i>&nbsp;                        PawnPosition = getOptionalInt();</b>
-<i class="no-highlight">309</i>&nbsp;                        //if user pressed &#39;enter&#39; the input will interrupt (the user can choose less than 3 pairs)
-<b class="nc"><i class="no-highlight">310</i>&nbsp;                        if (PawnPosition.isEmpty()) break outerWhile;</b>
-<i class="no-highlight">311</i>&nbsp;                        //check whether user typed an invalid index
-<b class="nc"><i class="no-highlight">312</i>&nbsp;                        if (PawnPosition.get() &lt; 0 || PawnPosition.get() &gt;= currentPlayer.getEntranceStudents().size())</b>
-<b class="nc"><i class="no-highlight">313</i>&nbsp;                            System.out.println(&quot;Target Entrance Position invalid&quot;);</b>
-<i class="no-highlight">314</i>&nbsp;                        else {
-<i class="no-highlight">315</i>&nbsp;                            break;
-<i class="no-highlight">316</i>&nbsp;                        }
-<i class="no-highlight">317</i>&nbsp;                    } while (true);
-<b class="nc"><i class="no-highlight">318</i>&nbsp;                    System.out.println(&quot;Select diningRoom&#39;s colour&quot;);</b>
-<b class="nc"><i class="no-highlight">319</i>&nbsp;                    boolean repeat = true;</b>
-<i class="no-highlight">320</i>&nbsp;                    //get the selected PawnColour from stdIn and add the pair to the list
-<i class="no-highlight">321</i>&nbsp;                    do {
-<b class="nc"><i class="no-highlight">322</i>&nbsp;                        switch (stdIn.readLine().toLowerCase()) {</b>
-<i class="no-highlight">323</i>&nbsp;                            case &quot;red&quot; -&gt; {
-<b class="nc"><i class="no-highlight">324</i>&nbsp;                                pairs.add(new Pair&lt;&gt;(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), PawnColour.RED));</b>
-<b class="nc"><i class="no-highlight">325</i>&nbsp;                                repeat = false;</b>
-<b class="nc"><i class="no-highlight">326</i>&nbsp;                            }</b>
-<i class="no-highlight">327</i>&nbsp;                            case &quot;yellow&quot; -&gt; {
-<b class="nc"><i class="no-highlight">328</i>&nbsp;                                pairs.add(new Pair&lt;&gt;(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), PawnColour.YELLOW));</b>
-<b class="nc"><i class="no-highlight">329</i>&nbsp;                                repeat = false;</b>
-<b class="nc"><i class="no-highlight">330</i>&nbsp;                            }</b>
-<i class="no-highlight">331</i>&nbsp;                            case &quot;green&quot; -&gt; {
-<b class="nc"><i class="no-highlight">332</i>&nbsp;                                pairs.add(new Pair&lt;&gt;(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), PawnColour.GREEN));</b>
-<b class="nc"><i class="no-highlight">333</i>&nbsp;                                repeat = false;</b>
-<b class="nc"><i class="no-highlight">334</i>&nbsp;                            }</b>
-<i class="no-highlight">335</i>&nbsp;                            case &quot;pink&quot; -&gt; {
-<b class="nc"><i class="no-highlight">336</i>&nbsp;                                pairs.add(new Pair&lt;&gt;(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), PawnColour.PINK));</b>
-<b class="nc"><i class="no-highlight">337</i>&nbsp;                                repeat = false;</b>
-<b class="nc"><i class="no-highlight">338</i>&nbsp;                            }</b>
-<i class="no-highlight">339</i>&nbsp;                            case &quot;blue&quot; -&gt; {
-<b class="nc"><i class="no-highlight">340</i>&nbsp;                                pairs.add(new Pair&lt;&gt;(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), PawnColour.BLUE));</b>
-<b class="nc"><i class="no-highlight">341</i>&nbsp;                                repeat = false;</b>
-<b class="nc"><i class="no-highlight">342</i>&nbsp;                            }</b>
-<b class="nc"><i class="no-highlight">343</i>&nbsp;                            case default -&gt; System.out.println(&quot;Colour not valid, try again&quot;);</b>
-<i class="no-highlight">344</i>&nbsp;                        }
-<i class="no-highlight">345</i>&nbsp;                        //repeat whether the user typed an invalid PawnColour
-<b class="nc"><i class="no-highlight">346</i>&nbsp;                    } while (repeat);</b>
-<i class="no-highlight">347</i>&nbsp;                    //repeat the loop until the user has selected 2 pairs or pressed &#39;enter&#39;
-<b class="nc"><i class="no-highlight">348</i>&nbsp;                } while (pairs.size() &lt; 2);</b>
-<i class="no-highlight">349</i>&nbsp;                //create playCharacterCard&#39;s controller action
-<b class="nc"><i class="no-highlight">350</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(),</b>
-<i class="no-highlight">351</i>&nbsp;                        selected,
+<b class="nc"><i class="no-highlight">47</i>&nbsp;    public CliWriter(SocketWrapper socketWrapper, ClientView clientView, BufferedReader bufferedReader, CyclicBarrier cyclicBarrier) {</b>
+<b class="nc"><i class="no-highlight">48</i>&nbsp;        this.socketWrapper = socketWrapper;</b>
+<b class="nc"><i class="no-highlight">49</i>&nbsp;        this.clientView = clientView;</b>
+<b class="nc"><i class="no-highlight">50</i>&nbsp;        this.stdIn = bufferedReader;</b>
+<b class="nc"><i class="no-highlight">51</i>&nbsp;        this.cyclicBarrier = cyclicBarrier;</b>
+<i class="no-highlight">52</i>&nbsp;    }
+<i class="no-highlight">53</i>&nbsp;
+<i class="no-highlight">54</i>&nbsp;    @Override
+<i class="no-highlight">55</i>&nbsp;    public void run() {
+<i class="no-highlight">56</i>&nbsp;        try {
+<i class="no-highlight">57</i>&nbsp;            //wait for the CliReader to receive the confirmation of successful connection to the server
+<b class="nc"><i class="no-highlight">58</i>&nbsp;            cyclicBarrier.await();</b>
+<b class="nc"><i class="no-highlight">59</i>&nbsp;        } catch (BrokenBarrierException | InterruptedException e) {</b>
+<b class="nc"><i class="no-highlight">60</i>&nbsp;            throw new RuntimeException(e);</b>
+<b class="nc"><i class="no-highlight">61</i>&nbsp;        }</b>
+<i class="no-highlight">62</i>&nbsp;        //exit the Thread whether the client was not able to connect to the server
+<b class="nc"><i class="no-highlight">63</i>&nbsp;        if (!this.clientView.isConnected()) {</b>
+<i class="no-highlight">64</i>&nbsp;            return;
+<i class="no-highlight">65</i>&nbsp;        }
+<i class="no-highlight">66</i>&nbsp;        try {
+<b class="nc"><i class="no-highlight">67</i>&nbsp;            System.out.println(</b>
+<i class="no-highlight">68</i>&nbsp;                    &quot;&quot;&quot;
+<i class="no-highlight">69</i>&nbsp;                            ERIANTYS
+<i class="no-highlight">70</i>&nbsp;                            Welcome Player
+<i class="no-highlight">71</i>&nbsp;                            &quot;&quot;&quot;
+<i class="no-highlight">72</i>&nbsp;            );
+<i class="no-highlight">73</i>&nbsp;            String nickname;
+<i class="no-highlight">74</i>&nbsp;            while (true) {
+<b class="nc"><i class="no-highlight">75</i>&nbsp;                System.out.println(&quot;Insert Username:&quot;);</b>
+<i class="no-highlight">76</i>&nbsp;                //acquire Username from stdIn
+<b class="nc"><i class="no-highlight">77</i>&nbsp;                nickname = stdIn.readLine();</b>
+<b class="nc"><i class="no-highlight">78</i>&nbsp;                if (!this.clientView.isConnected()) return;</b>
+<i class="no-highlight">79</i>&nbsp;                //whether at least one between nickname and password is empty then repeat the login process
+<b class="nc"><i class="no-highlight">80</i>&nbsp;                if (nickname.equals(&quot;&quot;)) {</b>
+<b class="nc"><i class="no-highlight">81</i>&nbsp;                    System.out.println(&quot;Username not well formatted&quot;);</b>
+<i class="no-highlight">82</i>&nbsp;                } else {
+<b class="nc"><i class="no-highlight">83</i>&nbsp;                    if (!this.clientView.isConnected()) return;</b>
+<i class="no-highlight">84</i>&nbsp;                    //create and initialize the DeclarePlayer request
+<b class="nc"><i class="no-highlight">85</i>&nbsp;                    DeclarePlayerRequest dp = new DeclarePlayerRequest(nickname);</b>
+<i class="no-highlight">86</i>&nbsp;                    //send the request to the server
+<b class="nc"><i class="no-highlight">87</i>&nbsp;                    socketWrapper.sendMessage(dp);</b>
+<i class="no-highlight">88</i>&nbsp;                    //wait for the CliReader to receive the confirmation of successful login
+<b class="nc"><i class="no-highlight">89</i>&nbsp;                    cyclicBarrier.await();</b>
+<i class="no-highlight">90</i>&nbsp;                    //check if this Client is connected
+<b class="nc"><i class="no-highlight">91</i>&nbsp;                    if (this.clientView.isLogged()) {</b>
+<b class="nc"><i class="no-highlight">92</i>&nbsp;                        break;</b>
+<i class="no-highlight">93</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">94</i>&nbsp;                }</b>
+<i class="no-highlight">95</i>&nbsp;                //repeat until user has typed Username and password correctly (syntactically) or typed password is wrong
+<i class="no-highlight">96</i>&nbsp;            }
+<i class="no-highlight">97</i>&nbsp;            //set nickname in clientView object
+<b class="nc"><i class="no-highlight">98</i>&nbsp;            this.clientView.setNickname(nickname);</b>
+<i class="no-highlight">99</i>&nbsp;            String input;
+<b class="nc"><i class="no-highlight">100</i>&nbsp;            if (!this.clientView.isConnected()) Thread.currentThread().interrupt();</b>
+<i class="no-highlight">101</i>&nbsp;            while (true) {
+<i class="no-highlight">102</i>&nbsp;                //acquire command from stdIn
+<b class="nc"><i class="no-highlight">103</i>&nbsp;                input = stdIn.readLine();</b>
+<b class="nc"><i class="no-highlight">104</i>&nbsp;                if (!this.clientView.isConnected()) return;</b>
+<i class="no-highlight">105</i>&nbsp;                //execute command
+<b class="nc"><i class="no-highlight">106</i>&nbsp;                elaborateInput(input);</b>
+<i class="no-highlight">107</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">108</i>&nbsp;        } catch (IOException | BrokenBarrierException e) {</b>
+<b class="nc"><i class="no-highlight">109</i>&nbsp;            System.out.println(&quot;IO exception when reading from stdIn.&quot;);</b>
+<b class="nc"><i class="no-highlight">110</i>&nbsp;            e.printStackTrace();</b>
+<b class="nc"><i class="no-highlight">111</i>&nbsp;        } catch (InterruptedException e) {</b>
+<b class="nc"><i class="no-highlight">112</i>&nbsp;            throw new RuntimeException(e);</b>
+<b class="nc"><i class="no-highlight">113</i>&nbsp;        }</b>
+<i class="no-highlight">114</i>&nbsp;    }
+<i class="no-highlight">115</i>&nbsp;
+<i class="no-highlight">116</i>&nbsp;    /**
+<i class="no-highlight">117</i>&nbsp;     * This method, given a String, executes the proper method according to User&#39;s request
+<i class="no-highlight">118</i>&nbsp;     *
+<i class="no-highlight">119</i>&nbsp;     * @param userInput: text containing the command
+<i class="no-highlight">120</i>&nbsp;     * @throws IOException the integer read from command line
+<i class="no-highlight">121</i>&nbsp;     */
+<i class="no-highlight">122</i>&nbsp;    private void elaborateInput(String userInput) throws IOException {
+<b class="nc"><i class="no-highlight">123</i>&nbsp;        switch (userInput.toLowerCase()) {</b>
+<b class="nc"><i class="no-highlight">124</i>&nbsp;            case &quot;showactions&quot; -&gt; printActions();</b>
+<b class="nc"><i class="no-highlight">125</i>&nbsp;            case &quot;createlobby&quot; -&gt; createLobby();</b>
+<b class="nc"><i class="no-highlight">126</i>&nbsp;            case &quot;joinlobby&quot; -&gt; joinLobby();</b>
+<b class="nc"><i class="no-highlight">127</i>&nbsp;            case &quot;startgame&quot; -&gt; startGame();</b>
+<i class="no-highlight">128</i>&nbsp;            case &quot;charactercardinfo&quot; -&gt; {
+<b class="nc"><i class="no-highlight">129</i>&nbsp;                if (checkActionRequest()) return;</b>
+<b class="nc"><i class="no-highlight">130</i>&nbsp;                characterCardInfo();</b>
+<b class="nc"><i class="no-highlight">131</i>&nbsp;            }</b>
+<i class="no-highlight">132</i>&nbsp;            case &quot;playassistantcard&quot; -&gt; {
+<b class="nc"><i class="no-highlight">133</i>&nbsp;                if (checkActionRequest()) return;</b>
+<b class="nc"><i class="no-highlight">134</i>&nbsp;                playAssistantCard();</b>
+<b class="nc"><i class="no-highlight">135</i>&nbsp;            }</b>
+<i class="no-highlight">136</i>&nbsp;            case &quot;playcharactercard&quot; -&gt; {
+<b class="nc"><i class="no-highlight">137</i>&nbsp;                if (checkActionRequest()) return;</b>
+<b class="nc"><i class="no-highlight">138</i>&nbsp;                playCharacterCard();</b>
+<b class="nc"><i class="no-highlight">139</i>&nbsp;            }</b>
+<i class="no-highlight">140</i>&nbsp;            case &quot;movestudent&quot; -&gt; {
+<b class="nc"><i class="no-highlight">141</i>&nbsp;                if (checkActionRequest()) return;</b>
+<b class="nc"><i class="no-highlight">142</i>&nbsp;                moveStudent();</b>
+<b class="nc"><i class="no-highlight">143</i>&nbsp;            }</b>
+<i class="no-highlight">144</i>&nbsp;            case &quot;movemothernature&quot; -&gt; {
+<b class="nc"><i class="no-highlight">145</i>&nbsp;                if (checkActionRequest()) return;</b>
+<b class="nc"><i class="no-highlight">146</i>&nbsp;                moveMotherNature();</b>
+<b class="nc"><i class="no-highlight">147</i>&nbsp;            }</b>
+<i class="no-highlight">148</i>&nbsp;            case &quot;choosecloud&quot; -&gt; {
+<b class="nc"><i class="no-highlight">149</i>&nbsp;                if (checkActionRequest()) return;</b>
+<b class="nc"><i class="no-highlight">150</i>&nbsp;                chooseCloud();</b>
+<b class="nc"><i class="no-highlight">151</i>&nbsp;            }</b>
+<i class="no-highlight">152</i>&nbsp;            case &quot;endturn&quot; -&gt; {
+<b class="nc"><i class="no-highlight">153</i>&nbsp;                if (checkActionRequest()) return;</b>
+<b class="nc"><i class="no-highlight">154</i>&nbsp;                endTurn();</b>
+<b class="nc"><i class="no-highlight">155</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">156</i>&nbsp;            default -&gt; System.out.println(&quot;Command not valid&quot;);</b>
+<i class="no-highlight">157</i>&nbsp;        }
+<i class="no-highlight">158</i>&nbsp;    }
+<i class="no-highlight">159</i>&nbsp;
+<i class="no-highlight">160</i>&nbsp;    /**
+<i class="no-highlight">161</i>&nbsp;     * This method, after checking the gameMode, takes CharacterCard&#39;s number and extracts the characteCard; basing on CharacterCard type
+<i class="no-highlight">162</i>&nbsp;     * the methods create dynamically the CharacterCardInput by requesting the user only the right input.
+<i class="no-highlight">163</i>&nbsp;     *
+<i class="no-highlight">164</i>&nbsp;     * @throws IOException input has gone wrong
+<i class="no-highlight">165</i>&nbsp;     */
+<i class="no-highlight">166</i>&nbsp;    private void playCharacterCard() throws IOException {
+<i class="no-highlight">167</i>&nbsp;        //check for GameMode&#39;s validity
+<b class="nc"><i class="no-highlight">168</i>&nbsp;        if (this.clientView.getModel().getGameMode() == GameMode.SIMPLE) {</b>
+<b class="nc"><i class="no-highlight">169</i>&nbsp;            System.out.println(&quot;Command valid only in Advanced GameMode&quot;);</b>
+<i class="no-highlight">170</i>&nbsp;            return;
+<i class="no-highlight">171</i>&nbsp;        }
+<i class="no-highlight">172</i>&nbsp;        //Get selected characterCard&#39;s index
+<b class="nc"><i class="no-highlight">173</i>&nbsp;        int selected = getCharacterCardIndex();</b>
+<b class="nc"><i class="no-highlight">174</i>&nbsp;        int finalSelected = selected;</b>
+<i class="no-highlight">175</i>&nbsp;        //get current player
+<b class="nc"><i class="no-highlight">176</i>&nbsp;        PlayerBoard currentPlayer = this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer();</b>
+<i class="no-highlight">177</i>&nbsp;        //extract CharacterCard from GameBoard
+<b class="nc"><i class="no-highlight">178</i>&nbsp;        CharacterCard characterCard = this.clientView.getModel().getCharacterCards().stream().filter(characterCard1 -&gt; characterCard1.getId() == finalSelected).findFirst().get();</b>
+<i class="no-highlight">179</i>&nbsp;        //get selected characterCard&#39;s index from gameBoard
+<b class="nc"><i class="no-highlight">180</i>&nbsp;        selected = IntStream.range(0, 3).filter(i -&gt; this.clientView.getModel().getCharacterCards().get(i).getId() == characterCard.getId()).findFirst().orElse(selected);</b>
+<i class="no-highlight">181</i>&nbsp;        PlayCharacterCard playCharacterCard;
+<i class="no-highlight">182</i>&nbsp;        PlayerActionRequest playerActionRequest;
+<i class="no-highlight">183</i>&nbsp;        //pattern matching switch responsible for redirecting user to right input creation
+<b class="nc"><i class="no-highlight">184</i>&nbsp;        switch (characterCard) {</b>
+<b class="nc"><i class="no-highlight">185</i>&nbsp;            case Card01 card01 -&gt; {</b>
+<i class="no-highlight">186</i>&nbsp;                PawnColour pawnToMove;
+<b class="nc"><i class="no-highlight">187</i>&nbsp;                System.out.println(&quot;Type student&#39;s position (from 0 to 3) to move&quot;);</b>
+<i class="no-highlight">188</i>&nbsp;                //Get selected pawn&#39;s index from 0 to 3 (Card01 contains 4 students)
+<i class="no-highlight">189</i>&nbsp;                while (true) {
+<b class="nc"><i class="no-highlight">190</i>&nbsp;                    selected = getInt();</b>
+<b class="nc"><i class="no-highlight">191</i>&nbsp;                    if (selected &lt; 0 || selected &gt; 3) {</b>
+<b class="nc"><i class="no-highlight">192</i>&nbsp;                        System.out.println(&quot;Index not valid, try again&quot;);</b>
+<i class="no-highlight">193</i>&nbsp;                    } else {
+<i class="no-highlight">194</i>&nbsp;                        break;
+<i class="no-highlight">195</i>&nbsp;                    }
+<i class="no-highlight">196</i>&nbsp;                }
+<i class="no-highlight">197</i>&nbsp;                //get selected pawn having the index
+<b class="nc"><i class="no-highlight">198</i>&nbsp;                pawnToMove = (PawnColour) card01.getState().get(selected);</b>
+<b class="nc"><i class="no-highlight">199</i>&nbsp;                System.out.println(&quot;Type target island&#39;s id&quot;);</b>
+<i class="no-highlight">200</i>&nbsp;                //get Island&#39;s ID
+<b class="nc"><i class="no-highlight">201</i>&nbsp;                Integer IslandId = getInt();</b>
+<i class="no-highlight">202</i>&nbsp;                //create playCharacterCard&#39;s controller action
+<b class="nc"><i class="no-highlight">203</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.of(IslandId), OptionalValue.of(pawnToMove), OptionalValue.empty());</b>
+<i class="no-highlight">204</i>&nbsp;                //create playerActionRequest message to send to the server
+<b class="nc"><i class="no-highlight">205</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">206</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">207</i>&nbsp;            case Card02 ignored -&gt; {</b>
+<i class="no-highlight">208</i>&nbsp;                //create playCharacterCard&#39;s controller action
+<b class="nc"><i class="no-highlight">209</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());</b>
+<i class="no-highlight">210</i>&nbsp;                //create playerActionRequest message to send to the server
+<b class="nc"><i class="no-highlight">211</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">212</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">213</i>&nbsp;            case Card03 ignored1 -&gt; {</b>
+<b class="nc"><i class="no-highlight">214</i>&nbsp;                System.out.println(&quot;Type target island&#39;s id&quot;);</b>
+<i class="no-highlight">215</i>&nbsp;                //get Island&#39;s ID
+<b class="nc"><i class="no-highlight">216</i>&nbsp;                Integer IslandId = getInt();</b>
+<i class="no-highlight">217</i>&nbsp;                //create playCharacterCard&#39;s controller action
+<b class="nc"><i class="no-highlight">218</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.of(IslandId), OptionalValue.empty(), OptionalValue.empty());</b>
+<i class="no-highlight">219</i>&nbsp;                //create playerActionRequest message to send to the server
+<b class="nc"><i class="no-highlight">220</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">221</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">222</i>&nbsp;            case Card04 ignored2 -&gt; {</b>
+<i class="no-highlight">223</i>&nbsp;                //create playCharacterCard&#39;s controller action
+<b class="nc"><i class="no-highlight">224</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());</b>
+<i class="no-highlight">225</i>&nbsp;                //create playerActionRequest message to send to the server
+<b class="nc"><i class="no-highlight">226</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">227</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">228</i>&nbsp;            case Card05 ignored3 -&gt; {</b>
+<b class="nc"><i class="no-highlight">229</i>&nbsp;                System.out.println(&quot;Type target island&#39;s id&quot;);</b>
+<i class="no-highlight">230</i>&nbsp;                //get Island&#39;s ID
+<b class="nc"><i class="no-highlight">231</i>&nbsp;                Integer IslandId = getInt();</b>
+<i class="no-highlight">232</i>&nbsp;                //create playCharacterCard&#39;s controller action
+<b class="nc"><i class="no-highlight">233</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.of(IslandId), OptionalValue.empty(), OptionalValue.empty());</b>
+<i class="no-highlight">234</i>&nbsp;                //create playerActionRequest message to send to the server
+<b class="nc"><i class="no-highlight">235</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">236</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">237</i>&nbsp;            case Card06 ignored4 -&gt; {</b>
+<i class="no-highlight">238</i>&nbsp;                //create playCharacterCard&#39;s controller action
+<b class="nc"><i class="no-highlight">239</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());</b>
+<i class="no-highlight">240</i>&nbsp;                //create playerActionRequest message to send to the server
+<b class="nc"><i class="no-highlight">241</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">242</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">243</i>&nbsp;            case Card07 card07 -&gt; {</b>
+<b class="nc"><i class="no-highlight">244</i>&nbsp;                System.out.println(&quot;You can now type up to 3 pairs to exchange, the first element coming from the entrance and the second one from the card\n&quot; +</b>
+<i class="no-highlight">245</i>&nbsp;                        &quot;Press &#39;enter&#39; after a pair if you want to exchange less than 3 pairs&quot;);
+<i class="no-highlight">246</i>&nbsp;                //create List of Pairs which will contain up to 3 pairs of pawns
+<b class="nc"><i class="no-highlight">247</i>&nbsp;                List&lt;Pair&lt;PawnColour, PawnColour&gt;&gt; pairs = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">248</i>&nbsp;                //index containing pawn&#39;s index in currentPlayers&#39; entrance
+<i class="no-highlight">249</i>&nbsp;                OptionalValue&lt;Integer&gt; PawnPosition;
+<i class="no-highlight">250</i>&nbsp;                //index containing pawn&#39;s index inside the card
+<i class="no-highlight">251</i>&nbsp;                int cardIndex;
+<i class="no-highlight">252</i>&nbsp;                outerWhile:
+<i class="no-highlight">253</i>&nbsp;                do {
+<b class="nc"><i class="no-highlight">254</i>&nbsp;                    System.out.println(&quot;Insert entrance&#39;s position containing the pawn to move, or &#39;enter&#39; to conclude the choice&quot;);</b>
+<i class="no-highlight">255</i>&nbsp;                    do {
+<i class="no-highlight">256</i>&nbsp;                        //get pawn&#39;s index (that one coming from entrance)
+<b class="nc"><i class="no-highlight">257</i>&nbsp;                        PawnPosition = getOptionalInt();</b>
+<i class="no-highlight">258</i>&nbsp;                        //if user pressed &#39;enter&#39; the input will interrupt (the user can choose less than 3 pairs)
+<b class="nc"><i class="no-highlight">259</i>&nbsp;                        if (PawnPosition.isEmpty()) break outerWhile;</b>
+<i class="no-highlight">260</i>&nbsp;                        //check whether user typed an invalid index
+<b class="nc"><i class="no-highlight">261</i>&nbsp;                        if (PawnPosition.get() &lt; 0 || PawnPosition.get() &gt;= currentPlayer.getEntranceStudents().size())</b>
+<b class="nc"><i class="no-highlight">262</i>&nbsp;                            System.out.println(&quot;Target Entrance Position invalid&quot;);</b>
+<i class="no-highlight">263</i>&nbsp;                        else break;
+<i class="no-highlight">264</i>&nbsp;                    } while (true);
+<b class="nc"><i class="no-highlight">265</i>&nbsp;                    System.out.println(&quot;Select pawn&#39;s index from card&quot;);</b>
+<i class="no-highlight">266</i>&nbsp;                    do {
+<i class="no-highlight">267</i>&nbsp;                        //get pawn&#39;s index (that one coming from the card)
+<b class="nc"><i class="no-highlight">268</i>&nbsp;                        cardIndex = getInt();</b>
+<i class="no-highlight">269</i>&nbsp;                        //check whether user typed an invalid index
+<b class="nc"><i class="no-highlight">270</i>&nbsp;                        if (cardIndex &lt; 0 || cardIndex &gt;= card07.getState().size())</b>
+<b class="nc"><i class="no-highlight">271</i>&nbsp;                            System.out.println(&quot;Target Card Position invalid&quot;);</b>
+<i class="no-highlight">272</i>&nbsp;                        else {
+<i class="no-highlight">273</i>&nbsp;                            break;
+<i class="no-highlight">274</i>&nbsp;                        }
+<i class="no-highlight">275</i>&nbsp;                    } while (true);
+<i class="no-highlight">276</i>&nbsp;                    //add to the list containing the pairs the one just chosen by the user
+<b class="nc"><i class="no-highlight">277</i>&nbsp;                    pairs.add(new Pair&lt;&gt;(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), (PawnColour) card07.getState().get(cardIndex)));</b>
+<i class="no-highlight">278</i>&nbsp;                    //repeat the loop until the user has selected 3 pairs or pressed &#39;enter&#39;
+<b class="nc"><i class="no-highlight">279</i>&nbsp;                } while (pairs.size() &lt; 3);</b>
+<i class="no-highlight">280</i>&nbsp;                //create playCharacterCard&#39;s controller action
+<b class="nc"><i class="no-highlight">281</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.of(pairs));</b>
+<i class="no-highlight">282</i>&nbsp;                //create playerActionRequest message to send to the server
+<b class="nc"><i class="no-highlight">283</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">284</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">285</i>&nbsp;            case Card08 ignored5 -&gt; {</b>
+<b class="nc"><i class="no-highlight">286</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());</b>
+<i class="no-highlight">287</i>&nbsp;                //create playerActionRequest message to send to the server
+<b class="nc"><i class="no-highlight">288</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">289</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">290</i>&nbsp;            case Card09 ignored6 -&gt; {</b>
+<b class="nc"><i class="no-highlight">291</i>&nbsp;                System.out.println(&quot;type the colour to make it irrelevant during this turn&quot;);</b>
+<i class="no-highlight">292</i>&nbsp;                //create playerActionRequest message to send to the server
+<b class="nc"><i class="no-highlight">293</i>&nbsp;                playerActionRequest = createPlayerActionByPawnColour(selected, currentPlayer);</b>
+<b class="nc"><i class="no-highlight">294</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">295</i>&nbsp;            case Card10 ignored7 -&gt; {</b>
+<b class="nc"><i class="no-highlight">296</i>&nbsp;                System.out.println(&quot;You can now type up to 2 pairs to exchange, the first element coming from the entrance and the second one from the dining room\n&quot; +</b>
+<i class="no-highlight">297</i>&nbsp;                        &quot;Press &#39;enter&#39; after a pair if you want to exchange less than 2 pairs&quot;);
+<i class="no-highlight">298</i>&nbsp;                //create List of Pairs which will contain up to 2 pairs of pawns
+<b class="nc"><i class="no-highlight">299</i>&nbsp;                List&lt;Pair&lt;PawnColour, PawnColour&gt;&gt; pairs = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">300</i>&nbsp;                //index containing pawn&#39;s index in currentPlayers&#39; entrance
+<i class="no-highlight">301</i>&nbsp;                OptionalValue&lt;Integer&gt; PawnPosition;
+<i class="no-highlight">302</i>&nbsp;                outerWhile:
+<i class="no-highlight">303</i>&nbsp;                do {
+<b class="nc"><i class="no-highlight">304</i>&nbsp;                    System.out.println(&quot;Insert entrance&#39;s position containing the pawn to move, or &#39;enter&#39; to conclude the choice&quot;);</b>
+<i class="no-highlight">305</i>&nbsp;                    do {
+<i class="no-highlight">306</i>&nbsp;                        //get pawn&#39;s index (that one coming from entrance)
+<b class="nc"><i class="no-highlight">307</i>&nbsp;                        PawnPosition = getOptionalInt();</b>
+<i class="no-highlight">308</i>&nbsp;                        //if user pressed &#39;enter&#39; the input will interrupt (the user can choose less than 3 pairs)
+<b class="nc"><i class="no-highlight">309</i>&nbsp;                        if (PawnPosition.isEmpty()) break outerWhile;</b>
+<i class="no-highlight">310</i>&nbsp;                        //check whether user typed an invalid index
+<b class="nc"><i class="no-highlight">311</i>&nbsp;                        if (PawnPosition.get() &lt; 0 || PawnPosition.get() &gt;= currentPlayer.getEntranceStudents().size())</b>
+<b class="nc"><i class="no-highlight">312</i>&nbsp;                            System.out.println(&quot;Target Entrance Position invalid&quot;);</b>
+<i class="no-highlight">313</i>&nbsp;                        else {
+<i class="no-highlight">314</i>&nbsp;                            break;
+<i class="no-highlight">315</i>&nbsp;                        }
+<i class="no-highlight">316</i>&nbsp;                    } while (true);
+<b class="nc"><i class="no-highlight">317</i>&nbsp;                    System.out.println(&quot;Select diningRoom&#39;s colour&quot;);</b>
+<b class="nc"><i class="no-highlight">318</i>&nbsp;                    boolean repeat = true;</b>
+<i class="no-highlight">319</i>&nbsp;                    //get the selected PawnColour from stdIn and add the pair to the list
+<i class="no-highlight">320</i>&nbsp;                    do {
+<b class="nc"><i class="no-highlight">321</i>&nbsp;                        switch (stdIn.readLine().toLowerCase()) {</b>
+<i class="no-highlight">322</i>&nbsp;                            case &quot;red&quot; -&gt; {
+<b class="nc"><i class="no-highlight">323</i>&nbsp;                                pairs.add(new Pair&lt;&gt;(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), PawnColour.RED));</b>
+<b class="nc"><i class="no-highlight">324</i>&nbsp;                                repeat = false;</b>
+<b class="nc"><i class="no-highlight">325</i>&nbsp;                            }</b>
+<i class="no-highlight">326</i>&nbsp;                            case &quot;yellow&quot; -&gt; {
+<b class="nc"><i class="no-highlight">327</i>&nbsp;                                pairs.add(new Pair&lt;&gt;(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), PawnColour.YELLOW));</b>
+<b class="nc"><i class="no-highlight">328</i>&nbsp;                                repeat = false;</b>
+<b class="nc"><i class="no-highlight">329</i>&nbsp;                            }</b>
+<i class="no-highlight">330</i>&nbsp;                            case &quot;green&quot; -&gt; {
+<b class="nc"><i class="no-highlight">331</i>&nbsp;                                pairs.add(new Pair&lt;&gt;(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), PawnColour.GREEN));</b>
+<b class="nc"><i class="no-highlight">332</i>&nbsp;                                repeat = false;</b>
+<b class="nc"><i class="no-highlight">333</i>&nbsp;                            }</b>
+<i class="no-highlight">334</i>&nbsp;                            case &quot;pink&quot; -&gt; {
+<b class="nc"><i class="no-highlight">335</i>&nbsp;                                pairs.add(new Pair&lt;&gt;(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), PawnColour.PINK));</b>
+<b class="nc"><i class="no-highlight">336</i>&nbsp;                                repeat = false;</b>
+<b class="nc"><i class="no-highlight">337</i>&nbsp;                            }</b>
+<i class="no-highlight">338</i>&nbsp;                            case &quot;blue&quot; -&gt; {
+<b class="nc"><i class="no-highlight">339</i>&nbsp;                                pairs.add(new Pair&lt;&gt;(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), PawnColour.BLUE));</b>
+<b class="nc"><i class="no-highlight">340</i>&nbsp;                                repeat = false;</b>
+<b class="nc"><i class="no-highlight">341</i>&nbsp;                            }</b>
+<b class="nc"><i class="no-highlight">342</i>&nbsp;                            case default -&gt; System.out.println(&quot;Colour not valid, try again&quot;);</b>
+<i class="no-highlight">343</i>&nbsp;                        }
+<i class="no-highlight">344</i>&nbsp;                        //repeat whether the user typed an invalid PawnColour
+<b class="nc"><i class="no-highlight">345</i>&nbsp;                    } while (repeat);</b>
+<i class="no-highlight">346</i>&nbsp;                    //repeat the loop until the user has selected 2 pairs or pressed &#39;enter&#39;
+<b class="nc"><i class="no-highlight">347</i>&nbsp;                } while (pairs.size() &lt; 2);</b>
+<i class="no-highlight">348</i>&nbsp;                //create playCharacterCard&#39;s controller action
+<b class="nc"><i class="no-highlight">349</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(),</b>
+<i class="no-highlight">350</i>&nbsp;                        selected,
+<b class="nc"><i class="no-highlight">351</i>&nbsp;                        OptionalValue.empty(),</b>
 <b class="nc"><i class="no-highlight">352</i>&nbsp;                        OptionalValue.empty(),</b>
-<b class="nc"><i class="no-highlight">353</i>&nbsp;                        OptionalValue.empty(),</b>
-<b class="nc"><i class="no-highlight">354</i>&nbsp;                        OptionalValue.of(pairs));</b>
-<i class="no-highlight">355</i>&nbsp;                //create playerActionRequest message to send to the server
-<b class="nc"><i class="no-highlight">356</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
-<b class="nc"><i class="no-highlight">357</i>&nbsp;            }</b>
-<b class="nc"><i class="no-highlight">358</i>&nbsp;            case Card11 card11 -&gt; {</b>
-<b class="nc"><i class="no-highlight">359</i>&nbsp;                System.out.println(&quot;Select pawn&#39;s index from card&quot;);</b>
-<i class="no-highlight">360</i>&nbsp;                int cardIndex;
-<i class="no-highlight">361</i>&nbsp;                do {
-<i class="no-highlight">362</i>&nbsp;                    //get selected pawn&#39;s index from card
-<b class="nc"><i class="no-highlight">363</i>&nbsp;                    cardIndex = getInt();</b>
-<i class="no-highlight">364</i>&nbsp;                    //check whether user typed an invalid index
-<b class="nc"><i class="no-highlight">365</i>&nbsp;                    if (cardIndex &lt; 0 || cardIndex &gt;= card11.getState().size())</b>
-<b class="nc"><i class="no-highlight">366</i>&nbsp;                        System.out.println(&quot;Target Card Position invalid&quot;);</b>
-<i class="no-highlight">367</i>&nbsp;                    else {
-<i class="no-highlight">368</i>&nbsp;                        break;
-<i class="no-highlight">369</i>&nbsp;                    }
-<i class="no-highlight">370</i>&nbsp;                } while (true);
-<i class="no-highlight">371</i>&nbsp;                //create playCharacterCard&#39;s controller action
-<b class="nc"><i class="no-highlight">372</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of((PawnColour) card11.getState().get(cardIndex)), OptionalValue.empty());</b>
-<i class="no-highlight">373</i>&nbsp;                //create playerActionRequest message to send to the server
-<b class="nc"><i class="no-highlight">374</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
-<b class="nc"><i class="no-highlight">375</i>&nbsp;            }</b>
-<b class="nc"><i class="no-highlight">376</i>&nbsp;            case Card12 ignored8 -&gt; {</b>
-<b class="nc"><i class="no-highlight">377</i>&nbsp;                System.out.println(&quot;Select Pawn&#39;s colour to remove from all Playerboards&#39; diningrooms&quot;);</b>
-<i class="no-highlight">378</i>&nbsp;                //create playerActionRequest message to send to the server
-<b class="nc"><i class="no-highlight">379</i>&nbsp;                playerActionRequest = createPlayerActionByPawnColour(selected, currentPlayer);</b>
-<b class="nc"><i class="no-highlight">380</i>&nbsp;            }</b>
-<i class="no-highlight">381</i>&nbsp;            case default -&gt; {
-<b class="nc"><i class="no-highlight">382</i>&nbsp;                System.out.println(&quot;CharacterCard not valid&quot;);</b>
-<i class="no-highlight">383</i>&nbsp;                return;
-<i class="no-highlight">384</i>&nbsp;            }
-<i class="no-highlight">385</i>&nbsp;        }
-<i class="no-highlight">386</i>&nbsp;        //send playerActionRequest to the server
-<b class="nc"><i class="no-highlight">387</i>&nbsp;        socketWrapper.sendMessage(playerActionRequest);</b>
-<i class="no-highlight">388</i>&nbsp;    }
-<i class="no-highlight">389</i>&nbsp;
-<i class="no-highlight">390</i>&nbsp;    /**
-<i class="no-highlight">391</i>&nbsp;     * This method prints selected characterCard to the command line to explain card&#39;s effect to the player
-<i class="no-highlight">392</i>&nbsp;     *
-<i class="no-highlight">393</i>&nbsp;     * @throws IOException input has gone wrong
-<i class="no-highlight">394</i>&nbsp;     */
-<i class="no-highlight">395</i>&nbsp;    private void characterCardInfo() throws IOException {
-<i class="no-highlight">396</i>&nbsp;        //check for GameMode&#39;s validity
-<b class="nc"><i class="no-highlight">397</i>&nbsp;        if (this.clientView.getModel().getGameMode() == GameMode.SIMPLE) {</b>
-<b class="nc"><i class="no-highlight">398</i>&nbsp;            System.out.println(&quot;Command valid only in Advanced GameMode&quot;);</b>
-<i class="no-highlight">399</i>&nbsp;            return;
-<i class="no-highlight">400</i>&nbsp;        }
-<i class="no-highlight">401</i>&nbsp;        //get selected characterCard&#39;s index
-<b class="nc"><i class="no-highlight">402</i>&nbsp;        int selected = getCharacterCardIndex();</b>
-<i class="no-highlight">403</i>&nbsp;        //every switch&#39;s case print CharacterCard&#39;s info (every information is available on game&#39;s guide)
-<b class="nc"><i class="no-highlight">404</i>&nbsp;        switch (selected) {</b>
-<b class="nc"><i class="no-highlight">405</i>&nbsp;            case 1 -&gt; System.out.println(&quot;EFFECT: Take 1 Student from this card and place it on &quot; +</b>
-<i class="no-highlight">406</i>&nbsp;                    &quot;an Island of your choice. Then, draw a new Student from the Bag and place it on this card.&quot;);
-<b class="nc"><i class="no-highlight">407</i>&nbsp;            case 2 -&gt; System.out.println(&quot;EFFECT: During this turn, you take control of any\n&quot; +</b>
-<i class="no-highlight">408</i>&nbsp;                    &quot; number of Professors even if you have the same number of Students as the player who currently controls them.&quot;);
-<b class="nc"><i class="no-highlight">409</i>&nbsp;            case 3 -&gt; System.out.println(&quot;&quot;&quot;</b>
-<i class="no-highlight">410</i>&nbsp;                    EFFECT: Choose an Island and resolve the Island as if
-<i class="no-highlight">411</i>&nbsp;                     Mother Nature had ended her movement there. Mother
-<i class="no-highlight">412</i>&nbsp;                     Nature will still move and the Island where she ends her movement will also be resolved.&quot;&quot;&quot;);
-<b class="nc"><i class="no-highlight">413</i>&nbsp;            case 4 -&gt; System.out.println(&quot;EFFECT: You may move Mother Nature up to 2\n&quot; +</b>
-<i class="no-highlight">414</i>&nbsp;                    &quot; additional Islands than is indicated by the Assistant card you&#39;ve played.&quot;);
-<b class="nc"><i class="no-highlight">415</i>&nbsp;            case 5 -&gt; System.out.println(&quot;&quot;&quot;</b>
-<i class="no-highlight">416</i>&nbsp;                    EFFECT: Place a No Entrytile on an Island of your choice.
-<i class="no-highlight">417</i>&nbsp;                     The first time Mother Nature ends her movement there, put the No Entry tile back onto this card
-<i class="no-highlight">418</i>&nbsp;                     DO NOT calculate influence on that Island, or place any Towers.&quot;&quot;&quot;);
-<i class="no-highlight">419</i>&nbsp;            case 6 -&gt;
-<b class="nc"><i class="no-highlight">420</i>&nbsp;                    System.out.println(&quot;EFFECT: When resolving a Conquering on an Island, Towers do not count towards influence.&quot;);</b>
-<i class="no-highlight">421</i>&nbsp;            case 7 -&gt;
-<b class="nc"><i class="no-highlight">422</i>&nbsp;                    System.out.println(&quot;EFFECT: you may take up to 3 students from this card and replace them with the same number of Students\n&quot; +</b>
-<i class="no-highlight">423</i>&nbsp;                            &quot; from your Entrance&quot;);
-<i class="no-highlight">424</i>&nbsp;            case 8 -&gt;
-<b class="nc"><i class="no-highlight">425</i>&nbsp;                    System.out.println(&quot;EFFECT: During the influence calculation this turn, you count as having 2 more influence&quot;);</b>
-<i class="no-highlight">426</i>&nbsp;            case 9 -&gt;
-<b class="nc"><i class="no-highlight">427</i>&nbsp;                    System.out.println(&quot;EFFECT: Choose a color of Student: during the influence calculation this turn, that color adds no influence&quot;);</b>
-<i class="no-highlight">428</i>&nbsp;            case 10 -&gt;
-<b class="nc"><i class="no-highlight">429</i>&nbsp;                    System.out.println(&quot;EFFECT: You may exchange up to 2 Students between your entrance and your Dining Room&quot;);</b>
-<i class="no-highlight">430</i>&nbsp;            case 11 -&gt;
-<b class="nc"><i class="no-highlight">431</i>&nbsp;                    System.out.println(&quot;EFFECT: Take 1 Student from this card and place it in your Dining Room. Then, draw a new Student from the\n&quot; +</b>
-<i class="no-highlight">432</i>&nbsp;                            &quot;Bag and place it on this card.&quot;);
-<b class="nc"><i class="no-highlight">433</i>&nbsp;            case 12 -&gt; System.out.println(&quot;&quot;&quot;</b>
-<i class="no-highlight">434</i>&nbsp;                    EFFECT: Choose a type of Student: every player (including yourself) must return 3 Students of that type
-<i class="no-highlight">435</i>&nbsp;                     from their Dining Room to the bag. If any player has fewer than 3 Students of that type, return as many Students as they have.
-<i class="no-highlight">436</i>&nbsp;                    &quot;&quot;&quot;);
-<i class="no-highlight">437</i>&nbsp;        }
-<b class="nc"><i class="no-highlight">438</i>&nbsp;        System.out.println(&quot;You may now continue with the game, remember the &#39;showActions&#39; command, it&#39;s your best friend during the game&quot;);</b>
-<i class="no-highlight">439</i>&nbsp;    }
-<i class="no-highlight">440</i>&nbsp;
-<i class="no-highlight">441</i>&nbsp;    /**
-<i class="no-highlight">442</i>&nbsp;     * Support method responsible for checking whether the user has the rights to perform the requested action.
-<i class="no-highlight">443</i>&nbsp;     * This method will only be executed to check actions available only when the match has started
-<i class="no-highlight">444</i>&nbsp;     *
-<i class="no-highlight">445</i>&nbsp;     * @return true if the check fails
-<i class="no-highlight">446</i>&nbsp;     */
-<i class="no-highlight">447</i>&nbsp;    private boolean checkActionRequest() {
-<i class="no-highlight">448</i>&nbsp;        //check if the user is present inside a lobby
-<b class="nc"><i class="no-highlight">449</i>&nbsp;        if (!this.clientView.isInLobby()) {</b>
-<b class="nc"><i class="no-highlight">450</i>&nbsp;            System.out.println(&quot;Action not valid, join or create a lobby&quot;);</b>
-<b class="nc"><i class="no-highlight">451</i>&nbsp;            return true;</b>
-<i class="no-highlight">452</i>&nbsp;        }
-<i class="no-highlight">453</i>&nbsp;        //check if the game has started
-<b class="nc"><i class="no-highlight">454</i>&nbsp;        if (!this.clientView.getGameStarted()) {</b>
-<b class="nc"><i class="no-highlight">455</i>&nbsp;            if (this.clientView.getAdmin().equals(this.clientView.getNickname())) {</b>
-<b class="nc"><i class="no-highlight">456</i>&nbsp;                System.out.println(&quot;Action not valid, you need to start the game&quot;);</b>
-<i class="no-highlight">457</i>&nbsp;            } else {
-<b class="nc"><i class="no-highlight">458</i>&nbsp;                System.out.println(&quot;Action not valid, you need to wait for the admin to start the game&quot;);</b>
-<i class="no-highlight">459</i>&nbsp;            }
-<b class="nc"><i class="no-highlight">460</i>&nbsp;            return true;</b>
-<i class="no-highlight">461</i>&nbsp;        }
-<b class="nc"><i class="no-highlight">462</i>&nbsp;        return false;</b>
-<i class="no-highlight">463</i>&nbsp;    }
-<i class="no-highlight">464</i>&nbsp;
-<i class="no-highlight">465</i>&nbsp;    /**
-<i class="no-highlight">466</i>&nbsp;     * Method responsible for print actions during all the game
-<i class="no-highlight">467</i>&nbsp;     */
-<i class="no-highlight">468</i>&nbsp;    private void printActions() {
-<i class="no-highlight">469</i>&nbsp;        //actions available outside a lobby
-<b class="nc"><i class="no-highlight">470</i>&nbsp;        if (!this.clientView.isInLobby()) {</b>
-<b class="nc"><i class="no-highlight">471</i>&nbsp;            System.out.println(&quot;Available commands:\n&quot;);</b>
-<b class="nc"><i class="no-highlight">472</i>&nbsp;            System.out.println(&quot;-- createLobby (create a open or private lobby)&quot;);</b>
-<b class="nc"><i class="no-highlight">473</i>&nbsp;            System.out.println(&quot;-- joinLobby (join a lobby with the UUID)&quot;);</b>
-<i class="no-highlight">474</i>&nbsp;            return;
-<i class="no-highlight">475</i>&nbsp;        }
-<b class="nc"><i class="no-highlight">476</i>&nbsp;        if (!this.clientView.getGameStarted()) {</b>
-<i class="no-highlight">477</i>&nbsp;            //actions available when the game has not started
-<b class="nc"><i class="no-highlight">478</i>&nbsp;            if (this.clientView.getNickname().equals(this.clientView.getAdmin())) {</b>
-<i class="no-highlight">479</i>&nbsp;                //if the user is the admin
-<b class="nc"><i class="no-highlight">480</i>&nbsp;                System.out.println(&quot;Available commands:\n&quot;);</b>
-<b class="nc"><i class="no-highlight">481</i>&nbsp;                System.out.println(&quot;-- startGame (start the game)&quot;);</b>
-<i class="no-highlight">482</i>&nbsp;            } else {
-<i class="no-highlight">483</i>&nbsp;                //if the user is not the admin
-<b class="nc"><i class="no-highlight">484</i>&nbsp;                System.out.println(&quot;No actions available, wait for the admin to start the game&quot;);</b>
-<i class="no-highlight">485</i>&nbsp;            }
-<i class="no-highlight">486</i>&nbsp;            return;
-<i class="no-highlight">487</i>&nbsp;        }
-<i class="no-highlight">488</i>&nbsp;        //print action-phase commands
-<b class="nc"><i class="no-highlight">489</i>&nbsp;        printGameActions();</b>
-<i class="no-highlight">490</i>&nbsp;    }
-<i class="no-highlight">491</i>&nbsp;
-<i class="no-highlight">492</i>&nbsp;    /**
-<i class="no-highlight">493</i>&nbsp;     * Executes the createLobby command; during the creation the user is able to choose lobby&#39;s visibility (private or public) and
-<i class="no-highlight">494</i>&nbsp;     * lobby&#39;s dimension (this dimension will also be game&#39;s number of players).
-<i class="no-highlight">495</i>&nbsp;     * &lt;p&gt;
-<i class="no-highlight">496</i>&nbsp;     * Finally, it creates the createLobby request and then sends it to the server.
-<i class="no-highlight">497</i>&nbsp;     *
-<i class="no-highlight">498</i>&nbsp;     * @throws IOException if an I/O error occurs
-<i class="no-highlight">499</i>&nbsp;     */
-<i class="no-highlight">500</i>&nbsp;    private void createLobby() throws IOException {
-<i class="no-highlight">501</i>&nbsp;        //check if the user is already in a lobby
-<b class="nc"><i class="no-highlight">502</i>&nbsp;        if (!clientView.isInLobby()) {</b>
-<i class="no-highlight">503</i>&nbsp;            //create CreateLobbyRequest object
-<i class="no-highlight">504</i>&nbsp;            CreateLobbyRequest createLobbyRequest;
-<i class="no-highlight">505</i>&nbsp;            //print visibility request
-<b class="nc"><i class="no-highlight">506</i>&nbsp;            System.out.println(&quot;Do you want to create an open or private lobby?&quot;);</b>
-<b class="nc"><i class="no-highlight">507</i>&nbsp;            System.out.println(&quot;O : open&quot;);</b>
-<b class="nc"><i class="no-highlight">508</i>&nbsp;            System.out.println(&quot;P : private&quot;);</b>
-<i class="no-highlight">509</i>&nbsp;            boolean isPublic;
-<i class="no-highlight">510</i>&nbsp;            String input;
-<i class="no-highlight">511</i>&nbsp;            loop:
-<i class="no-highlight">512</i>&nbsp;            while (true) {
-<i class="no-highlight">513</i>&nbsp;                //get visibility choice
-<b class="nc"><i class="no-highlight">514</i>&nbsp;                input = stdIn.readLine().toUpperCase();</b>
-<i class="no-highlight">515</i>&nbsp;                //assign user&#39;s choice to boolean variable &#39;isPublic&#39;
-<b class="nc"><i class="no-highlight">516</i>&nbsp;                switch (input) {</b>
-<i class="no-highlight">517</i>&nbsp;                    case &quot;O&quot; -&gt; {
-<b class="nc"><i class="no-highlight">518</i>&nbsp;                        isPublic = true;</b>
-<b class="nc"><i class="no-highlight">519</i>&nbsp;                        break loop;</b>
-<i class="no-highlight">520</i>&nbsp;                    }
-<i class="no-highlight">521</i>&nbsp;                    case &quot;P&quot; -&gt; {
-<b class="nc"><i class="no-highlight">522</i>&nbsp;                        isPublic = false;</b>
-<b class="nc"><i class="no-highlight">523</i>&nbsp;                        break loop;</b>
-<i class="no-highlight">524</i>&nbsp;                    }
-<b class="nc"><i class="no-highlight">525</i>&nbsp;                    case default -&gt; System.out.println(&quot;input not correct, please try again&quot;);</b>
-<b class="nc"><i class="no-highlight">526</i>&nbsp;                }</b>
-<i class="no-highlight">527</i>&nbsp;            }
-<i class="no-highlight">528</i>&nbsp;            //print lobby&#39;s dimension request
-<b class="nc"><i class="no-highlight">529</i>&nbsp;            System.out.println(&quot;how many player will the lobby contain?&quot;);</b>
-<i class="no-highlight">530</i>&nbsp;            int players;
-<i class="no-highlight">531</i>&nbsp;            while (true) {
-<i class="no-highlight">532</i>&nbsp;                //get lobby&#39;s dimension from stdIn
-<b class="nc"><i class="no-highlight">533</i>&nbsp;                players = getInt();</b>
-<i class="no-highlight">534</i>&nbsp;                //check input&#39;s validity (lobby&#39;s dimension must be between 2 and 4)
-<b class="nc"><i class="no-highlight">535</i>&nbsp;                if (players &gt;= 2 &amp;&amp; players &lt;= 4) {</b>
-<b class="nc"><i class="no-highlight">536</i>&nbsp;                    break;</b>
-<i class="no-highlight">537</i>&nbsp;                }
-<b class="nc"><i class="no-highlight">538</i>&nbsp;                System.out.println(&quot;Amount of players not valid&quot;);</b>
-<i class="no-highlight">539</i>&nbsp;            }
-<i class="no-highlight">540</i>&nbsp;            //initialize createLobbyRequest object to send to the server
-<b class="nc"><i class="no-highlight">541</i>&nbsp;            createLobbyRequest = new CreateLobbyRequest(isPublic, players);</b>
-<i class="no-highlight">542</i>&nbsp;            //send request to the server
-<b class="nc"><i class="no-highlight">543</i>&nbsp;            socketWrapper.sendMessage(createLobbyRequest);</b>
-<b class="nc"><i class="no-highlight">544</i>&nbsp;        } else {</b>
-<b class="nc"><i class="no-highlight">545</i>&nbsp;            System.out.println(&quot;You are already in a lobby&quot;);</b>
-<i class="no-highlight">546</i>&nbsp;        }
-<i class="no-highlight">547</i>&nbsp;    }
-<i class="no-highlight">548</i>&nbsp;
-<i class="no-highlight">549</i>&nbsp;    /**
-<i class="no-highlight">550</i>&nbsp;     * Executes the joinLobby command by knowing lobby&#39;s UUID, it allows to access both open and private lobbies.
-<i class="no-highlight">551</i>&nbsp;     * &lt;p&gt;
-<i class="no-highlight">552</i>&nbsp;     * Finally, it creates the joinLobby request and then sends it to the Server.
-<i class="no-highlight">553</i>&nbsp;     *
-<i class="no-highlight">554</i>&nbsp;     * @throws IOException if an I/O error occurs
-<i class="no-highlight">555</i>&nbsp;     */
-<i class="no-highlight">556</i>&nbsp;    private void joinLobby() throws IOException {
-<i class="no-highlight">557</i>&nbsp;        //check if the user is already in a lobby
-<b class="nc"><i class="no-highlight">558</i>&nbsp;        if (!clientView.isInLobby()) {</b>
-<i class="no-highlight">559</i>&nbsp;            //create ConnectLobbyRequest object
-<i class="no-highlight">560</i>&nbsp;            ConnectLobbyRequest connectLobbyRequest;
-<b class="nc"><i class="no-highlight">561</i>&nbsp;            System.out.println(&quot;Insert lobby&#39;s UUID&quot;);</b>
-<b class="nc"><i class="no-highlight">562</i>&nbsp;            UUID id = null;</b>
-<b class="nc"><i class="no-highlight">563</i>&nbsp;            boolean repeat = false;</b>
-<i class="no-highlight">564</i>&nbsp;            do {
-<i class="no-highlight">565</i>&nbsp;                try {
-<i class="no-highlight">566</i>&nbsp;                    //get UUID from stdIn
-<b class="nc"><i class="no-highlight">567</i>&nbsp;                    id = UUID.fromString(stdIn.readLine());</b>
-<b class="nc"><i class="no-highlight">568</i>&nbsp;                    repeat = false;</b>
-<b class="nc"><i class="no-highlight">569</i>&nbsp;                } catch (IllegalArgumentException e) {</b>
-<b class="nc"><i class="no-highlight">570</i>&nbsp;                    System.out.println(&quot;UUID not valid, try again&quot;);</b>
-<b class="nc"><i class="no-highlight">571</i>&nbsp;                    repeat = true;</b>
-<b class="nc"><i class="no-highlight">572</i>&nbsp;                }</b>
-<i class="no-highlight">573</i>&nbsp;                //repeat until the user types a valid UUID (syntactically, the server will check if the UUID is associated with a valid lobby)
-<b class="nc"><i class="no-highlight">574</i>&nbsp;            } while (repeat);</b>
-<i class="no-highlight">575</i>&nbsp;            //initialize connectLobbyRequest object to send to the server
-<b class="nc"><i class="no-highlight">576</i>&nbsp;            connectLobbyRequest = new ConnectLobbyRequest(id);</b>
-<i class="no-highlight">577</i>&nbsp;            //send message to the server
-<b class="nc"><i class="no-highlight">578</i>&nbsp;            socketWrapper.sendMessage(connectLobbyRequest);</b>
-<i class="no-highlight">579</i>&nbsp;
-<b class="nc"><i class="no-highlight">580</i>&nbsp;        } else {</b>
-<b class="nc"><i class="no-highlight">581</i>&nbsp;            System.out.println(&quot;You are already in a lobby&quot;);</b>
-<i class="no-highlight">582</i>&nbsp;        }
-<i class="no-highlight">583</i>&nbsp;    }
-<i class="no-highlight">584</i>&nbsp;
-<i class="no-highlight">585</i>&nbsp;    /**
-<i class="no-highlight">586</i>&nbsp;     * Executes the startGame command, it can be executed only by lobby&#39;s admin and whether the lobby is full.
-<i class="no-highlight">587</i>&nbsp;     * The admin can choose the game mode between simple and advanced.
-<i class="no-highlight">588</i>&nbsp;     * &lt;p&gt;
-<i class="no-highlight">589</i>&nbsp;     * Finally, it creates the startGameRequest and then sends it to the Server.
-<i class="no-highlight">590</i>&nbsp;     *
-<i class="no-highlight">591</i>&nbsp;     * @throws IOException if an I/O error occurs
-<i class="no-highlight">592</i>&nbsp;     */
-<i class="no-highlight">593</i>&nbsp;    private void startGame() throws IOException {
-<b class="nc"><i class="no-highlight">594</i>&nbsp;        if (this.clientView.isInLobby()) {</b>
-<i class="no-highlight">595</i>&nbsp;            ////print gameMode request
-<b class="nc"><i class="no-highlight">596</i>&nbsp;            System.out.println(&quot;Select the game mode:&quot;);</b>
-<b class="nc"><i class="no-highlight">597</i>&nbsp;            System.out.println(&quot;S: simple&quot;);</b>
-<b class="nc"><i class="no-highlight">598</i>&nbsp;            System.out.println(&quot;A: advanced&quot;);</b>
-<i class="no-highlight">599</i>&nbsp;            //create GameMode object
-<i class="no-highlight">600</i>&nbsp;            GameMode gameMode;
-<i class="no-highlight">601</i>&nbsp;            String input;
-<i class="no-highlight">602</i>&nbsp;            //create startGameRequest object
-<i class="no-highlight">603</i>&nbsp;            StartGameRequest startGameRequest;
-<i class="no-highlight">604</i>&nbsp;            loop:
-<i class="no-highlight">605</i>&nbsp;            //repeat until the user types a valid gamemode
-<i class="no-highlight">606</i>&nbsp;            while (true) {
-<i class="no-highlight">607</i>&nbsp;                ////get gameMode  from stdIn
-<b class="nc"><i class="no-highlight">608</i>&nbsp;                input = stdIn.readLine().toUpperCase();</b>
-<b class="nc"><i class="no-highlight">609</i>&nbsp;                switch (input) {</b>
-<i class="no-highlight">610</i>&nbsp;                    case &quot;S&quot; -&gt; {
-<b class="nc"><i class="no-highlight">611</i>&nbsp;                        gameMode = GameMode.SIMPLE;</b>
-<b class="nc"><i class="no-highlight">612</i>&nbsp;                        break loop;</b>
-<i class="no-highlight">613</i>&nbsp;                    }
-<i class="no-highlight">614</i>&nbsp;                    case &quot;A&quot; -&gt; {
-<b class="nc"><i class="no-highlight">615</i>&nbsp;                        gameMode = GameMode.ADVANCED;</b>
-<b class="nc"><i class="no-highlight">616</i>&nbsp;                        break loop;</b>
-<i class="no-highlight">617</i>&nbsp;                    }
-<b class="nc"><i class="no-highlight">618</i>&nbsp;                    case default -&gt; System.out.println(&quot;input not correct, please try again&quot;);</b>
-<b class="nc"><i class="no-highlight">619</i>&nbsp;                }</b>
-<i class="no-highlight">620</i>&nbsp;            }
-<i class="no-highlight">621</i>&nbsp;            //initialize startGameRequest object
-<b class="nc"><i class="no-highlight">622</i>&nbsp;            startGameRequest = new StartGameRequest(gameMode);</b>
-<i class="no-highlight">623</i>&nbsp;            //send message to the server
-<b class="nc"><i class="no-highlight">624</i>&nbsp;            socketWrapper.sendMessage(startGameRequest);</b>
-<b class="nc"><i class="no-highlight">625</i>&nbsp;        } else {</b>
-<b class="nc"><i class="no-highlight">626</i>&nbsp;            System.out.println(&quot;You first need to join or create a lobby&quot;);</b>
-<i class="no-highlight">627</i>&nbsp;        }
-<i class="no-highlight">628</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">353</i>&nbsp;                        OptionalValue.of(pairs));</b>
+<i class="no-highlight">354</i>&nbsp;                //create playerActionRequest message to send to the server
+<b class="nc"><i class="no-highlight">355</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">356</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">357</i>&nbsp;            case Card11 card11 -&gt; {</b>
+<b class="nc"><i class="no-highlight">358</i>&nbsp;                System.out.println(&quot;Select pawn&#39;s index from card&quot;);</b>
+<i class="no-highlight">359</i>&nbsp;                int cardIndex;
+<i class="no-highlight">360</i>&nbsp;                do {
+<i class="no-highlight">361</i>&nbsp;                    //get selected pawn&#39;s index from card
+<b class="nc"><i class="no-highlight">362</i>&nbsp;                    cardIndex = getInt();</b>
+<i class="no-highlight">363</i>&nbsp;                    //check whether user typed an invalid index
+<b class="nc"><i class="no-highlight">364</i>&nbsp;                    if (cardIndex &lt; 0 || cardIndex &gt;= card11.getState().size())</b>
+<b class="nc"><i class="no-highlight">365</i>&nbsp;                        System.out.println(&quot;Target Card Position invalid&quot;);</b>
+<i class="no-highlight">366</i>&nbsp;                    else {
+<i class="no-highlight">367</i>&nbsp;                        break;
+<i class="no-highlight">368</i>&nbsp;                    }
+<i class="no-highlight">369</i>&nbsp;                } while (true);
+<i class="no-highlight">370</i>&nbsp;                //create playCharacterCard&#39;s controller action
+<b class="nc"><i class="no-highlight">371</i>&nbsp;                playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of((PawnColour) card11.getState().get(cardIndex)), OptionalValue.empty());</b>
+<i class="no-highlight">372</i>&nbsp;                //create playerActionRequest message to send to the server
+<b class="nc"><i class="no-highlight">373</i>&nbsp;                playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">374</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">375</i>&nbsp;            case Card12 ignored8 -&gt; {</b>
+<b class="nc"><i class="no-highlight">376</i>&nbsp;                System.out.println(&quot;Select Pawn&#39;s colour to remove from all Playerboards&#39; diningrooms&quot;);</b>
+<i class="no-highlight">377</i>&nbsp;                //create playerActionRequest message to send to the server
+<b class="nc"><i class="no-highlight">378</i>&nbsp;                playerActionRequest = createPlayerActionByPawnColour(selected, currentPlayer);</b>
+<b class="nc"><i class="no-highlight">379</i>&nbsp;            }</b>
+<i class="no-highlight">380</i>&nbsp;            case default -&gt; {
+<b class="nc"><i class="no-highlight">381</i>&nbsp;                System.out.println(&quot;CharacterCard not valid&quot;);</b>
+<i class="no-highlight">382</i>&nbsp;                return;
+<i class="no-highlight">383</i>&nbsp;            }
+<i class="no-highlight">384</i>&nbsp;        }
+<i class="no-highlight">385</i>&nbsp;        //send playerActionRequest to the server
+<b class="nc"><i class="no-highlight">386</i>&nbsp;        socketWrapper.sendMessage(playerActionRequest);</b>
+<i class="no-highlight">387</i>&nbsp;    }
+<i class="no-highlight">388</i>&nbsp;
+<i class="no-highlight">389</i>&nbsp;    /**
+<i class="no-highlight">390</i>&nbsp;     * This method prints selected characterCard to the command line to explain card&#39;s effect to the player
+<i class="no-highlight">391</i>&nbsp;     *
+<i class="no-highlight">392</i>&nbsp;     * @throws IOException input has gone wrong
+<i class="no-highlight">393</i>&nbsp;     */
+<i class="no-highlight">394</i>&nbsp;    private void characterCardInfo() throws IOException {
+<i class="no-highlight">395</i>&nbsp;        //check for GameMode&#39;s validity
+<b class="nc"><i class="no-highlight">396</i>&nbsp;        if (this.clientView.getModel().getGameMode() == GameMode.SIMPLE) {</b>
+<b class="nc"><i class="no-highlight">397</i>&nbsp;            System.out.println(&quot;Command valid only in Advanced GameMode&quot;);</b>
+<i class="no-highlight">398</i>&nbsp;            return;
+<i class="no-highlight">399</i>&nbsp;        }
+<i class="no-highlight">400</i>&nbsp;        //get selected characterCard&#39;s index
+<b class="nc"><i class="no-highlight">401</i>&nbsp;        int selected = getCharacterCardIndex();</b>
+<i class="no-highlight">402</i>&nbsp;        //every switch&#39;s case print CharacterCard&#39;s info (every information is available on game&#39;s guide)
+<b class="nc"><i class="no-highlight">403</i>&nbsp;        switch (selected) {</b>
+<b class="nc"><i class="no-highlight">404</i>&nbsp;            case 1 -&gt; System.out.println(&quot;EFFECT: Take 1 Student from this card and place it on &quot; +</b>
+<i class="no-highlight">405</i>&nbsp;                    &quot;an Island of your choice. Then, draw a new Student from the Bag and place it on this card.&quot;);
+<b class="nc"><i class="no-highlight">406</i>&nbsp;            case 2 -&gt; System.out.println(&quot;EFFECT: During this turn, you take control of any\n&quot; +</b>
+<i class="no-highlight">407</i>&nbsp;                    &quot; number of Professors even if you have the same number of Students as the player who currently controls them.&quot;);
+<b class="nc"><i class="no-highlight">408</i>&nbsp;            case 3 -&gt; System.out.println(&quot;&quot;&quot;</b>
+<i class="no-highlight">409</i>&nbsp;                    EFFECT: Choose an Island and resolve the Island as if
+<i class="no-highlight">410</i>&nbsp;                     Mother Nature had ended her movement there. Mother
+<i class="no-highlight">411</i>&nbsp;                     Nature will still move and the Island where she ends her movement will also be resolved.&quot;&quot;&quot;);
+<b class="nc"><i class="no-highlight">412</i>&nbsp;            case 4 -&gt; System.out.println(&quot;EFFECT: You may move Mother Nature up to 2\n&quot; +</b>
+<i class="no-highlight">413</i>&nbsp;                    &quot; additional Islands than is indicated by the Assistant card you&#39;ve played.&quot;);
+<b class="nc"><i class="no-highlight">414</i>&nbsp;            case 5 -&gt; System.out.println(&quot;&quot;&quot;</b>
+<i class="no-highlight">415</i>&nbsp;                    EFFECT: Place a No Entrytile on an Island of your choice.
+<i class="no-highlight">416</i>&nbsp;                     The first time Mother Nature ends her movement there, put the No Entry tile back onto this card
+<i class="no-highlight">417</i>&nbsp;                     DO NOT calculate influence on that Island, or place any Towers.&quot;&quot;&quot;);
+<i class="no-highlight">418</i>&nbsp;            case 6 -&gt;
+<b class="nc"><i class="no-highlight">419</i>&nbsp;                    System.out.println(&quot;EFFECT: When resolving a Conquering on an Island, Towers do not count towards influence.&quot;);</b>
+<i class="no-highlight">420</i>&nbsp;            case 7 -&gt;
+<b class="nc"><i class="no-highlight">421</i>&nbsp;                    System.out.println(&quot;EFFECT: you may take up to 3 students from this card and replace them with the same number of Students\n&quot; +</b>
+<i class="no-highlight">422</i>&nbsp;                            &quot; from your Entrance&quot;);
+<i class="no-highlight">423</i>&nbsp;            case 8 -&gt;
+<b class="nc"><i class="no-highlight">424</i>&nbsp;                    System.out.println(&quot;EFFECT: During the influence calculation this turn, you count as having 2 more influence&quot;);</b>
+<i class="no-highlight">425</i>&nbsp;            case 9 -&gt;
+<b class="nc"><i class="no-highlight">426</i>&nbsp;                    System.out.println(&quot;EFFECT: Choose a color of Student: during the influence calculation this turn, that color adds no influence&quot;);</b>
+<i class="no-highlight">427</i>&nbsp;            case 10 -&gt;
+<b class="nc"><i class="no-highlight">428</i>&nbsp;                    System.out.println(&quot;EFFECT: You may exchange up to 2 Students between your entrance and your Dining Room&quot;);</b>
+<i class="no-highlight">429</i>&nbsp;            case 11 -&gt;
+<b class="nc"><i class="no-highlight">430</i>&nbsp;                    System.out.println(&quot;EFFECT: Take 1 Student from this card and place it in your Dining Room. Then, draw a new Student from the\n&quot; +</b>
+<i class="no-highlight">431</i>&nbsp;                            &quot;Bag and place it on this card.&quot;);
+<b class="nc"><i class="no-highlight">432</i>&nbsp;            case 12 -&gt; System.out.println(&quot;&quot;&quot;</b>
+<i class="no-highlight">433</i>&nbsp;                    EFFECT: Choose a type of Student: every player (including yourself) must return 3 Students of that type
+<i class="no-highlight">434</i>&nbsp;                     from their Dining Room to the bag. If any player has fewer than 3 Students of that type, return as many Students as they have.
+<i class="no-highlight">435</i>&nbsp;                    &quot;&quot;&quot;);
+<i class="no-highlight">436</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">437</i>&nbsp;        System.out.println(&quot;You may now continue with the game, remember the &#39;showActions&#39; command, it&#39;s your best friend during the game&quot;);</b>
+<i class="no-highlight">438</i>&nbsp;    }
+<i class="no-highlight">439</i>&nbsp;
+<i class="no-highlight">440</i>&nbsp;    /**
+<i class="no-highlight">441</i>&nbsp;     * Support method responsible for checking whether the user has the rights to perform the requested action.
+<i class="no-highlight">442</i>&nbsp;     * This method will only be executed to check actions available only when the match has started
+<i class="no-highlight">443</i>&nbsp;     *
+<i class="no-highlight">444</i>&nbsp;     * @return true if the check fails
+<i class="no-highlight">445</i>&nbsp;     */
+<i class="no-highlight">446</i>&nbsp;    private boolean checkActionRequest() {
+<i class="no-highlight">447</i>&nbsp;        //check if the user is present inside a lobby
+<b class="nc"><i class="no-highlight">448</i>&nbsp;        if (!this.clientView.isInLobby()) {</b>
+<b class="nc"><i class="no-highlight">449</i>&nbsp;            System.out.println(&quot;Action not valid, join or create a lobby&quot;);</b>
+<b class="nc"><i class="no-highlight">450</i>&nbsp;            return true;</b>
+<i class="no-highlight">451</i>&nbsp;        }
+<i class="no-highlight">452</i>&nbsp;        //check if the game has started
+<b class="nc"><i class="no-highlight">453</i>&nbsp;        if (!this.clientView.getGameStarted()) {</b>
+<b class="nc"><i class="no-highlight">454</i>&nbsp;            if (this.clientView.getAdmin().equals(this.clientView.getNickname())) {</b>
+<b class="nc"><i class="no-highlight">455</i>&nbsp;                System.out.println(&quot;Action not valid, you need to start the game&quot;);</b>
+<i class="no-highlight">456</i>&nbsp;            } else {
+<b class="nc"><i class="no-highlight">457</i>&nbsp;                System.out.println(&quot;Action not valid, you need to wait for the admin to start the game&quot;);</b>
+<i class="no-highlight">458</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">459</i>&nbsp;            return true;</b>
+<i class="no-highlight">460</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">461</i>&nbsp;        return false;</b>
+<i class="no-highlight">462</i>&nbsp;    }
+<i class="no-highlight">463</i>&nbsp;
+<i class="no-highlight">464</i>&nbsp;    /**
+<i class="no-highlight">465</i>&nbsp;     * Method responsible for print actions during all the game
+<i class="no-highlight">466</i>&nbsp;     */
+<i class="no-highlight">467</i>&nbsp;    private void printActions() {
+<i class="no-highlight">468</i>&nbsp;        //actions available outside a lobby
+<b class="nc"><i class="no-highlight">469</i>&nbsp;        if (!this.clientView.isInLobby()) {</b>
+<b class="nc"><i class="no-highlight">470</i>&nbsp;            System.out.println(&quot;Available commands:\n&quot;);</b>
+<b class="nc"><i class="no-highlight">471</i>&nbsp;            System.out.println(&quot;-- createLobby (create a open or private lobby)&quot;);</b>
+<b class="nc"><i class="no-highlight">472</i>&nbsp;            System.out.println(&quot;-- joinLobby (join a lobby with the UUID)&quot;);</b>
+<i class="no-highlight">473</i>&nbsp;            return;
+<i class="no-highlight">474</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">475</i>&nbsp;        if (!this.clientView.getGameStarted()) {</b>
+<i class="no-highlight">476</i>&nbsp;            //actions available when the game has not started
+<b class="nc"><i class="no-highlight">477</i>&nbsp;            if (this.clientView.getNickname().equals(this.clientView.getAdmin())) {</b>
+<i class="no-highlight">478</i>&nbsp;                //if the user is the admin
+<b class="nc"><i class="no-highlight">479</i>&nbsp;                System.out.println(&quot;Available commands:\n&quot;);</b>
+<b class="nc"><i class="no-highlight">480</i>&nbsp;                System.out.println(&quot;-- startGame (start the game)&quot;);</b>
+<i class="no-highlight">481</i>&nbsp;            } else {
+<i class="no-highlight">482</i>&nbsp;                //if the user is not the admin
+<b class="nc"><i class="no-highlight">483</i>&nbsp;                System.out.println(&quot;No actions available, wait for the admin to start the game&quot;);</b>
+<i class="no-highlight">484</i>&nbsp;            }
+<i class="no-highlight">485</i>&nbsp;            return;
+<i class="no-highlight">486</i>&nbsp;        }
+<i class="no-highlight">487</i>&nbsp;        //print action-phase commands
+<b class="nc"><i class="no-highlight">488</i>&nbsp;        printGameActions();</b>
+<i class="no-highlight">489</i>&nbsp;    }
+<i class="no-highlight">490</i>&nbsp;
+<i class="no-highlight">491</i>&nbsp;    /**
+<i class="no-highlight">492</i>&nbsp;     * Executes the createLobby command; during the creation the user is able to choose lobby&#39;s visibility (private or public) and
+<i class="no-highlight">493</i>&nbsp;     * lobby&#39;s dimension (this dimension will also be game&#39;s number of players).
+<i class="no-highlight">494</i>&nbsp;     * &lt;p&gt;
+<i class="no-highlight">495</i>&nbsp;     * Finally, it creates the createLobby request and then sends it to the server.
+<i class="no-highlight">496</i>&nbsp;     *
+<i class="no-highlight">497</i>&nbsp;     * @throws IOException if an I/O error occurs
+<i class="no-highlight">498</i>&nbsp;     */
+<i class="no-highlight">499</i>&nbsp;    private void createLobby() throws IOException {
+<i class="no-highlight">500</i>&nbsp;        //check if the user is already in a lobby
+<b class="nc"><i class="no-highlight">501</i>&nbsp;        if (!clientView.isInLobby()) {</b>
+<i class="no-highlight">502</i>&nbsp;            //create CreateLobbyRequest object
+<i class="no-highlight">503</i>&nbsp;            CreateLobbyRequest createLobbyRequest;
+<i class="no-highlight">504</i>&nbsp;            //print visibility request
+<b class="nc"><i class="no-highlight">505</i>&nbsp;            System.out.println(&quot;Do you want to create an open or private lobby?&quot;);</b>
+<b class="nc"><i class="no-highlight">506</i>&nbsp;            System.out.println(&quot;O : open&quot;);</b>
+<b class="nc"><i class="no-highlight">507</i>&nbsp;            System.out.println(&quot;P : private&quot;);</b>
+<i class="no-highlight">508</i>&nbsp;            boolean isPublic;
+<i class="no-highlight">509</i>&nbsp;            String input;
+<i class="no-highlight">510</i>&nbsp;            loop:
+<i class="no-highlight">511</i>&nbsp;            while (true) {
+<i class="no-highlight">512</i>&nbsp;                //get visibility choice
+<b class="nc"><i class="no-highlight">513</i>&nbsp;                input = stdIn.readLine().toUpperCase();</b>
+<i class="no-highlight">514</i>&nbsp;                //assign user&#39;s choice to boolean variable &#39;isPublic&#39;
+<b class="nc"><i class="no-highlight">515</i>&nbsp;                switch (input) {</b>
+<i class="no-highlight">516</i>&nbsp;                    case &quot;O&quot; -&gt; {
+<b class="nc"><i class="no-highlight">517</i>&nbsp;                        isPublic = true;</b>
+<b class="nc"><i class="no-highlight">518</i>&nbsp;                        break loop;</b>
+<i class="no-highlight">519</i>&nbsp;                    }
+<i class="no-highlight">520</i>&nbsp;                    case &quot;P&quot; -&gt; {
+<b class="nc"><i class="no-highlight">521</i>&nbsp;                        isPublic = false;</b>
+<b class="nc"><i class="no-highlight">522</i>&nbsp;                        break loop;</b>
+<i class="no-highlight">523</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">524</i>&nbsp;                    case default -&gt; System.out.println(&quot;input not correct, please try again&quot;);</b>
+<b class="nc"><i class="no-highlight">525</i>&nbsp;                }</b>
+<i class="no-highlight">526</i>&nbsp;            }
+<i class="no-highlight">527</i>&nbsp;            //print lobby&#39;s dimension request
+<b class="nc"><i class="no-highlight">528</i>&nbsp;            System.out.println(&quot;how many player will the lobby contain?&quot;);</b>
+<i class="no-highlight">529</i>&nbsp;            int players;
+<i class="no-highlight">530</i>&nbsp;            while (true) {
+<i class="no-highlight">531</i>&nbsp;                //get lobby&#39;s dimension from stdIn
+<b class="nc"><i class="no-highlight">532</i>&nbsp;                players = getInt();</b>
+<i class="no-highlight">533</i>&nbsp;                //check input&#39;s validity (lobby&#39;s dimension must be between 2 and 4)
+<b class="nc"><i class="no-highlight">534</i>&nbsp;                if (players &gt;= 2 &amp;&amp; players &lt;= 4) {</b>
+<b class="nc"><i class="no-highlight">535</i>&nbsp;                    break;</b>
+<i class="no-highlight">536</i>&nbsp;                }
+<b class="nc"><i class="no-highlight">537</i>&nbsp;                System.out.println(&quot;Amount of players not valid&quot;);</b>
+<i class="no-highlight">538</i>&nbsp;            }
+<i class="no-highlight">539</i>&nbsp;            //initialize createLobbyRequest object to send to the server
+<b class="nc"><i class="no-highlight">540</i>&nbsp;            createLobbyRequest = new CreateLobbyRequest(isPublic, players);</b>
+<i class="no-highlight">541</i>&nbsp;            //send request to the server
+<b class="nc"><i class="no-highlight">542</i>&nbsp;            socketWrapper.sendMessage(createLobbyRequest);</b>
+<b class="nc"><i class="no-highlight">543</i>&nbsp;        } else {</b>
+<b class="nc"><i class="no-highlight">544</i>&nbsp;            System.out.println(&quot;You are already in a lobby&quot;);</b>
+<i class="no-highlight">545</i>&nbsp;        }
+<i class="no-highlight">546</i>&nbsp;    }
+<i class="no-highlight">547</i>&nbsp;
+<i class="no-highlight">548</i>&nbsp;    /**
+<i class="no-highlight">549</i>&nbsp;     * Executes the joinLobby command by knowing lobby&#39;s UUID, it allows to access both open and private lobbies.
+<i class="no-highlight">550</i>&nbsp;     * &lt;p&gt;
+<i class="no-highlight">551</i>&nbsp;     * Finally, it creates the joinLobby request and then sends it to the Server.
+<i class="no-highlight">552</i>&nbsp;     *
+<i class="no-highlight">553</i>&nbsp;     * @throws IOException if an I/O error occurs
+<i class="no-highlight">554</i>&nbsp;     */
+<i class="no-highlight">555</i>&nbsp;    private void joinLobby() throws IOException {
+<i class="no-highlight">556</i>&nbsp;        //check if the user is already in a lobby
+<b class="nc"><i class="no-highlight">557</i>&nbsp;        if (!clientView.isInLobby()) {</b>
+<i class="no-highlight">558</i>&nbsp;            //create ConnectLobbyRequest object
+<i class="no-highlight">559</i>&nbsp;            ConnectLobbyRequest connectLobbyRequest;
+<b class="nc"><i class="no-highlight">560</i>&nbsp;            System.out.println(&quot;Insert lobby&#39;s UUID&quot;);</b>
+<b class="nc"><i class="no-highlight">561</i>&nbsp;            UUID id = null;</b>
+<i class="no-highlight">562</i>&nbsp;            boolean repeat;
+<i class="no-highlight">563</i>&nbsp;            do {
+<i class="no-highlight">564</i>&nbsp;                try {
+<i class="no-highlight">565</i>&nbsp;                    //get UUID from stdIn
+<b class="nc"><i class="no-highlight">566</i>&nbsp;                    id = UUID.fromString(stdIn.readLine());</b>
+<b class="nc"><i class="no-highlight">567</i>&nbsp;                    repeat = false;</b>
+<b class="nc"><i class="no-highlight">568</i>&nbsp;                } catch (IllegalArgumentException e) {</b>
+<b class="nc"><i class="no-highlight">569</i>&nbsp;                    System.out.println(&quot;UUID not valid, try again&quot;);</b>
+<b class="nc"><i class="no-highlight">570</i>&nbsp;                    repeat = true;</b>
+<b class="nc"><i class="no-highlight">571</i>&nbsp;                }</b>
+<i class="no-highlight">572</i>&nbsp;                //repeat until the user types a valid UUID (syntactically, the server will check if the UUID is associated with a valid lobby)
+<b class="nc"><i class="no-highlight">573</i>&nbsp;            } while (repeat);</b>
+<i class="no-highlight">574</i>&nbsp;            //initialize connectLobbyRequest object to send to the server
+<b class="nc"><i class="no-highlight">575</i>&nbsp;            connectLobbyRequest = new ConnectLobbyRequest(id);</b>
+<i class="no-highlight">576</i>&nbsp;            //send message to the server
+<b class="nc"><i class="no-highlight">577</i>&nbsp;            socketWrapper.sendMessage(connectLobbyRequest);</b>
+<i class="no-highlight">578</i>&nbsp;
+<b class="nc"><i class="no-highlight">579</i>&nbsp;        } else {</b>
+<b class="nc"><i class="no-highlight">580</i>&nbsp;            System.out.println(&quot;You are already in a lobby&quot;);</b>
+<i class="no-highlight">581</i>&nbsp;        }
+<i class="no-highlight">582</i>&nbsp;    }
+<i class="no-highlight">583</i>&nbsp;
+<i class="no-highlight">584</i>&nbsp;    /**
+<i class="no-highlight">585</i>&nbsp;     * Executes the startGame command, it can be executed only by lobby&#39;s admin and whether the lobby is full.
+<i class="no-highlight">586</i>&nbsp;     * The admin can choose the game mode between simple and advanced.
+<i class="no-highlight">587</i>&nbsp;     * &lt;p&gt;
+<i class="no-highlight">588</i>&nbsp;     * Finally, it creates the startGameRequest and then sends it to the Server.
+<i class="no-highlight">589</i>&nbsp;     *
+<i class="no-highlight">590</i>&nbsp;     * @throws IOException if an I/O error occurs
+<i class="no-highlight">591</i>&nbsp;     */
+<i class="no-highlight">592</i>&nbsp;    private void startGame() throws IOException {
+<b class="nc"><i class="no-highlight">593</i>&nbsp;        if (this.clientView.isInLobby()) {</b>
+<i class="no-highlight">594</i>&nbsp;            ////print gameMode request
+<b class="nc"><i class="no-highlight">595</i>&nbsp;            System.out.println(&quot;Select the game mode:&quot;);</b>
+<b class="nc"><i class="no-highlight">596</i>&nbsp;            System.out.println(&quot;S: simple&quot;);</b>
+<b class="nc"><i class="no-highlight">597</i>&nbsp;            System.out.println(&quot;A: advanced&quot;);</b>
+<i class="no-highlight">598</i>&nbsp;            //create GameMode object
+<i class="no-highlight">599</i>&nbsp;            GameMode gameMode;
+<i class="no-highlight">600</i>&nbsp;            String input;
+<i class="no-highlight">601</i>&nbsp;            //create startGameRequest object
+<i class="no-highlight">602</i>&nbsp;            StartGameRequest startGameRequest;
+<i class="no-highlight">603</i>&nbsp;            loop:
+<i class="no-highlight">604</i>&nbsp;            //repeat until the user types a valid gamemode
+<i class="no-highlight">605</i>&nbsp;            while (true) {
+<i class="no-highlight">606</i>&nbsp;                ////get gameMode  from stdIn
+<b class="nc"><i class="no-highlight">607</i>&nbsp;                input = stdIn.readLine().toUpperCase();</b>
+<b class="nc"><i class="no-highlight">608</i>&nbsp;                switch (input) {</b>
+<i class="no-highlight">609</i>&nbsp;                    case &quot;S&quot; -&gt; {
+<b class="nc"><i class="no-highlight">610</i>&nbsp;                        gameMode = GameMode.SIMPLE;</b>
+<b class="nc"><i class="no-highlight">611</i>&nbsp;                        break loop;</b>
+<i class="no-highlight">612</i>&nbsp;                    }
+<i class="no-highlight">613</i>&nbsp;                    case &quot;A&quot; -&gt; {
+<b class="nc"><i class="no-highlight">614</i>&nbsp;                        gameMode = GameMode.ADVANCED;</b>
+<b class="nc"><i class="no-highlight">615</i>&nbsp;                        break loop;</b>
+<i class="no-highlight">616</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">617</i>&nbsp;                    case default -&gt; System.out.println(&quot;input not correct, please try again&quot;);</b>
+<b class="nc"><i class="no-highlight">618</i>&nbsp;                }</b>
+<i class="no-highlight">619</i>&nbsp;            }
+<i class="no-highlight">620</i>&nbsp;            //initialize startGameRequest object
+<b class="nc"><i class="no-highlight">621</i>&nbsp;            startGameRequest = new StartGameRequest(gameMode);</b>
+<i class="no-highlight">622</i>&nbsp;            //send message to the server
+<b class="nc"><i class="no-highlight">623</i>&nbsp;            socketWrapper.sendMessage(startGameRequest);</b>
+<b class="nc"><i class="no-highlight">624</i>&nbsp;        } else {</b>
+<b class="nc"><i class="no-highlight">625</i>&nbsp;            System.out.println(&quot;You first need to join or create a lobby&quot;);</b>
+<i class="no-highlight">626</i>&nbsp;        }
+<i class="no-highlight">627</i>&nbsp;    }
+<i class="no-highlight">628</i>&nbsp;
 <i class="no-highlight">629</i>&nbsp;
-<i class="no-highlight">630</i>&nbsp;
-<i class="no-highlight">631</i>&nbsp;    /**
-<i class="no-highlight">632</i>&nbsp;     * Executes the playAssistantCard command
-<i class="no-highlight">633</i>&nbsp;     * The method shows the available assistantCard at that moment (removing the used cards and cards picked by other players in the same turn to avoid
-<i class="no-highlight">634</i>&nbsp;     * playing cards with same value).
-<i class="no-highlight">635</i>&nbsp;     * &lt;p&gt;
-<i class="no-highlight">636</i>&nbsp;     * Finally, it creates the playAssistantCard request and then sends it to the Server.
-<i class="no-highlight">637</i>&nbsp;     *
-<i class="no-highlight">638</i>&nbsp;     * @throws IOException if an I/O error occurs
-<i class="no-highlight">639</i>&nbsp;     */
-<i class="no-highlight">640</i>&nbsp;    private void playAssistantCard() throws IOException {
-<b class="nc"><i class="no-highlight">641</i>&nbsp;        System.out.println(&quot;select one of these available assistant card&quot;);</b>
-<i class="no-highlight">642</i>&nbsp;        //get the unused cards
-<b class="nc"><i class="no-highlight">643</i>&nbsp;        ArrayList&lt;AssistantCard&gt; availableAssistants = this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards()</b>
-<b class="nc"><i class="no-highlight">644</i>&nbsp;                .stream().filter(assistantCard -&gt; !assistantCard.getUsed())</b>
-<b class="nc"><i class="no-highlight">645</i>&nbsp;                .collect(Collectors.toCollection(ArrayList::new));</b>
-<i class="no-highlight">646</i>&nbsp;        //from the unused cards, extract the card with a priority not selected before by other players
-<b class="nc"><i class="no-highlight">647</i>&nbsp;        for (PlayerBoard pb : this.clientView.getModel().getMutableTurnOrder().getCurrentTurnOrder()) {</b>
-<b class="nc"><i class="no-highlight">648</i>&nbsp;            if (this.clientView.getModel().getMutableTurnOrder().getMutableSelectedCard(pb).isPresent()) {</b>
-<b class="nc"><i class="no-highlight">649</i>&nbsp;                availableAssistants.removeIf(assistantCard -&gt; assistantCard.getPriority() == this.clientView.getModel().getMutableTurnOrder().getMutableSelectedCard(pb).get().getPriority());</b>
-<i class="no-highlight">650</i>&nbsp;            }
-<b class="nc"><i class="no-highlight">651</i>&nbsp;        }</b>
-<i class="no-highlight">652</i>&nbsp;        //get the priority of the available cards
-<b class="nc"><i class="no-highlight">653</i>&nbsp;        ArrayList&lt;Integer&gt; cardNumbers = availableAssistants.stream().map(AssistantCard::getPriority).collect(Collectors.toCollection(ArrayList::new));</b>
-<b class="nc"><i class="no-highlight">654</i>&nbsp;        availableAssistants.forEach(assistantCard -&gt; System.out.println(&quot;priority:&quot; + assistantCard.getPriority() + &quot; maxMovement:&quot; + assistantCard.getMaxMovement()));</b>
-<i class="no-highlight">655</i>&nbsp;        //get the selected card
-<i class="no-highlight">656</i>&nbsp;        int selected;
-<i class="no-highlight">657</i>&nbsp;        do {
-<b class="nc"><i class="no-highlight">658</i>&nbsp;            selected = getInt();</b>
-<b class="nc"><i class="no-highlight">659</i>&nbsp;            if (!cardNumbers.contains(selected)) {</b>
-<b class="nc"><i class="no-highlight">660</i>&nbsp;                System.out.println(&quot;Card not available&quot;);</b>
-<i class="no-highlight">661</i>&nbsp;            } else {
-<i class="no-highlight">662</i>&nbsp;                break;
-<i class="no-highlight">663</i>&nbsp;            }
-<i class="no-highlight">664</i>&nbsp;            //repeat until the user pic
-<i class="no-highlight">665</i>&nbsp;        } while (true);
-<b class="nc"><i class="no-highlight">666</i>&nbsp;        PlayAssistantCard playAssistantCard = new PlayAssistantCard(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected);</b>
-<b class="nc"><i class="no-highlight">667</i>&nbsp;        PlayerActionRequest playerAction = new PlayerActionRequest(playAssistantCard);</b>
-<b class="nc"><i class="no-highlight">668</i>&nbsp;        socketWrapper.sendMessage(playerAction);</b>
-<i class="no-highlight">669</i>&nbsp;    }
-<i class="no-highlight">670</i>&nbsp;
-<i class="no-highlight">671</i>&nbsp;    /**
-<i class="no-highlight">672</i>&nbsp;     * Executes the moveStudent command, the method requires from the user to type pawn&#39;s index inside entrance then it
-<i class="no-highlight">673</i>&nbsp;     * allows the user to choose the destination:
-<i class="no-highlight">674</i>&nbsp;     * type enter to move the pawn directly to the dining room
-<i class="no-highlight">675</i>&nbsp;     * type a number that will be interpreted as the island&#39;s id on which to move the pawn
-<i class="no-highlight">676</i>&nbsp;     * &lt;p&gt;
-<i class="no-highlight">677</i>&nbsp;     * Finally, it creates the moveStudent request and then sends it to the Server.
-<i class="no-highlight">678</i>&nbsp;     *
-<i class="no-highlight">679</i>&nbsp;     * @throws IOException if an I/O error occurs
-<i class="no-highlight">680</i>&nbsp;     */
-<i class="no-highlight">681</i>&nbsp;    private void moveStudent() throws IOException {
-<i class="no-highlight">682</i>&nbsp;        //get entrance size
-<b class="nc"><i class="no-highlight">683</i>&nbsp;        int entranceSize = this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getEntranceSize() - 1;</b>
-<b class="nc"><i class="no-highlight">684</i>&nbsp;        System.out.println(&quot;Insert the number of entrance&#39;s position between 0 and &quot; + entranceSize);</b>
-<i class="no-highlight">685</i>&nbsp;        //get selected pawn&#39;s index from entrance
-<b class="nc"><i class="no-highlight">686</i>&nbsp;        int selected = getInt();</b>
-<i class="no-highlight">687</i>&nbsp;
-<b class="nc"><i class="no-highlight">688</i>&nbsp;        System.out.println(&quot;Type the island id to move the selected student there or press &#39;Enter&#39; to send it to the dining room&quot;);</b>
-<i class="no-highlight">689</i>&nbsp;        //get destination (&#39;enter&#39; for dining room or island&#39;s ID)
-<b class="nc"><i class="no-highlight">690</i>&nbsp;        OptionalValue&lt;Integer&gt; choice = getOptionalInt();</b>
-<i class="no-highlight">691</i>&nbsp;        //create MoveStudent object
-<i class="no-highlight">692</i>&nbsp;        MoveStudent moveStudent;
-<b class="nc"><i class="no-highlight">693</i>&nbsp;        if (choice.isEmpty()) {</b>
-<i class="no-highlight">694</i>&nbsp;            //if the user has typed &#39;enter&#39; then initialize the moveStudent action with dining room as MoveDestination
-<b class="nc"><i class="no-highlight">695</i>&nbsp;            moveStudent = new MoveStudent(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected, MoveDestination.toDiningRoom());</b>
-<i class="no-highlight">696</i>&nbsp;        } else {
-<i class="no-highlight">697</i>&nbsp;            //if the user has typed a number then initialize the moveStudent with that number
-<b class="nc"><i class="no-highlight">698</i>&nbsp;            moveStudent = new MoveStudent(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected, MoveDestination.toIsland(choice.get()));</b>
-<i class="no-highlight">699</i>&nbsp;        }
-<i class="no-highlight">700</i>&nbsp;        //create and initialize clientPlayerAction to send to the Server
-<b class="nc"><i class="no-highlight">701</i>&nbsp;        PlayerActionRequest clientPlayerAction = new PlayerActionRequest(moveStudent);</b>
-<i class="no-highlight">702</i>&nbsp;        //send the action request to the Server
-<b class="nc"><i class="no-highlight">703</i>&nbsp;        socketWrapper.sendMessage(clientPlayerAction);</b>
-<i class="no-highlight">704</i>&nbsp;
-<i class="no-highlight">705</i>&nbsp;    }
-<i class="no-highlight">706</i>&nbsp;
-<i class="no-highlight">707</i>&nbsp;    /**
-<i class="no-highlight">708</i>&nbsp;     * Executes the moveMotherNature command, this method asks the user to type the amount of steps motherNature should take
-<i class="no-highlight">709</i>&nbsp;     * &lt;p&gt;
-<i class="no-highlight">710</i>&nbsp;     * Finally, it creates the moveMotherNature request and then sends it to the Server.
-<i class="no-highlight">711</i>&nbsp;     *
-<i class="no-highlight">712</i>&nbsp;     * @throws IOException if an I/O error occurs
-<i class="no-highlight">713</i>&nbsp;     */
-<i class="no-highlight">714</i>&nbsp;    private void moveMotherNature() throws IOException {
-<b class="nc"><i class="no-highlight">715</i>&nbsp;        int steps = this.clientView.getModel().getMutableEffects().isMotherNatureMovementIncreased() ?</b>
-<b class="nc"><i class="no-highlight">716</i>&nbsp;                this.clientView.getModel().getMutableTurnOrder().getMutableSelectedCard(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer()).get().getPriority() + 2 :</b>
-<b class="nc"><i class="no-highlight">717</i>&nbsp;                this.clientView.getModel().getMutableTurnOrder().getMutableSelectedCard(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer()).get().getPriority();</b>
-<b class="nc"><i class="no-highlight">718</i>&nbsp;        System.out.println(&quot;You can now move mother nature up to &quot; + steps + &quot; steps&quot;);</b>
-<b class="nc"><i class="no-highlight">719</i>&nbsp;        System.out.println(&quot;How many steps do you want mother nature to take?&quot;);</b>
-<i class="no-highlight">720</i>&nbsp;        //get the amount of steps to perform
-<b class="nc"><i class="no-highlight">721</i>&nbsp;        steps = getInt();</b>
-<i class="no-highlight">722</i>&nbsp;        //create and initialize moveMotherNature action
-<b class="nc"><i class="no-highlight">723</i>&nbsp;        MoveMotherNature moveMotherNature = new MoveMotherNature(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), steps);</b>
-<i class="no-highlight">724</i>&nbsp;        //create and initialize PlayerActionRequest to send to the server
-<b class="nc"><i class="no-highlight">725</i>&nbsp;        PlayerActionRequest clientPlayerAction = new PlayerActionRequest(moveMotherNature);</b>
-<i class="no-highlight">726</i>&nbsp;        //send action request to the server
-<b class="nc"><i class="no-highlight">727</i>&nbsp;        socketWrapper.sendMessage(clientPlayerAction);</b>
-<i class="no-highlight">728</i>&nbsp;    }
-<i class="no-highlight">729</i>&nbsp;
-<i class="no-highlight">730</i>&nbsp;    /**
-<i class="no-highlight">731</i>&nbsp;     * Executes the chooseCloud command, this method asks the user to type a number corresponding to Island&#39;s id.
-<i class="no-highlight">732</i>&nbsp;     * Finally, it creates the chooseCloudTile request and then sends it to the Server.
-<i class="no-highlight">733</i>&nbsp;     *
-<i class="no-highlight">734</i>&nbsp;     * @throws IOException if an I/O error occurs
-<i class="no-highlight">735</i>&nbsp;     */
-<i class="no-highlight">736</i>&nbsp;    private void chooseCloud() throws IOException {
-<b class="nc"><i class="no-highlight">737</i>&nbsp;        System.out.println(&quot;Select one cloud from 0 to &quot; + (this.clientView.getModel().getClouds().size() - 1));</b>
-<i class="no-highlight">738</i>&nbsp;        //get selected Cloud&#39;s ID
-<b class="nc"><i class="no-highlight">739</i>&nbsp;        int selectedCloud = getInt();</b>
-<i class="no-highlight">740</i>&nbsp;        //create and initialize ChooseCloudTile Object with the selected Island&#39;s ID
-<b class="nc"><i class="no-highlight">741</i>&nbsp;        ChooseCloudTile chooseCloudTile = new ChooseCloudTile(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selectedCloud);</b>
-<i class="no-highlight">742</i>&nbsp;        //create and initialize clientPlayerAction request to send to the Server
-<b class="nc"><i class="no-highlight">743</i>&nbsp;        PlayerActionRequest clientPlayerAction = new PlayerActionRequest(chooseCloudTile);</b>
-<i class="no-highlight">744</i>&nbsp;        //send clientPlayerAction request to the Server
-<b class="nc"><i class="no-highlight">745</i>&nbsp;        socketWrapper.sendMessage(clientPlayerAction);</b>
-<i class="no-highlight">746</i>&nbsp;    }
-<i class="no-highlight">747</i>&nbsp;
-<i class="no-highlight">748</i>&nbsp;    /**
-<i class="no-highlight">749</i>&nbsp;     * Executes the endTurn command to end currentPlayer&#39;s action turn and move on to the next player
-<i class="no-highlight">750</i>&nbsp;     */
-<i class="no-highlight">751</i>&nbsp;    private void endTurn() throws IOException {
-<i class="no-highlight">752</i>&nbsp;        //create and initialize endTurnOfActionPhase action
-<b class="nc"><i class="no-highlight">753</i>&nbsp;        EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId());</b>
-<i class="no-highlight">754</i>&nbsp;        //create and initialize PlayerActionRequest to send to the server
-<b class="nc"><i class="no-highlight">755</i>&nbsp;        PlayerActionRequest clientPlayerAction = new PlayerActionRequest(endTurnOfActionPhase);</b>
-<i class="no-highlight">756</i>&nbsp;        //send action to the server
-<b class="nc"><i class="no-highlight">757</i>&nbsp;        socketWrapper.sendMessage(clientPlayerAction);</b>
-<i class="no-highlight">758</i>&nbsp;    }
-<i class="no-highlight">759</i>&nbsp;
-<i class="no-highlight">760</i>&nbsp;    /**
-<i class="no-highlight">761</i>&nbsp;     * print all the available actions basing on current game phase
-<i class="no-highlight">762</i>&nbsp;     */
-<i class="no-highlight">763</i>&nbsp;    private void printGameActions() {
-<i class="no-highlight">764</i>&nbsp;        //check whether the user is allowed to perform any action (i.e. if is the current player)
-<b class="nc"><i class="no-highlight">765</i>&nbsp;        if (!this.clientView.getNickname().equals(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {</b>
-<b class="nc"><i class="no-highlight">766</i>&nbsp;            System.out.println(&quot;No actions are allowed out of turn&quot;);</b>
-<i class="no-highlight">767</i>&nbsp;            return;
-<i class="no-highlight">768</i>&nbsp;        }
-<i class="no-highlight">769</i>&nbsp;        //get current gamePhase
-<b class="nc"><i class="no-highlight">770</i>&nbsp;        GamePhase gamePhase = this.clientView.getModel().getMutableTurnOrder().getGamePhase();</b>
-<b class="nc"><i class="no-highlight">771</i>&nbsp;        System.out.println(&quot;during the &quot; + gamePhase + &quot; phase these are the available commands:&quot;);</b>
-<b class="nc"><i class="no-highlight">772</i>&nbsp;        switch (gamePhase) {</b>
-<i class="no-highlight">773</i>&nbsp;            //during SETUP phase the user can only play the assistant card
-<i class="no-highlight">774</i>&nbsp;            case SETUP -&gt;
-<b class="nc"><i class="no-highlight">775</i>&nbsp;                    System.out.println(&quot;--playAssistantCard (play the assistant card to establish the turn order)&quot;);</b>
-<i class="no-highlight">776</i>&nbsp;            //print all actions available during ACTION phase
-<i class="no-highlight">777</i>&nbsp;            case ACTION -&gt; {
-<b class="nc"><i class="no-highlight">778</i>&nbsp;                System.out.println(&quot;--moveStudent (move one student from entrance to dining room or one island)&quot;);</b>
-<i class="no-highlight">779</i>&nbsp;                //only in advanced game mode the user can play a CharacterCard
-<b class="nc"><i class="no-highlight">780</i>&nbsp;                if (this.clientView.getModel().getGameMode() == GameMode.ADVANCED) {</b>
-<b class="nc"><i class="no-highlight">781</i>&nbsp;                    System.out.println(&quot;--playCharacterCard (activate the powerful effect of the character card)&quot;);</b>
-<i class="no-highlight">782</i>&nbsp;                }
-<b class="nc"><i class="no-highlight">783</i>&nbsp;                System.out.println(&quot;--moveMotherNature (move mother nature and calculate the influence&quot;);</b>
-<b class="nc"><i class="no-highlight">784</i>&nbsp;                System.out.println(&quot;--chooseCloud (fill your entrance after moving three students)&quot;);</b>
-<i class="no-highlight">785</i>&nbsp;                //only in advanced game mode the user can get CharacterCard&#39;s info
-<b class="nc"><i class="no-highlight">786</i>&nbsp;                if (this.clientView.getModel().getGameMode() == GameMode.ADVANCED)</b>
-<b class="nc"><i class="no-highlight">787</i>&nbsp;                    System.out.println(&quot;--characterCardInfo (show the information about one characterCard)&quot;);</b>
-<b class="nc"><i class="no-highlight">788</i>&nbsp;                System.out.println(&quot;--endTurn (end your turn)&quot;);</b>
-<b class="nc"><i class="no-highlight">789</i>&nbsp;            }</b>
-<b class="nc"><i class="no-highlight">790</i>&nbsp;            default -&gt; System.out.println(&quot;Gamephase is not valid&quot;);</b>
-<i class="no-highlight">791</i>&nbsp;        }
-<i class="no-highlight">792</i>&nbsp;    }
-<i class="no-highlight">793</i>&nbsp;
-<i class="no-highlight">794</i>&nbsp;    /**
-<i class="no-highlight">795</i>&nbsp;     * Support method used to acquire chosen characterCard from command line; it requires user to type the characterCard number
-<i class="no-highlight">796</i>&nbsp;     * (not the index inside Game&#39;s list of 3 characterCards but the &quot;id&quot; o the card between 1 and 12). The methods also checks
-<i class="no-highlight">797</i>&nbsp;     * if the chosen characterCard&#39;s number is present among the 3 CharacterCards available during the game.
-<i class="no-highlight">798</i>&nbsp;     *
-<i class="no-highlight">799</i>&nbsp;     * @return int representing characterCard&#39;s number
-<i class="no-highlight">800</i>&nbsp;     * @throws IOException if an I/O error occurs
-<i class="no-highlight">801</i>&nbsp;     */
-<i class="no-highlight">802</i>&nbsp;    private int getCharacterCardIndex() throws IOException {
-<b class="nc"><i class="no-highlight">803</i>&nbsp;        System.out.println(&quot;Pick one character card from the list above (type the card number)&quot;);</b>
-<i class="no-highlight">804</i>&nbsp;        int selected;
-<i class="no-highlight">805</i>&nbsp;        //ArrayList containing the 3 characterCards&#39; numbers available during the game
-<b class="nc"><i class="no-highlight">806</i>&nbsp;        ArrayList&lt;Integer&gt; characterCardsNumbers =</b>
-<b class="nc"><i class="no-highlight">807</i>&nbsp;                this.clientView.getModel().getCharacterCards().stream().map(CharacterCard::getId).collect(Collectors.toCollection(ArrayList::new));</b>
-<i class="no-highlight">808</i>&nbsp;        do {
-<i class="no-highlight">809</i>&nbsp;            //acquire number
-<b class="nc"><i class="no-highlight">810</i>&nbsp;            selected = getInt();</b>
-<i class="no-highlight">811</i>&nbsp;            //check if this number belongs to the list of available characterCards
-<b class="nc"><i class="no-highlight">812</i>&nbsp;            if (!characterCardsNumbers.contains(selected)) {</b>
-<b class="nc"><i class="no-highlight">813</i>&nbsp;                System.out.println(&quot;CharacterCard not available&quot;);</b>
-<i class="no-highlight">814</i>&nbsp;            } else {
-<i class="no-highlight">815</i>&nbsp;                break;
-<i class="no-highlight">816</i>&nbsp;            }
-<i class="no-highlight">817</i>&nbsp;            //repeat until the chosen number belongs to the list of available characterCards
-<i class="no-highlight">818</i>&nbsp;        } while (true);
-<i class="no-highlight">819</i>&nbsp;        //return the chosen number
-<b class="nc"><i class="no-highlight">820</i>&nbsp;        return selected;</b>
-<i class="no-highlight">821</i>&nbsp;    }
-<i class="no-highlight">822</i>&nbsp;
-<i class="no-highlight">823</i>&nbsp;    /**
-<i class="no-highlight">824</i>&nbsp;     * Support method to read an integer from command line, this method does not accept &#39;enter&#39; as input
-<i class="no-highlight">825</i>&nbsp;     *
-<i class="no-highlight">826</i>&nbsp;     * @return the integer read from command line
-<i class="no-highlight">827</i>&nbsp;     * @throws IOException if an I/O error occurs
-<i class="no-highlight">828</i>&nbsp;     */
-<i class="no-highlight">829</i>&nbsp;    private int getInt() throws IOException {
-<i class="no-highlight">830</i>&nbsp;        int result;
-<i class="no-highlight">831</i>&nbsp;        while (true) {
-<i class="no-highlight">832</i>&nbsp;            try {
-<i class="no-highlight">833</i>&nbsp;                //get text from stdIn
-<b class="nc"><i class="no-highlight">834</i>&nbsp;                String text = stdIn.readLine();</b>
-<b class="nc"><i class="no-highlight">835</i>&nbsp;                if (text == null)</b>
-<b class="nc"><i class="no-highlight">836</i>&nbsp;                    throw new IOException();</b>
-<i class="no-highlight">837</i>&nbsp;                //try to parse String from stdIn to Integer
-<b class="nc"><i class="no-highlight">838</i>&nbsp;                result = Integer.parseInt(text);</b>
-<b class="nc"><i class="no-highlight">839</i>&nbsp;                break;</b>
-<b class="nc"><i class="no-highlight">840</i>&nbsp;            } catch (NumberFormatException ex) {</b>
-<b class="nc"><i class="no-highlight">841</i>&nbsp;                System.out.println(&quot;This string is not a number, retry.&quot;);</b>
-<b class="nc"><i class="no-highlight">842</i>&nbsp;            }</b>
-<i class="no-highlight">843</i>&nbsp;            //repeat until the String is a valid number
-<i class="no-highlight">844</i>&nbsp;        }
-<b class="nc"><i class="no-highlight">845</i>&nbsp;        return result;</b>
-<i class="no-highlight">846</i>&nbsp;    }
-<i class="no-highlight">847</i>&nbsp;
-<i class="no-highlight">848</i>&nbsp;    /**
-<i class="no-highlight">849</i>&nbsp;     * Support method to read an integer from command line, this method accepts &#39;enter&#39; as input
-<i class="no-highlight">850</i>&nbsp;     *
-<i class="no-highlight">851</i>&nbsp;     * @return the integer read from command line or Optional.empty if the user pressed &quot;Enter&quot;
-<i class="no-highlight">852</i>&nbsp;     * @throws IOException if an I/O error occurs
-<i class="no-highlight">853</i>&nbsp;     */
-<i class="no-highlight">854</i>&nbsp;    private OptionalValue&lt;Integer&gt; getOptionalInt() throws IOException {
-<i class="no-highlight">855</i>&nbsp;        int result;
-<i class="no-highlight">856</i>&nbsp;        while (true) {
-<i class="no-highlight">857</i>&nbsp;            try {
-<i class="no-highlight">858</i>&nbsp;                //get text from stdIn
-<b class="nc"><i class="no-highlight">859</i>&nbsp;                String text = stdIn.readLine();</b>
-<b class="nc"><i class="no-highlight">860</i>&nbsp;                if (text == null)</b>
-<b class="nc"><i class="no-highlight">861</i>&nbsp;                    throw new IOException();</b>
-<i class="no-highlight">862</i>&nbsp;                //if user has typed &#39;enter&#39; then return Optional.empty
-<b class="nc"><i class="no-highlight">863</i>&nbsp;                if (text.equals(&quot;&quot;))</b>
-<b class="nc"><i class="no-highlight">864</i>&nbsp;                    return OptionalValue.empty();</b>
-<i class="no-highlight">865</i>&nbsp;                //try to parse String from stdIn to Integer
-<b class="nc"><i class="no-highlight">866</i>&nbsp;                result = Integer.parseInt(text);</b>
-<b class="nc"><i class="no-highlight">867</i>&nbsp;                break;</b>
-<b class="nc"><i class="no-highlight">868</i>&nbsp;            } catch (NumberFormatException ex) {</b>
-<b class="nc"><i class="no-highlight">869</i>&nbsp;                System.out.println(&quot;This string is not a number, retry.&quot;);</b>
-<b class="nc"><i class="no-highlight">870</i>&nbsp;            }</b>
-<i class="no-highlight">871</i>&nbsp;            //repeat until the String is a valid number
-<i class="no-highlight">872</i>&nbsp;        }
-<b class="nc"><i class="no-highlight">873</i>&nbsp;        return OptionalValue.of(result);</b>
-<i class="no-highlight">874</i>&nbsp;    }
-<i class="no-highlight">875</i>&nbsp;
-<i class="no-highlight">876</i>&nbsp;    /**
-<i class="no-highlight">877</i>&nbsp;     * Support method that create the PlayerActionRequest after that user type a PawnColour.
-<i class="no-highlight">878</i>&nbsp;     *
-<i class="no-highlight">879</i>&nbsp;     * @param selected      selected CharacterCard&#39;s index among the 3 available during the game
-<i class="no-highlight">880</i>&nbsp;     * @param currentPlayer current player in turn, necessary to create PlayCharacterCard action
-<i class="no-highlight">881</i>&nbsp;     * @return PlayerActionRequest with the selected PawnColour as parameter
-<i class="no-highlight">882</i>&nbsp;     * @throws IOException if an I/O error occurs
-<i class="no-highlight">883</i>&nbsp;     */
-<i class="no-highlight">884</i>&nbsp;    private PlayerActionRequest createPlayerActionByPawnColour(int selected, PlayerBoard currentPlayer) throws IOException {
-<i class="no-highlight">885</i>&nbsp;        //create PlayerActionRequest object
-<i class="no-highlight">886</i>&nbsp;        PlayerActionRequest playerActionRequest;
-<i class="no-highlight">887</i>&nbsp;        //create PlayCharacterCard object
-<b class="nc"><i class="no-highlight">888</i>&nbsp;        PlayCharacterCard playCharacterCard = null;</b>
-<b class="nc"><i class="no-highlight">889</i>&nbsp;        boolean repeat = true;</b>
-<i class="no-highlight">890</i>&nbsp;        do {
-<i class="no-highlight">891</i>&nbsp;            //get the input from stdIn, every switch&#39;s case create a playCharacterCard with selected pawnColour
-<b class="nc"><i class="no-highlight">892</i>&nbsp;            switch (stdIn.readLine().toLowerCase()) {</b>
-<i class="no-highlight">893</i>&nbsp;                case &quot;red&quot; -&gt; {
-<b class="nc"><i class="no-highlight">894</i>&nbsp;                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.RED), OptionalValue.empty());</b>
-<b class="nc"><i class="no-highlight">895</i>&nbsp;                    repeat = false;</b>
-<b class="nc"><i class="no-highlight">896</i>&nbsp;                }</b>
-<i class="no-highlight">897</i>&nbsp;                case &quot;yellow&quot; -&gt; {
-<b class="nc"><i class="no-highlight">898</i>&nbsp;                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.YELLOW), OptionalValue.empty());</b>
-<b class="nc"><i class="no-highlight">899</i>&nbsp;                    repeat = false;</b>
-<b class="nc"><i class="no-highlight">900</i>&nbsp;                }</b>
-<i class="no-highlight">901</i>&nbsp;                case &quot;green&quot; -&gt; {
-<b class="nc"><i class="no-highlight">902</i>&nbsp;                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.GREEN), OptionalValue.empty());</b>
-<b class="nc"><i class="no-highlight">903</i>&nbsp;                    repeat = false;</b>
-<b class="nc"><i class="no-highlight">904</i>&nbsp;                }</b>
-<i class="no-highlight">905</i>&nbsp;                case &quot;pink&quot; -&gt; {
-<b class="nc"><i class="no-highlight">906</i>&nbsp;                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.PINK), OptionalValue.empty());</b>
-<b class="nc"><i class="no-highlight">907</i>&nbsp;                    repeat = false;</b>
-<b class="nc"><i class="no-highlight">908</i>&nbsp;                }</b>
-<i class="no-highlight">909</i>&nbsp;                case &quot;blue&quot; -&gt; {
-<b class="nc"><i class="no-highlight">910</i>&nbsp;                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.BLUE), OptionalValue.empty());</b>
-<b class="nc"><i class="no-highlight">911</i>&nbsp;                    repeat = false;</b>
-<b class="nc"><i class="no-highlight">912</i>&nbsp;                }</b>
-<b class="nc"><i class="no-highlight">913</i>&nbsp;                case default -&gt; System.out.println(&quot;Colour not valid, try again&quot;);</b>
-<i class="no-highlight">914</i>&nbsp;            }
-<i class="no-highlight">915</i>&nbsp;            //repeat until the user types a valid pawnColour
-<b class="nc"><i class="no-highlight">916</i>&nbsp;        } while (repeat);</b>
-<i class="no-highlight">917</i>&nbsp;        //initialize playerActionRequest
-<b class="nc"><i class="no-highlight">918</i>&nbsp;        playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
-<i class="no-highlight">919</i>&nbsp;        //return the playerActionRequest
-<b class="nc"><i class="no-highlight">920</i>&nbsp;        return playerActionRequest;</b>
-<i class="no-highlight">921</i>&nbsp;    }
-<i class="no-highlight">922</i>&nbsp;}
+<i class="no-highlight">630</i>&nbsp;    /**
+<i class="no-highlight">631</i>&nbsp;     * Executes the playAssistantCard command
+<i class="no-highlight">632</i>&nbsp;     * The method shows the available assistantCard at that moment (removing the used cards and cards picked by other players in the same turn to avoid
+<i class="no-highlight">633</i>&nbsp;     * playing cards with same value).
+<i class="no-highlight">634</i>&nbsp;     * &lt;p&gt;
+<i class="no-highlight">635</i>&nbsp;     * Finally, it creates the playAssistantCard request and then sends it to the Server.
+<i class="no-highlight">636</i>&nbsp;     *
+<i class="no-highlight">637</i>&nbsp;     * @throws IOException if an I/O error occurs
+<i class="no-highlight">638</i>&nbsp;     */
+<i class="no-highlight">639</i>&nbsp;    private void playAssistantCard() throws IOException {
+<b class="nc"><i class="no-highlight">640</i>&nbsp;        System.out.println(&quot;select one of these available assistant card&quot;);</b>
+<i class="no-highlight">641</i>&nbsp;        //get the unused cards
+<b class="nc"><i class="no-highlight">642</i>&nbsp;        ArrayList&lt;AssistantCard&gt; availableAssistants = this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getMutableAssistantCards()</b>
+<b class="nc"><i class="no-highlight">643</i>&nbsp;                .stream().filter(assistantCard -&gt; !assistantCard.getUsed())</b>
+<b class="nc"><i class="no-highlight">644</i>&nbsp;                .collect(Collectors.toCollection(ArrayList::new));</b>
+<i class="no-highlight">645</i>&nbsp;        //from the unused cards, extract the card with a priority not selected before by other players
+<b class="nc"><i class="no-highlight">646</i>&nbsp;        for (PlayerBoard pb : this.clientView.getModel().getMutableTurnOrder().getCurrentTurnOrder()) {</b>
+<b class="nc"><i class="no-highlight">647</i>&nbsp;            if (this.clientView.getModel().getMutableTurnOrder().getMutableSelectedCard(pb).isPresent()) {</b>
+<b class="nc"><i class="no-highlight">648</i>&nbsp;                availableAssistants.removeIf(assistantCard -&gt; assistantCard.getPriority() == this.clientView.getModel().getMutableTurnOrder().getMutableSelectedCard(pb).get().getPriority());</b>
+<i class="no-highlight">649</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">650</i>&nbsp;        }</b>
+<i class="no-highlight">651</i>&nbsp;        //get the priority of the available cards
+<b class="nc"><i class="no-highlight">652</i>&nbsp;        ArrayList&lt;Integer&gt; cardNumbers = availableAssistants.stream().map(AssistantCard::getPriority).collect(Collectors.toCollection(ArrayList::new));</b>
+<b class="nc"><i class="no-highlight">653</i>&nbsp;        availableAssistants.forEach(assistantCard -&gt; System.out.println(&quot;priority:&quot; + assistantCard.getPriority() + &quot; maxMovement:&quot; + assistantCard.getMaxMovement()));</b>
+<i class="no-highlight">654</i>&nbsp;        //get the selected card
+<i class="no-highlight">655</i>&nbsp;        int selected;
+<i class="no-highlight">656</i>&nbsp;        do {
+<b class="nc"><i class="no-highlight">657</i>&nbsp;            selected = getInt();</b>
+<b class="nc"><i class="no-highlight">658</i>&nbsp;            if (!cardNumbers.contains(selected)) {</b>
+<b class="nc"><i class="no-highlight">659</i>&nbsp;                System.out.println(&quot;Card not available&quot;);</b>
+<i class="no-highlight">660</i>&nbsp;            } else {
+<i class="no-highlight">661</i>&nbsp;                break;
+<i class="no-highlight">662</i>&nbsp;            }
+<i class="no-highlight">663</i>&nbsp;            //repeat until the user pic
+<i class="no-highlight">664</i>&nbsp;        } while (true);
+<b class="nc"><i class="no-highlight">665</i>&nbsp;        PlayAssistantCard playAssistantCard = new PlayAssistantCard(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected);</b>
+<b class="nc"><i class="no-highlight">666</i>&nbsp;        PlayerActionRequest playerAction = new PlayerActionRequest(playAssistantCard);</b>
+<b class="nc"><i class="no-highlight">667</i>&nbsp;        socketWrapper.sendMessage(playerAction);</b>
+<i class="no-highlight">668</i>&nbsp;    }
+<i class="no-highlight">669</i>&nbsp;
+<i class="no-highlight">670</i>&nbsp;    /**
+<i class="no-highlight">671</i>&nbsp;     * Executes the moveStudent command, the method requires from the user to type pawn&#39;s index inside entrance then it
+<i class="no-highlight">672</i>&nbsp;     * allows the user to choose the destination:
+<i class="no-highlight">673</i>&nbsp;     * type enter to move the pawn directly to the dining room
+<i class="no-highlight">674</i>&nbsp;     * type a number that will be interpreted as the island&#39;s id on which to move the pawn
+<i class="no-highlight">675</i>&nbsp;     * &lt;p&gt;
+<i class="no-highlight">676</i>&nbsp;     * Finally, it creates the moveStudent request and then sends it to the Server.
+<i class="no-highlight">677</i>&nbsp;     *
+<i class="no-highlight">678</i>&nbsp;     * @throws IOException if an I/O error occurs
+<i class="no-highlight">679</i>&nbsp;     */
+<i class="no-highlight">680</i>&nbsp;    private void moveStudent() throws IOException {
+<i class="no-highlight">681</i>&nbsp;        //get entrance size
+<b class="nc"><i class="no-highlight">682</i>&nbsp;        int entranceSize = this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getEntranceSize() - 1;</b>
+<b class="nc"><i class="no-highlight">683</i>&nbsp;        System.out.println(&quot;Insert the number of entrance&#39;s position between 0 and &quot; + entranceSize);</b>
+<i class="no-highlight">684</i>&nbsp;        //get selected pawn&#39;s index from entrance
+<b class="nc"><i class="no-highlight">685</i>&nbsp;        int selected = getInt();</b>
+<i class="no-highlight">686</i>&nbsp;
+<b class="nc"><i class="no-highlight">687</i>&nbsp;        System.out.println(&quot;Type the island id to move the selected student there or press &#39;Enter&#39; to send it to the dining room&quot;);</b>
+<i class="no-highlight">688</i>&nbsp;        //get destination (&#39;enter&#39; for dining room or island&#39;s ID)
+<b class="nc"><i class="no-highlight">689</i>&nbsp;        OptionalValue&lt;Integer&gt; choice = getOptionalInt();</b>
+<i class="no-highlight">690</i>&nbsp;        //create MoveStudent object
+<i class="no-highlight">691</i>&nbsp;        MoveStudent moveStudent;
+<b class="nc"><i class="no-highlight">692</i>&nbsp;        if (choice.isEmpty()) {</b>
+<i class="no-highlight">693</i>&nbsp;            //if the user has typed &#39;enter&#39; then initialize the moveStudent action with dining room as MoveDestination
+<b class="nc"><i class="no-highlight">694</i>&nbsp;            moveStudent = new MoveStudent(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected, MoveDestination.toDiningRoom());</b>
+<i class="no-highlight">695</i>&nbsp;        } else {
+<i class="no-highlight">696</i>&nbsp;            //if the user has typed a number then initialize the moveStudent with that number
+<b class="nc"><i class="no-highlight">697</i>&nbsp;            moveStudent = new MoveStudent(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selected, MoveDestination.toIsland(choice.get()));</b>
+<i class="no-highlight">698</i>&nbsp;        }
+<i class="no-highlight">699</i>&nbsp;        //create and initialize clientPlayerAction to send to the Server
+<b class="nc"><i class="no-highlight">700</i>&nbsp;        PlayerActionRequest clientPlayerAction = new PlayerActionRequest(moveStudent);</b>
+<i class="no-highlight">701</i>&nbsp;        //send the action request to the Server
+<b class="nc"><i class="no-highlight">702</i>&nbsp;        socketWrapper.sendMessage(clientPlayerAction);</b>
+<i class="no-highlight">703</i>&nbsp;
+<i class="no-highlight">704</i>&nbsp;    }
+<i class="no-highlight">705</i>&nbsp;
+<i class="no-highlight">706</i>&nbsp;    /**
+<i class="no-highlight">707</i>&nbsp;     * Executes the moveMotherNature command, this method asks the user to type the amount of steps motherNature should take
+<i class="no-highlight">708</i>&nbsp;     * &lt;p&gt;
+<i class="no-highlight">709</i>&nbsp;     * Finally, it creates the moveMotherNature request and then sends it to the Server.
+<i class="no-highlight">710</i>&nbsp;     *
+<i class="no-highlight">711</i>&nbsp;     * @throws IOException if an I/O error occurs
+<i class="no-highlight">712</i>&nbsp;     */
+<i class="no-highlight">713</i>&nbsp;    private void moveMotherNature() throws IOException {
+<b class="nc"><i class="no-highlight">714</i>&nbsp;        int steps = this.clientView.getModel().getMutableEffects().isMotherNatureMovementIncreased() ?</b>
+<b class="nc"><i class="no-highlight">715</i>&nbsp;                this.clientView.getModel().getMutableTurnOrder().getMutableSelectedCard(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer()).get().getPriority() + 2 :</b>
+<b class="nc"><i class="no-highlight">716</i>&nbsp;                this.clientView.getModel().getMutableTurnOrder().getMutableSelectedCard(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer()).get().getPriority();</b>
+<b class="nc"><i class="no-highlight">717</i>&nbsp;        System.out.println(&quot;You can now move mother nature up to &quot; + steps + &quot; steps&quot;);</b>
+<b class="nc"><i class="no-highlight">718</i>&nbsp;        System.out.println(&quot;How many steps do you want mother nature to take?&quot;);</b>
+<i class="no-highlight">719</i>&nbsp;        //get the amount of steps to perform
+<b class="nc"><i class="no-highlight">720</i>&nbsp;        steps = getInt();</b>
+<i class="no-highlight">721</i>&nbsp;        //create and initialize moveMotherNature action
+<b class="nc"><i class="no-highlight">722</i>&nbsp;        MoveMotherNature moveMotherNature = new MoveMotherNature(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), steps);</b>
+<i class="no-highlight">723</i>&nbsp;        //create and initialize PlayerActionRequest to send to the server
+<b class="nc"><i class="no-highlight">724</i>&nbsp;        PlayerActionRequest clientPlayerAction = new PlayerActionRequest(moveMotherNature);</b>
+<i class="no-highlight">725</i>&nbsp;        //send action request to the server
+<b class="nc"><i class="no-highlight">726</i>&nbsp;        socketWrapper.sendMessage(clientPlayerAction);</b>
+<i class="no-highlight">727</i>&nbsp;    }
+<i class="no-highlight">728</i>&nbsp;
+<i class="no-highlight">729</i>&nbsp;    /**
+<i class="no-highlight">730</i>&nbsp;     * Executes the chooseCloud command, this method asks the user to type a number corresponding to Island&#39;s id.
+<i class="no-highlight">731</i>&nbsp;     * Finally, it creates the chooseCloudTile request and then sends it to the Server.
+<i class="no-highlight">732</i>&nbsp;     *
+<i class="no-highlight">733</i>&nbsp;     * @throws IOException if an I/O error occurs
+<i class="no-highlight">734</i>&nbsp;     */
+<i class="no-highlight">735</i>&nbsp;    private void chooseCloud() throws IOException {
+<b class="nc"><i class="no-highlight">736</i>&nbsp;        System.out.println(&quot;Select one cloud from 0 to &quot; + (this.clientView.getModel().getClouds().size() - 1));</b>
+<i class="no-highlight">737</i>&nbsp;        //get selected Cloud&#39;s ID
+<b class="nc"><i class="no-highlight">738</i>&nbsp;        int selectedCloud = getInt();</b>
+<i class="no-highlight">739</i>&nbsp;        //create and initialize ChooseCloudTile Object with the selected Island&#39;s ID
+<b class="nc"><i class="no-highlight">740</i>&nbsp;        ChooseCloudTile chooseCloudTile = new ChooseCloudTile(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId(), selectedCloud);</b>
+<i class="no-highlight">741</i>&nbsp;        //create and initialize clientPlayerAction request to send to the Server
+<b class="nc"><i class="no-highlight">742</i>&nbsp;        PlayerActionRequest clientPlayerAction = new PlayerActionRequest(chooseCloudTile);</b>
+<i class="no-highlight">743</i>&nbsp;        //send clientPlayerAction request to the Server
+<b class="nc"><i class="no-highlight">744</i>&nbsp;        socketWrapper.sendMessage(clientPlayerAction);</b>
+<i class="no-highlight">745</i>&nbsp;    }
+<i class="no-highlight">746</i>&nbsp;
+<i class="no-highlight">747</i>&nbsp;    /**
+<i class="no-highlight">748</i>&nbsp;     * Executes the endTurn command to end currentPlayer&#39;s action turn and move on to the next player
+<i class="no-highlight">749</i>&nbsp;     */
+<i class="no-highlight">750</i>&nbsp;    private void endTurn() throws IOException {
+<i class="no-highlight">751</i>&nbsp;        //create and initialize endTurnOfActionPhase action
+<b class="nc"><i class="no-highlight">752</i>&nbsp;        EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getId());</b>
+<i class="no-highlight">753</i>&nbsp;        //create and initialize PlayerActionRequest to send to the server
+<b class="nc"><i class="no-highlight">754</i>&nbsp;        PlayerActionRequest clientPlayerAction = new PlayerActionRequest(endTurnOfActionPhase);</b>
+<i class="no-highlight">755</i>&nbsp;        //send action to the server
+<b class="nc"><i class="no-highlight">756</i>&nbsp;        socketWrapper.sendMessage(clientPlayerAction);</b>
+<i class="no-highlight">757</i>&nbsp;    }
+<i class="no-highlight">758</i>&nbsp;
+<i class="no-highlight">759</i>&nbsp;    /**
+<i class="no-highlight">760</i>&nbsp;     * print all the available actions basing on current game phase
+<i class="no-highlight">761</i>&nbsp;     */
+<i class="no-highlight">762</i>&nbsp;    private void printGameActions() {
+<i class="no-highlight">763</i>&nbsp;        //check whether the user is allowed to perform any action (i.e. if is the current player)
+<b class="nc"><i class="no-highlight">764</i>&nbsp;        if (!this.clientView.getNickname().equals(this.clientView.getModel().getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {</b>
+<b class="nc"><i class="no-highlight">765</i>&nbsp;            System.out.println(&quot;No actions are allowed out of turn&quot;);</b>
+<i class="no-highlight">766</i>&nbsp;            return;
+<i class="no-highlight">767</i>&nbsp;        }
+<i class="no-highlight">768</i>&nbsp;        //get current gamePhase
+<b class="nc"><i class="no-highlight">769</i>&nbsp;        GamePhase gamePhase = this.clientView.getModel().getMutableTurnOrder().getGamePhase();</b>
+<b class="nc"><i class="no-highlight">770</i>&nbsp;        System.out.println(&quot;during the &quot; + gamePhase + &quot; phase these are the available commands:&quot;);</b>
+<b class="nc"><i class="no-highlight">771</i>&nbsp;        switch (gamePhase) {</b>
+<i class="no-highlight">772</i>&nbsp;            //during SETUP phase the user can only play the assistant card
+<i class="no-highlight">773</i>&nbsp;            case SETUP -&gt;
+<b class="nc"><i class="no-highlight">774</i>&nbsp;                    System.out.println(&quot;--playAssistantCard (play the assistant card to establish the turn order)&quot;);</b>
+<i class="no-highlight">775</i>&nbsp;            //print all actions available during ACTION phase
+<i class="no-highlight">776</i>&nbsp;            case ACTION -&gt; {
+<b class="nc"><i class="no-highlight">777</i>&nbsp;                System.out.println(&quot;--moveStudent (move one student from entrance to dining room or one island)&quot;);</b>
+<i class="no-highlight">778</i>&nbsp;                //only in advanced game mode the user can play a CharacterCard
+<b class="nc"><i class="no-highlight">779</i>&nbsp;                if (this.clientView.getModel().getGameMode() == GameMode.ADVANCED) {</b>
+<b class="nc"><i class="no-highlight">780</i>&nbsp;                    System.out.println(&quot;--playCharacterCard (activate the powerful effect of the character card)&quot;);</b>
+<i class="no-highlight">781</i>&nbsp;                }
+<b class="nc"><i class="no-highlight">782</i>&nbsp;                System.out.println(&quot;--moveMotherNature (move mother nature and calculate the influence&quot;);</b>
+<b class="nc"><i class="no-highlight">783</i>&nbsp;                System.out.println(&quot;--chooseCloud (fill your entrance after moving three students)&quot;);</b>
+<i class="no-highlight">784</i>&nbsp;                //only in advanced game mode the user can get CharacterCard&#39;s info
+<b class="nc"><i class="no-highlight">785</i>&nbsp;                if (this.clientView.getModel().getGameMode() == GameMode.ADVANCED)</b>
+<b class="nc"><i class="no-highlight">786</i>&nbsp;                    System.out.println(&quot;--characterCardInfo (show the information about one characterCard)&quot;);</b>
+<b class="nc"><i class="no-highlight">787</i>&nbsp;                System.out.println(&quot;--endTurn (end your turn)&quot;);</b>
+<b class="nc"><i class="no-highlight">788</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">789</i>&nbsp;            default -&gt; System.out.println(&quot;Gamephase is not valid&quot;);</b>
+<i class="no-highlight">790</i>&nbsp;        }
+<i class="no-highlight">791</i>&nbsp;    }
+<i class="no-highlight">792</i>&nbsp;
+<i class="no-highlight">793</i>&nbsp;    /**
+<i class="no-highlight">794</i>&nbsp;     * Support method used to acquire chosen characterCard from command line; it requires user to type the characterCard number
+<i class="no-highlight">795</i>&nbsp;     * (not the index inside Game&#39;s list of 3 characterCards but the &quot;id&quot; o the card between 1 and 12). The methods also checks
+<i class="no-highlight">796</i>&nbsp;     * if the chosen characterCard&#39;s number is present among the 3 CharacterCards available during the game.
+<i class="no-highlight">797</i>&nbsp;     *
+<i class="no-highlight">798</i>&nbsp;     * @return int representing characterCard&#39;s number
+<i class="no-highlight">799</i>&nbsp;     * @throws IOException if an I/O error occurs
+<i class="no-highlight">800</i>&nbsp;     */
+<i class="no-highlight">801</i>&nbsp;    private int getCharacterCardIndex() throws IOException {
+<b class="nc"><i class="no-highlight">802</i>&nbsp;        System.out.println(&quot;Pick one character card from the list above (type the card number)&quot;);</b>
+<i class="no-highlight">803</i>&nbsp;        int selected;
+<i class="no-highlight">804</i>&nbsp;        //ArrayList containing the 3 characterCards&#39; numbers available during the game
+<b class="nc"><i class="no-highlight">805</i>&nbsp;        ArrayList&lt;Integer&gt; characterCardsNumbers =</b>
+<b class="nc"><i class="no-highlight">806</i>&nbsp;                this.clientView.getModel().getCharacterCards().stream().map(CharacterCard::getId).collect(Collectors.toCollection(ArrayList::new));</b>
+<i class="no-highlight">807</i>&nbsp;        do {
+<i class="no-highlight">808</i>&nbsp;            //acquire number
+<b class="nc"><i class="no-highlight">809</i>&nbsp;            selected = getInt();</b>
+<i class="no-highlight">810</i>&nbsp;            //check if this number belongs to the list of available characterCards
+<b class="nc"><i class="no-highlight">811</i>&nbsp;            if (!characterCardsNumbers.contains(selected)) {</b>
+<b class="nc"><i class="no-highlight">812</i>&nbsp;                System.out.println(&quot;CharacterCard not available&quot;);</b>
+<i class="no-highlight">813</i>&nbsp;            } else {
+<i class="no-highlight">814</i>&nbsp;                break;
+<i class="no-highlight">815</i>&nbsp;            }
+<i class="no-highlight">816</i>&nbsp;            //repeat until the chosen number belongs to the list of available characterCards
+<i class="no-highlight">817</i>&nbsp;        } while (true);
+<i class="no-highlight">818</i>&nbsp;        //return the chosen number
+<b class="nc"><i class="no-highlight">819</i>&nbsp;        return selected;</b>
+<i class="no-highlight">820</i>&nbsp;    }
+<i class="no-highlight">821</i>&nbsp;
+<i class="no-highlight">822</i>&nbsp;    /**
+<i class="no-highlight">823</i>&nbsp;     * Support method to read an integer from command line, this method does not accept &#39;enter&#39; as input
+<i class="no-highlight">824</i>&nbsp;     *
+<i class="no-highlight">825</i>&nbsp;     * @return the integer read from command line
+<i class="no-highlight">826</i>&nbsp;     * @throws IOException if an I/O error occurs
+<i class="no-highlight">827</i>&nbsp;     */
+<i class="no-highlight">828</i>&nbsp;    private int getInt() throws IOException {
+<i class="no-highlight">829</i>&nbsp;        int result;
+<i class="no-highlight">830</i>&nbsp;        while (true) {
+<i class="no-highlight">831</i>&nbsp;            try {
+<i class="no-highlight">832</i>&nbsp;                //get text from stdIn
+<b class="nc"><i class="no-highlight">833</i>&nbsp;                String text = stdIn.readLine();</b>
+<b class="nc"><i class="no-highlight">834</i>&nbsp;                if (text == null)</b>
+<b class="nc"><i class="no-highlight">835</i>&nbsp;                    throw new IOException();</b>
+<i class="no-highlight">836</i>&nbsp;                //try to parse String from stdIn to Integer
+<b class="nc"><i class="no-highlight">837</i>&nbsp;                result = Integer.parseInt(text);</b>
+<b class="nc"><i class="no-highlight">838</i>&nbsp;                break;</b>
+<b class="nc"><i class="no-highlight">839</i>&nbsp;            } catch (NumberFormatException ex) {</b>
+<b class="nc"><i class="no-highlight">840</i>&nbsp;                System.out.println(&quot;This string is not a number, retry.&quot;);</b>
+<b class="nc"><i class="no-highlight">841</i>&nbsp;            }</b>
+<i class="no-highlight">842</i>&nbsp;            //repeat until the String is a valid number
+<i class="no-highlight">843</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">844</i>&nbsp;        return result;</b>
+<i class="no-highlight">845</i>&nbsp;    }
+<i class="no-highlight">846</i>&nbsp;
+<i class="no-highlight">847</i>&nbsp;    /**
+<i class="no-highlight">848</i>&nbsp;     * Support method to read an integer from command line, this method accepts &#39;enter&#39; as input
+<i class="no-highlight">849</i>&nbsp;     *
+<i class="no-highlight">850</i>&nbsp;     * @return the integer read from command line or Optional.empty if the user pressed &quot;Enter&quot;
+<i class="no-highlight">851</i>&nbsp;     * @throws IOException if an I/O error occurs
+<i class="no-highlight">852</i>&nbsp;     */
+<i class="no-highlight">853</i>&nbsp;    private OptionalValue&lt;Integer&gt; getOptionalInt() throws IOException {
+<i class="no-highlight">854</i>&nbsp;        int result;
+<i class="no-highlight">855</i>&nbsp;        while (true) {
+<i class="no-highlight">856</i>&nbsp;            try {
+<i class="no-highlight">857</i>&nbsp;                //get text from stdIn
+<b class="nc"><i class="no-highlight">858</i>&nbsp;                String text = stdIn.readLine();</b>
+<b class="nc"><i class="no-highlight">859</i>&nbsp;                if (text == null)</b>
+<b class="nc"><i class="no-highlight">860</i>&nbsp;                    throw new IOException();</b>
+<i class="no-highlight">861</i>&nbsp;                //if user has typed &#39;enter&#39; then return Optional.empty
+<b class="nc"><i class="no-highlight">862</i>&nbsp;                if (text.equals(&quot;&quot;))</b>
+<b class="nc"><i class="no-highlight">863</i>&nbsp;                    return OptionalValue.empty();</b>
+<i class="no-highlight">864</i>&nbsp;                //try to parse String from stdIn to Integer
+<b class="nc"><i class="no-highlight">865</i>&nbsp;                result = Integer.parseInt(text);</b>
+<b class="nc"><i class="no-highlight">866</i>&nbsp;                break;</b>
+<b class="nc"><i class="no-highlight">867</i>&nbsp;            } catch (NumberFormatException ex) {</b>
+<b class="nc"><i class="no-highlight">868</i>&nbsp;                System.out.println(&quot;This string is not a number, retry.&quot;);</b>
+<b class="nc"><i class="no-highlight">869</i>&nbsp;            }</b>
+<i class="no-highlight">870</i>&nbsp;            //repeat until the String is a valid number
+<i class="no-highlight">871</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">872</i>&nbsp;        return OptionalValue.of(result);</b>
+<i class="no-highlight">873</i>&nbsp;    }
+<i class="no-highlight">874</i>&nbsp;
+<i class="no-highlight">875</i>&nbsp;    /**
+<i class="no-highlight">876</i>&nbsp;     * Support method that create the PlayerActionRequest after that user type a PawnColour.
+<i class="no-highlight">877</i>&nbsp;     *
+<i class="no-highlight">878</i>&nbsp;     * @param selected      selected CharacterCard&#39;s index among the 3 available during the game
+<i class="no-highlight">879</i>&nbsp;     * @param currentPlayer current player in turn, necessary to create PlayCharacterCard action
+<i class="no-highlight">880</i>&nbsp;     * @return PlayerActionRequest with the selected PawnColour as parameter
+<i class="no-highlight">881</i>&nbsp;     * @throws IOException if an I/O error occurs
+<i class="no-highlight">882</i>&nbsp;     */
+<i class="no-highlight">883</i>&nbsp;    private PlayerActionRequest createPlayerActionByPawnColour(int selected, PlayerBoard currentPlayer) throws IOException {
+<i class="no-highlight">884</i>&nbsp;        //create PlayerActionRequest object
+<i class="no-highlight">885</i>&nbsp;        PlayerActionRequest playerActionRequest;
+<i class="no-highlight">886</i>&nbsp;        //create PlayCharacterCard object
+<b class="nc"><i class="no-highlight">887</i>&nbsp;        PlayCharacterCard playCharacterCard = null;</b>
+<b class="nc"><i class="no-highlight">888</i>&nbsp;        boolean repeat = true;</b>
+<i class="no-highlight">889</i>&nbsp;        do {
+<i class="no-highlight">890</i>&nbsp;            //get the input from stdIn, every switch&#39;s case create a playCharacterCard with selected pawnColour
+<b class="nc"><i class="no-highlight">891</i>&nbsp;            switch (stdIn.readLine().toLowerCase()) {</b>
+<i class="no-highlight">892</i>&nbsp;                case &quot;red&quot; -&gt; {
+<b class="nc"><i class="no-highlight">893</i>&nbsp;                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.RED), OptionalValue.empty());</b>
+<b class="nc"><i class="no-highlight">894</i>&nbsp;                    repeat = false;</b>
+<b class="nc"><i class="no-highlight">895</i>&nbsp;                }</b>
+<i class="no-highlight">896</i>&nbsp;                case &quot;yellow&quot; -&gt; {
+<b class="nc"><i class="no-highlight">897</i>&nbsp;                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.YELLOW), OptionalValue.empty());</b>
+<b class="nc"><i class="no-highlight">898</i>&nbsp;                    repeat = false;</b>
+<b class="nc"><i class="no-highlight">899</i>&nbsp;                }</b>
+<i class="no-highlight">900</i>&nbsp;                case &quot;green&quot; -&gt; {
+<b class="nc"><i class="no-highlight">901</i>&nbsp;                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.GREEN), OptionalValue.empty());</b>
+<b class="nc"><i class="no-highlight">902</i>&nbsp;                    repeat = false;</b>
+<b class="nc"><i class="no-highlight">903</i>&nbsp;                }</b>
+<i class="no-highlight">904</i>&nbsp;                case &quot;pink&quot; -&gt; {
+<b class="nc"><i class="no-highlight">905</i>&nbsp;                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.PINK), OptionalValue.empty());</b>
+<b class="nc"><i class="no-highlight">906</i>&nbsp;                    repeat = false;</b>
+<b class="nc"><i class="no-highlight">907</i>&nbsp;                }</b>
+<i class="no-highlight">908</i>&nbsp;                case &quot;blue&quot; -&gt; {
+<b class="nc"><i class="no-highlight">909</i>&nbsp;                    playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.BLUE), OptionalValue.empty());</b>
+<b class="nc"><i class="no-highlight">910</i>&nbsp;                    repeat = false;</b>
+<b class="nc"><i class="no-highlight">911</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">912</i>&nbsp;                case default -&gt; System.out.println(&quot;Colour not valid, try again&quot;);</b>
+<i class="no-highlight">913</i>&nbsp;            }
+<i class="no-highlight">914</i>&nbsp;            //repeat until the user types a valid pawnColour
+<b class="nc"><i class="no-highlight">915</i>&nbsp;        } while (repeat);</b>
+<i class="no-highlight">916</i>&nbsp;        //initialize playerActionRequest
+<b class="nc"><i class="no-highlight">917</i>&nbsp;        playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<i class="no-highlight">918</i>&nbsp;        //return the playerActionRequest
+<b class="nc"><i class="no-highlight">919</i>&nbsp;        return playerActionRequest;</b>
+<i class="no-highlight">920</i>&nbsp;    }
+<i class="no-highlight">921</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -1067,7 +1066,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-07-01 18:44</div>
+    <div style="float:right;">generated on 2022-07-01 23:08</div>
 </div>
 </body>
 </html>

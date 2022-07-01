@@ -10,7 +10,10 @@ import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,7 +30,6 @@ public class ChooseCloudTileTest {
      * a PlayCharacterCard action or MoveMotherNature action (due to the check order taken in validate method,
      * the controller does not recognize immediately that this action has already been executed, anyway the result
      * is the same that is to say, the validation fails)
-     *
      */
     @Test
     public void PreviousActionNotValid() throws Exception {

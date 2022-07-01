@@ -101,7 +101,6 @@ public class Card05Test {
 
     /**
      * If the card has already given out all of its tiles, it should error out when prompted for handling out more
-     *
      */
     @Test(expected = InputValidationException.class)
     public void checkEmptyCard() throws Exception {

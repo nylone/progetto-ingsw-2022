@@ -75,27 +75,24 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Server.Messages.ServerResponses;
 <i class="no-highlight">2</i>&nbsp;
-<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
+<i class="no-highlight">3</i>&nbsp;import java.io.Serial;
 <i class="no-highlight">4</i>&nbsp;
-<i class="no-highlight">5</i>&nbsp;import java.io.Serial;
-<i class="no-highlight">6</i>&nbsp;
-<i class="no-highlight">7</i>&nbsp;/**
-<i class="no-highlight">8</i>&nbsp; * A {@link Response} to represent the start of a connection with a {@link it.polimi.ingsw.Server.WelcomeServer}
-<i class="no-highlight">9</i>&nbsp; */
-<i class="no-highlight">10</i>&nbsp;public class Welcome extends Response {
-<i class="no-highlight">11</i>&nbsp;    @Serial
-<i class="no-highlight">12</i>&nbsp;    private static final long serialVersionUID = 302L;
-<i class="no-highlight">13</i>&nbsp;
-<i class="no-highlight">14</i>&nbsp;    /**
-<i class="no-highlight">15</i>&nbsp;     * Construct the response
-<i class="no-highlight">16</i>&nbsp;     *
-<i class="no-highlight">17</i>&nbsp;     * @param statusCode the status code of the response
-<i class="no-highlight">18</i>&nbsp;     */
-<i class="no-highlight">19</i>&nbsp;    public Welcome(StatusCode statusCode) {
-<b class="nc"><i class="no-highlight">20</i>&nbsp;        super(statusCode);</b>
-<i class="no-highlight">21</i>&nbsp;    }
-<i class="no-highlight">22</i>&nbsp;
-<i class="no-highlight">23</i>&nbsp;}
+<i class="no-highlight">5</i>&nbsp;/**
+<i class="no-highlight">6</i>&nbsp; * A {@link Response} to represent the start of a connection with a {@link it.polimi.ingsw.Server.WelcomeServer}.
+<i class="no-highlight">7</i>&nbsp; * {@link #getStatusCode()} will always return positively
+<i class="no-highlight">8</i>&nbsp; */
+<i class="no-highlight">9</i>&nbsp;public class Welcome extends FixedStatusResponse {
+<i class="no-highlight">10</i>&nbsp;    @Serial
+<i class="no-highlight">11</i>&nbsp;    private static final long serialVersionUID = 302L;
+<i class="no-highlight">12</i>&nbsp;
+<i class="no-highlight">13</i>&nbsp;    /**
+<i class="no-highlight">14</i>&nbsp;     * Construct the response
+<i class="no-highlight">15</i>&nbsp;     */
+<i class="no-highlight">16</i>&nbsp;    public Welcome() {
+<b class="nc"><i class="no-highlight">17</i>&nbsp;        super();</b>
+<i class="no-highlight">18</i>&nbsp;    }
+<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">20</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -122,7 +119,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-07-01 18:44</div>
+    <div style="float:right;">generated on 2022-07-01 23:08</div>
 </div>
 </body>
 </html>

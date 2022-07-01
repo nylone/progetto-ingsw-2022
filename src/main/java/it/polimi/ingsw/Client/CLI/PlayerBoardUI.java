@@ -32,10 +32,10 @@ public class PlayerBoardUI {
             screen
                     .append("Coins available:").append(playerBoard.getCoinBalance())
                     // add tip to remind usage of showActions command
-                    .append(isCurrentPlayer? InfoUI.showActions() : "").append("\n");
+                    .append(isCurrentPlayer ? InfoUI.showActions() : "").append("\n");
         } else {
             // add tip to remind usage of showActions command
-            screen.append(isCurrentPlayer? InfoUI.showActions() : "").append("\n");
+            screen.append(isCurrentPlayer ? InfoUI.showActions() : "").append("\n");
         }
 
         String entrance = PlayerBoardUI.drawEntrance(playerBoard, ctx);

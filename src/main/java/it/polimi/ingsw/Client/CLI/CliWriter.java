@@ -27,6 +27,10 @@ import java.util.stream.IntStream;
 public class CliWriter implements Runnable {
 
     /**
+     * used to synchronize CliWriter and CliReader, useful when the first one needs to wait the second one
+     */
+    final CyclicBarrier cyclicBarrier;
+    /**
      * socket wrapper to connect the Client to the Server
      */
     private final SocketWrapper socketWrapper;
@@ -38,10 +42,6 @@ public class CliWriter implements Runnable {
      * used to acquire text from command line
      */
     private final BufferedReader stdIn;
-    /**
-     * used to synchronize CliWriter and CliReader, useful when the first one needs to wait the second one
-     */
-    final CyclicBarrier cyclicBarrier;
 
 
     public CliWriter(SocketWrapper socketWrapper, ClientView clientView, BufferedReader bufferedReader, CyclicBarrier cyclicBarrier) {

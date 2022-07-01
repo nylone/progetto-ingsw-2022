@@ -159,17 +159,17 @@ public class LobbyServer implements Runnable {
                                 case StartGameRequest castedEvent -> {
                                     if (!currentLobby.getAdmin().equals(nickname)) {
                                         sw.sendMessage(GameInit.fail("Only the admin of the lobby can start the game."));
-                                        return;
+                                        break;
                                     }
                                     if (!currentLobby.isLobbyFull()) {
                                         sw.sendMessage(GameInit.fail("The lobby has not been filled"));
-                                        return;
+                                        break;
                                     }
                                     try {
                                         currentLobby.startGame(castedEvent.getGameMode());
                                     } catch (InputValidationException e) {
                                         sw.sendMessage(GameInit.fail(e.getMessage()));
-                                        return;
+                                        break;
                                     }
                                     // code executes only when a gameLobby was created
                                     sw.sendMessage(GameInit.success());

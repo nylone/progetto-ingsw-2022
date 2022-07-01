@@ -161,7 +161,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc"><i class="no-highlight">74</i>&nbsp;        return OptionalValue.empty();</b>
 <i class="no-highlight">75</i>&nbsp;    }
 <i class="no-highlight">76</i>&nbsp;
-<i class="no-highlight">77</i>&nbsp;    public void unsafeExecute(Model ctx) throws InputValidationException, OperationException {
+<i class="no-highlight">77</i>&nbsp;    public void unsafeExecute(Model ctx) throws OperationException {
 <b class="fc"><i class="no-highlight">78</i>&nbsp;        PlayerBoard pb = ctx.getMutableTurnOrder().getMutableCurrentPlayer();</b>
 <b class="fc"><i class="no-highlight">79</i>&nbsp;        AssistantCard sa = pb.getMutableAssistantCards().get(selectedAssistant);</b>
 <b class="fc"><i class="no-highlight">80</i>&nbsp;        ctx.getMutableTurnOrder().setSelectedCard(pb, sa);</b>
@@ -194,7 +194,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-07-01 18:43</div>
+    <div style="float:right;">generated on 2022-07-01 23:10</div>
 </div>
 </body>
 </html>

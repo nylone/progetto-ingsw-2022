@@ -65,7 +65,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     0%
   </span>
   <span class="absValue">
-    (0/14)
+    (0/12)
   </span>
 </td>
 <td class="coverageStat">
@@ -73,7 +73,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     0%
   </span>
   <span class="absValue">
-    (0/150)
+    (0/147)
   </span>
 </td>
 </tr>
@@ -198,155 +198,151 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc"><i class="no-highlight">111</i>&nbsp;                UUID id = UUID.fromString(idString);</b>
 <i class="no-highlight">112</i>&nbsp;                try {
 <b class="nc"><i class="no-highlight">113</i>&nbsp;                    sw.sendMessage(new ConnectLobbyRequest(id));</b>
-<b class="nc"><i class="no-highlight">114</i>&nbsp;                    boolean again = true;</b>
-<i class="no-highlight">115</i>&nbsp;                    do {
-<b class="nc"><i class="no-highlight">116</i>&nbsp;                        Message response = sw.awaitMessage();</b>
-<b class="nc"><i class="no-highlight">117</i>&nbsp;                        if (response instanceof LobbyRedirect lobbyConnected) {</b>
-<b class="nc"><i class="no-highlight">118</i>&nbsp;                            if (lobbyConnected.getStatusCode() == StatusCode.Success) {</b>
-<i class="no-highlight">119</i>&nbsp;                                //Switch to a new LobbySelectionPanel if user has been accepted by Server
-<b class="nc"><i class="no-highlight">120</i>&nbsp;                                window.changeView(new GameStartingPanel(ctx, false, lobbyConnected.getLobbyID()));</b>
-<b class="nc"><i class="no-highlight">121</i>&nbsp;                                again = false;</b>
-<i class="no-highlight">122</i>&nbsp;                            } else {
-<b class="nc"><i class="no-highlight">123</i>&nbsp;                                JOptionPane.showMessageDialog(null, &quot;Try again.&quot;, &quot;Error&quot;, JOptionPane.INFORMATION_MESSAGE);</b>
-<b class="nc"><i class="no-highlight">124</i>&nbsp;                                connect.setEnabled(true);</b>
-<i class="no-highlight">125</i>&nbsp;                            }
-<i class="no-highlight">126</i>&nbsp;                        } else {
-<b class="nc"><i class="no-highlight">127</i>&nbsp;                            throw new IllegalStateException(&quot;Unexpected value: &quot; + response);</b>
-<i class="no-highlight">128</i>&nbsp;                        }
-<b class="nc"><i class="no-highlight">129</i>&nbsp;                    } while (again);</b>
-<b class="nc"><i class="no-highlight">130</i>&nbsp;                } catch (Exception e) {</b>
-<b class="nc"><i class="no-highlight">131</i>&nbsp;                    JOptionPane.showMessageDialog(null, &quot;Error in the connection with the server&quot;,</b>
-<i class="no-highlight">132</i>&nbsp;                            &quot;Error&quot;, JOptionPane.INFORMATION_MESSAGE);
-<i class="no-highlight">133</i>&nbsp;                    try {
-<b class="nc"><i class="no-highlight">134</i>&nbsp;                        sw.close();</b>
-<b class="nc"><i class="no-highlight">135</i>&nbsp;                    } catch (IOException ex) {</b>
-<b class="nc"><i class="no-highlight">136</i>&nbsp;                        throw new RuntimeException(ex);</b>
-<b class="nc"><i class="no-highlight">137</i>&nbsp;                    }</b>
-<b class="nc"><i class="no-highlight">138</i>&nbsp;                    window.changeView(new StartPanel(ctx));</b>
-<b class="nc"><i class="no-highlight">139</i>&nbsp;                }</b>
-<i class="no-highlight">140</i>&nbsp;            });
-<i class="no-highlight">141</i>&nbsp;
-<i class="no-highlight">142</i>&nbsp;            // layout object decleration and setup
-<b class="nc"><i class="no-highlight">143</i>&nbsp;            SpringLayout layout = new SpringLayout();</b>
-<i class="no-highlight">144</i>&nbsp;
-<b class="nc"><i class="no-highlight">145</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 20, SpringLayout.NORTH, connectPanel);</b>
-<b class="nc"><i class="no-highlight">146</i>&nbsp;            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);</b>
-<i class="no-highlight">147</i>&nbsp;
-<b class="nc"><i class="no-highlight">148</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, publicLobbiesLabel, 20, SpringLayout.SOUTH, title);</b>
-<b class="nc"><i class="no-highlight">149</i>&nbsp;            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, publicLobbiesLabel, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);</b>
-<b class="nc"><i class="no-highlight">150</i>&nbsp;            layout.putConstraint(SpringLayout.NORTH, scrollablePublicLobbiesList, 20, SpringLayout.VERTICAL_CENTER, publicLobbiesLabel);</b>
-<b class="nc"><i class="no-highlight">151</i>&nbsp;            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, scrollablePublicLobbiesList, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);</b>
-<i class="no-highlight">152</i>&nbsp;
-<b class="nc"><i class="no-highlight">153</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, lobbyIDLabel, 20, SpringLayout.SOUTH, scrollablePublicLobbiesList);</b>
-<b class="nc"><i class="no-highlight">154</i>&nbsp;            layout.putConstraint(SpringLayout.EAST, lobbyIDLabel, -10, SpringLayout.HORIZONTAL_CENTER, connectPanel);</b>
-<b class="nc"><i class="no-highlight">155</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, lobbyID, 0, SpringLayout.VERTICAL_CENTER, lobbyIDLabel);</b>
-<b class="nc"><i class="no-highlight">156</i>&nbsp;            layout.putConstraint(SpringLayout.WEST, lobbyID, 10, SpringLayout.HORIZONTAL_CENTER, connectPanel);</b>
-<i class="no-highlight">157</i>&nbsp;
-<b class="nc"><i class="no-highlight">158</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, connect, 40, SpringLayout.VERTICAL_CENTER, lobbyIDLabel);</b>
-<b class="nc"><i class="no-highlight">159</i>&nbsp;            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, connect, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);</b>
+<b class="nc"><i class="no-highlight">114</i>&nbsp;                    Message response = sw.awaitMessage();</b>
+<b class="nc"><i class="no-highlight">115</i>&nbsp;                    if (response instanceof LobbyConnected lobbyConnected) {</b>
+<b class="nc"><i class="no-highlight">116</i>&nbsp;                        if (lobbyConnected.getStatusCode() == StatusCode.Success) {</b>
+<i class="no-highlight">117</i>&nbsp;                            //Switch to a new LobbySelectionPanel if user has been accepted by Server
+<b class="nc"><i class="no-highlight">118</i>&nbsp;                            window.changeView(new GameStartingPanel(ctx, false, lobbyConnected.getLobbyID()));</b>
+<i class="no-highlight">119</i>&nbsp;                        } else {
+<b class="nc"><i class="no-highlight">120</i>&nbsp;                            JOptionPane.showMessageDialog(null, &quot;Try again.&quot;, &quot;Error&quot;, JOptionPane.INFORMATION_MESSAGE);</b>
+<b class="nc"><i class="no-highlight">121</i>&nbsp;                            connect.setEnabled(true);</b>
+<i class="no-highlight">122</i>&nbsp;                        }
+<i class="no-highlight">123</i>&nbsp;                    } else {
+<b class="nc"><i class="no-highlight">124</i>&nbsp;                        throw new IllegalStateException(&quot;Unexpected value: &quot; + response);</b>
+<i class="no-highlight">125</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">126</i>&nbsp;                } catch (Exception e) {</b>
+<b class="nc"><i class="no-highlight">127</i>&nbsp;                    JOptionPane.showMessageDialog(null, &quot;Error in the connection with the server&quot;,</b>
+<i class="no-highlight">128</i>&nbsp;                            &quot;Error&quot;, JOptionPane.INFORMATION_MESSAGE);
+<i class="no-highlight">129</i>&nbsp;                    try {
+<b class="nc"><i class="no-highlight">130</i>&nbsp;                        sw.close();</b>
+<b class="nc"><i class="no-highlight">131</i>&nbsp;                    } catch (IOException ex) {</b>
+<b class="nc"><i class="no-highlight">132</i>&nbsp;                        throw new RuntimeException(ex);</b>
+<b class="nc"><i class="no-highlight">133</i>&nbsp;                    }</b>
+<b class="nc"><i class="no-highlight">134</i>&nbsp;                    window.changeView(new StartPanel(ctx));</b>
+<b class="nc"><i class="no-highlight">135</i>&nbsp;                }</b>
+<i class="no-highlight">136</i>&nbsp;            });
+<i class="no-highlight">137</i>&nbsp;
+<i class="no-highlight">138</i>&nbsp;            // layout object decleration and setup
+<b class="nc"><i class="no-highlight">139</i>&nbsp;            SpringLayout layout = new SpringLayout();</b>
+<i class="no-highlight">140</i>&nbsp;
+<b class="nc"><i class="no-highlight">141</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 20, SpringLayout.NORTH, connectPanel);</b>
+<b class="nc"><i class="no-highlight">142</i>&nbsp;            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);</b>
+<i class="no-highlight">143</i>&nbsp;
+<b class="nc"><i class="no-highlight">144</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, publicLobbiesLabel, 20, SpringLayout.SOUTH, title);</b>
+<b class="nc"><i class="no-highlight">145</i>&nbsp;            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, publicLobbiesLabel, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);</b>
+<b class="nc"><i class="no-highlight">146</i>&nbsp;            layout.putConstraint(SpringLayout.NORTH, scrollablePublicLobbiesList, 20, SpringLayout.VERTICAL_CENTER, publicLobbiesLabel);</b>
+<b class="nc"><i class="no-highlight">147</i>&nbsp;            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, scrollablePublicLobbiesList, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);</b>
+<i class="no-highlight">148</i>&nbsp;
+<b class="nc"><i class="no-highlight">149</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, lobbyIDLabel, 20, SpringLayout.SOUTH, scrollablePublicLobbiesList);</b>
+<b class="nc"><i class="no-highlight">150</i>&nbsp;            layout.putConstraint(SpringLayout.EAST, lobbyIDLabel, -10, SpringLayout.HORIZONTAL_CENTER, connectPanel);</b>
+<b class="nc"><i class="no-highlight">151</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, lobbyID, 0, SpringLayout.VERTICAL_CENTER, lobbyIDLabel);</b>
+<b class="nc"><i class="no-highlight">152</i>&nbsp;            layout.putConstraint(SpringLayout.WEST, lobbyID, 10, SpringLayout.HORIZONTAL_CENTER, connectPanel);</b>
+<i class="no-highlight">153</i>&nbsp;
+<b class="nc"><i class="no-highlight">154</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, connect, 40, SpringLayout.VERTICAL_CENTER, lobbyIDLabel);</b>
+<b class="nc"><i class="no-highlight">155</i>&nbsp;            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, connect, 0, SpringLayout.HORIZONTAL_CENTER, connectPanel);</b>
+<i class="no-highlight">156</i>&nbsp;
+<i class="no-highlight">157</i>&nbsp;            // apply layout
+<b class="nc"><i class="no-highlight">158</i>&nbsp;            connectPanel.setLayout(layout);</b>
+<i class="no-highlight">159</i>&nbsp;        }
 <i class="no-highlight">160</i>&nbsp;
-<i class="no-highlight">161</i>&nbsp;            // apply layout
-<b class="nc"><i class="no-highlight">162</i>&nbsp;            connectPanel.setLayout(layout);</b>
-<i class="no-highlight">163</i>&nbsp;        }
-<i class="no-highlight">164</i>&nbsp;
-<i class="no-highlight">165</i>&nbsp;        // create tab setup
-<i class="no-highlight">166</i>&nbsp;        {
-<i class="no-highlight">167</i>&nbsp;            // labels
-<b class="nc"><i class="no-highlight">168</i>&nbsp;            JLabel title = new JLabel(&quot;Create a lobby&quot;);</b>
-<b class="nc"><i class="no-highlight">169</i>&nbsp;            JLabel openLobbyLabel = new JLabel(&quot;Public lobby:&quot;, SwingConstants.RIGHT);</b>
-<b class="nc"><i class="no-highlight">170</i>&nbsp;            JLabel maxPlayersLabel = new JLabel(&quot;Max Players:&quot;, SwingConstants.RIGHT);</b>
-<i class="no-highlight">171</i>&nbsp;
-<i class="no-highlight">172</i>&nbsp;            // buttons
-<b class="nc"><i class="no-highlight">173</i>&nbsp;            JButton create = new JButton(&quot;Create&quot;);</b>
-<b class="nc"><i class="no-highlight">174</i>&nbsp;            JCheckBox openLobby = new JCheckBox();</b>
-<b class="nc"><i class="no-highlight">175</i>&nbsp;            JRadioButton maxPlayers_2 = new JRadioButton(&quot;2&quot;);</b>
-<b class="nc"><i class="no-highlight">176</i>&nbsp;            maxPlayers_2.setActionCommand(&quot;2&quot;);</b>
-<b class="nc"><i class="no-highlight">177</i>&nbsp;            JRadioButton maxPlayers_3 = new JRadioButton(&quot;3&quot;);</b>
-<b class="nc"><i class="no-highlight">178</i>&nbsp;            maxPlayers_3.setActionCommand(&quot;3&quot;);</b>
-<b class="nc"><i class="no-highlight">179</i>&nbsp;            JRadioButton maxPlayers_4 = new JRadioButton(&quot;4&quot;);</b>
-<b class="nc"><i class="no-highlight">180</i>&nbsp;            maxPlayers_4.setActionCommand(&quot;4&quot;);</b>
-<i class="no-highlight">181</i>&nbsp;
-<i class="no-highlight">182</i>&nbsp;            // radio buttons get grouped up
-<b class="nc"><i class="no-highlight">183</i>&nbsp;            ButtonGroup maxPlayers = new ButtonGroup();</b>
-<b class="nc"><i class="no-highlight">184</i>&nbsp;            maxPlayers_2.setSelected(true);</b>
-<b class="nc"><i class="no-highlight">185</i>&nbsp;            maxPlayers.add(maxPlayers_2);</b>
-<b class="nc"><i class="no-highlight">186</i>&nbsp;            maxPlayers.add(maxPlayers_3);</b>
-<b class="nc"><i class="no-highlight">187</i>&nbsp;            maxPlayers.add(maxPlayers_4);</b>
-<i class="no-highlight">188</i>&nbsp;
-<i class="no-highlight">189</i>&nbsp;            // adding all elements to the view
-<b class="nc"><i class="no-highlight">190</i>&nbsp;            createPanel.add(title);</b>
-<b class="nc"><i class="no-highlight">191</i>&nbsp;            createPanel.add(openLobbyLabel);</b>
-<b class="nc"><i class="no-highlight">192</i>&nbsp;            createPanel.add(maxPlayersLabel);</b>
-<b class="nc"><i class="no-highlight">193</i>&nbsp;            createPanel.add(create);</b>
-<b class="nc"><i class="no-highlight">194</i>&nbsp;            createPanel.add(openLobby);</b>
-<b class="nc"><i class="no-highlight">195</i>&nbsp;            createPanel.add(maxPlayers_2);</b>
-<b class="nc"><i class="no-highlight">196</i>&nbsp;            createPanel.add(maxPlayers_3);</b>
-<b class="nc"><i class="no-highlight">197</i>&nbsp;            createPanel.add(maxPlayers_4);</b>
-<i class="no-highlight">198</i>&nbsp;
-<b class="nc"><i class="no-highlight">199</i>&nbsp;            create.addActionListener(actionEvent -&gt; {</b>
-<b class="nc"><i class="no-highlight">200</i>&nbsp;                create.setEnabled(false);</b>
-<i class="no-highlight">201</i>&nbsp;                // normalize id
-<i class="no-highlight">202</i>&nbsp;                try {
-<b class="nc"><i class="no-highlight">203</i>&nbsp;                    sw.sendMessage(new CreateLobbyRequest(</b>
-<b class="nc"><i class="no-highlight">204</i>&nbsp;                            openLobby.isSelected(),</b>
-<b class="nc"><i class="no-highlight">205</i>&nbsp;                            Integer.parseInt(maxPlayers.getSelection().getActionCommand())</b>
-<i class="no-highlight">206</i>&nbsp;                    ));
-<b class="nc"><i class="no-highlight">207</i>&nbsp;                    boolean again = true;</b>
-<i class="no-highlight">208</i>&nbsp;                    do {
-<b class="nc"><i class="no-highlight">209</i>&nbsp;                        Message response = sw.awaitMessage();</b>
-<b class="nc"><i class="no-highlight">210</i>&nbsp;                        if (response instanceof LobbyRedirect lobbyConnected) {</b>
-<b class="nc"><i class="no-highlight">211</i>&nbsp;                            if (lobbyConnected.getStatusCode() == StatusCode.Success) {</b>
-<i class="no-highlight">212</i>&nbsp;                                //Switch to a new LobbySelectionPanel if user has been accepted by Server
-<b class="nc"><i class="no-highlight">213</i>&nbsp;                                window.changeView(new GameStartingPanel(ctx, true, lobbyConnected.getLobbyID()));</b>
-<b class="nc"><i class="no-highlight">214</i>&nbsp;                                again = false;</b>
-<i class="no-highlight">215</i>&nbsp;                            } else {
-<b class="nc"><i class="no-highlight">216</i>&nbsp;                                JOptionPane.showMessageDialog(null, &quot;Try again.&quot;, &quot;Error&quot;, JOptionPane.INFORMATION_MESSAGE);</b>
-<b class="nc"><i class="no-highlight">217</i>&nbsp;                                create.setEnabled(true);</b>
-<i class="no-highlight">218</i>&nbsp;                            }
-<i class="no-highlight">219</i>&nbsp;                        } else {
-<b class="nc"><i class="no-highlight">220</i>&nbsp;                            throw new IllegalStateException(&quot;Unexpected value: &quot; + response);</b>
-<i class="no-highlight">221</i>&nbsp;                        }
-<b class="nc"><i class="no-highlight">222</i>&nbsp;                    } while (again);</b>
-<b class="nc"><i class="no-highlight">223</i>&nbsp;                } catch (Exception e) {</b>
-<b class="nc"><i class="no-highlight">224</i>&nbsp;                    JOptionPane.showMessageDialog(null, &quot;Error in the connection with the server&quot;,</b>
-<i class="no-highlight">225</i>&nbsp;                            &quot;Error&quot;, JOptionPane.INFORMATION_MESSAGE);
-<i class="no-highlight">226</i>&nbsp;                    try {
-<b class="nc"><i class="no-highlight">227</i>&nbsp;                        sw.close();</b>
-<b class="nc"><i class="no-highlight">228</i>&nbsp;                    } catch (IOException ex) {</b>
-<b class="nc"><i class="no-highlight">229</i>&nbsp;                        throw new RuntimeException(ex);</b>
-<b class="nc"><i class="no-highlight">230</i>&nbsp;                    }</b>
-<b class="nc"><i class="no-highlight">231</i>&nbsp;                    window.changeView(new StartPanel(ctx));</b>
-<b class="nc"><i class="no-highlight">232</i>&nbsp;                }</b>
-<i class="no-highlight">233</i>&nbsp;            });
-<i class="no-highlight">234</i>&nbsp;
-<i class="no-highlight">235</i>&nbsp;            // layout object decleration and setup
-<b class="nc"><i class="no-highlight">236</i>&nbsp;            SpringLayout layout = new SpringLayout();</b>
-<i class="no-highlight">237</i>&nbsp;
-<b class="nc"><i class="no-highlight">238</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 20, SpringLayout.NORTH, createPanel);</b>
-<b class="nc"><i class="no-highlight">239</i>&nbsp;            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, createPanel);</b>
-<i class="no-highlight">240</i>&nbsp;
-<b class="nc"><i class="no-highlight">241</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, openLobbyLabel, 20, SpringLayout.SOUTH, title);</b>
-<b class="nc"><i class="no-highlight">242</i>&nbsp;            layout.putConstraint(SpringLayout.EAST, openLobbyLabel, -10, SpringLayout.HORIZONTAL_CENTER, createPanel);</b>
-<b class="nc"><i class="no-highlight">243</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, openLobby, 0, SpringLayout.VERTICAL_CENTER, openLobbyLabel);</b>
-<b class="nc"><i class="no-highlight">244</i>&nbsp;            layout.putConstraint(SpringLayout.WEST, openLobby, 10, SpringLayout.HORIZONTAL_CENTER, createPanel);</b>
-<i class="no-highlight">245</i>&nbsp;
-<b class="nc"><i class="no-highlight">246</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, maxPlayersLabel, 20, SpringLayout.SOUTH, openLobbyLabel);</b>
-<b class="nc"><i class="no-highlight">247</i>&nbsp;            layout.putConstraint(SpringLayout.EAST, maxPlayersLabel, -10, SpringLayout.HORIZONTAL_CENTER, createPanel);</b>
-<b class="nc"><i class="no-highlight">248</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, maxPlayers_2, 0, SpringLayout.VERTICAL_CENTER, maxPlayersLabel);</b>
-<b class="nc"><i class="no-highlight">249</i>&nbsp;            layout.putConstraint(SpringLayout.WEST, maxPlayers_2, 10, SpringLayout.HORIZONTAL_CENTER, createPanel);</b>
-<b class="nc"><i class="no-highlight">250</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, maxPlayers_3, 0, SpringLayout.VERTICAL_CENTER, maxPlayersLabel);</b>
-<b class="nc"><i class="no-highlight">251</i>&nbsp;            layout.putConstraint(SpringLayout.WEST, maxPlayers_3, 10, SpringLayout.EAST, maxPlayers_2);</b>
-<b class="nc"><i class="no-highlight">252</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, maxPlayers_4, 0, SpringLayout.VERTICAL_CENTER, maxPlayersLabel);</b>
-<b class="nc"><i class="no-highlight">253</i>&nbsp;            layout.putConstraint(SpringLayout.WEST, maxPlayers_4, 10, SpringLayout.EAST, maxPlayers_3);</b>
-<i class="no-highlight">254</i>&nbsp;
-<b class="nc"><i class="no-highlight">255</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, create, 40, SpringLayout.VERTICAL_CENTER, maxPlayersLabel);</b>
-<b class="nc"><i class="no-highlight">256</i>&nbsp;            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, create, 0, SpringLayout.HORIZONTAL_CENTER, createPanel);</b>
-<i class="no-highlight">257</i>&nbsp;
-<i class="no-highlight">258</i>&nbsp;            // apply layout
-<b class="nc"><i class="no-highlight">259</i>&nbsp;            createPanel.setLayout(layout);</b>
-<i class="no-highlight">260</i>&nbsp;        }
-<i class="no-highlight">261</i>&nbsp;    }
-<i class="no-highlight">262</i>&nbsp;}
+<i class="no-highlight">161</i>&nbsp;        // create tab setup
+<i class="no-highlight">162</i>&nbsp;        {
+<i class="no-highlight">163</i>&nbsp;            // labels
+<b class="nc"><i class="no-highlight">164</i>&nbsp;            JLabel title = new JLabel(&quot;Create a lobby&quot;);</b>
+<b class="nc"><i class="no-highlight">165</i>&nbsp;            JLabel openLobbyLabel = new JLabel(&quot;Public lobby:&quot;, SwingConstants.RIGHT);</b>
+<b class="nc"><i class="no-highlight">166</i>&nbsp;            JLabel maxPlayersLabel = new JLabel(&quot;Max Players:&quot;, SwingConstants.RIGHT);</b>
+<i class="no-highlight">167</i>&nbsp;
+<i class="no-highlight">168</i>&nbsp;            // buttons
+<b class="nc"><i class="no-highlight">169</i>&nbsp;            JButton create = new JButton(&quot;Create&quot;);</b>
+<b class="nc"><i class="no-highlight">170</i>&nbsp;            JCheckBox openLobby = new JCheckBox();</b>
+<b class="nc"><i class="no-highlight">171</i>&nbsp;            JRadioButton maxPlayers_2 = new JRadioButton(&quot;2&quot;);</b>
+<b class="nc"><i class="no-highlight">172</i>&nbsp;            maxPlayers_2.setActionCommand(&quot;2&quot;);</b>
+<b class="nc"><i class="no-highlight">173</i>&nbsp;            JRadioButton maxPlayers_3 = new JRadioButton(&quot;3&quot;);</b>
+<b class="nc"><i class="no-highlight">174</i>&nbsp;            maxPlayers_3.setActionCommand(&quot;3&quot;);</b>
+<b class="nc"><i class="no-highlight">175</i>&nbsp;            JRadioButton maxPlayers_4 = new JRadioButton(&quot;4&quot;);</b>
+<b class="nc"><i class="no-highlight">176</i>&nbsp;            maxPlayers_4.setActionCommand(&quot;4&quot;);</b>
+<i class="no-highlight">177</i>&nbsp;
+<i class="no-highlight">178</i>&nbsp;            // radio buttons get grouped up
+<b class="nc"><i class="no-highlight">179</i>&nbsp;            ButtonGroup maxPlayers = new ButtonGroup();</b>
+<b class="nc"><i class="no-highlight">180</i>&nbsp;            maxPlayers_2.setSelected(true);</b>
+<b class="nc"><i class="no-highlight">181</i>&nbsp;            maxPlayers.add(maxPlayers_2);</b>
+<b class="nc"><i class="no-highlight">182</i>&nbsp;            maxPlayers.add(maxPlayers_3);</b>
+<b class="nc"><i class="no-highlight">183</i>&nbsp;            maxPlayers.add(maxPlayers_4);</b>
+<i class="no-highlight">184</i>&nbsp;
+<i class="no-highlight">185</i>&nbsp;            // adding all elements to the view
+<b class="nc"><i class="no-highlight">186</i>&nbsp;            createPanel.add(title);</b>
+<b class="nc"><i class="no-highlight">187</i>&nbsp;            createPanel.add(openLobbyLabel);</b>
+<b class="nc"><i class="no-highlight">188</i>&nbsp;            createPanel.add(maxPlayersLabel);</b>
+<b class="nc"><i class="no-highlight">189</i>&nbsp;            createPanel.add(create);</b>
+<b class="nc"><i class="no-highlight">190</i>&nbsp;            createPanel.add(openLobby);</b>
+<b class="nc"><i class="no-highlight">191</i>&nbsp;            createPanel.add(maxPlayers_2);</b>
+<b class="nc"><i class="no-highlight">192</i>&nbsp;            createPanel.add(maxPlayers_3);</b>
+<b class="nc"><i class="no-highlight">193</i>&nbsp;            createPanel.add(maxPlayers_4);</b>
+<i class="no-highlight">194</i>&nbsp;
+<b class="nc"><i class="no-highlight">195</i>&nbsp;            create.addActionListener(actionEvent -&gt; {</b>
+<b class="nc"><i class="no-highlight">196</i>&nbsp;                create.setEnabled(false);</b>
+<i class="no-highlight">197</i>&nbsp;                // normalize id
+<i class="no-highlight">198</i>&nbsp;                try {
+<b class="nc"><i class="no-highlight">199</i>&nbsp;                    sw.sendMessage(new CreateLobbyRequest(</b>
+<b class="nc"><i class="no-highlight">200</i>&nbsp;                            openLobby.isSelected(),</b>
+<b class="nc"><i class="no-highlight">201</i>&nbsp;                            Integer.parseInt(maxPlayers.getSelection().getActionCommand())</b>
+<i class="no-highlight">202</i>&nbsp;                    ));
+<b class="nc"><i class="no-highlight">203</i>&nbsp;                    boolean again = true;</b>
+<i class="no-highlight">204</i>&nbsp;                    do {
+<b class="nc"><i class="no-highlight">205</i>&nbsp;                        Message response = sw.awaitMessage();</b>
+<b class="nc"><i class="no-highlight">206</i>&nbsp;                        if (response instanceof LobbyConnected lobbyConnected) {</b>
+<b class="nc"><i class="no-highlight">207</i>&nbsp;                            if (lobbyConnected.getStatusCode() == StatusCode.Success) {</b>
+<i class="no-highlight">208</i>&nbsp;                                //Switch to a new LobbySelectionPanel if user has been accepted by Server
+<b class="nc"><i class="no-highlight">209</i>&nbsp;                                window.changeView(new GameStartingPanel(ctx, true, lobbyConnected.getLobbyID()));</b>
+<b class="nc"><i class="no-highlight">210</i>&nbsp;                                again = false;</b>
+<i class="no-highlight">211</i>&nbsp;                            } else {
+<b class="nc"><i class="no-highlight">212</i>&nbsp;                                JOptionPane.showMessageDialog(null, &quot;Try again.&quot;, &quot;Error&quot;, JOptionPane.INFORMATION_MESSAGE);</b>
+<b class="nc"><i class="no-highlight">213</i>&nbsp;                                create.setEnabled(true);</b>
+<i class="no-highlight">214</i>&nbsp;                            }
+<i class="no-highlight">215</i>&nbsp;                        } else {
+<b class="nc"><i class="no-highlight">216</i>&nbsp;                            throw new IllegalStateException(&quot;Unexpected value: &quot; + response);</b>
+<i class="no-highlight">217</i>&nbsp;                        }
+<b class="nc"><i class="no-highlight">218</i>&nbsp;                    } while (again);</b>
+<b class="nc"><i class="no-highlight">219</i>&nbsp;                } catch (Exception e) {</b>
+<b class="nc"><i class="no-highlight">220</i>&nbsp;                    JOptionPane.showMessageDialog(null, &quot;Error in the connection with the server&quot;,</b>
+<i class="no-highlight">221</i>&nbsp;                            &quot;Error&quot;, JOptionPane.INFORMATION_MESSAGE);
+<i class="no-highlight">222</i>&nbsp;                    try {
+<b class="nc"><i class="no-highlight">223</i>&nbsp;                        sw.close();</b>
+<b class="nc"><i class="no-highlight">224</i>&nbsp;                    } catch (IOException ex) {</b>
+<b class="nc"><i class="no-highlight">225</i>&nbsp;                        throw new RuntimeException(ex);</b>
+<b class="nc"><i class="no-highlight">226</i>&nbsp;                    }</b>
+<b class="nc"><i class="no-highlight">227</i>&nbsp;                    window.changeView(new StartPanel(ctx));</b>
+<b class="nc"><i class="no-highlight">228</i>&nbsp;                }</b>
+<i class="no-highlight">229</i>&nbsp;            });
+<i class="no-highlight">230</i>&nbsp;
+<i class="no-highlight">231</i>&nbsp;            // layout object decleration and setup
+<b class="nc"><i class="no-highlight">232</i>&nbsp;            SpringLayout layout = new SpringLayout();</b>
+<i class="no-highlight">233</i>&nbsp;
+<b class="nc"><i class="no-highlight">234</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 20, SpringLayout.NORTH, createPanel);</b>
+<b class="nc"><i class="no-highlight">235</i>&nbsp;            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, createPanel);</b>
+<i class="no-highlight">236</i>&nbsp;
+<b class="nc"><i class="no-highlight">237</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, openLobbyLabel, 20, SpringLayout.SOUTH, title);</b>
+<b class="nc"><i class="no-highlight">238</i>&nbsp;            layout.putConstraint(SpringLayout.EAST, openLobbyLabel, -10, SpringLayout.HORIZONTAL_CENTER, createPanel);</b>
+<b class="nc"><i class="no-highlight">239</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, openLobby, 0, SpringLayout.VERTICAL_CENTER, openLobbyLabel);</b>
+<b class="nc"><i class="no-highlight">240</i>&nbsp;            layout.putConstraint(SpringLayout.WEST, openLobby, 10, SpringLayout.HORIZONTAL_CENTER, createPanel);</b>
+<i class="no-highlight">241</i>&nbsp;
+<b class="nc"><i class="no-highlight">242</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, maxPlayersLabel, 20, SpringLayout.SOUTH, openLobbyLabel);</b>
+<b class="nc"><i class="no-highlight">243</i>&nbsp;            layout.putConstraint(SpringLayout.EAST, maxPlayersLabel, -10, SpringLayout.HORIZONTAL_CENTER, createPanel);</b>
+<b class="nc"><i class="no-highlight">244</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, maxPlayers_2, 0, SpringLayout.VERTICAL_CENTER, maxPlayersLabel);</b>
+<b class="nc"><i class="no-highlight">245</i>&nbsp;            layout.putConstraint(SpringLayout.WEST, maxPlayers_2, 10, SpringLayout.HORIZONTAL_CENTER, createPanel);</b>
+<b class="nc"><i class="no-highlight">246</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, maxPlayers_3, 0, SpringLayout.VERTICAL_CENTER, maxPlayersLabel);</b>
+<b class="nc"><i class="no-highlight">247</i>&nbsp;            layout.putConstraint(SpringLayout.WEST, maxPlayers_3, 10, SpringLayout.EAST, maxPlayers_2);</b>
+<b class="nc"><i class="no-highlight">248</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, maxPlayers_4, 0, SpringLayout.VERTICAL_CENTER, maxPlayersLabel);</b>
+<b class="nc"><i class="no-highlight">249</i>&nbsp;            layout.putConstraint(SpringLayout.WEST, maxPlayers_4, 10, SpringLayout.EAST, maxPlayers_3);</b>
+<i class="no-highlight">250</i>&nbsp;
+<b class="nc"><i class="no-highlight">251</i>&nbsp;            layout.putConstraint(SpringLayout.VERTICAL_CENTER, create, 40, SpringLayout.VERTICAL_CENTER, maxPlayersLabel);</b>
+<b class="nc"><i class="no-highlight">252</i>&nbsp;            layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, create, 0, SpringLayout.HORIZONTAL_CENTER, createPanel);</b>
+<i class="no-highlight">253</i>&nbsp;
+<i class="no-highlight">254</i>&nbsp;            // apply layout
+<b class="nc"><i class="no-highlight">255</i>&nbsp;            createPanel.setLayout(layout);</b>
+<i class="no-highlight">256</i>&nbsp;        }
+<i class="no-highlight">257</i>&nbsp;    }
+<i class="no-highlight">258</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -373,7 +369,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-07-01 18:44</div>
+    <div style="float:right;">generated on 2022-07-01 23:08</div>
 </div>
 </body>
 </html>

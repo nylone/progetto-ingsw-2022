@@ -25,8 +25,8 @@ public class Card10Test {
     /**
      * Card 10 should be able to move students from entrance to dining room and vice-versa
      *
-     * @throws ContainerException       is thrown when you try to add a student to a full dining room,
-     *                                  but this test should not error out (by definition)
+     * @throws ContainerException is thrown when you try to add a student to a full dining room,
+     *                            but this test should not error out (by definition)
      */
     @Test
     public void checkUse() throws ContainerException {

@@ -26,7 +26,6 @@ public class Card07Test {
     /**
      * Card 07 should be able to hold 6 students and when activated to put one tile on the chosen island.
      * If the island doesn't need it anymore the card should be able to receive the tile used
-     *
      */
     @Test
     public void checkUse() {

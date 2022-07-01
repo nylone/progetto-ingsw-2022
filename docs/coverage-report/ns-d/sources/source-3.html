@@ -230,7 +230,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">109</i>&nbsp;     */
 <i class="no-highlight">110</i>&nbsp;    public static String stripFromANSICodes(String s) {
 <b class="fc"><i class="no-highlight">111</i>&nbsp;        return s</b>
-<b class="fc"><i class="no-highlight">112</i>&nbsp;                .replaceAll(&quot;(\\x9B|\\x1B\\[)[0-?]*[ -\\/]*[@-~]&quot;, &quot;&quot;) // removes all ANSI control codes</b>
+<b class="fc"><i class="no-highlight">112</i>&nbsp;                .replaceAll(&quot;(\\x9B|\\x1B\\[)[0-?]*[ -/]*[@-~]&quot;, &quot;&quot;) // removes all ANSI control codes</b>
 <b class="fc"><i class="no-highlight">113</i>&nbsp;                .replaceAll(&quot;(\t)+&quot;, &quot;    &quot;); // converts tabs to four spaces</b>
 <i class="no-highlight">114</i>&nbsp;    }
 <i class="no-highlight">115</i>&nbsp;}
@@ -260,7 +260,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-07-01 18:44</div>
+    <div style="float:right;">generated on 2022-07-01 23:08</div>
 </div>
 </body>
 </html>

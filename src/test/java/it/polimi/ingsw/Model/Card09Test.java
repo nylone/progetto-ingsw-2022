@@ -18,7 +18,6 @@ public class Card09Test {
 
     /**
      * Card 09 should be able to set a flag to deny a specific colour from influence calculation
-     *
      */
     @Test
     public void checkUse() {

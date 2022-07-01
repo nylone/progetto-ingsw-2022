@@ -13,8 +13,8 @@ public abstract class CharacterCard implements Serializable {
 
     protected final int id;
     protected final int cost;
-    protected int timeUsed;
     protected final Model context;
+    protected int timeUsed;
 
     public CharacterCard(int id, int cost, Model context) {
         this.id = id;

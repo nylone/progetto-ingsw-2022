@@ -78,53 +78,53 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Logger;
 <i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Network.KeepAliveSocketWrapper;
 <i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Network.SocketWrapper;
-<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
-<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.Welcome;
-<i class="no-highlight">8</i>&nbsp;
-<i class="no-highlight">9</i>&nbsp;import java.io.IOException;
-<i class="no-highlight">10</i>&nbsp;import java.net.InetAddress;
-<i class="no-highlight">11</i>&nbsp;import java.net.ServerSocket;
-<i class="no-highlight">12</i>&nbsp;import java.net.Socket;
-<i class="no-highlight">13</i>&nbsp;
-<i class="no-highlight">14</i>&nbsp;/**
-<i class="no-highlight">15</i>&nbsp; * This is the main server thread. &lt;br&gt;
-<i class="no-highlight">16</i>&nbsp; * Expected behaviour: a thread runs forever, accepting all connections and dispatching the
-<i class="no-highlight">17</i>&nbsp; * sockets to the {@link LobbyServer}.
-<i class="no-highlight">18</i>&nbsp; */
-<i class="no-highlight">19</i>&nbsp;public class WelcomeServer implements Runnable {
-<i class="no-highlight">20</i>&nbsp;    private final ServerSocket serverSocket;
-<i class="no-highlight">21</i>&nbsp;
-<i class="no-highlight">22</i>&nbsp;    /**
-<i class="no-highlight">23</i>&nbsp;     * Create a new Welcome server, once run the server binds to an address and listens for connections
-<i class="no-highlight">24</i>&nbsp;     *
-<i class="no-highlight">25</i>&nbsp;     * @param port    the port the server will bind to
-<i class="no-highlight">26</i>&nbsp;     * @param address the address the server will bind to
-<i class="no-highlight">27</i>&nbsp;     */
-<b class="nc"><i class="no-highlight">28</i>&nbsp;    public WelcomeServer(int port, InetAddress address) {</b>
-<b class="nc"><i class="no-highlight">29</i>&nbsp;        Logger.info(&quot;Starting Welcome Server on: &quot; + address + &quot;:&quot; + port);</b>
-<i class="no-highlight">30</i>&nbsp;        try {
-<b class="nc"><i class="no-highlight">31</i>&nbsp;            this.serverSocket = new ServerSocket(port, 1000, address);</b>
-<b class="nc"><i class="no-highlight">32</i>&nbsp;        } catch (IOException e) {</b>
-<b class="nc"><i class="no-highlight">33</i>&nbsp;            throw new RuntimeException(e.getMessage());</b>
-<b class="nc"><i class="no-highlight">34</i>&nbsp;        }</b>
-<i class="no-highlight">35</i>&nbsp;    }
-<i class="no-highlight">36</i>&nbsp;
-<i class="no-highlight">37</i>&nbsp;    /**
-<i class="no-highlight">38</i>&nbsp;     * Used when running the server in a {@link Thread}, will make the server listen for connections, dispatching a
-<i class="no-highlight">39</i>&nbsp;     * {@link LobbyServer} for each new connection.
-<i class="no-highlight">40</i>&nbsp;     */
-<i class="no-highlight">41</i>&nbsp;    @Override
-<i class="no-highlight">42</i>&nbsp;    public void run() {
-<b class="nc"><i class="no-highlight">43</i>&nbsp;        Logger.info(&quot;Server initialized and listening for new connections&quot;);</b>
-<i class="no-highlight">44</i>&nbsp;        while (true) {
-<i class="no-highlight">45</i>&nbsp;            try {
-<b class="nc"><i class="no-highlight">46</i>&nbsp;                Socket socket = serverSocket.accept();</b>
-<b class="nc"><i class="no-highlight">47</i>&nbsp;                SocketWrapper sw = new KeepAliveSocketWrapper(socket, 5000, false);</b>
-<b class="nc"><i class="no-highlight">48</i>&nbsp;                Logger.info(&quot;New connection from: &quot; + sw.getInetAddress());</b>
-<b class="nc"><i class="no-highlight">49</i>&nbsp;                sw.sendMessage(new Welcome(StatusCode.Success));</b>
-<b class="nc"><i class="no-highlight">50</i>&nbsp;                LobbyServer.spawn(sw);</b>
-<b class="nc"><i class="no-highlight">51</i>&nbsp;            } catch (IOException e) {</b>
-<b class="nc"><i class="no-highlight">52</i>&nbsp;                e.printStackTrace();</b>
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.Welcome;
+<i class="no-highlight">7</i>&nbsp;
+<i class="no-highlight">8</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">9</i>&nbsp;import java.net.InetAddress;
+<i class="no-highlight">10</i>&nbsp;import java.net.ServerSocket;
+<i class="no-highlight">11</i>&nbsp;import java.net.Socket;
+<i class="no-highlight">12</i>&nbsp;
+<i class="no-highlight">13</i>&nbsp;/**
+<i class="no-highlight">14</i>&nbsp; * This is the main server thread. &lt;br&gt;
+<i class="no-highlight">15</i>&nbsp; * Expected behaviour: a thread runs forever, accepting all connections and dispatching the
+<i class="no-highlight">16</i>&nbsp; * sockets to the {@link LobbyServer}.
+<i class="no-highlight">17</i>&nbsp; */
+<i class="no-highlight">18</i>&nbsp;public class WelcomeServer implements Runnable {
+<i class="no-highlight">19</i>&nbsp;    private final ServerSocket serverSocket;
+<i class="no-highlight">20</i>&nbsp;
+<i class="no-highlight">21</i>&nbsp;    /**
+<i class="no-highlight">22</i>&nbsp;     * Create a new Welcome server, once run the server binds to an address and listens for connections
+<i class="no-highlight">23</i>&nbsp;     *
+<i class="no-highlight">24</i>&nbsp;     * @param port    the port the server will bind to
+<i class="no-highlight">25</i>&nbsp;     * @param address the address the server will bind to
+<i class="no-highlight">26</i>&nbsp;     */
+<b class="nc"><i class="no-highlight">27</i>&nbsp;    public WelcomeServer(int port, InetAddress address) {</b>
+<b class="nc"><i class="no-highlight">28</i>&nbsp;        Logger.info(&quot;Starting Welcome Server on: &quot; + address + &quot;:&quot; + port);</b>
+<i class="no-highlight">29</i>&nbsp;        try {
+<b class="nc"><i class="no-highlight">30</i>&nbsp;            this.serverSocket = new ServerSocket(port, 1000, address);</b>
+<b class="nc"><i class="no-highlight">31</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i class="no-highlight">32</i>&nbsp;            throw new RuntimeException(e.getMessage());</b>
+<b class="nc"><i class="no-highlight">33</i>&nbsp;        }</b>
+<i class="no-highlight">34</i>&nbsp;    }
+<i class="no-highlight">35</i>&nbsp;
+<i class="no-highlight">36</i>&nbsp;    /**
+<i class="no-highlight">37</i>&nbsp;     * Used when running the server in a {@link Thread}, will make the server listen for connections, dispatching a
+<i class="no-highlight">38</i>&nbsp;     * {@link LobbyServer} for each new connection.
+<i class="no-highlight">39</i>&nbsp;     */
+<i class="no-highlight">40</i>&nbsp;    @Override
+<i class="no-highlight">41</i>&nbsp;    public void run() {
+<b class="nc"><i class="no-highlight">42</i>&nbsp;        Logger.info(&quot;Server initialized and listening for new connections&quot;);</b>
+<i class="no-highlight">43</i>&nbsp;        while (true) {
+<i class="no-highlight">44</i>&nbsp;            try {
+<b class="nc"><i class="no-highlight">45</i>&nbsp;                Socket socket = serverSocket.accept();</b>
+<b class="nc"><i class="no-highlight">46</i>&nbsp;                SocketWrapper sw = new KeepAliveSocketWrapper(socket, 5000, false);</b>
+<b class="nc"><i class="no-highlight">47</i>&nbsp;                Logger.info(&quot;New connection from: &quot; + sw.getInetAddress());</b>
+<b class="nc"><i class="no-highlight">48</i>&nbsp;                sw.sendMessage(new Welcome());</b>
+<b class="nc"><i class="no-highlight">49</i>&nbsp;                LobbyServer.spawn(sw);</b>
+<b class="nc"><i class="no-highlight">50</i>&nbsp;            } catch (IOException e) {</b>
+<b class="nc"><i class="no-highlight">51</i>&nbsp;                Logger.severe(&quot;Caught an exception while awaiting new connections:\n&quot; + e.getMessage());</b>
+<i class="no-highlight">52</i>&nbsp;                return;
 <b class="nc"><i class="no-highlight">53</i>&nbsp;            }</b>
 <i class="no-highlight">54</i>&nbsp;        }
 <i class="no-highlight">55</i>&nbsp;    }
@@ -155,7 +155,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2022-07-01 18:44</div>
+    <div style="float:right;">generated on 2022-07-01 23:08</div>
 </div>
 </body>
 </html>
