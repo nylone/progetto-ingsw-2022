@@ -101,12 +101,11 @@ public class CloudPanel extends JPanel {
                     }
                 }
             });
-
         }
         //--ABSOLUTE POSITIONING--
         cloudButtons.get(0).setBounds(300, 125, 200, 200);
         cloudButtons.get(1).setBounds(700, 125, 200, 200);
-        if (cloudButtons.size() == 3) cloudButtons.get(2).setBounds(300, 350, 200, 200);
+        if (cloudButtons.size() >= 3) cloudButtons.get(2).setBounds(300, 350, 200, 200);
         if (cloudButtons.size() == 4) cloudButtons.get(3).setBounds(700, 350, 200, 200);
         endTurnButton.setBounds(500, 550, 150, 75);
         //add cloudButtons and endTurnButton to backgroundLabel
