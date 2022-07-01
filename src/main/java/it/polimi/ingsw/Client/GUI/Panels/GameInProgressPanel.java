@@ -143,7 +143,7 @@ public class GameInProgressPanel extends JTabbedPane {
                 if (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0) {
                     for (PlayerBoard playerBoard : model.getMutableTurnOrder().getCurrentTurnOrder()) {
                         if (playerBoard.getNickname().equals(ownNickname)) break;
-                        text.append(playerBoard.getNickname()).append("<br> has played assistantCard: #").append(model.getMutableTurnOrder().getMutableSelectedCard(playerBoard).get().getPriority());
+                        text.append("<br>").append(playerBoard.getNickname()).append(" has played assistantCard: #").append(model.getMutableTurnOrder().getMutableSelectedCard(playerBoard).get().getPriority());
                     }
                 }
                 text.append("</html>");
