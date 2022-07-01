@@ -27,9 +27,13 @@ Eriantys is the game chosen as the (2021/2022) project of the Software Engineeri
 
 ## Test coverage
 
-* Follow [this link](deliverables/filtered-coverage-report/index.html) for a slimmed down version (i.e. only of Model + Controller)
+* Follow [this link](deliverables/) for a slimmed down version (i.e. only of Model + Controller)
 of the coverage report.
-* Follow [this link](deliverables/unfiltered-coverage-report/index.html) for an unfiltered version of the coverage report.
+* Follow [this link](deliverables/) for an unfiltered version of the coverage report.
+
+## Javadocs
+
+* Follow [this link](deliverables/) to access the javadocs page for this project.
 
 ## Building and Running
 
@@ -61,19 +65,13 @@ The available command line options are the following:
 
 |      Option | Function                                             | Maximum instances of same argument | Additional info                                                  |
 |------------:|:-----------------------------------------------------|:----------------------------------:|:-----------------------------------------------------------------|
-|         `s` | Start the **
-server**                                 |                 1                  | by default bound to `0.0.0.0:8080`                               |
-|         `c` | Start the **
-CLI**                                    |                 1                  |                                                                  |
-|         `g` | Start the **
-GUI**                                    |             unlimited              |                                                                  |
+|         `s` | Start the **server**                                 |                 1                  | by default bound to `0.0.0.0:8080`                               |
+|         `c` | Start the **CLI**                                    |                 1                  |                                                                  |
+|         `g` | Start the **GUI**                                    |             unlimited              |                                                                  |
 | `h` or `-h` | Prints out the help message                          |                 1                  | same message appears when app is called with incorrect arguments |
-|        `-d` | Enables the **
-logger**                               |                 1                  | by default no logging is done                                    |
-|    `-local` | Force the **
-server** to bind to a loopback interface |                 1                  | default bound address is `0.0.0.0`                               |
-| `-port:XYZ` | Force the **
-server** to bind to port XYZ             |                 1                  | default port is `8080`                                           |
+|        `-d` | Enables the **logger**                               |                 1                  | by default no logging is done                                    |
+|    `-local` | Force the **server** to bind to a loopback interface |                 1                  | default bound address is `0.0.0.0`                               |
+| `-port:XYZ` | Force the **server** to bind to port XYZ             |                 1                  | default port is `8080`                                           |
 
 *Note*: the only argument that can be repeated in the call to the application is the one to start the GUI, in case the
 user

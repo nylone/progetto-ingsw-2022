@@ -1,0 +1,267 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GUISocketListener</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Client.GUI.Listeners</a>
+</div>
+
+<h1>Coverage Summary for Class: GUISocketListener (it.polimi.ingsw.Client.GUI.Listeners)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GUISocketListener</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/43)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Client.GUI.Listeners;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Client.GUI.Context;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Client.GUI.Panels.GameInProgressPanel;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Client.GUI.Panels.StartPanel;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Controller.Actions.EndTurnOfActionPhase;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Controller.Actions.PlayerAction;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Misc.Pair;
+<i class="no-highlight">9</i>&nbsp;import it.polimi.ingsw.Network.SocketWrapper;
+<i class="no-highlight">10</i>&nbsp;import it.polimi.ingsw.Server.Messages.Message;
+<i class="no-highlight">11</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.*;
+<i class="no-highlight">12</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
+<i class="no-highlight">13</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;import javax.swing.*;
+<i class="no-highlight">15</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">16</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">17</i>&nbsp;import java.util.List;
+<i class="no-highlight">18</i>&nbsp;
+<i class="no-highlight">19</i>&nbsp;/**
+<i class="no-highlight">20</i>&nbsp; * Handles messages received from server and keep a record of current player&#39;s actions executed during its turn
+<i class="no-highlight">21</i>&nbsp; */
+<i class="no-highlight">22</i>&nbsp;public class GUISocketListener implements Runnable {
+<i class="no-highlight">23</i>&nbsp;    /**
+<i class="no-highlight">24</i>&nbsp;     * List of actions executed by current player and their feedbacks
+<i class="no-highlight">25</i>&nbsp;     */
+<b class="nc"><i class="no-highlight">26</i>&nbsp;    private final List&lt;Pair&lt;PlayerAction, PlayerActionFeedback&gt;&gt; requestAndFeedback = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">27</i>&nbsp;    /**
+<i class="no-highlight">28</i>&nbsp;     * Context received from GameInProgressPanel
+<i class="no-highlight">29</i>&nbsp;     */
+<i class="no-highlight">30</i>&nbsp;    private final Context ctx;
+<i class="no-highlight">31</i>&nbsp;    /**
+<i class="no-highlight">32</i>&nbsp;     * SocketWrapper used to communicate with Server
+<i class="no-highlight">33</i>&nbsp;     */
+<i class="no-highlight">34</i>&nbsp;    private final SocketWrapper sw;
+<i class="no-highlight">35</i>&nbsp;    /**
+<i class="no-highlight">36</i>&nbsp;     * JTabbedPane containing all others JPanels
+<i class="no-highlight">37</i>&nbsp;     */
+<i class="no-highlight">38</i>&nbsp;    private GameInProgressPanel gameInProgressPanel;
+<i class="no-highlight">39</i>&nbsp;    /**
+<i class="no-highlight">40</i>&nbsp;     * Last player&#39;s request sent to Server
+<i class="no-highlight">41</i>&nbsp;     */
+<i class="no-highlight">42</i>&nbsp;    private PlayerAction playerActionRequest;
+<i class="no-highlight">43</i>&nbsp;
+<i class="no-highlight">44</i>&nbsp;
+<i class="no-highlight">45</i>&nbsp;    /**
+<i class="no-highlight">46</i>&nbsp;     * Create a new GUIReader
+<i class="no-highlight">47</i>&nbsp;     *
+<i class="no-highlight">48</i>&nbsp;     * @param ctx Context containing socket and GUI&#39;s window
+<i class="no-highlight">49</i>&nbsp;     */
+<b class="nc"><i class="no-highlight">50</i>&nbsp;    public GUISocketListener(Context ctx) {</b>
+<b class="nc"><i class="no-highlight">51</i>&nbsp;        this.gameInProgressPanel = null;</b>
+<b class="nc"><i class="no-highlight">52</i>&nbsp;        this.playerActionRequest = null;</b>
+<b class="nc"><i class="no-highlight">53</i>&nbsp;        this.sw = ctx.getSocketWrapper();</b>
+<b class="nc"><i class="no-highlight">54</i>&nbsp;        this.ctx = ctx;</b>
+<i class="no-highlight">55</i>&nbsp;    }
+<i class="no-highlight">56</i>&nbsp;
+<i class="no-highlight">57</i>&nbsp;    /**
+<i class="no-highlight">58</i>&nbsp;     * Listen for Server&#39;s responses and updated window basing on responses
+<i class="no-highlight">59</i>&nbsp;     */
+<i class="no-highlight">60</i>&nbsp;    @Override
+<i class="no-highlight">61</i>&nbsp;    public void run() {
+<i class="no-highlight">62</i>&nbsp;        while (true) {
+<i class="no-highlight">63</i>&nbsp;            try {
+<i class="no-highlight">64</i>&nbsp;                //wait server&#39;s response
+<b class="nc"><i class="no-highlight">65</i>&nbsp;                Message input = sw.awaitMessage();</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;                switch (input) {</b>
+<b class="nc"><i class="no-highlight">67</i>&nbsp;                    case LobbyClosed ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">68</i>&nbsp;                        JOptionPane.showMessageDialog(null, &quot;Lobby was closed by the server.\n&quot; +</b>
+<i class="no-highlight">69</i>&nbsp;                                &quot;Client is disconnecting from the server.&quot;, &quot;Lobby closed&quot;, JOptionPane.INFORMATION_MESSAGE);
+<i class="no-highlight">70</i>&nbsp;                        //close socket and return to StartPanel
+<b class="nc"><i class="no-highlight">71</i>&nbsp;                        sw.close();</b>
+<b class="nc"><i class="no-highlight">72</i>&nbsp;                        ctx.getWindow().changeView(new StartPanel(ctx));</b>
+<i class="no-highlight">73</i>&nbsp;                        return;
+<i class="no-highlight">74</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">75</i>&nbsp;                    case ClientDisconnected clientDisconnected -&gt;</b>
+<b class="nc"><i class="no-highlight">76</i>&nbsp;                            JOptionPane.showMessageDialog(null, &quot;Client &quot; + clientDisconnected.getLastDisconnectedNickname() +</b>
+<i class="no-highlight">77</i>&nbsp;                                    &quot; just disconnected.&quot;, &quot;Client disconnected&quot;, JOptionPane.INFORMATION_MESSAGE);
+<b class="nc"><i class="no-highlight">78</i>&nbsp;                    case ModelUpdated modelUpdated -&gt; {</b>
+<i class="no-highlight">79</i>&nbsp;                        //create a new GameInProgressPanel with updated model
+<b class="nc"><i class="no-highlight">80</i>&nbsp;                        this.gameInProgressPanel = new GameInProgressPanel(ctx, modelUpdated.getModel(), this, gameInProgressPanel);</b>
+<b class="nc"><i class="no-highlight">81</i>&nbsp;                        ctx.getWindow().changeView(this.gameInProgressPanel);</b>
+<i class="no-highlight">82</i>&nbsp;                        return;
+<i class="no-highlight">83</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">84</i>&nbsp;                    case PlayerActionFeedback playerActionFeedback -&gt; {</b>
+<i class="no-highlight">85</i>&nbsp;                        //create a new Pair with saved player&#39;s request and feedback received
+<b class="nc"><i class="no-highlight">86</i>&nbsp;                        requestAndFeedback.add(new Pair&lt;&gt;(this.playerActionRequest, playerActionFeedback));</b>
+<i class="no-highlight">87</i>&nbsp;                        //show eventual fail report
+<b class="nc"><i class="no-highlight">88</i>&nbsp;                        if (playerActionFeedback.getStatusCode() == StatusCode.Fail)</b>
+<b class="nc"><i class="no-highlight">89</i>&nbsp;                            JOptionPane.showMessageDialog(null, playerActionFeedback.getReport());</b>
+<i class="no-highlight">90</i>&nbsp;                        //clear history when endTurn action has been performed by user
+<b class="nc"><i class="no-highlight">91</i>&nbsp;                        if (playerActionRequest.getClass().equals(EndTurnOfActionPhase.class) &amp;&amp; playerActionFeedback.getStatusCode() == StatusCode.Success) {</b>
+<b class="nc"><i class="no-highlight">92</i>&nbsp;                            requestAndFeedback.clear();</b>
+<i class="no-highlight">93</i>&nbsp;                        }
+<b class="nc"><i class="no-highlight">94</i>&nbsp;                        playerActionRequest = null;</b>
+<b class="nc"><i class="no-highlight">95</i>&nbsp;                    }</b>
+<b class="nc"><i class="no-highlight">96</i>&nbsp;                    case GameOver ignored -&gt; {</b>
+<i class="no-highlight">97</i>&nbsp;                        return;
+<i class="no-highlight">98</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">99</i>&nbsp;                    case InvalidRequest ignored -&gt;</b>
+<b class="nc"><i class="no-highlight">100</i>&nbsp;                            JOptionPane.showMessageDialog(null, &quot;Your request has not been executed, probably you are trying to play out of turn&quot;,</b>
+<i class="no-highlight">101</i>&nbsp;                                    &quot;Warning&quot;, JOptionPane.INFORMATION_MESSAGE);
+<b class="nc"><i class="no-highlight">102</i>&nbsp;                    default -&gt; throw new IllegalStateException(&quot;Unexpected value: &quot; + input.getClass());</b>
+<i class="no-highlight">103</i>&nbsp;                }
+<b class="nc"><i class="no-highlight">104</i>&nbsp;            } catch (Exception e) {</b>
+<b class="nc"><i class="no-highlight">105</i>&nbsp;                JOptionPane.showMessageDialog(null, &quot;Error in the connection with the server&quot;, &quot;Error&quot;, JOptionPane.INFORMATION_MESSAGE);</b>
+<i class="no-highlight">106</i>&nbsp;                try {
+<b class="nc"><i class="no-highlight">107</i>&nbsp;                    sw.close();</b>
+<b class="nc"><i class="no-highlight">108</i>&nbsp;                } catch (IOException ex) {</b>
+<b class="nc"><i class="no-highlight">109</i>&nbsp;                    throw new RuntimeException(ex);</b>
+<b class="nc"><i class="no-highlight">110</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">111</i>&nbsp;                ctx.getWindow().changeView(new StartPanel(ctx));</b>
+<i class="no-highlight">112</i>&nbsp;                return;
+<b class="nc"><i class="no-highlight">113</i>&nbsp;            }</b>
+<i class="no-highlight">114</i>&nbsp;        }
+<i class="no-highlight">115</i>&nbsp;    }
+<i class="no-highlight">116</i>&nbsp;
+<i class="no-highlight">117</i>&nbsp;    /**
+<i class="no-highlight">118</i>&nbsp;     * Save user&#39;s request that will be added in history after receiving its feedback
+<i class="no-highlight">119</i>&nbsp;     *
+<i class="no-highlight">120</i>&nbsp;     * @param playerActionRequest playerActionRequest to save
+<i class="no-highlight">121</i>&nbsp;     */
+<i class="no-highlight">122</i>&nbsp;    public void savePlayerActionRequest(PlayerAction playerActionRequest) {
+<b class="nc"><i class="no-highlight">123</i>&nbsp;        if (this.playerActionRequest == null) {</b>
+<b class="nc"><i class="no-highlight">124</i>&nbsp;            this.playerActionRequest = playerActionRequest;</b>
+<i class="no-highlight">125</i>&nbsp;        }
+<i class="no-highlight">126</i>&nbsp;    }
+<i class="no-highlight">127</i>&nbsp;
+<i class="no-highlight">128</i>&nbsp;    /**
+<i class="no-highlight">129</i>&nbsp;     * Check to see if a new {@link it.polimi.ingsw.Server.Messages.Events.Requests.PlayerActionRequest} can be sent to the server
+<i class="no-highlight">130</i>&nbsp;     * or if the gui should wait before allowing any more actions to be sent
+<i class="no-highlight">131</i>&nbsp;     *
+<i class="no-highlight">132</i>&nbsp;     * @return true if the listener is polling for a feedback to a previous player&#39;s action, false otherwise
+<i class="no-highlight">133</i>&nbsp;     */
+<i class="no-highlight">134</i>&nbsp;    public boolean awaitingPlayerActionFeedback() {
+<b class="nc"><i class="no-highlight">135</i>&nbsp;        return playerActionRequest != null;</b>
+<i class="no-highlight">136</i>&nbsp;    }
+<i class="no-highlight">137</i>&nbsp;
+<i class="no-highlight">138</i>&nbsp;    /**
+<i class="no-highlight">139</i>&nbsp;     * Count PlayerActions that have received a successful response from Server
+<i class="no-highlight">140</i>&nbsp;     *
+<i class="no-highlight">141</i>&nbsp;     * @param playerActionClass PlayerAction&#39;s class that will be counted
+<i class="no-highlight">142</i>&nbsp;     * @return PlayerAction amount that received a successful response from Server
+<i class="no-highlight">143</i>&nbsp;     */
+<i class="no-highlight">144</i>&nbsp;    public int getSuccessfulRequestsByType(Class&lt;?&gt; playerActionClass) {
+<b class="nc"><i class="no-highlight">145</i>&nbsp;        List&lt;PlayerActionFeedback&gt; actions = requestAndFeedback.stream().</b>
+<b class="nc"><i class="no-highlight">146</i>&nbsp;                filter(pair -&gt; pair.first().getClass().equals(playerActionClass)).map(Pair::second).toList();</b>
+<i class="no-highlight">147</i>&nbsp;
+<b class="nc"><i class="no-highlight">148</i>&nbsp;        return (int) actions.stream().filter(playerActionFeedback -&gt; playerActionFeedback.getStatusCode() == StatusCode.Success).count();</b>
+<i class="no-highlight">149</i>&nbsp;    }
+<i class="no-highlight">150</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

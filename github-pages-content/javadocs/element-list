@@ -1,0 +1,23 @@
+unnamed package
+it.polimi.ingsw
+it.polimi.ingsw.Client.CLI
+it.polimi.ingsw.Client.GUI
+it.polimi.ingsw.Client.GUI.Components
+it.polimi.ingsw.Client.GUI.Listeners
+it.polimi.ingsw.Client.GUI.Panels
+it.polimi.ingsw.Controller
+it.polimi.ingsw.Controller.Actions
+it.polimi.ingsw.Exceptions.Container
+it.polimi.ingsw.Exceptions.Input
+it.polimi.ingsw.Exceptions.Operation
+it.polimi.ingsw.Misc
+it.polimi.ingsw.Model
+it.polimi.ingsw.Model.Enums
+it.polimi.ingsw.Network
+it.polimi.ingsw.Server
+it.polimi.ingsw.Server.Messages
+it.polimi.ingsw.Server.Messages.Events
+it.polimi.ingsw.Server.Messages.Events.Internal
+it.polimi.ingsw.Server.Messages.Events.Requests
+it.polimi.ingsw.Server.Messages.ServerResponses
+it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures

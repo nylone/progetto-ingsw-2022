@@ -1,0 +1,284 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > OptionalValue</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Misc</a>
+</div>
+
+<h1>Coverage Summary for Class: OptionalValue (it.polimi.ingsw.Misc)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OptionalValue</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    84,6%
+  </span>
+  <span class="absValue">
+    (11/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    61,1%
+  </span>
+  <span class="absValue">
+    (11/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    74,1%
+  </span>
+  <span class="absValue">
+    (20/27)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Misc;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import java.io.Serializable;
+<i class="no-highlight">4</i>&nbsp;import java.util.Objects;
+<i class="no-highlight">5</i>&nbsp;import java.util.function.Consumer;
+<i class="no-highlight">6</i>&nbsp;import java.util.function.Function;
+<i class="no-highlight">7</i>&nbsp;
+<i class="no-highlight">8</i>&nbsp;/**
+<i class="no-highlight">9</i>&nbsp; * This class takes inspiration from {@link java.util.Optional} but adds serialization support and foregoes some
+<i class="no-highlight">10</i>&nbsp; * lesser used methods in some instances.
+<i class="no-highlight">11</i>&nbsp; * While {@link java.util.Optional} was never meant to be used as a persistent value in memory, the layer of abstraction
+<i class="no-highlight">12</i>&nbsp; * it provides over null values was valuable enough to warrant a rewrite into an object that could be Serialized and shared
+<i class="no-highlight">13</i>&nbsp; * over the net.
+<i class="no-highlight">14</i>&nbsp; *
+<i class="no-highlight">15</i>&nbsp; * @param &lt;T&gt; the internal type of the OptionalValue
+<i class="no-highlight">16</i>&nbsp; */
+<i class="no-highlight">17</i>&nbsp;public class OptionalValue&lt;T&gt; implements Serializable {
+<i class="no-highlight">18</i>&nbsp;    private final T value;
+<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">20</i>&nbsp;    /**
+<i class="no-highlight">21</i>&nbsp;     * Private constructor for the object
+<i class="no-highlight">22</i>&nbsp;     */
+<b class="fc"><i class="no-highlight">23</i>&nbsp;    private OptionalValue() {</b>
+<b class="fc"><i class="no-highlight">24</i>&nbsp;        this.value = null;</b>
+<i class="no-highlight">25</i>&nbsp;    }
+<i class="no-highlight">26</i>&nbsp;
+<i class="no-highlight">27</i>&nbsp;    /**
+<i class="no-highlight">28</i>&nbsp;     * Private constructor for the object
+<i class="no-highlight">29</i>&nbsp;     */
+<b class="fc"><i class="no-highlight">30</i>&nbsp;    private OptionalValue(T value) {</b>
+<b class="fc"><i class="no-highlight">31</i>&nbsp;        this.value = value;</b>
+<i class="no-highlight">32</i>&nbsp;    }
+<i class="no-highlight">33</i>&nbsp;
+<i class="no-highlight">34</i>&nbsp;    /**
+<i class="no-highlight">35</i>&nbsp;     * Creates a new wrapping around a non null value
+<i class="no-highlight">36</i>&nbsp;     *
+<i class="no-highlight">37</i>&nbsp;     * @param element non null element to wrap an optional value around
+<i class="no-highlight">38</i>&nbsp;     * @param &lt;T&gt;     the type of element stored inside the Optional
+<i class="no-highlight">39</i>&nbsp;     * @return the {@link OptionalValue} containing element
+<i class="no-highlight">40</i>&nbsp;     */
+<i class="no-highlight">41</i>&nbsp;    public static &lt;T&gt; OptionalValue&lt;T&gt; of(T element) {
+<b class="fc"><i class="no-highlight">42</i>&nbsp;        Objects.requireNonNull(element);</b>
+<b class="fc"><i class="no-highlight">43</i>&nbsp;        return new OptionalValue&lt;&gt;(element);</b>
+<i class="no-highlight">44</i>&nbsp;    }
+<i class="no-highlight">45</i>&nbsp;
+<i class="no-highlight">46</i>&nbsp;    /**
+<i class="no-highlight">47</i>&nbsp;     * Creates a new wrapping around a value
+<i class="no-highlight">48</i>&nbsp;     *
+<i class="no-highlight">49</i>&nbsp;     * @param element possibly null value to wrap this object around
+<i class="no-highlight">50</i>&nbsp;     * @param &lt;T&gt;     The type of value stored inside the optional value
+<i class="no-highlight">51</i>&nbsp;     * @return an empty {@link OptionalValue} if element is null, otherwise an {@link OptionalValue} wrapping element
+<i class="no-highlight">52</i>&nbsp;     */
+<i class="no-highlight">53</i>&nbsp;    public static &lt;T&gt; OptionalValue&lt;T&gt; ofNullable(T element) {
+<b class="nc"><i class="no-highlight">54</i>&nbsp;        if (element == null) {</b>
+<b class="nc"><i class="no-highlight">55</i>&nbsp;            return new OptionalValue&lt;&gt;();</b>
+<i class="no-highlight">56</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">57</i>&nbsp;        return new OptionalValue&lt;&gt;(element);</b>
+<i class="no-highlight">58</i>&nbsp;    }
+<i class="no-highlight">59</i>&nbsp;
+<i class="no-highlight">60</i>&nbsp;    /**
+<i class="no-highlight">61</i>&nbsp;     * Check if no value is present inside the optional
+<i class="no-highlight">62</i>&nbsp;     *
+<i class="no-highlight">63</i>&nbsp;     * @return true if the internal value is absent
+<i class="no-highlight">64</i>&nbsp;     */
+<i class="no-highlight">65</i>&nbsp;    public boolean isEmpty() {
+<b class="fc"><i class="no-highlight">66</i>&nbsp;        return value == null;</b>
+<i class="no-highlight">67</i>&nbsp;    }
+<i class="no-highlight">68</i>&nbsp;
+<i class="no-highlight">69</i>&nbsp;    /**
+<i class="no-highlight">70</i>&nbsp;     * Check if a value is present inside the optional
+<i class="no-highlight">71</i>&nbsp;     *
+<i class="no-highlight">72</i>&nbsp;     * @return true if the internal value is present
+<i class="no-highlight">73</i>&nbsp;     */
+<i class="no-highlight">74</i>&nbsp;    public boolean isPresent() {
+<b class="fc"><i class="no-highlight">75</i>&nbsp;        return value != null;</b>
+<i class="no-highlight">76</i>&nbsp;    }
+<i class="no-highlight">77</i>&nbsp;
+<i class="no-highlight">78</i>&nbsp;    /**
+<i class="no-highlight">79</i>&nbsp;     * Retrieve the inner value
+<i class="no-highlight">80</i>&nbsp;     *
+<i class="no-highlight">81</i>&nbsp;     * @return the inner value of the optional, if present
+<i class="no-highlight">82</i>&nbsp;     * @throws NullPointerException if no inner value is present
+<i class="no-highlight">83</i>&nbsp;     */
+<i class="no-highlight">84</i>&nbsp;    public T get() {
+<b class="pc"><i class="no-highlight">85</i>&nbsp;        if (value == null) {</b>
+<b class="nc"><i class="no-highlight">86</i>&nbsp;            throw new NullPointerException();</b>
+<i class="no-highlight">87</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">88</i>&nbsp;        return value;</b>
+<i class="no-highlight">89</i>&nbsp;    }
+<i class="no-highlight">90</i>&nbsp;
+<i class="no-highlight">91</i>&nbsp;    /**
+<i class="no-highlight">92</i>&nbsp;     * Retrieve the inner value
+<i class="no-highlight">93</i>&nbsp;     *
+<i class="no-highlight">94</i>&nbsp;     * @param otherwise the default value to return if no inner value is present
+<i class="no-highlight">95</i>&nbsp;     * @return the inner value of the optional, if present. Otherwise returns the input value
+<i class="no-highlight">96</i>&nbsp;     */
+<i class="no-highlight">97</i>&nbsp;    public T orElse(T otherwise) {
+<b class="pc"><i class="no-highlight">98</i>&nbsp;        if (value == null) {</b>
+<b class="nc"><i class="no-highlight">99</i>&nbsp;            return otherwise;</b>
+<i class="no-highlight">100</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">101</i>&nbsp;        return value;</b>
+<i class="no-highlight">102</i>&nbsp;    }
+<i class="no-highlight">103</i>&nbsp;
+<i class="no-highlight">104</i>&nbsp;    /**
+<i class="no-highlight">105</i>&nbsp;     * If a value is present, run the provided consumer over it
+<i class="no-highlight">106</i>&nbsp;     *
+<i class="no-highlight">107</i>&nbsp;     * @param consumer a function to run over the contained value (if present)
+<i class="no-highlight">108</i>&nbsp;     */
+<i class="no-highlight">109</i>&nbsp;    public void ifPresent(Consumer&lt;? super T&gt; consumer) {
+<b class="fc"><i class="no-highlight">110</i>&nbsp;        if (value == null) {</b>
+<i class="no-highlight">111</i>&nbsp;            return;
+<i class="no-highlight">112</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">113</i>&nbsp;        consumer.accept(value);</b>
+<i class="no-highlight">114</i>&nbsp;    }
+<i class="no-highlight">115</i>&nbsp;
+<i class="no-highlight">116</i>&nbsp;    /**
+<i class="no-highlight">117</i>&nbsp;     * If a value is present, returns the result of applying the given Optional-bearing mapping function to the value, otherwise returns an empty OptionalValue.
+<i class="no-highlight">118</i>&nbsp;     *
+<i class="no-highlight">119</i>&nbsp;     * @param mapper the mapping function to apply to a value, if present
+<i class="no-highlight">120</i>&nbsp;     * @param &lt;U&gt;    The type of value of the Optional returned by the mapping function
+<i class="no-highlight">121</i>&nbsp;     * @return the result of applying an Optional-bearing mapping function to the value of this Optional, if a value is present, otherwise an empty Optional
+<i class="no-highlight">122</i>&nbsp;     */
+<i class="no-highlight">123</i>&nbsp;    public &lt;U&gt; OptionalValue&lt;U&gt; flatMap(Function&lt;? super T, OptionalValue&lt;U&gt;&gt; mapper) {
+<b class="pc"><i class="no-highlight">124</i>&nbsp;        if (value == null) {</b>
+<b class="nc"><i class="no-highlight">125</i>&nbsp;            return OptionalValue.empty();</b>
+<i class="no-highlight">126</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">127</i>&nbsp;        return mapper.apply(value);</b>
+<i class="no-highlight">128</i>&nbsp;    }
+<i class="no-highlight">129</i>&nbsp;
+<i class="no-highlight">130</i>&nbsp;    /**
+<i class="no-highlight">131</i>&nbsp;     * Get an empty value instance
+<i class="no-highlight">132</i>&nbsp;     *
+<i class="no-highlight">133</i>&nbsp;     * @param &lt;T&gt; The type of value stored inside the optional value
+<i class="no-highlight">134</i>&nbsp;     * @return an empty {@link OptionalValue}
+<i class="no-highlight">135</i>&nbsp;     */
+<i class="no-highlight">136</i>&nbsp;    public static &lt;T&gt; OptionalValue&lt;T&gt; empty() {
+<b class="fc"><i class="no-highlight">137</i>&nbsp;        return new OptionalValue&lt;&gt;();</b>
+<i class="no-highlight">138</i>&nbsp;    }
+<i class="no-highlight">139</i>&nbsp;
+<i class="no-highlight">140</i>&nbsp;    /**
+<i class="no-highlight">141</i>&nbsp;     * Returns the hash code of the value, if present, otherwise 0 (zero) if no value is present.
+<i class="no-highlight">142</i>&nbsp;     *
+<i class="no-highlight">143</i>&nbsp;     * @return hash code value of the present value or 0 if no value is present
+<i class="no-highlight">144</i>&nbsp;     */
+<i class="no-highlight">145</i>&nbsp;    @Override
+<i class="no-highlight">146</i>&nbsp;    public int hashCode() {
+<b class="nc"><i class="no-highlight">147</i>&nbsp;        return Objects.hash(value);</b>
+<i class="no-highlight">148</i>&nbsp;    }
+<i class="no-highlight">149</i>&nbsp;
+<i class="no-highlight">150</i>&nbsp;    /**
+<i class="no-highlight">151</i>&nbsp;     * Indicates whether some other object is &quot;equal to&quot; this OptionalValue. The other object is considered equal if:
+<i class="no-highlight">152</i>&nbsp;     * &lt;ul&gt;
+<i class="no-highlight">153</i>&nbsp;     *     &lt;il&gt;it is also an Optional and;&lt;/il&gt;
+<i class="no-highlight">154</i>&nbsp;     *     &lt;il&gt;both instances have no value present or;&lt;/il&gt;
+<i class="no-highlight">155</i>&nbsp;     *     &lt;il&gt;the present values are &quot;equal to&quot; each other via equals().&lt;/il&gt;
+<i class="no-highlight">156</i>&nbsp;     * &lt;/ul&gt;
+<i class="no-highlight">157</i>&nbsp;     *
+<i class="no-highlight">158</i>&nbsp;     * @param o the object to be tested for equality
+<i class="no-highlight">159</i>&nbsp;     * @return true if the two objects are considered equal
+<i class="no-highlight">160</i>&nbsp;     */
+<i class="no-highlight">161</i>&nbsp;    @Override
+<i class="no-highlight">162</i>&nbsp;    public boolean equals(Object o) {
+<b class="pc"><i class="no-highlight">163</i>&nbsp;        if (this == o) return true;</b>
+<b class="pc"><i class="no-highlight">164</i>&nbsp;        if (!(o instanceof OptionalValue&lt;?&gt; optional)) return false;</b>
+<b class="fc"><i class="no-highlight">165</i>&nbsp;        return Objects.equals(value, optional.value);</b>
+<i class="no-highlight">166</i>&nbsp;    }
+<i class="no-highlight">167</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

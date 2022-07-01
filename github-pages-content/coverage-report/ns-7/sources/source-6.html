@@ -1,0 +1,467 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > IslandFieldPanel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Client.GUI.Panels</a>
+</div>
+
+<h1>Coverage Summary for Class: IslandFieldPanel (it.polimi.ingsw.Client.GUI.Panels)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">IslandFieldPanel</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/41)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/150)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">IslandFieldPanel$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/41)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/151)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Client.GUI.Panels;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Client.GUI.ActionType;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Client.GUI.CircleLayout;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Client.GUI.Components.NoEntryTileComponent;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Client.GUI.Components.StudentButton;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Client.GUI.Components.TowerComponent;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Client.GUI.Listeners.GUISocketListener;
+<i class="no-highlight">9</i>&nbsp;import it.polimi.ingsw.Controller.Actions.MoveMotherNature;
+<i class="no-highlight">10</i>&nbsp;import it.polimi.ingsw.Controller.Actions.MoveStudent;
+<i class="no-highlight">11</i>&nbsp;import it.polimi.ingsw.Controller.Actions.PlayCharacterCard;
+<i class="no-highlight">12</i>&nbsp;import it.polimi.ingsw.Controller.MoveDestination;
+<i class="no-highlight">13</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">14</i>&nbsp;import it.polimi.ingsw.Model.Enums.PawnColour;
+<i class="no-highlight">15</i>&nbsp;import it.polimi.ingsw.Model.IslandGroup;
+<i class="no-highlight">16</i>&nbsp;import it.polimi.ingsw.Model.Model;
+<i class="no-highlight">17</i>&nbsp;import it.polimi.ingsw.Network.SocketWrapper;
+<i class="no-highlight">18</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Requests.PlayerActionRequest;
+<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">20</i>&nbsp;import javax.swing.*;
+<i class="no-highlight">21</i>&nbsp;import java.awt.*;
+<i class="no-highlight">22</i>&nbsp;import java.awt.image.BufferedImage;
+<i class="no-highlight">23</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">24</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">25</i>&nbsp;import java.util.Arrays;
+<i class="no-highlight">26</i>&nbsp;import java.util.Map;
+<i class="no-highlight">27</i>&nbsp;
+<i class="no-highlight">28</i>&nbsp;import static it.polimi.ingsw.Client.GUI.IconLoader.*;
+<i class="no-highlight">29</i>&nbsp;
+<i class="no-highlight">30</i>&nbsp;/**
+<i class="no-highlight">31</i>&nbsp; * Class necessary to print all the islands on GUI and perform all player&#39;s action that involve an island or islandGroup
+<i class="no-highlight">32</i>&nbsp; */
+<i class="no-highlight">33</i>&nbsp;public class IslandFieldPanel extends JPanel {
+<i class="no-highlight">34</i>&nbsp;    /**
+<i class="no-highlight">35</i>&nbsp;     * Contains game&#39;s information
+<i class="no-highlight">36</i>&nbsp;     */
+<i class="no-highlight">37</i>&nbsp;    private final Model model;
+<i class="no-highlight">38</i>&nbsp;    /**
+<i class="no-highlight">39</i>&nbsp;     * Contains GuiReader&#39;s information necessary to record user&#39;s requests during his turn
+<i class="no-highlight">40</i>&nbsp;     */
+<i class="no-highlight">41</i>&nbsp;    private final GUISocketListener guiSocketListener;
+<i class="no-highlight">42</i>&nbsp;    /**
+<i class="no-highlight">43</i>&nbsp;     * Optional Integer containing student&#39;s index inside player&#39;s PlayerBoard&#39;s entrance (necessary when sending MoveStudentAction to Server)
+<i class="no-highlight">44</i>&nbsp;     */
+<b class="nc"><i class="no-highlight">45</i>&nbsp;    private OptionalValue&lt;Integer&gt; entrancePositionToMove = OptionalValue.empty();</b>
+<i class="no-highlight">46</i>&nbsp;    /**
+<i class="no-highlight">47</i>&nbsp;     * Optional Integer containing card&#39;s index inside game (0 to 2), it can be empty if no characterCard has been played
+<i class="no-highlight">48</i>&nbsp;     */
+<b class="nc"><i class="no-highlight">49</i>&nbsp;    private OptionalValue&lt;Integer&gt; selectedCharacterCard = OptionalValue.empty();</b>
+<i class="no-highlight">50</i>&nbsp;    /**
+<i class="no-highlight">51</i>&nbsp;     * Pawn from character card that player wants to move inside an island
+<i class="no-highlight">52</i>&nbsp;     */
+<b class="nc"><i class="no-highlight">53</i>&nbsp;    private OptionalValue&lt;PawnColour&gt; pawnFromCharacterCard = OptionalValue.empty();</b>
+<i class="no-highlight">54</i>&nbsp;    /**
+<i class="no-highlight">55</i>&nbsp;     * Status of islandField
+<i class="no-highlight">56</i>&nbsp;     */
+<i class="no-highlight">57</i>&nbsp;    private ActionType actionType;
+<i class="no-highlight">58</i>&nbsp;
+<b class="nc"><i class="no-highlight">59</i>&nbsp;    public IslandFieldPanel(Model model, SocketWrapper sw, GUISocketListener guiSocketListener) {</b>
+<i class="no-highlight">60</i>&nbsp;        //set IslandFieldPanel&#39;s actionType basing on previous actions performed by current Player
+<b class="nc"><i class="no-highlight">61</i>&nbsp;        this.setActionType(ActionType.MOVEMOTHERNATURE, OptionalValue.empty());</b>
+<b class="nc"><i class="no-highlight">62</i>&nbsp;        this.setOpaque(true);</b>
+<b class="nc"><i class="no-highlight">63</i>&nbsp;        this.setBackground(new Color(105, 186, 233));</b>
+<b class="nc"><i class="no-highlight">64</i>&nbsp;        this.setLayout(new CircleLayout());</b>
+<b class="nc"><i class="no-highlight">65</i>&nbsp;        this.model = model;</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;        this.guiSocketListener = guiSocketListener;</b>
+<b class="nc"><i class="no-highlight">67</i>&nbsp;        ArrayList&lt;IslandGroup&gt; islandGroups = new ArrayList&lt;&gt;(this.model.getMutableIslandField().getMutableGroups());</b>
+<i class="no-highlight">68</i>&nbsp;        //list containing islands images
+<b class="nc"><i class="no-highlight">69</i>&nbsp;        ArrayList&lt;ImageIcon&gt; islandIcons = new ArrayList&lt;&gt;(Arrays.asList(Island1, Island2, Island3));</b>
+<b class="nc"><i class="no-highlight">70</i>&nbsp;        ArrayList&lt;JButton&gt; islandButtons = new ArrayList&lt;&gt;(this.model.getMutableIslandField().getMutableGroups().size());</b>
+<b class="nc"><i class="no-highlight">71</i>&nbsp;        IslandGroup motherNaturePosition = this.model.getMutableIslandField().getMutableMotherNaturePosition();</b>
+<i class="no-highlight">72</i>&nbsp;        //---DYNAMIC SIZING ISLANDS&#39; IMAGES----
+<b class="nc"><i class="no-highlight">73</i>&nbsp;        int widthIsland = 160 + getDimBoost(islandGroups.size());</b>
+<b class="nc"><i class="no-highlight">74</i>&nbsp;        int heightIsland = 130 + getDimBoost(islandGroups.size());</b>
+<b class="nc"><i class="no-highlight">75</i>&nbsp;        int widthStudent = 35 + (getDimBoost(islandGroups.size()) / 5);</b>
+<b class="nc"><i class="no-highlight">76</i>&nbsp;        int heightStudent = 30 + (getDimBoost(islandGroups.size()) / 5);</b>
+<b class="nc"><i class="no-highlight">77</i>&nbsp;        int widthMotherNature = 35 + (getDimBoost(islandGroups.size()) / 5);</b>
+<b class="nc"><i class="no-highlight">78</i>&nbsp;        int heightMotherNature = 45 + (getDimBoost(islandGroups.size()) / 5);</b>
+<b class="nc"><i class="no-highlight">79</i>&nbsp;        int widthTower = 17 + (getDimBoost(islandGroups.size()) / 5);</b>
+<b class="nc"><i class="no-highlight">80</i>&nbsp;        int heightTower = 35 + (getDimBoost(islandGroups.size()) / 5);</b>
+<i class="no-highlight">81</i>&nbsp;        Map&lt;PawnColour, Integer&gt; pawnCountMap;
+<b class="nc"><i class="no-highlight">82</i>&nbsp;        for (int i = 0; i &lt; islandGroups.size(); i++) {</b>
+<i class="no-highlight">83</i>&nbsp;            //Map containing students and their count on the islandGroup
+<b class="nc"><i class="no-highlight">84</i>&nbsp;            pawnCountMap = islandGroups.get(i).getStudentCount();</b>
+<i class="no-highlight">85</i>&nbsp;            //get and scale an island&#39;s image
+<b class="nc"><i class="no-highlight">86</i>&nbsp;            Image img = islandIcons.get(i % 3).getImage();</b>
+<b class="nc"><i class="no-highlight">87</i>&nbsp;            Image newImg = img.getScaledInstance(widthIsland, heightIsland, java.awt.Image.SCALE_SMOOTH);</b>
+<b class="nc"><i class="no-highlight">88</i>&nbsp;            ImageIcon icon = new ImageIcon(newImg);</b>
+<i class="no-highlight">89</i>&nbsp;            //create a new button with the scaled images
+<b class="nc"><i class="no-highlight">90</i>&nbsp;            JButton islandButton = new JButton(icon);</b>
+<b class="nc"><i class="no-highlight">91</i>&nbsp;            islandButtons.add(islandButton);</b>
+<b class="nc"><i class="no-highlight">92</i>&nbsp;            int finalI = i;</b>
+<i class="no-highlight">93</i>&nbsp;            //add on-click action listener to islandGroup
+<b class="nc"><i class="no-highlight">94</i>&nbsp;            islandButton.addActionListener(e -&gt; {</b>
+<i class="no-highlight">95</i>&nbsp;                // skip execution of the action if a previous action still hasn&#39;t been processed by the server
+<b class="nc"><i class="no-highlight">96</i>&nbsp;                if (guiSocketListener.awaitingPlayerActionFeedback()) {</b>
+<b class="nc"><i class="no-highlight">97</i>&nbsp;                    JOptionPane.showMessageDialog(null, &quot;Please wait for the server to process your previous&quot; +</b>
+<i class="no-highlight">98</i>&nbsp;                            &quot;request before making a new one&quot;);
+<i class="no-highlight">99</i>&nbsp;                    return;
+<i class="no-highlight">100</i>&nbsp;                }
+<b class="nc"><i class="no-highlight">101</i>&nbsp;                switch (this.actionType) {</b>
+<i class="no-highlight">102</i>&nbsp;                    case CHARACTERCARD -&gt; {
+<i class="no-highlight">103</i>&nbsp;                        PlayCharacterCard playCharacterCard;
+<i class="no-highlight">104</i>&nbsp;                        //create playCharacterCard action
+<b class="nc"><i class="no-highlight">105</i>&nbsp;                        if (pawnFromCharacterCard.isPresent()) {</b>
+<b class="nc"><i class="no-highlight">106</i>&nbsp;                            playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),</b>
+<b class="nc"><i class="no-highlight">107</i>&nbsp;                                    selectedCharacterCard.get(), OptionalValue.of(islandGroups.get(finalI).getMutableIslands().get(0).getId())</b>
+<b class="nc"><i class="no-highlight">108</i>&nbsp;                                    , pawnFromCharacterCard, OptionalValue.empty());</b>
+<i class="no-highlight">109</i>&nbsp;                        } else {
+<b class="nc"><i class="no-highlight">110</i>&nbsp;                            playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),</b>
+<b class="nc"><i class="no-highlight">111</i>&nbsp;                                    selectedCharacterCard.get(), OptionalValue.of(islandGroups.get(finalI).getMutableIslands().get(0).getId())</b>
+<b class="nc"><i class="no-highlight">112</i>&nbsp;                                    , OptionalValue.empty(), OptionalValue.empty());</b>
+<i class="no-highlight">113</i>&nbsp;                        }
+<b class="nc"><i class="no-highlight">114</i>&nbsp;                        PlayerActionRequest playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">115</i>&nbsp;                        this.guiSocketListener.savePlayerActionRequest(playCharacterCard);</b>
+<i class="no-highlight">116</i>&nbsp;                        try {
+<i class="no-highlight">117</i>&nbsp;                            //send playCharacterCard request to Server
+<b class="nc"><i class="no-highlight">118</i>&nbsp;                            sw.sendMessage(playerActionRequest);</b>
+<b class="nc"><i class="no-highlight">119</i>&nbsp;                        } catch (IOException ex) {</b>
+<b class="nc"><i class="no-highlight">120</i>&nbsp;                            throw new RuntimeException(ex);</b>
+<b class="nc"><i class="no-highlight">121</i>&nbsp;                        }</b>
+<b class="nc"><i class="no-highlight">122</i>&nbsp;                    }</b>
+<i class="no-highlight">123</i>&nbsp;                    case MOVESTUDENT -&gt; {
+<i class="no-highlight">124</i>&nbsp;                        //create moveStudent action and its playerActionRequest
+<b class="nc"><i class="no-highlight">125</i>&nbsp;                        MoveStudent moveStudent = new MoveStudent(this.model.getMutableTurnOrder().getMutableCurrentPlayer().getId(), entrancePositionToMove.get(), MoveDestination.toIsland(islandGroups.get(finalI).getId()));</b>
+<b class="nc"><i class="no-highlight">126</i>&nbsp;                        PlayerActionRequest playerAction = new PlayerActionRequest(moveStudent);</b>
+<i class="no-highlight">127</i>&nbsp;                        //save moveStudentAction request inside guiReader
+<b class="nc"><i class="no-highlight">128</i>&nbsp;                        this.guiSocketListener.savePlayerActionRequest(moveStudent);</b>
+<i class="no-highlight">129</i>&nbsp;                        try {
+<b class="nc"><i class="no-highlight">130</i>&nbsp;                            sw.sendMessage(playerAction);</b>
+<b class="nc"><i class="no-highlight">131</i>&nbsp;                        } catch (IOException ex) {</b>
+<b class="nc"><i class="no-highlight">132</i>&nbsp;                            throw new RuntimeException(ex);</b>
+<b class="nc"><i class="no-highlight">133</i>&nbsp;                        }</b>
+<b class="nc"><i class="no-highlight">134</i>&nbsp;                    }</b>
+<i class="no-highlight">135</i>&nbsp;                    case MOVEMOTHERNATURE -&gt; {
+<i class="no-highlight">136</i>&nbsp;                        //create moveMotherNature action and its playerActionRequest
+<b class="nc"><i class="no-highlight">137</i>&nbsp;                        MoveMotherNature moveMotherNature = new MoveMotherNature(this.model.getMutableTurnOrder().getMutableCurrentPlayer().getId(), getMotherNatureSteps(islandGroups, islandGroups.get(finalI)));</b>
+<b class="nc"><i class="no-highlight">138</i>&nbsp;                        PlayerActionRequest playerAction = new PlayerActionRequest(moveMotherNature);</b>
+<i class="no-highlight">139</i>&nbsp;                        //save moveStudentAction request inside guiReader
+<b class="nc"><i class="no-highlight">140</i>&nbsp;                        this.guiSocketListener.savePlayerActionRequest(moveMotherNature);</b>
+<i class="no-highlight">141</i>&nbsp;                        try {
+<b class="nc"><i class="no-highlight">142</i>&nbsp;                            sw.sendMessage(playerAction);</b>
+<b class="nc"><i class="no-highlight">143</i>&nbsp;                        } catch (IOException ex) {</b>
+<b class="nc"><i class="no-highlight">144</i>&nbsp;                            throw new RuntimeException(ex);</b>
+<b class="nc"><i class="no-highlight">145</i>&nbsp;                        }</b>
+<i class="no-highlight">146</i>&nbsp;                    }
+<i class="no-highlight">147</i>&nbsp;                }
+<i class="no-highlight">148</i>&nbsp;                // reset the action listener to the base action
+<b class="nc"><i class="no-highlight">149</i>&nbsp;                this.setActionType(ActionType.MOVEMOTHERNATURE, OptionalValue.empty());</b>
+<i class="no-highlight">150</i>&nbsp;            });
+<i class="no-highlight">151</i>&nbsp;            //remove border and filled background from islandGroups&#39; button
+<b class="nc"><i class="no-highlight">152</i>&nbsp;            islandButton.setPreferredSize(new Dimension(widthIsland, heightIsland));</b>
+<b class="nc"><i class="no-highlight">153</i>&nbsp;            islandButton.setBorderPainted(false);</b>
+<b class="nc"><i class="no-highlight">154</i>&nbsp;            islandButton.setContentAreaFilled(false);</b>
+<b class="nc"><i class="no-highlight">155</i>&nbsp;            islandButton.setFocusPainted(false);</b>
+<b class="nc"><i class="no-highlight">156</i>&nbsp;            islandButton.setOpaque(false);</b>
+<b class="nc"><i class="no-highlight">157</i>&nbsp;            islandButton.setLayout(new GridLayout(3, 1, -45, 0));</b>
+<b class="nc"><i class="no-highlight">158</i>&nbsp;            for (PawnColour p : pawnCountMap.keySet()) {</b>
+<b class="nc"><i class="no-highlight">159</i>&nbsp;                if (pawnCountMap.get(p) &gt; 0) {</b>
+<i class="no-highlight">160</i>&nbsp;                    //create new StudentButton
+<b class="nc"><i class="no-highlight">161</i>&nbsp;                    StudentButton studentButton = new StudentButton(p, pawnCountMap.get(p), true);</b>
+<i class="no-highlight">162</i>&nbsp;                    //scale StudentButton&#39;s image
+<b class="nc"><i class="no-highlight">163</i>&nbsp;                    newImg = iconToImage(studentButton.getIcon()).getScaledInstance((int) (widthStudent / 1.5), (int) (heightStudent / 1.5), java.awt.Image.SCALE_SMOOTH);</b>
+<b class="nc"><i class="no-highlight">164</i>&nbsp;                    icon = new ImageIcon(newImg);</b>
+<b class="nc"><i class="no-highlight">165</i>&nbsp;                    studentButton.setIcon(icon);</b>
+<b class="nc"><i class="no-highlight">166</i>&nbsp;                    studentButton.setPreferredSize(new Dimension(widthStudent, heightStudent));</b>
+<b class="nc"><i class="no-highlight">167</i>&nbsp;                    islandButton.add(studentButton);</b>
+<i class="no-highlight">168</i>&nbsp;                    //add same IslandGroups&#39; actionListeners to studentButtons
+<b class="nc"><i class="no-highlight">169</i>&nbsp;                    studentButton.addActionListener(e -&gt; islandButton.doClick());</b>
+<i class="no-highlight">170</i>&nbsp;                }
+<b class="nc"><i class="no-highlight">171</i>&nbsp;            }</b>
+<i class="no-highlight">172</i>&nbsp;            //Draw motherNature only if it&#39;s present in IslandGroup
+<b class="nc"><i class="no-highlight">173</i>&nbsp;            if (islandGroups.get(i).getMutableIslands().stream().anyMatch(island -&gt; island.getId() == motherNaturePosition.getId())) {</b>
+<i class="no-highlight">174</i>&nbsp;                //load and scale MotherNature&#39;s image
+<b class="nc"><i class="no-highlight">175</i>&nbsp;                img = motherNature != null ? motherNature.getImage() : null;</b>
+<b class="nc"><i class="no-highlight">176</i>&nbsp;                newImg = img.getScaledInstance(widthMotherNature, heightMotherNature, java.awt.Image.SCALE_SMOOTH);</b>
+<b class="nc"><i class="no-highlight">177</i>&nbsp;                icon = new ImageIcon(newImg);</b>
+<i class="no-highlight">178</i>&nbsp;                //create motherNature&#39;s label
+<b class="nc"><i class="no-highlight">179</i>&nbsp;                JLabel motherNatureLabel = new JLabel(icon);</b>
+<b class="nc"><i class="no-highlight">180</i>&nbsp;                motherNatureLabel.setPreferredSize(new Dimension(widthMotherNature, heightMotherNature));</b>
+<i class="no-highlight">181</i>&nbsp;                //add motherNature to islandGroup&#39;s button
+<b class="nc"><i class="no-highlight">182</i>&nbsp;                islandButton.add(motherNatureLabel);</b>
+<i class="no-highlight">183</i>&nbsp;            }
+<i class="no-highlight">184</i>&nbsp;            //Drawing eventual tower
+<b class="nc"><i class="no-highlight">185</i>&nbsp;            if (islandGroups.get(i).getTowerColour().isPresent()) {</b>
+<i class="no-highlight">186</i>&nbsp;                //scale and set tower&#39;s image
+<b class="nc"><i class="no-highlight">187</i>&nbsp;                TowerComponent tower = new TowerComponent(islandGroups.get(i).getTowerColour().get(), islandGroups.get(i).getTowerCount());</b>
+<b class="nc"><i class="no-highlight">188</i>&nbsp;                newImg = iconToImage(tower.getIcon()).getScaledInstance(widthTower, heightTower, java.awt.Image.SCALE_SMOOTH);</b>
+<b class="nc"><i class="no-highlight">189</i>&nbsp;                icon = new ImageIcon(newImg);</b>
+<b class="nc"><i class="no-highlight">190</i>&nbsp;                tower.setIcon(icon);</b>
+<i class="no-highlight">191</i>&nbsp;                //remove borders and filled background from tower&#39;s image
+<b class="nc"><i class="no-highlight">192</i>&nbsp;                tower.setBorderPainted(false);</b>
+<b class="nc"><i class="no-highlight">193</i>&nbsp;                tower.setContentAreaFilled(false);</b>
+<b class="nc"><i class="no-highlight">194</i>&nbsp;                tower.setFocusPainted(false);</b>
+<b class="nc"><i class="no-highlight">195</i>&nbsp;                tower.setPreferredSize(new Dimension(widthTower, heightTower));</b>
+<b class="nc"><i class="no-highlight">196</i>&nbsp;                tower.addActionListener(e -&gt; islandButton.doClick());</b>
+<i class="no-highlight">197</i>&nbsp;                //add tower&#39;s image to IslandGroup&#39;s button
+<b class="nc"><i class="no-highlight">198</i>&nbsp;                islandButton.add(tower);</b>
+<i class="no-highlight">199</i>&nbsp;            }
+<i class="no-highlight">200</i>&nbsp;            //Drawing eventual NoEntryTile
+<b class="nc"><i class="no-highlight">201</i>&nbsp;            if (islandGroups.get(i).getMutableNoEntryTiles().size() &gt; 0) {</b>
+<i class="no-highlight">202</i>&nbsp;                //scale and set NoEntryTile&#39;s image
+<b class="nc"><i class="no-highlight">203</i>&nbsp;                NoEntryTileComponent noEntryTileComponent = new NoEntryTileComponent(islandGroups.get(i).getMutableNoEntryTiles().size());</b>
+<b class="nc"><i class="no-highlight">204</i>&nbsp;                newImg = iconToImage(noEntryTileComponent.getIcon()).getScaledInstance(40, 35, java.awt.Image.SCALE_SMOOTH);</b>
+<b class="nc"><i class="no-highlight">205</i>&nbsp;                icon = new ImageIcon(newImg);</b>
+<b class="nc"><i class="no-highlight">206</i>&nbsp;                noEntryTileComponent.setIcon(icon);</b>
+<b class="nc"><i class="no-highlight">207</i>&nbsp;                noEntryTileComponent.setPreferredSize(new Dimension(40, 35));</b>
+<i class="no-highlight">208</i>&nbsp;                //add NoEntryTile component to island&#39;s button
+<b class="nc"><i class="no-highlight">209</i>&nbsp;                islandButton.add(noEntryTileComponent);</b>
+<i class="no-highlight">210</i>&nbsp;                //add same IslandGroups&#39; actionListeners to noEntryTileComponent
+<b class="nc"><i class="no-highlight">211</i>&nbsp;                noEntryTileComponent.addActionListener(e -&gt; islandButton.doClick());</b>
+<i class="no-highlight">212</i>&nbsp;
+<i class="no-highlight">213</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">214</i>&nbsp;            islandButton.setToolTipText(&quot;&lt;html&gt;&lt;p width = 100px&gt;ISLAND GROUP #&quot; + islandGroups.get(i).getId() + &quot;&lt;br&gt;&quot; +</b>
+<i class="no-highlight">215</i>&nbsp;                    &quot;STUDENTS:&lt;br&gt;&quot; +
+<b class="nc"><i class="no-highlight">216</i>&nbsp;                    &quot;RED:&quot; + pawnCountMap.get(PawnColour.RED) + &quot;&lt;br&gt;&quot; +</b>
+<b class="nc"><i class="no-highlight">217</i>&nbsp;                    &quot;BLUE:&quot; + pawnCountMap.get(PawnColour.BLUE) + &quot;&lt;br&gt;&quot; +</b>
+<b class="nc"><i class="no-highlight">218</i>&nbsp;                    &quot;YELLOW:&quot; + pawnCountMap.get(PawnColour.YELLOW) + &quot;&lt;br&gt;&quot; +</b>
+<b class="nc"><i class="no-highlight">219</i>&nbsp;                    &quot;GREEN:&quot; + pawnCountMap.get(PawnColour.GREEN) + &quot;&lt;br&gt;&quot; +</b>
+<b class="nc"><i class="no-highlight">220</i>&nbsp;                    &quot;PINK:&quot; + pawnCountMap.get(PawnColour.PINK) + &quot;&lt;/p&gt;&lt;/html&gt;&quot;);</b>
+<b class="nc"><i class="no-highlight">221</i>&nbsp;            ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);</b>
+<b class="nc"><i class="no-highlight">222</i>&nbsp;            this.add(islandButton);</b>
+<i class="no-highlight">223</i>&nbsp;        }
+<i class="no-highlight">224</i>&nbsp;    }
+<i class="no-highlight">225</i>&nbsp;
+<i class="no-highlight">226</i>&nbsp;    /**
+<i class="no-highlight">227</i>&nbsp;     * Method used for setting IslandFieldPanel&#39;s actionType from external panels
+<i class="no-highlight">228</i>&nbsp;     *
+<i class="no-highlight">229</i>&nbsp;     * @param actionType actionType that IslandFieldPanel will assume
+<i class="no-highlight">230</i>&nbsp;     * @param toRemove   PlayerBoard&#39;s entrance&#39;s index containing the student to move (Optional.empty if action type is not MOVESTUDENT)
+<i class="no-highlight">231</i>&nbsp;     */
+<i class="no-highlight">232</i>&nbsp;    public void setActionType(ActionType actionType, OptionalValue&lt;Integer&gt; toRemove) {
+<b class="nc"><i class="no-highlight">233</i>&nbsp;        if (actionType == ActionType.MOVESTUDENT) {</b>
+<b class="nc"><i class="no-highlight">234</i>&nbsp;            this.actionType = actionType;</b>
+<b class="nc"><i class="no-highlight">235</i>&nbsp;            this.entrancePositionToMove = toRemove;</b>
+<i class="no-highlight">236</i>&nbsp;            return;
+<i class="no-highlight">237</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">238</i>&nbsp;        this.actionType = actionType;</b>
+<i class="no-highlight">239</i>&nbsp;    }
+<i class="no-highlight">240</i>&nbsp;
+<i class="no-highlight">241</i>&nbsp;    /**
+<i class="no-highlight">242</i>&nbsp;     * Support method used to increase islands&#39; dimensions when the amount of IslandGroups decreases
+<i class="no-highlight">243</i>&nbsp;     *
+<i class="no-highlight">244</i>&nbsp;     * @param IslandsNumbers number of IslandGroups to show
+<i class="no-highlight">245</i>&nbsp;     * @return boost to add to original icons&#39; dimensions
+<i class="no-highlight">246</i>&nbsp;     */
+<i class="no-highlight">247</i>&nbsp;    private int getDimBoost(int IslandsNumbers) {
+<b class="nc"><i class="no-highlight">248</i>&nbsp;        return switch (IslandsNumbers) {</b>
+<b class="nc"><i class="no-highlight">249</i>&nbsp;            case 12 -&gt; 0;</b>
+<b class="nc"><i class="no-highlight">250</i>&nbsp;            case 11 -&gt; 10;</b>
+<b class="nc"><i class="no-highlight">251</i>&nbsp;            case 10 -&gt; 20;</b>
+<b class="nc"><i class="no-highlight">252</i>&nbsp;            case 9 -&gt; 30;</b>
+<b class="nc"><i class="no-highlight">253</i>&nbsp;            case 8 -&gt; 40;</b>
+<b class="nc"><i class="no-highlight">254</i>&nbsp;            case 7 -&gt; 50;</b>
+<b class="nc"><i class="no-highlight">255</i>&nbsp;            case 6 -&gt; 60;</b>
+<b class="nc"><i class="no-highlight">256</i>&nbsp;            case 5 -&gt; 70;</b>
+<b class="nc"><i class="no-highlight">257</i>&nbsp;            case default -&gt; 70;</b>
+<i class="no-highlight">258</i>&nbsp;        };
+<i class="no-highlight">259</i>&nbsp;    }
+<i class="no-highlight">260</i>&nbsp;
+<i class="no-highlight">261</i>&nbsp;    /**
+<i class="no-highlight">262</i>&nbsp;     * Support method used to calculate difference between clicked islandGroup by user and actual motherNature&#39;s islandGroup
+<i class="no-highlight">263</i>&nbsp;     *
+<i class="no-highlight">264</i>&nbsp;     * @param islandGroups      list of islandGroups present in game
+<i class="no-highlight">265</i>&nbsp;     * @param destinationIsland IslandGroup that has been clicked by player
+<i class="no-highlight">266</i>&nbsp;     * @return number of steps that motherNature should perform to reach wished IslandGroup
+<i class="no-highlight">267</i>&nbsp;     */
+<i class="no-highlight">268</i>&nbsp;    private int getMotherNatureSteps(ArrayList&lt;IslandGroup&gt; islandGroups, IslandGroup destinationIsland) {
+<i class="no-highlight">269</i>&nbsp;        //get motherNature&#39;s islandGroup&#39;s index
+<b class="nc"><i class="no-highlight">270</i>&nbsp;        int motherNatureIndex = islandGroups.indexOf(model.getMutableIslandField().getMutableMotherNaturePosition());</b>
+<b class="nc"><i class="no-highlight">271</i>&nbsp;        int steps = 1;</b>
+<i class="no-highlight">272</i>&nbsp;        //repeat until found islandGroup with same id as the one clicked by user
+<b class="nc"><i class="no-highlight">273</i>&nbsp;        while (!islandGroups.get((motherNatureIndex + steps) % islandGroups.size()).equals(destinationIsland)) {</b>
+<b class="nc"><i class="no-highlight">274</i>&nbsp;            steps = steps + 1;</b>
+<i class="no-highlight">275</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">276</i>&nbsp;        return steps;</b>
+<i class="no-highlight">277</i>&nbsp;    }
+<i class="no-highlight">278</i>&nbsp;
+<i class="no-highlight">279</i>&nbsp;    /**
+<i class="no-highlight">280</i>&nbsp;     * Support method to extract Image from icon
+<i class="no-highlight">281</i>&nbsp;     *
+<i class="no-highlight">282</i>&nbsp;     * @param icon icon to convert
+<i class="no-highlight">283</i>&nbsp;     * @return image represented by icon
+<i class="no-highlight">284</i>&nbsp;     */
+<i class="no-highlight">285</i>&nbsp;    private Image iconToImage(Icon icon) {
+<b class="nc"><i class="no-highlight">286</i>&nbsp;        if (icon instanceof ImageIcon) {</b>
+<b class="nc"><i class="no-highlight">287</i>&nbsp;            return ((ImageIcon) icon).getImage();</b>
+<i class="no-highlight">288</i>&nbsp;        } else {
+<b class="nc"><i class="no-highlight">289</i>&nbsp;            int w = icon.getIconWidth();</b>
+<b class="nc"><i class="no-highlight">290</i>&nbsp;            int h = icon.getIconHeight();</b>
+<b class="nc"><i class="no-highlight">291</i>&nbsp;            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();</b>
+<b class="nc"><i class="no-highlight">292</i>&nbsp;            GraphicsDevice gd = ge.getDefaultScreenDevice();</b>
+<b class="nc"><i class="no-highlight">293</i>&nbsp;            GraphicsConfiguration gc = gd.getDefaultConfiguration();</b>
+<b class="nc"><i class="no-highlight">294</i>&nbsp;            BufferedImage image = gc.createCompatibleImage(w, h);</b>
+<b class="nc"><i class="no-highlight">295</i>&nbsp;            Graphics2D g = image.createGraphics();</b>
+<b class="nc"><i class="no-highlight">296</i>&nbsp;            icon.paintIcon(null, g, 0, 0);</b>
+<b class="nc"><i class="no-highlight">297</i>&nbsp;            g.dispose();</b>
+<b class="nc"><i class="no-highlight">298</i>&nbsp;            return image;</b>
+<i class="no-highlight">299</i>&nbsp;        }
+<i class="no-highlight">300</i>&nbsp;    }
+<i class="no-highlight">301</i>&nbsp;
+<i class="no-highlight">302</i>&nbsp;    /**
+<i class="no-highlight">303</i>&nbsp;     * Basing on CharacterCard that has been activated, this method setup IslandFieldPanel for send the right PlayerActionRequest to Server
+<i class="no-highlight">304</i>&nbsp;     *
+<i class="no-highlight">305</i>&nbsp;     * @param actionType ActionType that IslandFieldPanel is going to switch to
+<i class="no-highlight">306</i>&nbsp;     * @param card       card&#39;s index inside game
+<i class="no-highlight">307</i>&nbsp;     * @param toMove     possible pawn to move
+<i class="no-highlight">308</i>&nbsp;     */
+<i class="no-highlight">309</i>&nbsp;    public void setCharacterCardAction(ActionType actionType, OptionalValue&lt;Integer&gt; card, OptionalValue&lt;PawnColour&gt; toMove) {
+<b class="nc"><i class="no-highlight">310</i>&nbsp;        this.actionType = actionType;</b>
+<b class="nc"><i class="no-highlight">311</i>&nbsp;        if (card.isEmpty()) return;</b>
+<b class="nc"><i class="no-highlight">312</i>&nbsp;        this.selectedCharacterCard = card;</b>
+<b class="nc"><i class="no-highlight">313</i>&nbsp;        if (toMove.isEmpty()) return;</b>
+<b class="nc"><i class="no-highlight">314</i>&nbsp;        this.pawnFromCharacterCard = toMove;</b>
+<i class="no-highlight">315</i>&nbsp;    }
+<i class="no-highlight">316</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

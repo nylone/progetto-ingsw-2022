@@ -1,0 +1,226 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Utils</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Misc</a>
+</div>
+
+<h1>Coverage Summary for Class: Utils (it.polimi.ingsw.Misc)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Utils</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,7%
+  </span>
+  <span class="absValue">
+    (6/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91,7%
+  </span>
+  <span class="absValue">
+    (11/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,3%
+  </span>
+  <span class="absValue">
+    (28/30)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Misc;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+<i class="no-highlight">4</i>&nbsp;
+<i class="no-highlight">5</i>&nbsp;import java.util.*;
+<i class="no-highlight">6</i>&nbsp;
+<i class="no-highlight">7</i>&nbsp;/**
+<i class="no-highlight">8</i>&nbsp; * This class contains various static functions useful for more than one purpose inside the code.
+<i class="no-highlight">9</i>&nbsp; * Check the docs of each function for more info.
+<i class="no-highlight">10</i>&nbsp; */
+<b class="nc"><i class="no-highlight">11</i>&nbsp;public class Utils {</b>
+<i class="no-highlight">12</i>&nbsp;    /**
+<i class="no-highlight">13</i>&nbsp;     * Given a {@link List}, shuffles it in place with a random seed
+<i class="no-highlight">14</i>&nbsp;     *
+<i class="no-highlight">15</i>&nbsp;     * @param coll the list to shuffle
+<i class="no-highlight">16</i>&nbsp;     * @param &lt;T&gt;  the type of the elements of the list
+<i class="no-highlight">17</i>&nbsp;     */
+<i class="no-highlight">18</i>&nbsp;    public static &lt;T&gt; void shuffle(List&lt;T&gt; coll) {
+<b class="fc"><i class="no-highlight">19</i>&nbsp;        Collections.shuffle(coll, new Random(System.currentTimeMillis()));</b>
+<i class="no-highlight">20</i>&nbsp;    }
+<i class="no-highlight">21</i>&nbsp;
+<i class="no-highlight">22</i>&nbsp;    /**
+<i class="no-highlight">23</i>&nbsp;     * Given a {@link List}, returns a random element from it
+<i class="no-highlight">24</i>&nbsp;     *
+<i class="no-highlight">25</i>&nbsp;     * @param list the list to fetch from
+<i class="no-highlight">26</i>&nbsp;     * @param &lt;T&gt;  the type of the list&#39;s elements
+<i class="no-highlight">27</i>&nbsp;     * @return a random element from the list
+<i class="no-highlight">28</i>&nbsp;     */
+<i class="no-highlight">29</i>&nbsp;    public static &lt;T&gt; T random(List&lt;T&gt; list) {
+<b class="fc"><i class="no-highlight">30</i>&nbsp;        Random random = new Random();</b>
+<b class="fc"><i class="no-highlight">31</i>&nbsp;        int randomNumber = random.nextInt(list.size());</b>
+<b class="fc"><i class="no-highlight">32</i>&nbsp;        return list.get(randomNumber);</b>
+<i class="no-highlight">33</i>&nbsp;    }
+<i class="no-highlight">34</i>&nbsp;
+<i class="no-highlight">35</i>&nbsp;    /**
+<i class="no-highlight">36</i>&nbsp;     * Selects an element in the list as if it was a circular array
+<i class="no-highlight">37</i>&nbsp;     *
+<i class="no-highlight">38</i>&nbsp;     * @param startingElement the element from which to start counting forwards
+<i class="no-highlight">39</i>&nbsp;     * @param group           the list to fetch from
+<i class="no-highlight">40</i>&nbsp;     * @param movement        the amount of steps forward from the starting element to take in order to reach the fetched element
+<i class="no-highlight">41</i>&nbsp;     * @param &lt;T&gt;             the type of elements of the group
+<i class="no-highlight">42</i>&nbsp;     * @return an element from the group
+<i class="no-highlight">43</i>&nbsp;     * @throws InvalidElementException if startingElement is not present in the list
+<i class="no-highlight">44</i>&nbsp;     */
+<i class="no-highlight">45</i>&nbsp;    public static &lt;T&gt; T modularSelection(T startingElement, List&lt;T&gt; group, int movement) throws InvalidElementException {
+<b class="fc"><i class="no-highlight">46</i>&nbsp;        int index = group.indexOf(startingElement);</b>
+<b class="pc"><i class="no-highlight">47</i>&nbsp;        if (index == -1) {</b>
+<b class="nc"><i class="no-highlight">48</i>&nbsp;            throw new InvalidElementException(&quot;starting element&quot;);</b>
+<i class="no-highlight">49</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">50</i>&nbsp;        return group.get((index + group.size() + movement) % group.size());</b>
+<i class="no-highlight">51</i>&nbsp;    }
+<i class="no-highlight">52</i>&nbsp;
+<i class="no-highlight">53</i>&nbsp;    /**
+<i class="no-highlight">54</i>&nbsp;     * Given two maps, evaluate whether the second map contains values that can fit the first map
+<i class="no-highlight">55</i>&nbsp;     *
+<i class="no-highlight">56</i>&nbsp;     * @param originalSet    the first map is the &quot;original&quot;
+<i class="no-highlight">57</i>&nbsp;     * @param possibleSubset the second map is a &quot;possible subset&quot; of the original
+<i class="no-highlight">58</i>&nbsp;     * @param &lt;T&gt;            the key of both maps
+<i class="no-highlight">59</i>&nbsp;     * @param &lt;C&gt;            an element extending the Integer class as the value of both maps
+<i class="no-highlight">60</i>&nbsp;     * @return true if the second map is a possible subset of the original, meaning the values for each key in the possible subset
+<i class="no-highlight">61</i>&nbsp;     * are lower than the values for the same key in the original map. otherwise returns false
+<i class="no-highlight">62</i>&nbsp;     */
+<i class="no-highlight">63</i>&nbsp;    public static &lt;T, C extends Integer&gt; boolean canMapFit(Map&lt;T, C&gt; originalSet, Map&lt;T, C&gt; possibleSubset) {
+<b class="fc"><i class="no-highlight">64</i>&nbsp;        for (Map.Entry&lt;T, C&gt; entry : possibleSubset.entrySet()) {</b>
+<b class="fc"><i class="no-highlight">65</i>&nbsp;            T key = entry.getKey();</b>
+<b class="fc"><i class="no-highlight">66</i>&nbsp;            int count = entry.getValue();</b>
+<b class="fc"><i class="no-highlight">67</i>&nbsp;            if (!originalSet.containsKey(key) || ((int) originalSet.get(key) - count &lt; 0)) {</b>
+<b class="fc"><i class="no-highlight">68</i>&nbsp;                return false;</b>
+<i class="no-highlight">69</i>&nbsp;            }
+<b class="fc"><i class="no-highlight">70</i>&nbsp;        }</b>
+<b class="fc"><i class="no-highlight">71</i>&nbsp;        return true;</b>
+<i class="no-highlight">72</i>&nbsp;    }
+<i class="no-highlight">73</i>&nbsp;
+<i class="no-highlight">74</i>&nbsp;    /**
+<i class="no-highlight">75</i>&nbsp;     * Given a list, find occurrences of elements of the same class within it.
+<i class="no-highlight">76</i>&nbsp;     *
+<i class="no-highlight">77</i>&nbsp;     * @param selected the class object to search for in the list
+<i class="no-highlight">78</i>&nbsp;     * @param list     the list to search in
+<i class="no-highlight">79</i>&nbsp;     * @param &lt;T&gt;      the elements of the list
+<i class="no-highlight">80</i>&nbsp;     * @param &lt;E&gt;      an inheritor of the class of elements contained in the list
+<i class="no-highlight">81</i>&nbsp;     * @return the count of how many elements of the list match the input class
+<i class="no-highlight">82</i>&nbsp;     */
+<i class="no-highlight">83</i>&nbsp;    public static &lt;T, E extends T&gt; int countSimilarClassOccurrences(Class&lt;E&gt; selected, List&lt;T&gt; list) {
+<b class="fc"><i class="no-highlight">84</i>&nbsp;        return (int) list.stream().filter(pa -&gt; pa.getClass() == selected).count();</b>
+<i class="no-highlight">85</i>&nbsp;    }
+<i class="no-highlight">86</i>&nbsp;
+<i class="no-highlight">87</i>&nbsp;    /**
+<i class="no-highlight">88</i>&nbsp;     * Given a {@link List}, sorts its elements in order of frequency from highest to lowest
+<i class="no-highlight">89</i>&nbsp;     *
+<i class="no-highlight">90</i>&nbsp;     * @param array the list to sort
+<i class="no-highlight">91</i>&nbsp;     * @param &lt;T&gt;   the type of the elements in the list
+<i class="no-highlight">92</i>&nbsp;     * @return a new {@link List}, containing the elements of the previous one sorted by frequency
+<i class="no-highlight">93</i>&nbsp;     */
+<i class="no-highlight">94</i>&nbsp;    public static &lt;T&gt; List&lt;T&gt; sortByFrequency(List&lt;T&gt; array) {
+<b class="fc"><i class="no-highlight">95</i>&nbsp;        Map&lt;T, ArrayList&lt;T&gt;&gt; frequencyMap = new HashMap&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">96</i>&nbsp;        for (T current : array) {</b>
+<b class="fc"><i class="no-highlight">97</i>&nbsp;            ArrayList&lt;T&gt; list = frequencyMap.getOrDefault(current, new ArrayList&lt;&gt;());</b>
+<b class="fc"><i class="no-highlight">98</i>&nbsp;            list.add(current);</b>
+<b class="fc"><i class="no-highlight">99</i>&nbsp;            frequencyMap.put(current, list);</b>
+<b class="fc"><i class="no-highlight">100</i>&nbsp;        }</b>
+<b class="fc"><i class="no-highlight">101</i>&nbsp;        ArrayList&lt;T&gt; sorted = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">102</i>&nbsp;        frequencyMap.entrySet().stream()</b>
+<b class="fc"><i class="no-highlight">103</i>&nbsp;                .sorted(Comparator.comparingInt(o -&gt; o.getValue().size()))</b>
+<b class="fc"><i class="no-highlight">104</i>&nbsp;                .map(Map.Entry::getValue)</b>
+<b class="fc"><i class="no-highlight">105</i>&nbsp;                .forEach(sorted::addAll);</b>
+<b class="fc"><i class="no-highlight">106</i>&nbsp;        Collections.reverse(sorted);</b>
+<b class="fc"><i class="no-highlight">107</i>&nbsp;        return sorted;</b>
+<i class="no-highlight">108</i>&nbsp;    }
+<i class="no-highlight">109</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

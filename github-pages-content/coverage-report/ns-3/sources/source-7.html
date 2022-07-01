@@ -1,0 +1,183 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > InfoUI</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Client.CLI</a>
+</div>
+
+<h1>Coverage Summary for Class: InfoUI (it.polimi.ingsw.Client.CLI)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">InfoUI</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Client.CLI;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Model.Enums.GameMode;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Model.Model;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Model.PlayerBoard;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Model.StudentBag;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Model.TurnOrder;
+<i class="no-highlight">8</i>&nbsp;
+<i class="no-highlight">9</i>&nbsp;import java.util.List;
+<i class="no-highlight">10</i>&nbsp;
+<i class="no-highlight">11</i>&nbsp;/**
+<i class="no-highlight">12</i>&nbsp; * InfoUI is a graphical informative component (as a String data structure)
+<i class="no-highlight">13</i>&nbsp; * useful to print details about the {@link TurnOrder}
+<i class="no-highlight">14</i>&nbsp; * and the {@link StudentBag}
+<i class="no-highlight">15</i>&nbsp; */
+<b class="nc"><i class="no-highlight">16</i>&nbsp;public class InfoUI {</b>
+<i class="no-highlight">17</i>&nbsp;
+<i class="no-highlight">18</i>&nbsp;    /**
+<i class="no-highlight">19</i>&nbsp;     * It will provide the players with a summary about the turn order, it will show the current and next players in
+<i class="no-highlight">20</i>&nbsp;     * line and highlight if you are one of them.
+<i class="no-highlight">21</i>&nbsp;     * &lt;br&gt;
+<i class="no-highlight">22</i>&nbsp;     * It also shows the number of remaining coins if the game is in advanced mode.
+<i class="no-highlight">23</i>&nbsp;     *
+<i class="no-highlight">24</i>&nbsp;     * @param ctx    reference to the model used to access {@link Model#getMutableTurnOrder()}
+<i class="no-highlight">25</i>&nbsp;     * @param caller the player to whom the information will be displayed. It is used to highlight if you are
+<i class="no-highlight">26</i>&nbsp;     *               the current or next player
+<i class="no-highlight">27</i>&nbsp;     * @return a visual description of useful information for the players: turns and coins
+<i class="no-highlight">28</i>&nbsp;     */
+<i class="no-highlight">29</i>&nbsp;    public static String draw(Model ctx, String caller) {
+<b class="nc"><i class="no-highlight">30</i>&nbsp;        String info = &quot;&quot;;</b>
+<b class="nc"><i class="no-highlight">31</i>&nbsp;        PlayerBoard currentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer();</b>
+<b class="nc"><i class="no-highlight">32</i>&nbsp;        List&lt;PlayerBoard&gt; turnOrder = ctx.getMutableTurnOrder().getCurrentTurnOrder();</b>
+<i class="no-highlight">33</i>&nbsp;
+<i class="no-highlight">34</i>&nbsp;        // Prints the current player
+<b class="nc"><i class="no-highlight">35</i>&nbsp;        if (caller.equals(currentPlayer.getNickname())) {</b>
+<i class="no-highlight">36</i>&nbsp;            // Highlight whether the current player is the person to which the console is shown
+<b class="nc"><i class="no-highlight">37</i>&nbsp;            info = info + currentPlayer.getNickname() + &quot; is your turn!\n&quot;;</b>
+<i class="no-highlight">38</i>&nbsp;        } else
+<b class="nc"><i class="no-highlight">39</i>&nbsp;            info = info + &quot;It&#39;s &quot; + currentPlayer.getNickname() + &quot;&#39;s turn\n&quot;;</b>
+<i class="no-highlight">40</i>&nbsp;
+<i class="no-highlight">41</i>&nbsp;        // Prints the next player
+<b class="nc"><i class="no-highlight">42</i>&nbsp;        if (turnOrder.indexOf(currentPlayer) &lt; turnOrder.size() - 1) {</b>
+<b class="nc"><i class="no-highlight">43</i>&nbsp;            String nextPlayer = turnOrder.get(turnOrder.indexOf(currentPlayer) + 1).getNickname();</b>
+<b class="nc"><i class="no-highlight">44</i>&nbsp;            if (caller.equals(nextPlayer)) {</b>
+<i class="no-highlight">45</i>&nbsp;                // Highlight whether the next player is the person to which the console is shown
+<b class="nc"><i class="no-highlight">46</i>&nbsp;                info = info + &quot;Next player: you \n&quot;;</b>
+<b class="nc"><i class="no-highlight">47</i>&nbsp;            } else info = info + &quot;Next player: &quot; + nextPlayer + &quot;\n&quot;;</b>
+<b class="nc"><i class="no-highlight">48</i>&nbsp;        } else {</b>
+<i class="no-highlight">49</i>&nbsp;            // This loops around the list of players to address the fact that the next player after the last one
+<i class="no-highlight">50</i>&nbsp;            // is the first one in line
+<b class="nc"><i class="no-highlight">51</i>&nbsp;            String nextPlayer = turnOrder.get(0).getNickname(); // the first element in the list of players</b>
+<b class="nc"><i class="no-highlight">52</i>&nbsp;            if (caller.equals(nextPlayer)) {</b>
+<b class="nc"><i class="no-highlight">53</i>&nbsp;                info = info + &quot;Next player: you \n&quot;;</b>
+<b class="nc"><i class="no-highlight">54</i>&nbsp;            } else info = info + &quot;Next player: &quot; + nextPlayer + &quot;\n&quot;;</b>
+<i class="no-highlight">55</i>&nbsp;        }
+<i class="no-highlight">56</i>&nbsp;        // Prints the coins left if the game mode is advanced
+<b class="nc"><i class="no-highlight">57</i>&nbsp;        if (ctx.getGameMode().equals(GameMode.ADVANCED)) {</b>
+<b class="nc"><i class="no-highlight">58</i>&nbsp;            switch (ctx.getCoinReserve()) {</b>
+<b class="nc"><i class="no-highlight">59</i>&nbsp;                case 0 -&gt; info = info + &quot;There are no coins left&quot;;</b>
+<b class="nc"><i class="no-highlight">60</i>&nbsp;                case 1 -&gt; info = info + &quot;There is 1 coin left&quot;;</b>
+<b class="nc"><i class="no-highlight">61</i>&nbsp;                case default -&gt; info = info + &quot;There are &quot; + ctx.getCoinReserve() + &quot; coins left\n&quot;;</b>
+<i class="no-highlight">62</i>&nbsp;            }
+<i class="no-highlight">63</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">64</i>&nbsp;        return info;</b>
+<i class="no-highlight">65</i>&nbsp;    }
+<i class="no-highlight">66</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

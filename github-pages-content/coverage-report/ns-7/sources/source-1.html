@@ -1,0 +1,529 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > CharacterCardsPanel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Client.GUI.Panels</a>
+</div>
+
+<h1>Coverage Summary for Class: CharacterCardsPanel (it.polimi.ingsw.Client.GUI.Panels)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CharacterCardsPanel</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/80)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/228)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Client.GUI.Panels;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Client.GUI.ActionType;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Client.GUI.Components.NoEntryTileComponent;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Client.GUI.Components.StudentButton;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Client.GUI.Listeners.CheckBoxListener;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Client.GUI.Listeners.GUISocketListener;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Controller.Actions.PlayCharacterCard;
+<i class="no-highlight">9</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">10</i>&nbsp;import it.polimi.ingsw.Model.*;
+<i class="no-highlight">11</i>&nbsp;import it.polimi.ingsw.Model.Enums.PawnColour;
+<i class="no-highlight">12</i>&nbsp;import it.polimi.ingsw.Model.Enums.StateType;
+<i class="no-highlight">13</i>&nbsp;import it.polimi.ingsw.Network.SocketWrapper;
+<i class="no-highlight">14</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Requests.PlayerActionRequest;
+<i class="no-highlight">15</i>&nbsp;
+<i class="no-highlight">16</i>&nbsp;import javax.swing.*;
+<i class="no-highlight">17</i>&nbsp;import java.awt.*;
+<i class="no-highlight">18</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">19</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">20</i>&nbsp;import java.util.EnumMap;
+<i class="no-highlight">21</i>&nbsp;import java.util.List;
+<i class="no-highlight">22</i>&nbsp;import java.util.stream.Collectors;
+<i class="no-highlight">23</i>&nbsp;
+<i class="no-highlight">24</i>&nbsp;import static it.polimi.ingsw.Client.GUI.IconLoader.*;
+<i class="no-highlight">25</i>&nbsp;
+<i class="no-highlight">26</i>&nbsp;/**
+<i class="no-highlight">27</i>&nbsp; * Class used to draw the 3 characterCards and their eventual contents; it also handles all 12 characterCards actions.
+<i class="no-highlight">28</i>&nbsp; * This class will be initialized only in advanced Game
+<i class="no-highlight">29</i>&nbsp; */
+<i class="no-highlight">30</i>&nbsp;public class CharacterCardsPanel extends JPanel {
+<b class="nc"><i class="no-highlight">31</i>&nbsp;    public CharacterCardsPanel(Model model, SocketWrapper socketWrapper, GUISocketListener guiSocketListener) {</b>
+<b class="nc"><i class="no-highlight">32</i>&nbsp;        UIManager.put(&quot;ToolTip.font&quot;, new Font(&quot;Arial&quot;, Font.BOLD, 14));</b>
+<i class="no-highlight">33</i>&nbsp;        //List containing game&#39;s characterCards
+<b class="nc"><i class="no-highlight">34</i>&nbsp;        ArrayList&lt;CharacterCard&gt; characterCards = new ArrayList&lt;&gt;(model.getCharacterCards());</b>
+<i class="no-highlight">35</i>&nbsp;        //Label that will contain all others components
+<b class="nc"><i class="no-highlight">36</i>&nbsp;        JLabel pageBackground = new JLabel(sky);</b>
+<b class="nc"><i class="no-highlight">37</i>&nbsp;        pageBackground.setBounds(0, 0, 1080, 720);</b>
+<b class="nc"><i class="no-highlight">38</i>&nbsp;        this.add(pageBackground);</b>
+<i class="no-highlight">39</i>&nbsp;        //list containing characterCards&#39; buttons
+<b class="nc"><i class="no-highlight">40</i>&nbsp;        ArrayList&lt;JButton&gt; characterCardsButton = new ArrayList&lt;&gt;(characterCards.size());</b>
+<i class="no-highlight">41</i>&nbsp;        //list containing coins&#39; labels
+<b class="nc"><i class="no-highlight">42</i>&nbsp;        ArrayList&lt;JLabel&gt; coinLabels = new ArrayList&lt;&gt;(characterCards.size());</b>
+<i class="no-highlight">43</i>&nbsp;        //list containing characterCardsStates&#39; labels
+<b class="nc"><i class="no-highlight">44</i>&nbsp;        ArrayList&lt;JLabel&gt; characterCardsStatelabes = new ArrayList&lt;&gt;(characterCards.size());</b>
+<i class="no-highlight">45</i>&nbsp;        //repeat for all 3 characterCards
+<b class="nc"><i class="no-highlight">46</i>&nbsp;        for (int i = 0; i &lt; characterCards.size(); i++) {</b>
+<i class="no-highlight">47</i>&nbsp;            //add a new coin&#39;s label to coinLabels list and make it invisible
+<b class="nc"><i class="no-highlight">48</i>&nbsp;            coinLabels.add(new JLabel(coin));</b>
+<b class="nc"><i class="no-highlight">49</i>&nbsp;            coinLabels.get(i).setVisible(false);</b>
+<i class="no-highlight">50</i>&nbsp;            //add a new characterCardState&#39;s label to characterCardsStatelabes list and make it invisible
+<b class="nc"><i class="no-highlight">51</i>&nbsp;            characterCardsStatelabes.add(new JLabel());</b>
+<b class="nc"><i class="no-highlight">52</i>&nbsp;            characterCardsStatelabes.get(i).setVisible(false);</b>
+<i class="no-highlight">53</i>&nbsp;            JButton button;
+<i class="no-highlight">54</i>&nbsp;            //create a new characterCard&#39;s button with the proper image
+<b class="nc"><i class="no-highlight">55</i>&nbsp;            switch (characterCards.get(i)) {</b>
+<b class="nc"><i class="no-highlight">56</i>&nbsp;                case Card01 ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">57</i>&nbsp;                    button = new JButton(card01);</b>
+<b class="nc"><i class="no-highlight">58</i>&nbsp;                    characterCardsButton.add(button);</b>
+<b class="nc"><i class="no-highlight">59</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">60</i>&nbsp;                case Card02 ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">61</i>&nbsp;                    button = new JButton(card02);</b>
+<b class="nc"><i class="no-highlight">62</i>&nbsp;                    characterCardsButton.add(button);</b>
+<b class="nc"><i class="no-highlight">63</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">64</i>&nbsp;                case Card03 ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">65</i>&nbsp;                    button = new JButton(card03);</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;                    characterCardsButton.add(button);</b>
+<b class="nc"><i class="no-highlight">67</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">68</i>&nbsp;                case Card04 ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">69</i>&nbsp;                    button = new JButton(card04);</b>
+<b class="nc"><i class="no-highlight">70</i>&nbsp;                    characterCardsButton.add(button);</b>
+<b class="nc"><i class="no-highlight">71</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">72</i>&nbsp;                case Card05 ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">73</i>&nbsp;                    button = new JButton(card05);</b>
+<b class="nc"><i class="no-highlight">74</i>&nbsp;                    characterCardsButton.add(button);</b>
+<b class="nc"><i class="no-highlight">75</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">76</i>&nbsp;                case Card06 ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">77</i>&nbsp;                    button = new JButton(card06);</b>
+<b class="nc"><i class="no-highlight">78</i>&nbsp;                    characterCardsButton.add(button);</b>
+<b class="nc"><i class="no-highlight">79</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">80</i>&nbsp;                case Card07 ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">81</i>&nbsp;                    button = new JButton(card07);</b>
+<b class="nc"><i class="no-highlight">82</i>&nbsp;                    characterCardsButton.add(button);</b>
+<b class="nc"><i class="no-highlight">83</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">84</i>&nbsp;                case Card08 ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">85</i>&nbsp;                    button = new JButton(card08);</b>
+<b class="nc"><i class="no-highlight">86</i>&nbsp;                    characterCardsButton.add(button);</b>
+<b class="nc"><i class="no-highlight">87</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">88</i>&nbsp;                case Card09 ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">89</i>&nbsp;                    button = new JButton(card09);</b>
+<b class="nc"><i class="no-highlight">90</i>&nbsp;                    characterCardsButton.add(button);</b>
+<b class="nc"><i class="no-highlight">91</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">92</i>&nbsp;                case Card10 ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">93</i>&nbsp;                    button = new JButton(card10);</b>
+<b class="nc"><i class="no-highlight">94</i>&nbsp;                    characterCardsButton.add(button);</b>
+<b class="nc"><i class="no-highlight">95</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">96</i>&nbsp;                case Card11 ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">97</i>&nbsp;                    button = new JButton(card11);</b>
+<b class="nc"><i class="no-highlight">98</i>&nbsp;                    characterCardsButton.add(button);</b>
+<b class="nc"><i class="no-highlight">99</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">100</i>&nbsp;                case Card12 ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">101</i>&nbsp;                    button = new JButton(card12);</b>
+<b class="nc"><i class="no-highlight">102</i>&nbsp;                    characterCardsButton.add(button);</b>
+<b class="nc"><i class="no-highlight">103</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">104</i>&nbsp;                default -&gt; button = new JButton();</b>
+<i class="no-highlight">105</i>&nbsp;            }
+<i class="no-highlight">106</i>&nbsp;            //add characterCard&#39;s info with ToolTipManager CLASS
+<b class="nc"><i class="no-highlight">107</i>&nbsp;            button.setToolTipText(printCharacterCardInfo(characterCards.get(i)));</b>
+<b class="nc"><i class="no-highlight">108</i>&nbsp;            ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);</b>
+<b class="nc"><i class="no-highlight">109</i>&nbsp;            int finalI = i;</b>
+<i class="no-highlight">110</i>&nbsp;            //add on-click actionListener to characterCard&#39;s button
+<b class="nc"><i class="no-highlight">111</i>&nbsp;            button.addActionListener(e -&gt; {</b>
+<i class="no-highlight">112</i>&nbsp;                // skip execution of the action if a previous action still hasn&#39;t been processed by the server
+<b class="nc"><i class="no-highlight">113</i>&nbsp;                if (guiSocketListener.awaitingPlayerActionFeedback()) {</b>
+<b class="nc"><i class="no-highlight">114</i>&nbsp;                    JOptionPane.showMessageDialog(null, &quot;Please wait for the server to process your previous&quot; +</b>
+<i class="no-highlight">115</i>&nbsp;                            &quot;request before making a new one&quot;);
+<i class="no-highlight">116</i>&nbsp;                    return;
+<i class="no-highlight">117</i>&nbsp;                }
+<b class="nc"><i class="no-highlight">118</i>&nbsp;                PlayCharacterCard playCharacterCard = null;</b>
+<b class="nc"><i class="no-highlight">119</i>&nbsp;                PlayerActionRequest playerActionRequest = null;</b>
+<i class="no-highlight">120</i>&nbsp;                //get JTabbedPane (necessary to switch to another JPanel)
+<b class="nc"><i class="no-highlight">121</i>&nbsp;                Container parent = this.getParent();</b>
+<b class="nc"><i class="no-highlight">122</i>&nbsp;                while (!(parent instanceof GameInProgressPanel gameInProgressPanel)) {</b>
+<b class="nc"><i class="no-highlight">123</i>&nbsp;                    parent = parent.getParent();</b>
+<i class="no-highlight">124</i>&nbsp;                }
+<b class="nc"><i class="no-highlight">125</i>&nbsp;                switch (characterCards.get(finalI)) {</b>
+<b class="nc"><i class="no-highlight">126</i>&nbsp;                    case Card01 card01 -&gt; {</b>
+<i class="no-highlight">127</i>&nbsp;                        PawnColour toMove;
+<i class="no-highlight">128</i>&nbsp;                        //list containing CharacterCard&#39;s pawns
+<b class="nc"><i class="no-highlight">129</i>&nbsp;                        PawnColour[] options = card01.getState().toArray(new PawnColour[0]);</b>
+<i class="no-highlight">130</i>&nbsp;                        //create and show JOptionPane
+<b class="nc"><i class="no-highlight">131</i>&nbsp;                        int option = JOptionPane.showOptionDialog(null, &quot;Select pawnColour to move to an island&quot;, &quot;Select PawnColour&quot;,</b>
+<i class="no-highlight">132</i>&nbsp;                                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+<i class="no-highlight">133</i>&nbsp;                                null, options, options[0]);
+<i class="no-highlight">134</i>&nbsp;                        //get pawn to move
+<b class="nc"><i class="no-highlight">135</i>&nbsp;                        toMove = PawnColour.getPawnColourFromText(options[option].toString());</b>
+<i class="no-highlight">136</i>&nbsp;                        //switch to first JTabbedPane&#39;s tab
+<b class="nc"><i class="no-highlight">137</i>&nbsp;                        gameInProgressPanel.setSelectedIndex(0);</b>
+<b class="nc"><i class="no-highlight">138</i>&nbsp;                        IslandFieldPanel islandFieldPanel = (IslandFieldPanel) gameInProgressPanel.getSelectedComponent();</b>
+<b class="nc"><i class="no-highlight">139</i>&nbsp;                        JOptionPane.showMessageDialog(null, &quot;click on the island on which you want to move the pawn&quot;);</b>
+<i class="no-highlight">140</i>&nbsp;                        //set IslandFieldPanel to play this characterCard
+<b class="nc"><i class="no-highlight">141</i>&nbsp;                        islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, OptionalValue.of(finalI), OptionalValue.of(toMove));</b>
+<i class="no-highlight">142</i>&nbsp;                        return;
+<i class="no-highlight">143</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">144</i>&nbsp;                    case Card02 ignored2 -&gt; {</b>
+<i class="no-highlight">145</i>&nbsp;                        //create playCharacterCard and its playerActionReqeust
+<b class="nc"><i class="no-highlight">146</i>&nbsp;                        playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),</b>
+<b class="nc"><i class="no-highlight">147</i>&nbsp;                                finalI, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());</b>
+<b class="nc"><i class="no-highlight">148</i>&nbsp;                        playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">149</i>&nbsp;                    }</b>
+<b class="nc"><i class="no-highlight">150</i>&nbsp;                    case Card03 ignored3 -&gt; {</b>
+<i class="no-highlight">151</i>&nbsp;                        //switch to first JTabbedPane&#39;s pane
+<b class="nc"><i class="no-highlight">152</i>&nbsp;                        gameInProgressPanel.setSelectedIndex(0);</b>
+<b class="nc"><i class="no-highlight">153</i>&nbsp;                        IslandFieldPanel islandFieldPanel = (IslandFieldPanel) gameInProgressPanel.getSelectedComponent();</b>
+<b class="nc"><i class="no-highlight">154</i>&nbsp;                        JOptionPane.showMessageDialog(null, &quot;click on the island on which you want to calculate the influence&quot;);</b>
+<i class="no-highlight">155</i>&nbsp;                        //set IslandFieldPanel to play this characterCard
+<b class="nc"><i class="no-highlight">156</i>&nbsp;                        islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, OptionalValue.of(finalI), OptionalValue.empty());</b>
+<i class="no-highlight">157</i>&nbsp;                        return;
+<i class="no-highlight">158</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">159</i>&nbsp;                    case Card04 ignored -&gt; {</b>
+<i class="no-highlight">160</i>&nbsp;                        //create playCharacterCard and its playerActionReqeust
+<b class="nc"><i class="no-highlight">161</i>&nbsp;                        playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),</b>
+<b class="nc"><i class="no-highlight">162</i>&nbsp;                                finalI, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());</b>
+<b class="nc"><i class="no-highlight">163</i>&nbsp;                        playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">164</i>&nbsp;                    }</b>
+<b class="nc"><i class="no-highlight">165</i>&nbsp;                    case Card05 ignored5 -&gt; {</b>
+<i class="no-highlight">166</i>&nbsp;                        //switch to first JTabbedPane&#39;s pane
+<b class="nc"><i class="no-highlight">167</i>&nbsp;                        gameInProgressPanel.setSelectedIndex(0);</b>
+<b class="nc"><i class="no-highlight">168</i>&nbsp;                        IslandFieldPanel islandFieldPanel = (IslandFieldPanel) gameInProgressPanel.getSelectedComponent();</b>
+<b class="nc"><i class="no-highlight">169</i>&nbsp;                        JOptionPane.showMessageDialog(null, &quot;click on the island on which you want to move NoEntry tile&quot;);</b>
+<i class="no-highlight">170</i>&nbsp;                        //set IslandFieldPanel to play this characterCard
+<b class="nc"><i class="no-highlight">171</i>&nbsp;                        islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, OptionalValue.of(finalI), OptionalValue.empty());</b>
+<i class="no-highlight">172</i>&nbsp;                        return;
+<i class="no-highlight">173</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">174</i>&nbsp;                    case Card06 ignored6 -&gt; {</b>
+<i class="no-highlight">175</i>&nbsp;                        //create playCharacterCard and its playerActionRequest
+<b class="nc"><i class="no-highlight">176</i>&nbsp;                        playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),</b>
+<b class="nc"><i class="no-highlight">177</i>&nbsp;                                finalI, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());</b>
+<b class="nc"><i class="no-highlight">178</i>&nbsp;                        playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<i class="no-highlight">179</i>&nbsp;
+<b class="nc"><i class="no-highlight">180</i>&nbsp;                    }</b>
+<b class="nc"><i class="no-highlight">181</i>&nbsp;                    case Card07 card07 -&gt; {</b>
+<i class="no-highlight">182</i>&nbsp;                        //create list of PawnColour from characterCard&#39;s state
+<b class="nc"><i class="no-highlight">183</i>&nbsp;                        ArrayList&lt;PawnColour&gt; pawnsFromCard = card07.getState().stream().map(o -&gt; (PawnColour) o).collect(Collectors.toCollection(ArrayList::new));</b>
+<i class="no-highlight">184</i>&nbsp;                        //create array of JCheckBox having the same size as the previous list
+<b class="nc"><i class="no-highlight">185</i>&nbsp;                        JCheckBox[] checkBoxes = new JCheckBox[pawnsFromCard.size()];</b>
+<i class="no-highlight">186</i>&nbsp;                        //create a new CheckBoxListener
+<b class="nc"><i class="no-highlight">187</i>&nbsp;                        CheckBoxListener checkBoxListener = new CheckBoxListener(3, checkBoxes);</b>
+<i class="no-highlight">188</i>&nbsp;                        //panel used for showing components inside JOptionPane
+<b class="nc"><i class="no-highlight">189</i>&nbsp;                        JPanel optionPanel = new JPanel();</b>
+<b class="nc"><i class="no-highlight">190</i>&nbsp;                        for (int j = 0; j &lt; pawnsFromCard.size(); j++) {</b>
+<i class="no-highlight">191</i>&nbsp;                            //create a new JCheckBox and add it to checkBoxes array
+<b class="nc"><i class="no-highlight">192</i>&nbsp;                            checkBoxes[j] = new JCheckBox(pawnsFromCard.get(j).toString());</b>
+<i class="no-highlight">193</i>&nbsp;                            //add checkBoxListener to checkBox
+<b class="nc"><i class="no-highlight">194</i>&nbsp;                            checkBoxes[j].addItemListener(checkBoxListener);</b>
+<i class="no-highlight">195</i>&nbsp;                            //add checkBox to optionPanel
+<b class="nc"><i class="no-highlight">196</i>&nbsp;                            optionPanel.add(checkBoxes[j]);</b>
+<i class="no-highlight">197</i>&nbsp;                        }
+<i class="no-highlight">198</i>&nbsp;                        //create and show JOptionPane
+<b class="nc"><i class="no-highlight">199</i>&nbsp;                        int result = JOptionPane.showConfirmDialog(this, optionPanel,</b>
+<i class="no-highlight">200</i>&nbsp;                                &quot;Select pawns &quot;, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+<b class="nc"><i class="no-highlight">201</i>&nbsp;                        if (result == -1 || result == 2) return;</b>
+<i class="no-highlight">202</i>&nbsp;                        //clear and reuse pawnsFromCard
+<b class="nc"><i class="no-highlight">203</i>&nbsp;                        pawnsFromCard.clear();</b>
+<b class="nc"><i class="no-highlight">204</i>&nbsp;                        for (JCheckBox checkBox : checkBoxes) {</b>
+<b class="nc"><i class="no-highlight">205</i>&nbsp;                            if (checkBox.isSelected()) {</b>
+<i class="no-highlight">206</i>&nbsp;                                //add a PawnColour of that colour only if the corresponding checkBox has been selected
+<b class="nc"><i class="no-highlight">207</i>&nbsp;                                pawnsFromCard.add(PawnColour.getPawnColourFromText(checkBox.getText()));</b>
+<i class="no-highlight">208</i>&nbsp;                            }
+<i class="no-highlight">209</i>&nbsp;                        }
+<b class="nc"><i class="no-highlight">210</i>&nbsp;                        for (int h = 0; h &lt; gameInProgressPanel.getTabCount(); h++) {</b>
+<b class="nc"><i class="no-highlight">211</i>&nbsp;                            Component component = gameInProgressPanel.getComponentAt(h);</b>
+<i class="no-highlight">212</i>&nbsp;                            //search for CurrentPlayer&#39;s PlayerBoardPanel
+<b class="nc"><i class="no-highlight">213</i>&nbsp;                            if ((component instanceof PlayerBoardPanel playerBoardPanel) &amp;&amp; playerBoardPanel.getPlayerBoardNickname().equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {</b>
+<i class="no-highlight">214</i>&nbsp;                                //switch to that Panel
+<b class="nc"><i class="no-highlight">215</i>&nbsp;                                gameInProgressPanel.setSelectedIndex(h);</b>
+<i class="no-highlight">216</i>&nbsp;                                //delegate the remaining part of execution to PlayerBoardPanel
+<b class="nc"><i class="no-highlight">217</i>&nbsp;                                playerBoardPanel.PlayCharacterCardEffect(7, finalI, OptionalValue.of(pawnsFromCard));</b>
+<i class="no-highlight">218</i>&nbsp;                            }
+<i class="no-highlight">219</i>&nbsp;                        }
+<i class="no-highlight">220</i>&nbsp;                        return;
+<i class="no-highlight">221</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">222</i>&nbsp;                    case Card08 ignored8 -&gt; {</b>
+<i class="no-highlight">223</i>&nbsp;                        //create playCharacterCard and its playerActionRequest
+<b class="nc"><i class="no-highlight">224</i>&nbsp;                        playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),</b>
+<b class="nc"><i class="no-highlight">225</i>&nbsp;                                finalI, OptionalValue.empty(), OptionalValue.empty(), OptionalValue.empty());</b>
+<b class="nc"><i class="no-highlight">226</i>&nbsp;                        playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">227</i>&nbsp;                    }</b>
+<b class="nc"><i class="no-highlight">228</i>&nbsp;                    case Card09 ignored9 -&gt; {</b>
+<i class="no-highlight">229</i>&nbsp;                        PawnColour toExclude;
+<i class="no-highlight">230</i>&nbsp;                        //Array of strings containing all PawnColours
+<b class="nc"><i class="no-highlight">231</i>&nbsp;                        String[] options = new String[]{&quot;RED&quot;, &quot;PINK&quot;, &quot;GREEN&quot;, &quot;YELLOW&quot;, &quot;BLUE&quot;};</b>
+<i class="no-highlight">232</i>&nbsp;                        //create and show JOptionPane
+<b class="nc"><i class="no-highlight">233</i>&nbsp;                        int option = JOptionPane.showOptionDialog(null, &quot;Select pawnColour to make it irrelevant&quot;, &quot;Select PawnColour&quot;,</b>
+<i class="no-highlight">234</i>&nbsp;                                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+<i class="no-highlight">235</i>&nbsp;                                null, options, options[0]);
+<i class="no-highlight">236</i>&nbsp;                        //get selected pawn to exclude
+<b class="nc"><i class="no-highlight">237</i>&nbsp;                        toExclude = PawnColour.getPawnColourFromText(options[option]);</b>
+<i class="no-highlight">238</i>&nbsp;                        //create playCharacterCard action and its playerActionRequest
+<b class="nc"><i class="no-highlight">239</i>&nbsp;                        playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),</b>
+<b class="nc"><i class="no-highlight">240</i>&nbsp;                                finalI, OptionalValue.empty(), OptionalValue.of(toExclude), OptionalValue.empty());</b>
+<b class="nc"><i class="no-highlight">241</i>&nbsp;                        playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">242</i>&nbsp;                    }</b>
+<b class="nc"><i class="no-highlight">243</i>&nbsp;                    case Card10 ignored10 -&gt; {</b>
+<b class="nc"><i class="no-highlight">244</i>&nbsp;                        for (int h = 0; h &lt; gameInProgressPanel.getTabCount(); h++) {</b>
+<b class="nc"><i class="no-highlight">245</i>&nbsp;                            Component component = gameInProgressPanel.getComponentAt(h);</b>
+<i class="no-highlight">246</i>&nbsp;                            //search for CurrentPlayer&#39;s PlayerBoardPanel
+<b class="nc"><i class="no-highlight">247</i>&nbsp;                            if ((component instanceof PlayerBoardPanel playerBoardPanel) &amp;&amp; playerBoardPanel.getPlayerBoardNickname().equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {</b>
+<i class="no-highlight">248</i>&nbsp;                                //switch to that Panel
+<b class="nc"><i class="no-highlight">249</i>&nbsp;                                gameInProgressPanel.setSelectedIndex(h);</b>
+<i class="no-highlight">250</i>&nbsp;                                //delegate the remaining part of execution to PlayerBoardPanel
+<b class="nc"><i class="no-highlight">251</i>&nbsp;                                playerBoardPanel.PlayCharacterCardEffect(10, finalI, OptionalValue.empty());</b>
+<i class="no-highlight">252</i>&nbsp;                            }
+<i class="no-highlight">253</i>&nbsp;                        }
+<i class="no-highlight">254</i>&nbsp;                        return;
+<i class="no-highlight">255</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">256</i>&nbsp;                    case Card11 card11 -&gt; {</b>
+<i class="no-highlight">257</i>&nbsp;                        PawnColour toMove;
+<i class="no-highlight">258</i>&nbsp;                        //get characterCard&#39;s state and convert its elements to String
+<b class="nc"><i class="no-highlight">259</i>&nbsp;                        String[] options = card11.getState().stream().map(Object::toString).toArray(String[]::new);</b>
+<i class="no-highlight">260</i>&nbsp;                        //create and show JOptionPane
+<b class="nc"><i class="no-highlight">261</i>&nbsp;                        int option = JOptionPane.showOptionDialog(null, &quot;Select the pawn to move&quot;, &quot;Select PawnColour&quot;,</b>
+<i class="no-highlight">262</i>&nbsp;                                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+<i class="no-highlight">263</i>&nbsp;                                null, options, options[0]);
+<b class="nc"><i class="no-highlight">264</i>&nbsp;                        if (option == -1) return;</b>
+<i class="no-highlight">265</i>&nbsp;                        //get selected pawn to move
+<b class="nc"><i class="no-highlight">266</i>&nbsp;                        toMove = PawnColour.getPawnColourFromText(options[option]);</b>
+<i class="no-highlight">267</i>&nbsp;                        //create playCharacterCard action and its playerActionRequest
+<b class="nc"><i class="no-highlight">268</i>&nbsp;                        playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),</b>
+<b class="nc"><i class="no-highlight">269</i>&nbsp;                                finalI, OptionalValue.empty(), OptionalValue.of(toMove), OptionalValue.empty());</b>
+<b class="nc"><i class="no-highlight">270</i>&nbsp;                        playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">271</i>&nbsp;                    }</b>
+<b class="nc"><i class="no-highlight">272</i>&nbsp;                    case Card12 ignored12 -&gt; {</b>
+<i class="no-highlight">273</i>&nbsp;                        PawnColour toRemove;
+<b class="nc"><i class="no-highlight">274</i>&nbsp;                        String[] options = new String[]{&quot;RED&quot;, &quot;PINK&quot;, &quot;GREEN&quot;, &quot;YELLOW&quot;, &quot;BLUE&quot;};</b>
+<b class="nc"><i class="no-highlight">275</i>&nbsp;                        int option = JOptionPane.showOptionDialog(null, &quot;Select the pawn to remove&quot;, &quot;Select a colour&quot;,</b>
+<i class="no-highlight">276</i>&nbsp;                                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+<i class="no-highlight">277</i>&nbsp;                                null, options, options[0]);
+<b class="nc"><i class="no-highlight">278</i>&nbsp;                        if (option == -1) return;</b>
+<i class="no-highlight">279</i>&nbsp;                        //get selected pawn to remove
+<b class="nc"><i class="no-highlight">280</i>&nbsp;                        toRemove = PawnColour.getPawnColourFromText(options[option]);</b>
+<i class="no-highlight">281</i>&nbsp;                        //create playCharacterCard action and its playerActionRequest
+<b class="nc"><i class="no-highlight">282</i>&nbsp;                        playCharacterCard = new PlayCharacterCard(model.getMutableTurnOrder().getMutableCurrentPlayer().getId(),</b>
+<b class="nc"><i class="no-highlight">283</i>&nbsp;                                finalI, OptionalValue.empty(), OptionalValue.of(toRemove), OptionalValue.empty());</b>
+<b class="nc"><i class="no-highlight">284</i>&nbsp;                        playerActionRequest = new PlayerActionRequest(playCharacterCard);</b>
+<b class="nc"><i class="no-highlight">285</i>&nbsp;                    }</b>
+<i class="no-highlight">286</i>&nbsp;                    default -&gt; {
+<i class="no-highlight">287</i>&nbsp;                    }
+<i class="no-highlight">288</i>&nbsp;                }
+<i class="no-highlight">289</i>&nbsp;                //save action inside guiReader then send the request to Server
+<b class="nc"><i class="no-highlight">290</i>&nbsp;                guiSocketListener.savePlayerActionRequest(playCharacterCard);</b>
+<i class="no-highlight">291</i>&nbsp;                try {
+<b class="nc"><i class="no-highlight">292</i>&nbsp;                    socketWrapper.sendMessage(playerActionRequest);</b>
+<b class="nc"><i class="no-highlight">293</i>&nbsp;                } catch (IOException ex) {</b>
+<b class="nc"><i class="no-highlight">294</i>&nbsp;                    throw new RuntimeException(ex);</b>
+<b class="nc"><i class="no-highlight">295</i>&nbsp;                }</b>
+<i class="no-highlight">296</i>&nbsp;            });
+<i class="no-highlight">297</i>&nbsp;            //print eventual characterCard&#39;s state
+<b class="nc"><i class="no-highlight">298</i>&nbsp;            checkStatefulCard(characterCards.get(i), characterCardsStatelabes.get(i));</b>
+<i class="no-highlight">299</i>&nbsp;            //draw Coin&#39;s image whether the card has been used at least once
+<b class="nc"><i class="no-highlight">300</i>&nbsp;            if (characterCards.get(i).getTimeUsed() &gt; 0) coinLabels.get(i).setVisible(true);</b>
+<i class="no-highlight">301</i>&nbsp;        }
+<i class="no-highlight">302</i>&nbsp;        //--ABSOLUTE POSITIONING--
+<b class="nc"><i class="no-highlight">303</i>&nbsp;        coinLabels.get(0).setBounds(30, 195, 150, 160);</b>
+<b class="nc"><i class="no-highlight">304</i>&nbsp;        coinLabels.get(1).setBounds(371, 195, 150, 160);</b>
+<b class="nc"><i class="no-highlight">305</i>&nbsp;        coinLabels.get(2).setBounds(712, 195, 150, 160);</b>
+<b class="nc"><i class="no-highlight">306</i>&nbsp;        characterCardsButton.get(0).setBounds(100, 133, 205, 340);</b>
+<b class="nc"><i class="no-highlight">307</i>&nbsp;        characterCardsButton.get(1).setBounds(441, 133, 205, 340);</b>
+<b class="nc"><i class="no-highlight">308</i>&nbsp;        characterCardsButton.get(2).setBounds(782, 133, 205, 340);</b>
+<b class="nc"><i class="no-highlight">309</i>&nbsp;        characterCardsStatelabes.get(0).setBounds(100, 485, 205, 200);</b>
+<b class="nc"><i class="no-highlight">310</i>&nbsp;        characterCardsStatelabes.get(1).setBounds(441, 485, 205, 200);</b>
+<b class="nc"><i class="no-highlight">311</i>&nbsp;        characterCardsStatelabes.get(2).setBounds(782, 485, 205, 200);</b>
+<i class="no-highlight">312</i>&nbsp;        //add all labels to container
+<b class="nc"><i class="no-highlight">313</i>&nbsp;        coinLabels.forEach(pageBackground::add);</b>
+<b class="nc"><i class="no-highlight">314</i>&nbsp;        characterCardsButton.forEach(pageBackground::add);</b>
+<b class="nc"><i class="no-highlight">315</i>&nbsp;        characterCardsButton.forEach(button -&gt; button.setLayout(null));</b>
+<b class="nc"><i class="no-highlight">316</i>&nbsp;        characterCardsStatelabes.forEach(pageBackground::add);</b>
+<i class="no-highlight">317</i>&nbsp;    }
+<i class="no-highlight">318</i>&nbsp;
+<i class="no-highlight">319</i>&nbsp;    /**
+<i class="no-highlight">320</i>&nbsp;     * Support method for printing characterCard&#39;s info
+<i class="no-highlight">321</i>&nbsp;     *
+<i class="no-highlight">322</i>&nbsp;     * @param characterCard CharacterCard desired by the player
+<i class="no-highlight">323</i>&nbsp;     * @return String containing all card&#39;s information
+<i class="no-highlight">324</i>&nbsp;     */
+<i class="no-highlight">325</i>&nbsp;    private String printCharacterCardInfo(CharacterCard characterCard) {
+<i class="no-highlight">326</i>&nbsp;        String info;
+<b class="nc"><i class="no-highlight">327</i>&nbsp;        switch (characterCard) {</b>
+<b class="nc"><i class="no-highlight">328</i>&nbsp;            case Card01 ignored9 -&gt;</b>
+<b class="nc"><i class="no-highlight">329</i>&nbsp;                    info = &quot;&lt;html&gt;&lt;p width = 300px&gt;EFFECT: Take 1 Student from this card and place it on &quot; +</b>
+<i class="no-highlight">330</i>&nbsp;                            &quot;an Island of your choice. Then, draw a new Student from the Bag and place it on this card.&lt;/p&gt;&lt;/html&gt;&quot;;
+<b class="nc"><i class="no-highlight">331</i>&nbsp;            case Card02 ignored -&gt; info = &quot;&lt;html&gt;&lt;p width = 300px&gt;EFFECT: During this turn, you take control of any&quot; +</b>
+<i class="no-highlight">332</i>&nbsp;                    &quot; number of Professors even if you have the same number of Students as the player who currently controls them.&lt;/p&gt;&lt;/html&gt;&quot;;
+<b class="nc"><i class="no-highlight">333</i>&nbsp;            case Card03 ignored1 -&gt;</b>
+<b class="nc"><i class="no-highlight">334</i>&nbsp;                    info = &quot;&lt;html&gt;&lt;p width = 300px&gt;EFFECT: Choose an Island and resolve the Island as if &quot; +</b>
+<i class="no-highlight">335</i>&nbsp;                            &quot;Mother Nature had ended her movement there. Mother &quot; +
+<i class="no-highlight">336</i>&nbsp;                            &quot;Nature will still move and the Island where she ends her movement will also be resolved.&lt;/p&gt;&lt;/html&gt;&quot;;
+<b class="nc"><i class="no-highlight">337</i>&nbsp;            case Card04 ignored2 -&gt; info = &quot;&lt;html&gt;&lt;p width = 300px&gt;EFFECT: You may move Mother Nature up to 2&quot; +</b>
+<i class="no-highlight">338</i>&nbsp;                    &quot; additional Islands than is indicated by the Assistant card you&#39;ve played.&lt;/p&gt;&lt;/html&gt;&quot;;
+<b class="nc"><i class="no-highlight">339</i>&nbsp;            case Card05 ignored3 -&gt;</b>
+<b class="nc"><i class="no-highlight">340</i>&nbsp;                    info = &quot;&lt;html&gt;&lt;p width = 300px&gt;EFFECT: Place a No Entrytile on an Island of your choice. &quot; +</b>
+<i class="no-highlight">341</i>&nbsp;                            &quot;The first time Mother Nature ends her movement there, put the No Entry tile back onto this card &quot; +
+<i class="no-highlight">342</i>&nbsp;                            &quot;DO NOT calculate influence on that Island, or place any Towers.&lt;/p&gt;&lt;/html&gt;&quot;;
+<b class="nc"><i class="no-highlight">343</i>&nbsp;            case Card06 ignored4 -&gt;</b>
+<b class="nc"><i class="no-highlight">344</i>&nbsp;                    info = &quot;&lt;html&gt;&lt;p width = 300px&gt;EFFECT: When resolving a Conquering on an Island, Towers do not count towards influence.&lt;/p&gt;&lt;/html&gt;&quot;;</b>
+<b class="nc"><i class="no-highlight">345</i>&nbsp;            case Card07 ignored7 -&gt;</b>
+<b class="nc"><i class="no-highlight">346</i>&nbsp;                    info = &quot;&lt;html&gt;&lt;p width = 300px&gt;EFFECT: you may take up to 3 students from this card and replace them with &quot; +</b>
+<i class="no-highlight">347</i>&nbsp;                            &quot;the same number of Students from your Entrance&lt;/html&gt;&quot;;
+<b class="nc"><i class="no-highlight">348</i>&nbsp;            case Card08 ignored5 -&gt;</b>
+<b class="nc"><i class="no-highlight">349</i>&nbsp;                    info = &quot;&lt;html&gt;&lt;p width = 300px&gt;EFFECT: During the influence calculation this turn, you count as having 2 more influence&lt;/p&gt;&lt;/html&gt;&quot;;</b>
+<b class="nc"><i class="no-highlight">350</i>&nbsp;            case Card09 ignored6 -&gt;</b>
+<b class="nc"><i class="no-highlight">351</i>&nbsp;                    info = &quot;&lt;html&gt;&lt;p width = 300px&gt;EFFECT: Choose a color of Student: during the influence calculation this turn, that color adds no influence&lt;/p&gt;&lt;/html&gt;&quot;;</b>
+<b class="nc"><i class="no-highlight">352</i>&nbsp;            case Card10 ignored7 -&gt;</b>
+<b class="nc"><i class="no-highlight">353</i>&nbsp;                    info = &quot;&lt;html&gt;&lt;p width = 300px&gt;EFFECT: You may exchange up to 2 Students between your entrance and your Dining Room&lt;/p&gt;&lt;/html&gt;&quot;;</b>
+<b class="nc"><i class="no-highlight">354</i>&nbsp;            case Card11 ignored11 -&gt;</b>
+<b class="nc"><i class="no-highlight">355</i>&nbsp;                    info = &quot;&lt;html&gt;&lt;p width = 300px&gt;EFFECT: Take 1 Student from this card and place it in your Dining Room. &quot; +</b>
+<i class="no-highlight">356</i>&nbsp;                            &quot;Then, draw a new Student from the Bag and place it on this card.&lt;/p&gt;&lt;/html&gt;&quot;;
+<b class="nc"><i class="no-highlight">357</i>&nbsp;            case Card12 ignored8 -&gt;</b>
+<b class="nc"><i class="no-highlight">358</i>&nbsp;                    info = &quot;&lt;html&gt;&lt;p width = 300px&gt;EFFECT: Choose a type of Student: every player (including yourself) must return 3 Students of that type &quot; +</b>
+<i class="no-highlight">359</i>&nbsp;                            &quot;from their Dining Room to the bag. If any player has fewer than 3 Students of that type &quot; +
+<i class="no-highlight">360</i>&nbsp;                            &quot;return as many Students as they have.&lt;/p&gt;&lt;/html&gt;&quot;;
+<b class="nc"><i class="no-highlight">361</i>&nbsp;            case default -&gt; info = &quot;CharacterCard not recognized&quot;;</b>
+<i class="no-highlight">362</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">363</i>&nbsp;        return info;</b>
+<i class="no-highlight">364</i>&nbsp;    }
+<i class="no-highlight">365</i>&nbsp;
+<i class="no-highlight">366</i>&nbsp;    /**
+<i class="no-highlight">367</i>&nbsp;     * Support method, responsible for checking whether the characterCard contains some elements (statefulEffect)
+<i class="no-highlight">368</i>&nbsp;     *
+<i class="no-highlight">369</i>&nbsp;     * @param characterCard CharacterCard to check
+<i class="no-highlight">370</i>&nbsp;     * @param container     Container that will contain eventual characterCard&#39;s state
+<i class="no-highlight">371</i>&nbsp;     */
+<i class="no-highlight">372</i>&nbsp;    private void checkStatefulCard(CharacterCard characterCard, JLabel container) {
+<i class="no-highlight">373</i>&nbsp;        //continue only if characterCard has a state
+<b class="nc"><i class="no-highlight">374</i>&nbsp;        if (!(characterCard instanceof StatefulEffect)) return;</b>
+<i class="no-highlight">375</i>&nbsp;        //make CharacterCard&#39;s state&#39;s container visible
+<b class="nc"><i class="no-highlight">376</i>&nbsp;        container.setVisible(true);</b>
+<i class="no-highlight">377</i>&nbsp;        ArrayList&lt;StudentButton&gt; studentButtons;
+<i class="no-highlight">378</i>&nbsp;        // arranges student and tiles under card horizontally
+<b class="nc"><i class="no-highlight">379</i>&nbsp;        container.setLayout(new FlowLayout());</b>
+<i class="no-highlight">380</i>&nbsp;        //check for CharacterCard&#39;s state&#39;s type
+<b class="nc"><i class="no-highlight">381</i>&nbsp;        if (((StatefulEffect) characterCard).getStateType() == StateType.PAWNCOLOUR) {</b>
+<i class="no-highlight">382</i>&nbsp;            //get characterCard&#39;s buttons and add them to container
+<b class="nc"><i class="no-highlight">383</i>&nbsp;            studentButtons = getStudentButton(((StatefulEffect) characterCard).getState().stream().map(o -&gt; (PawnColour) o).collect(Collectors.toList()));</b>
+<b class="nc"><i class="no-highlight">384</i>&nbsp;            studentButtons.forEach(container::add);</b>
+<b class="nc"><i class="no-highlight">385</i>&nbsp;        } else if (((StatefulEffect) characterCard).getStateType() == StateType.NOENTRY) {</b>
+<i class="no-highlight">386</i>&nbsp;            //get NoEntryTiles&#39; labels and add them to container
+<b class="nc"><i class="no-highlight">387</i>&nbsp;            container.add(new NoEntryTileComponent(((StatefulEffect) characterCard).getState().size()));</b>
+<i class="no-highlight">388</i>&nbsp;        }
+<i class="no-highlight">389</i>&nbsp;    }
+<i class="no-highlight">390</i>&nbsp;
+<i class="no-highlight">391</i>&nbsp;    /**
+<i class="no-highlight">392</i>&nbsp;     * Support method used for getting a list of StudentButtons starting from a list of PawnColours
+<i class="no-highlight">393</i>&nbsp;     *
+<i class="no-highlight">394</i>&nbsp;     * @param pawns List of pawnColours that will be used for creating the studentButtons
+<i class="no-highlight">395</i>&nbsp;     * @return list of StudentButton
+<i class="no-highlight">396</i>&nbsp;     */
+<i class="no-highlight">397</i>&nbsp;    private ArrayList&lt;StudentButton&gt; getStudentButton(List&lt;PawnColour&gt; pawns) {
+<b class="nc"><i class="no-highlight">398</i>&nbsp;        EnumMap&lt;PawnColour, Integer&gt; colourIntegerEnumMap = new EnumMap&lt;&gt;(PawnColour.class);</b>
+<b class="nc"><i class="no-highlight">399</i>&nbsp;        ArrayList&lt;StudentButton&gt; studentButtons = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">400</i>&nbsp;        //Count all pawnColours occurrences inside list received as input
+<b class="nc"><i class="no-highlight">401</i>&nbsp;        for (PawnColour p : pawns) {</b>
+<b class="nc"><i class="no-highlight">402</i>&nbsp;            colourIntegerEnumMap.merge(p, 1, Integer::sum);</b>
+<b class="nc"><i class="no-highlight">403</i>&nbsp;        }</b>
+<i class="no-highlight">404</i>&nbsp;        //create and add studentButtons
+<b class="nc"><i class="no-highlight">405</i>&nbsp;        for (PawnColour p : colourIntegerEnumMap.keySet()) {</b>
+<b class="nc"><i class="no-highlight">406</i>&nbsp;            studentButtons.add(new StudentButton(p, colourIntegerEnumMap.get(p), false));</b>
+<b class="nc"><i class="no-highlight">407</i>&nbsp;        }</b>
+<b class="nc"><i class="no-highlight">408</i>&nbsp;        return studentButtons;</b>
+<i class="no-highlight">409</i>&nbsp;    }
+<i class="no-highlight">410</i>&nbsp;
+<i class="no-highlight">411</i>&nbsp;
+<i class="no-highlight">412</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

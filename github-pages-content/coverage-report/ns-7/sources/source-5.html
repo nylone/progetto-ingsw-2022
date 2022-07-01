@@ -1,0 +1,294 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GameStartingPanel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Client.GUI.Panels</a>
+</div>
+
+<h1>Coverage Summary for Class: GameStartingPanel (it.polimi.ingsw.Client.GUI.Panels)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameStartingPanel</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/104)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Client.GUI.Panels;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Client.GUI.Context;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Client.GUI.Window;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Model.Enums.GameMode;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Network.SocketWrapper;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Requests.StartGameRequest;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Server.Messages.Message;
+<i class="no-highlight">9</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.*;
+<i class="no-highlight">10</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
+<i class="no-highlight">11</i>&nbsp;
+<i class="no-highlight">12</i>&nbsp;import javax.swing.*;
+<i class="no-highlight">13</i>&nbsp;import java.awt.*;
+<i class="no-highlight">14</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">15</i>&nbsp;import java.util.UUID;
+<i class="no-highlight">16</i>&nbsp;
+<i class="no-highlight">17</i>&nbsp;/**
+<i class="no-highlight">18</i>&nbsp; * Panel that allows lobby&#39;s admin to start the game (is also possible to select gameMode) after it has been filled
+<i class="no-highlight">19</i>&nbsp; */
+<i class="no-highlight">20</i>&nbsp;public class GameStartingPanel extends JPanel {
+<i class="no-highlight">21</i>&nbsp;    /**
+<i class="no-highlight">22</i>&nbsp;     * Create a new GameStartingPanel
+<i class="no-highlight">23</i>&nbsp;     *
+<i class="no-highlight">24</i>&nbsp;     * @param ctx     context that will be used by GUI&#39;s game&#39;s panels
+<i class="no-highlight">25</i>&nbsp;     * @param isAdmin GameStartingPanel has been created by lobby&#39;s admin
+<i class="no-highlight">26</i>&nbsp;     * @param lobbyID Lobby&#39;s UUID
+<i class="no-highlight">27</i>&nbsp;     */
+<b class="nc"><i class="no-highlight">28</i>&nbsp;    public GameStartingPanel(Context ctx, boolean isAdmin, UUID lobbyID) {</b>
+<i class="no-highlight">29</i>&nbsp;        // unwrapping context into useful variables
+<b class="nc"><i class="no-highlight">30</i>&nbsp;        Window window = ctx.getWindow();</b>
+<b class="nc"><i class="no-highlight">31</i>&nbsp;        SocketWrapper sw = ctx.getSocketWrapper();</b>
+<i class="no-highlight">32</i>&nbsp;
+<i class="no-highlight">33</i>&nbsp;        // labels
+<b class="nc"><i class="no-highlight">34</i>&nbsp;        JLabel title = new JLabel(&quot;Connected to the lobby&quot;);</b>
+<b class="nc"><i class="no-highlight">35</i>&nbsp;        JLabel lobbyIDlabel = new JLabel(&quot;Connected to the lobby&quot;);</b>
+<b class="nc"><i class="no-highlight">36</i>&nbsp;        JLabel connectedPlayersLablel = new JLabel(&quot;Players in lobby:&quot;);</b>
+<b class="nc"><i class="no-highlight">37</i>&nbsp;        JLabel gameModeLabel = new JLabel(&quot;Advanced mode:&quot;);</b>
+<i class="no-highlight">38</i>&nbsp;
+<i class="no-highlight">39</i>&nbsp;        // text boxes
+<b class="nc"><i class="no-highlight">40</i>&nbsp;        JTextField lobbyIDField = new JTextField();</b>
+<b class="nc"><i class="no-highlight">41</i>&nbsp;        lobbyIDField.setText(lobbyID.toString());</b>
+<b class="nc"><i class="no-highlight">42</i>&nbsp;        lobbyIDField.setEditable(false);</b>
+<i class="no-highlight">43</i>&nbsp;
+<i class="no-highlight">44</i>&nbsp;        // buttons
+<b class="nc"><i class="no-highlight">45</i>&nbsp;        JCheckBox gameMode = new JCheckBox();</b>
+<b class="nc"><i class="no-highlight">46</i>&nbsp;        gameMode.setEnabled(isAdmin);</b>
+<b class="nc"><i class="no-highlight">47</i>&nbsp;        gameMode.setToolTipText(&quot;Only the lobby admin can select the game mode&quot;);</b>
+<b class="nc"><i class="no-highlight">48</i>&nbsp;        JButton disconnect = new JButton(&quot;Disconnect from the lobby&quot;);</b>
+<b class="nc"><i class="no-highlight">49</i>&nbsp;        JButton start = new JButton(&quot;Start the game&quot;);</b>
+<b class="nc"><i class="no-highlight">50</i>&nbsp;        start.setToolTipText(&quot;Only the lobby admin can start the lobby&quot;);</b>
+<b class="nc"><i class="no-highlight">51</i>&nbsp;        start.setEnabled(isAdmin); // start button is enabled only for admin of the lobby</b>
+<i class="no-highlight">52</i>&nbsp;
+<i class="no-highlight">53</i>&nbsp;        // list cell renderer
+<b class="nc"><i class="no-highlight">54</i>&nbsp;        ListCellRenderer&lt;String&gt; cellRenderer = (list, nick, index, isSelected, _ignored) -&gt; {</b>
+<b class="nc"><i class="no-highlight">55</i>&nbsp;            JLabel displayedText = new JLabel();</b>
+<b class="nc"><i class="no-highlight">56</i>&nbsp;            displayedText.setText(nick);</b>
+<i class="no-highlight">57</i>&nbsp;            //enable this code to let selections be shown
+<b class="nc"><i class="no-highlight">58</i>&nbsp;            if (isSelected) {</b>
+<b class="nc"><i class="no-highlight">59</i>&nbsp;                displayedText.setBackground(list.getSelectionBackground());</b>
+<b class="nc"><i class="no-highlight">60</i>&nbsp;                displayedText.setForeground(list.getSelectionForeground());</b>
+<i class="no-highlight">61</i>&nbsp;            } else {
+<b class="nc"><i class="no-highlight">62</i>&nbsp;                displayedText.setBackground(list.getBackground());</b>
+<b class="nc"><i class="no-highlight">63</i>&nbsp;                displayedText.setForeground(list.getForeground());</b>
+<i class="no-highlight">64</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">65</i>&nbsp;            displayedText.setOpaque(true);</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;            return displayedText;</b>
+<i class="no-highlight">67</i>&nbsp;        };
+<i class="no-highlight">68</i>&nbsp;
+<i class="no-highlight">69</i>&nbsp;        // list of connected players
+<b class="nc"><i class="no-highlight">70</i>&nbsp;        JList&lt;String&gt; connectedPlayersList = new JList&lt;&gt;(new String[]{});</b>
+<b class="nc"><i class="no-highlight">71</i>&nbsp;        connectedPlayersList.setLayoutOrientation(JList.VERTICAL);</b>
+<b class="nc"><i class="no-highlight">72</i>&nbsp;        connectedPlayersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);</b>
+<b class="nc"><i class="no-highlight">73</i>&nbsp;        connectedPlayersList.setCellRenderer(cellRenderer);</b>
+<b class="nc"><i class="no-highlight">74</i>&nbsp;        connectedPlayersList.setPreferredSize(new Dimension(720, 100));</b>
+<i class="no-highlight">75</i>&nbsp;
+<i class="no-highlight">76</i>&nbsp;        // adding all elements to the view
+<b class="nc"><i class="no-highlight">77</i>&nbsp;        this.add(title);</b>
+<b class="nc"><i class="no-highlight">78</i>&nbsp;        this.add(disconnect);</b>
+<b class="nc"><i class="no-highlight">79</i>&nbsp;        this.add(start);</b>
+<b class="nc"><i class="no-highlight">80</i>&nbsp;        this.add(connectedPlayersLablel);</b>
+<b class="nc"><i class="no-highlight">81</i>&nbsp;        this.add(connectedPlayersList);</b>
+<b class="nc"><i class="no-highlight">82</i>&nbsp;        this.add(lobbyIDlabel);</b>
+<b class="nc"><i class="no-highlight">83</i>&nbsp;        this.add(lobbyIDField);</b>
+<b class="nc"><i class="no-highlight">84</i>&nbsp;        this.add(gameModeLabel);</b>
+<b class="nc"><i class="no-highlight">85</i>&nbsp;        this.add(gameMode);</b>
+<i class="no-highlight">86</i>&nbsp;
+<b class="nc"><i class="no-highlight">87</i>&nbsp;        disconnect.addActionListener(actionEvent -&gt; {</b>
+<i class="no-highlight">88</i>&nbsp;            try {
+<b class="nc"><i class="no-highlight">89</i>&nbsp;                sw.close();</b>
+<b class="nc"><i class="no-highlight">90</i>&nbsp;            } catch (IOException e) {</b>
+<b class="nc"><i class="no-highlight">91</i>&nbsp;                throw new RuntimeException(e);</b>
+<b class="nc"><i class="no-highlight">92</i>&nbsp;            }</b>
+<i class="no-highlight">93</i>&nbsp;        });
+<i class="no-highlight">94</i>&nbsp;
+<b class="nc"><i class="no-highlight">95</i>&nbsp;        start.addActionListener(actionEvent -&gt; {</b>
+<i class="no-highlight">96</i>&nbsp;            try {
+<b class="nc"><i class="no-highlight">97</i>&nbsp;                sw.sendMessage(new StartGameRequest(gameMode.isSelected() ? GameMode.ADVANCED : GameMode.SIMPLE));</b>
+<b class="nc"><i class="no-highlight">98</i>&nbsp;            } catch (IOException e) {</b>
+<b class="nc"><i class="no-highlight">99</i>&nbsp;                throw new RuntimeException(e);</b>
+<b class="nc"><i class="no-highlight">100</i>&nbsp;            }</b>
+<i class="no-highlight">101</i>&nbsp;        });
+<i class="no-highlight">102</i>&nbsp;
+<i class="no-highlight">103</i>&nbsp;        // layout object declaration and setup
+<b class="nc"><i class="no-highlight">104</i>&nbsp;        SpringLayout layout = new SpringLayout();</b>
+<i class="no-highlight">105</i>&nbsp;
+<b class="nc"><i class="no-highlight">106</i>&nbsp;        layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 20, SpringLayout.NORTH, this);</b>
+<b class="nc"><i class="no-highlight">107</i>&nbsp;        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, this);</b>
+<i class="no-highlight">108</i>&nbsp;
+<b class="nc"><i class="no-highlight">109</i>&nbsp;        layout.putConstraint(SpringLayout.NORTH, lobbyIDlabel, 20, SpringLayout.SOUTH, title);</b>
+<b class="nc"><i class="no-highlight">110</i>&nbsp;        layout.putConstraint(SpringLayout.EAST, lobbyIDlabel, -10, SpringLayout.HORIZONTAL_CENTER, this);</b>
+<b class="nc"><i class="no-highlight">111</i>&nbsp;        layout.putConstraint(SpringLayout.VERTICAL_CENTER, lobbyIDField, 0, SpringLayout.VERTICAL_CENTER, lobbyIDlabel);</b>
+<b class="nc"><i class="no-highlight">112</i>&nbsp;        layout.putConstraint(SpringLayout.WEST, lobbyIDField, 10, SpringLayout.HORIZONTAL_CENTER, this);</b>
+<i class="no-highlight">113</i>&nbsp;
+<b class="nc"><i class="no-highlight">114</i>&nbsp;        layout.putConstraint(SpringLayout.NORTH, connectedPlayersLablel, 20, SpringLayout.SOUTH, lobbyIDField);</b>
+<b class="nc"><i class="no-highlight">115</i>&nbsp;        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, connectedPlayersLablel, 0, SpringLayout.HORIZONTAL_CENTER, this);</b>
+<b class="nc"><i class="no-highlight">116</i>&nbsp;        layout.putConstraint(SpringLayout.NORTH, connectedPlayersList, 20, SpringLayout.SOUTH, connectedPlayersLablel);</b>
+<b class="nc"><i class="no-highlight">117</i>&nbsp;        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, connectedPlayersList, 0, SpringLayout.HORIZONTAL_CENTER, this);</b>
+<i class="no-highlight">118</i>&nbsp;
+<b class="nc"><i class="no-highlight">119</i>&nbsp;        layout.putConstraint(SpringLayout.NORTH, gameModeLabel, 20, SpringLayout.SOUTH, connectedPlayersList);</b>
+<b class="nc"><i class="no-highlight">120</i>&nbsp;        layout.putConstraint(SpringLayout.EAST, gameModeLabel, -10, SpringLayout.HORIZONTAL_CENTER, this);</b>
+<b class="nc"><i class="no-highlight">121</i>&nbsp;        layout.putConstraint(SpringLayout.VERTICAL_CENTER, gameMode, 0, SpringLayout.VERTICAL_CENTER, gameModeLabel);</b>
+<b class="nc"><i class="no-highlight">122</i>&nbsp;        layout.putConstraint(SpringLayout.WEST, gameMode, 10, SpringLayout.HORIZONTAL_CENTER, this);</b>
+<b class="nc"><i class="no-highlight">123</i>&nbsp;        layout.putConstraint(SpringLayout.NORTH, start, 20, SpringLayout.SOUTH, gameMode);</b>
+<b class="nc"><i class="no-highlight">124</i>&nbsp;        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, start, 0, SpringLayout.HORIZONTAL_CENTER, this);</b>
+<b class="nc"><i class="no-highlight">125</i>&nbsp;        layout.putConstraint(SpringLayout.NORTH, disconnect, 20, SpringLayout.SOUTH, start);</b>
+<b class="nc"><i class="no-highlight">126</i>&nbsp;        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, disconnect, 0, SpringLayout.HORIZONTAL_CENTER, this);</b>
+<i class="no-highlight">127</i>&nbsp;
+<i class="no-highlight">128</i>&nbsp;        // apply layout
+<b class="nc"><i class="no-highlight">129</i>&nbsp;        this.setLayout(layout);</b>
+<i class="no-highlight">130</i>&nbsp;
+<i class="no-highlight">131</i>&nbsp;        // start socket listener task
+<b class="nc"><i class="no-highlight">132</i>&nbsp;        new Thread(() -&gt; {</b>
+<i class="no-highlight">133</i>&nbsp;            while (true) {
+<i class="no-highlight">134</i>&nbsp;                try {
+<b class="nc"><i class="no-highlight">135</i>&nbsp;                    Message input = sw.awaitMessage();</b>
+<b class="nc"><i class="no-highlight">136</i>&nbsp;                    switch (input) {</b>
+<b class="nc"><i class="no-highlight">137</i>&nbsp;                        case LobbyClosed ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">138</i>&nbsp;                            JOptionPane.showMessageDialog(null, &quot;Lobby was closed by the server.\n&quot; +</b>
+<i class="no-highlight">139</i>&nbsp;                                    &quot;Client is disconnecting from the server.&quot;, &quot;Lobby closed&quot;, JOptionPane.INFORMATION_MESSAGE);
+<b class="nc"><i class="no-highlight">140</i>&nbsp;                            sw.close();</b>
+<b class="nc"><i class="no-highlight">141</i>&nbsp;                            window.changeView(new StartPanel(ctx));</b>
+<b class="nc"><i class="no-highlight">142</i>&nbsp;                        }</b>
+<b class="nc"><i class="no-highlight">143</i>&nbsp;                        case ClientConnected clientConnected -&gt; {</b>
+<b class="nc"><i class="no-highlight">144</i>&nbsp;                            synchronized (connectedPlayersList) {</b>
+<b class="nc"><i class="no-highlight">145</i>&nbsp;                                connectedPlayersList.setListData(clientConnected.getPlayers().toArray(String[]::new));</b>
+<b class="nc"><i class="no-highlight">146</i>&nbsp;                            }</b>
+<b class="nc"><i class="no-highlight">147</i>&nbsp;                        }</b>
+<b class="nc"><i class="no-highlight">148</i>&nbsp;                        case ClientDisconnected clientDisconnected -&gt; {</b>
+<b class="nc"><i class="no-highlight">149</i>&nbsp;                            synchronized (connectedPlayersList) {</b>
+<b class="nc"><i class="no-highlight">150</i>&nbsp;                                connectedPlayersList.setListData(clientDisconnected.getPlayers().toArray(String[]::new));</b>
+<b class="nc"><i class="no-highlight">151</i>&nbsp;                            }</b>
+<b class="nc"><i class="no-highlight">152</i>&nbsp;                        }</b>
+<b class="nc"><i class="no-highlight">153</i>&nbsp;                        case GameInit gameInit -&gt; {</b>
+<b class="nc"><i class="no-highlight">154</i>&nbsp;                            if (gameInit.getStatusCode() == StatusCode.Fail) {</b>
+<b class="nc"><i class="no-highlight">155</i>&nbsp;                                JOptionPane.showMessageDialog(null, gameInit.getErrorMessage(), &quot;Error&quot;, JOptionPane.INFORMATION_MESSAGE);</b>
+<i class="no-highlight">156</i>&nbsp;                            }
+<i class="no-highlight">157</i>&nbsp;                        }
+<b class="nc"><i class="no-highlight">158</i>&nbsp;                        case GameStarted ignored -&gt; {</b>
+<b class="nc"><i class="no-highlight">159</i>&nbsp;                            window.changeView(new GameInProgressPanel(ctx));</b>
+<i class="no-highlight">160</i>&nbsp;                            return;
+<i class="no-highlight">161</i>&nbsp;                        }
+<b class="nc"><i class="no-highlight">162</i>&nbsp;                        default -&gt; throw new IllegalStateException(&quot;Unexpected value: &quot; + input.getClass());</b>
+<i class="no-highlight">163</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">164</i>&nbsp;                } catch (Exception e) {</b>
+<b class="nc"><i class="no-highlight">165</i>&nbsp;                    JOptionPane.showMessageDialog(null, &quot;Disconnected from server&quot;, &quot;Error&quot;, JOptionPane.INFORMATION_MESSAGE);</b>
+<i class="no-highlight">166</i>&nbsp;                    try {
+<b class="nc"><i class="no-highlight">167</i>&nbsp;                        sw.close();</b>
+<b class="nc"><i class="no-highlight">168</i>&nbsp;                    } catch (IOException ex) {</b>
+<b class="nc"><i class="no-highlight">169</i>&nbsp;                        throw new RuntimeException(ex);</b>
+<b class="nc"><i class="no-highlight">170</i>&nbsp;                    }</b>
+<b class="nc"><i class="no-highlight">171</i>&nbsp;                    window.changeView(new StartPanel(ctx));</b>
+<i class="no-highlight">172</i>&nbsp;                    return;
+<b class="nc"><i class="no-highlight">173</i>&nbsp;                }</b>
+<i class="no-highlight">174</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">175</i>&nbsp;        }).start();</b>
+<i class="no-highlight">176</i>&nbsp;    }
+<i class="no-highlight">177</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

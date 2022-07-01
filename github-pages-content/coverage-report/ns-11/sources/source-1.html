@@ -1,0 +1,340 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Lobby</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Server</a>
+</div>
+
+<h1>Coverage Summary for Class: Lobby (it.polimi.ingsw.Server)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Lobby</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14,3%
+  </span>
+  <span class="absValue">
+    (2/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    5%
+  </span>
+  <span class="absValue">
+    (1/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    18,6%
+  </span>
+  <span class="absValue">
+    (11/59)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Server;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Controller.Actions.PlayerAction;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Controller.Controller;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Exceptions.Operation.OperationException;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">9</i>&nbsp;import it.polimi.ingsw.Model.Enums.GameMode;
+<i class="no-highlight">10</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.ClientEvent;
+<i class="no-highlight">11</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Internal.ClientConnectEvent;
+<i class="no-highlight">12</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Internal.ClientDisconnectEvent;
+<i class="no-highlight">13</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Internal.GameStartEvent;
+<i class="no-highlight">14</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Internal.LobbyClosedEvent;
+<i class="no-highlight">15</i>&nbsp;
+<i class="no-highlight">16</i>&nbsp;import java.util.*;
+<i class="no-highlight">17</i>&nbsp;import java.util.concurrent.BlockingQueue;
+<i class="no-highlight">18</i>&nbsp;import java.util.concurrent.ConcurrentHashMap;
+<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">20</i>&nbsp;import static it.polimi.ingsw.Server.LobbyServer.lobbyMap;
+<i class="no-highlight">21</i>&nbsp;
+<i class="no-highlight">22</i>&nbsp;/**
+<i class="no-highlight">23</i>&nbsp; * Multiple {@link LobbyServer} instances will need to communicate to run the game. This class groups the the {@link BlockingQueue&lt;ClientEvent&gt;}
+<i class="no-highlight">24</i>&nbsp; * used by each server to dispatch gameLobby-wide events.
+<i class="no-highlight">25</i>&nbsp; */
+<i class="no-highlight">26</i>&nbsp;public class Lobby {
+<i class="no-highlight">27</i>&nbsp;    private final UUID id;
+<i class="no-highlight">28</i>&nbsp;    private final String admin;
+<i class="no-highlight">29</i>&nbsp;    private final boolean isPublic;
+<i class="no-highlight">30</i>&nbsp;    private final int maxPlayers;
+<i class="no-highlight">31</i>&nbsp;    private final List&lt;String&gt; players;
+<i class="no-highlight">32</i>&nbsp;    private final Map&lt;String, BlockingQueue&lt;ClientEvent&gt;&gt; playerEventQueues;
+<i class="no-highlight">33</i>&nbsp;    private boolean isClosed;
+<i class="no-highlight">34</i>&nbsp;    private Controller controller;
+<i class="no-highlight">35</i>&nbsp;
+<i class="no-highlight">36</i>&nbsp;    /**
+<i class="no-highlight">37</i>&nbsp;     * Create a new lobby
+<i class="no-highlight">38</i>&nbsp;     *
+<i class="no-highlight">39</i>&nbsp;     * @param id         a unique ID used to refer to the lobby
+<i class="no-highlight">40</i>&nbsp;     * @param isPublic   if the lobby is supposed to be publicly available to new clients
+<i class="no-highlight">41</i>&nbsp;     * @param maxPlayers the amount of clients the game connected to the lobby will host
+<i class="no-highlight">42</i>&nbsp;     * @param admin      the name of the admin client. The admin owns the game and even though everyone can start a session, if
+<i class="no-highlight">43</i>&nbsp;     *                   the admin disconnects while in the waiting lobby, the lobby is closed.
+<i class="no-highlight">44</i>&nbsp;     */
+<b class="fc"><i class="no-highlight">45</i>&nbsp;    public Lobby(UUID id, boolean isPublic, int maxPlayers, String admin) {</b>
+<b class="fc"><i class="no-highlight">46</i>&nbsp;        this.id = id;</b>
+<b class="fc"><i class="no-highlight">47</i>&nbsp;        this.admin = admin;</b>
+<b class="fc"><i class="no-highlight">48</i>&nbsp;        this.isPublic = isPublic;</b>
+<b class="fc"><i class="no-highlight">49</i>&nbsp;        this.isClosed = false;</b>
+<b class="fc"><i class="no-highlight">50</i>&nbsp;        this.maxPlayers = maxPlayers;</b>
+<b class="fc"><i class="no-highlight">51</i>&nbsp;        this.players = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">52</i>&nbsp;        this.playerEventQueues = new ConcurrentHashMap&lt;&gt;();</b>
+<i class="no-highlight">53</i>&nbsp;    }
+<i class="no-highlight">54</i>&nbsp;
+<i class="no-highlight">55</i>&nbsp;    /**
+<i class="no-highlight">56</i>&nbsp;     * Attempts to forward an action to the game&#39;s controller
+<i class="no-highlight">57</i>&nbsp;     *
+<i class="no-highlight">58</i>&nbsp;     * @param pa the action to forward
+<i class="no-highlight">59</i>&nbsp;     * @throws InputValidationException if the controller does not validate the action positively
+<i class="no-highlight">60</i>&nbsp;     * @throws OperationException       if no controller is online or if a validated action failed to run properly
+<i class="no-highlight">61</i>&nbsp;     */
+<i class="no-highlight">62</i>&nbsp;    public synchronized void executeAction(PlayerAction pa) throws InputValidationException, OperationException {
+<b class="nc"><i class="no-highlight">63</i>&nbsp;        if (controller == null) {</b>
+<b class="nc"><i class="no-highlight">64</i>&nbsp;            throw new ForbiddenOperationException(&quot;Game lobby&quot;, &quot;Lobby is in waiting state, no game is running&quot;);</b>
+<i class="no-highlight">65</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">66</i>&nbsp;        controller.executeAction(pa);</b>
+<i class="no-highlight">67</i>&nbsp;    }
+<i class="no-highlight">68</i>&nbsp;
+<i class="no-highlight">69</i>&nbsp;    /**
+<i class="no-highlight">70</i>&nbsp;     * Get the id of the lobby
+<i class="no-highlight">71</i>&nbsp;     *
+<i class="no-highlight">72</i>&nbsp;     * @return the {@link UUID} of the lobby
+<i class="no-highlight">73</i>&nbsp;     */
+<i class="no-highlight">74</i>&nbsp;    public UUID getId() {
+<b class="nc"><i class="no-highlight">75</i>&nbsp;        return id;</b>
+<i class="no-highlight">76</i>&nbsp;    }
+<i class="no-highlight">77</i>&nbsp;
+<i class="no-highlight">78</i>&nbsp;    /**
+<i class="no-highlight">79</i>&nbsp;     * Get the name of the admin
+<i class="no-highlight">80</i>&nbsp;     *
+<i class="no-highlight">81</i>&nbsp;     * @return the nickname of the admin client
+<i class="no-highlight">82</i>&nbsp;     */
+<i class="no-highlight">83</i>&nbsp;    public String getAdmin() {
+<b class="nc"><i class="no-highlight">84</i>&nbsp;        return admin;</b>
+<i class="no-highlight">85</i>&nbsp;    }
+<i class="no-highlight">86</i>&nbsp;
+<i class="no-highlight">87</i>&nbsp;    /**
+<i class="no-highlight">88</i>&nbsp;     * Check if the lobby is public or not
+<i class="no-highlight">89</i>&nbsp;     *
+<i class="no-highlight">90</i>&nbsp;     * @return true if the lobby is public, false otherwise
+<i class="no-highlight">91</i>&nbsp;     */
+<i class="no-highlight">92</i>&nbsp;    public boolean isPublic() {
+<b class="nc"><i class="no-highlight">93</i>&nbsp;        return isPublic;</b>
+<i class="no-highlight">94</i>&nbsp;    }
+<i class="no-highlight">95</i>&nbsp;
+<i class="no-highlight">96</i>&nbsp;    /**
+<i class="no-highlight">97</i>&nbsp;     * Check to see if the lobby is full
+<i class="no-highlight">98</i>&nbsp;     *
+<i class="no-highlight">99</i>&nbsp;     * @return true if the lobby is full, false otherwise
+<i class="no-highlight">100</i>&nbsp;     */
+<i class="no-highlight">101</i>&nbsp;    public boolean isLobbyFull() {
+<b class="nc"><i class="no-highlight">102</i>&nbsp;        return this.players.size() == maxPlayers;</b>
+<i class="no-highlight">103</i>&nbsp;    }
+<i class="no-highlight">104</i>&nbsp;
+<i class="no-highlight">105</i>&nbsp;    /**
+<i class="no-highlight">106</i>&nbsp;     * Get the maximum amount of players for the lobby
+<i class="no-highlight">107</i>&nbsp;     *
+<i class="no-highlight">108</i>&nbsp;     * @return the max amount of clients that can connect to the lobby
+<i class="no-highlight">109</i>&nbsp;     */
+<i class="no-highlight">110</i>&nbsp;    public int getMaxPlayers() {
+<b class="nc"><i class="no-highlight">111</i>&nbsp;        return maxPlayers;</b>
+<i class="no-highlight">112</i>&nbsp;    }
+<i class="no-highlight">113</i>&nbsp;
+<i class="no-highlight">114</i>&nbsp;    /**
+<i class="no-highlight">115</i>&nbsp;     * Get a list of connected players
+<i class="no-highlight">116</i>&nbsp;     *
+<i class="no-highlight">117</i>&nbsp;     * @return a {@link List} of the nicknames of the connected players
+<i class="no-highlight">118</i>&nbsp;     */
+<i class="no-highlight">119</i>&nbsp;    public List&lt;String&gt; getPlayers() {
+<b class="nc"><i class="no-highlight">120</i>&nbsp;        synchronized (this.players) {</b>
+<b class="nc"><i class="no-highlight">121</i>&nbsp;            return List.copyOf(this.players);</b>
+<b class="nc"><i class="no-highlight">122</i>&nbsp;        }</b>
+<i class="no-highlight">123</i>&nbsp;    }
+<i class="no-highlight">124</i>&nbsp;
+<i class="no-highlight">125</i>&nbsp;    /**
+<i class="no-highlight">126</i>&nbsp;     * Connect a player to the lobby
+<i class="no-highlight">127</i>&nbsp;     *
+<i class="no-highlight">128</i>&nbsp;     * @param nick          the nickname of the player to connect
+<i class="no-highlight">129</i>&nbsp;     * @param playerChannel the queue to forward new {@link ClientEvent}s to
+<i class="no-highlight">130</i>&nbsp;     * @return true if the player was successfully connected, false otherwise
+<i class="no-highlight">131</i>&nbsp;     */
+<i class="no-highlight">132</i>&nbsp;    public boolean addPlayer(String nick, BlockingQueue&lt;ClientEvent&gt; playerChannel) {
+<b class="nc"><i class="no-highlight">133</i>&nbsp;        synchronized (this.players) {</b>
+<b class="nc"><i class="no-highlight">134</i>&nbsp;            if (this.isClosed) {</b>
+<b class="nc"><i class="no-highlight">135</i>&nbsp;                return false;</b>
+<i class="no-highlight">136</i>&nbsp;            }
+<i class="no-highlight">137</i>&nbsp;            // in case of new connection check for max players and check that the game has not yet started
+<b class="nc"><i class="no-highlight">138</i>&nbsp;            if (this.controller == null &amp;&amp; this.maxPlayers &gt; this.players.size()) {</b>
+<b class="nc"><i class="no-highlight">139</i>&nbsp;                this.players.add(nick);</b>
+<b class="nc"><i class="no-highlight">140</i>&nbsp;                this.playerEventQueues.put(nick, playerChannel);</b>
+<b class="nc"><i class="no-highlight">141</i>&nbsp;                notifyPlayers(new ClientConnectEvent(nick, List.copyOf(this.players)));</b>
+<b class="nc"><i class="no-highlight">142</i>&nbsp;                return true;</b>
+<i class="no-highlight">143</i>&nbsp;            } else {
+<b class="nc"><i class="no-highlight">144</i>&nbsp;                return false;</b>
+<i class="no-highlight">145</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">146</i>&nbsp;        }</b>
+<i class="no-highlight">147</i>&nbsp;    }
+<i class="no-highlight">148</i>&nbsp;
+<i class="no-highlight">149</i>&nbsp;    /**
+<i class="no-highlight">150</i>&nbsp;     * Propagates a {@link ClientEvent} to all players
+<i class="no-highlight">151</i>&nbsp;     *
+<i class="no-highlight">152</i>&nbsp;     * @param event the event to propagate to all players
+<i class="no-highlight">153</i>&nbsp;     */
+<i class="no-highlight">154</i>&nbsp;    public void notifyPlayers(ClientEvent event) {
+<b class="fc"><i class="no-highlight">155</i>&nbsp;        synchronized (this.players) {</b>
+<b class="pc"><i class="no-highlight">156</i>&nbsp;            for (BlockingQueue&lt;ClientEvent&gt; queue : this.playerEventQueues.values()) {</b>
+<i class="no-highlight">157</i>&nbsp;                try {
+<b class="nc"><i class="no-highlight">158</i>&nbsp;                    queue.put(event);</b>
+<b class="nc"><i class="no-highlight">159</i>&nbsp;                } catch (InterruptedException e) {</b>
+<b class="nc"><i class="no-highlight">160</i>&nbsp;                    e.printStackTrace();</b>
+<b class="nc"><i class="no-highlight">161</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">162</i>&nbsp;            }</b>
+<b class="fc"><i class="no-highlight">163</i>&nbsp;        }</b>
+<i class="no-highlight">164</i>&nbsp;    }
+<i class="no-highlight">165</i>&nbsp;
+<i class="no-highlight">166</i>&nbsp;    /**
+<i class="no-highlight">167</i>&nbsp;     * Removes a player from the lobby. If the game has started for the lobby or the admin decided to leave, the lobby is closed
+<i class="no-highlight">168</i>&nbsp;     * and players are notified through {@link LobbyClosedEvent}
+<i class="no-highlight">169</i>&nbsp;     *
+<i class="no-highlight">170</i>&nbsp;     * @param nick the nickname of the player to remove from the lobby
+<i class="no-highlight">171</i>&nbsp;     */
+<i class="no-highlight">172</i>&nbsp;    protected void disconnectPlayer(String nick) {
+<b class="nc"><i class="no-highlight">173</i>&nbsp;        synchronized (this.players) {</b>
+<b class="nc"><i class="no-highlight">174</i>&nbsp;            this.playerEventQueues.remove(nick);</b>
+<b class="nc"><i class="no-highlight">175</i>&nbsp;            this.players.remove(nick);</b>
+<b class="nc"><i class="no-highlight">176</i>&nbsp;            notifyPlayers(new ClientDisconnectEvent(nick, List.copyOf(this.players)));</b>
+<b class="nc"><i class="no-highlight">177</i>&nbsp;            if (this.isGameInProgress() || this.admin.equals(nick)) {</b>
+<b class="nc"><i class="no-highlight">178</i>&nbsp;                lobbyMap.remove(this.id);</b>
+<b class="nc"><i class="no-highlight">179</i>&nbsp;                this.close();</b>
+<i class="no-highlight">180</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">181</i>&nbsp;        }</b>
+<i class="no-highlight">182</i>&nbsp;    }
+<i class="no-highlight">183</i>&nbsp;
+<i class="no-highlight">184</i>&nbsp;    /**
+<i class="no-highlight">185</i>&nbsp;     * Check to see if the game has started or if clients are still waiting for the game to start
+<i class="no-highlight">186</i>&nbsp;     *
+<i class="no-highlight">187</i>&nbsp;     * @return true if the game is on, otherwise false
+<i class="no-highlight">188</i>&nbsp;     */
+<i class="no-highlight">189</i>&nbsp;    public boolean isGameInProgress() {
+<b class="nc"><i class="no-highlight">190</i>&nbsp;        return this.controller != null;</b>
+<i class="no-highlight">191</i>&nbsp;    }
+<i class="no-highlight">192</i>&nbsp;
+<i class="no-highlight">193</i>&nbsp;    /**
+<i class="no-highlight">194</i>&nbsp;     * Closes the lobby and notifies players through {@link LobbyClosedEvent}
+<i class="no-highlight">195</i>&nbsp;     */
+<i class="no-highlight">196</i>&nbsp;    protected void close() {
+<b class="nc"><i class="no-highlight">197</i>&nbsp;        notifyPlayers(new LobbyClosedEvent());</b>
+<b class="nc"><i class="no-highlight">198</i>&nbsp;        this.players.clear();</b>
+<b class="nc"><i class="no-highlight">199</i>&nbsp;        this.playerEventQueues.clear();</b>
+<b class="nc"><i class="no-highlight">200</i>&nbsp;        this.isClosed = true;</b>
+<i class="no-highlight">201</i>&nbsp;    }
+<i class="no-highlight">202</i>&nbsp;
+<i class="no-highlight">203</i>&nbsp;    /**
+<i class="no-highlight">204</i>&nbsp;     * Starts the game. {@link LobbyServer}s will receive a {@link GameStartEvent}
+<i class="no-highlight">205</i>&nbsp;     *
+<i class="no-highlight">206</i>&nbsp;     * @param gameMode the {@link GameMode} to start the game in
+<i class="no-highlight">207</i>&nbsp;     * @throws InputValidationException if the players in lobby are more than 4 or less than 2
+<i class="no-highlight">208</i>&nbsp;     */
+<i class="no-highlight">209</i>&nbsp;    protected void startGame(GameMode gameMode) throws InputValidationException {
+<b class="nc"><i class="no-highlight">210</i>&nbsp;        synchronized (this.players) {</b>
+<b class="nc"><i class="no-highlight">211</i>&nbsp;            Map&lt;String, Integer&gt; nickToID = new HashMap&lt;&gt;(this.players.size());</b>
+<b class="nc"><i class="no-highlight">212</i>&nbsp;            for (int i = 0; i &lt; this.players.size(); i++) {</b>
+<b class="nc"><i class="no-highlight">213</i>&nbsp;                nickToID.put(this.players.get(i), i);</b>
+<i class="no-highlight">214</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">215</i>&nbsp;            notifyPlayers(new GameStartEvent(nickToID));</b>
+<b class="nc"><i class="no-highlight">216</i>&nbsp;            this.controller = Controller.createGame(gameMode,</b>
+<b class="nc"><i class="no-highlight">217</i>&nbsp;                    OptionalValue.of(this),</b>
+<b class="nc"><i class="no-highlight">218</i>&nbsp;                    players.toArray(String[]::new)</b>
+<i class="no-highlight">219</i>&nbsp;            );
+<b class="nc"><i class="no-highlight">220</i>&nbsp;        }</b>
+<i class="no-highlight">221</i>&nbsp;    }
+<i class="no-highlight">222</i>&nbsp;
+<i class="no-highlight">223</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

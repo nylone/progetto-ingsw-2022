@@ -1,0 +1,166 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GameUI</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Client.CLI</a>
+</div>
+
+<h1>Coverage Summary for Class: GameUI (it.polimi.ingsw.Client.CLI)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameUI</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Client.CLI;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Misc.Symbols;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Model.Model;
+<i class="no-highlight">5</i>&nbsp;
+<i class="no-highlight">6</i>&nbsp;/**
+<i class="no-highlight">7</i>&nbsp; * GameUI is a graphical representation (as a String data structure)
+<i class="no-highlight">8</i>&nbsp; * useful to print {@link it.polimi.ingsw.Client.CLI.CloudUI}
+<i class="no-highlight">9</i>&nbsp; * and multiple {@link it.polimi.ingsw.Client.CLI.IslandUI} components
+<i class="no-highlight">10</i>&nbsp; * next to each other on the console.
+<i class="no-highlight">11</i>&nbsp; */
+<b class="nc"><i class="no-highlight">12</i>&nbsp;public class GameUI {</b>
+<i class="no-highlight">13</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;    /**
+<i class="no-highlight">15</i>&nbsp;     * The console will be populated with all the island groups in the island field followed by the clouds on
+<i class="no-highlight">16</i>&nbsp;     * the same multiline block.
+<i class="no-highlight">17</i>&nbsp;     *
+<i class="no-highlight">18</i>&nbsp;     * @param ctx is a reference to the model used to access the {@link it.polimi.ingsw.Model.IslandField} to print
+<i class="no-highlight">19</i>&nbsp;     *            the {@link it.polimi.ingsw.Client.CLI.IslandUI} and passed to the
+<i class="no-highlight">20</i>&nbsp;     *            {@link it.polimi.ingsw.Client.CLI.CloudUI}
+<i class="no-highlight">21</i>&nbsp;     * @return a composed view of islands and clouds
+<i class="no-highlight">22</i>&nbsp;     */
+<i class="no-highlight">23</i>&nbsp;    public static String draw(Model ctx) {
+<i class="no-highlight">24</i>&nbsp;        // The background colour helpful to enhance contrast between black towers and the default black background console
+<b class="nc"><i class="no-highlight">25</i>&nbsp;        StringBuilder screen = new StringBuilder(Symbols.BACKGROUND);</b>
+<i class="no-highlight">26</i>&nbsp;
+<b class="nc"><i class="no-highlight">27</i>&nbsp;        String clouds = CloudUI.draw(ctx); // draws the cloud component which will be stripped and printed line by line</b>
+<b class="nc"><i class="no-highlight">28</i>&nbsp;        int groupsSize = ctx.getMutableIslandField().getMutableGroups().size();</b>
+<i class="no-highlight">29</i>&nbsp;        // The number of rows of the UI component depends on the number of island groups.
+<i class="no-highlight">30</i>&nbsp;        // If there are less island groups than the number of CloudUI&#39;s lines, padding should be added in the form of
+<i class="no-highlight">31</i>&nbsp;        // empty rows to replace the IslandUI component.
+<i class="no-highlight">32</i>&nbsp;        // The constant &#39;8&#39; is the minimum number of lines/IslandUIs needed to correctly display the cloud component.
+<b class="nc"><i class="no-highlight">33</i>&nbsp;        int rows = Math.max(groupsSize, 8);</b>
+<b class="nc"><i class="no-highlight">34</i>&nbsp;        for (int i = 0; i &lt; rows; i++) { // on each row will be printed an IslandUI and one line of CloudUI</b>
+<i class="no-highlight">35</i>&nbsp;            // on every line prints the island group but if there are none to print, it fills the space with
+<i class="no-highlight">36</i>&nbsp;            // an empty line
+<b class="nc"><i class="no-highlight">37</i>&nbsp;            if (i &lt; ctx.getMutableIslandField().getMutableGroups().size()) {</b>
+<b class="nc"><i class="no-highlight">38</i>&nbsp;                String currentIsland = IslandUI.draw(ctx.getMutableIslandField().getMutableGroups().get(i), ctx);</b>
+<b class="nc"><i class="no-highlight">39</i>&nbsp;                screen.append(currentIsland).append(&quot;\t&quot;.repeat(2)); // &#39;\t&#39; is used for horizontal separation between islands and clouds</b>
+<b class="nc"><i class="no-highlight">40</i>&nbsp;            } else screen.append(IslandUI.drawEmptyRow(ctx)).append(&quot;\t&quot;.repeat(2));</b>
+<i class="no-highlight">41</i>&nbsp;
+<i class="no-highlight">42</i>&nbsp;            // This will print just one line of the clouds UI component
+<b class="nc"><i class="no-highlight">43</i>&nbsp;            screen.append(clouds, 0, clouds.indexOf(&#39;\n&#39;) + 1);</b>
+<b class="nc"><i class="no-highlight">44</i>&nbsp;            clouds = clouds.substring(clouds.indexOf(&#39;\n&#39;) + 1);</b>
+<i class="no-highlight">45</i>&nbsp;        }
+<i class="no-highlight">46</i>&nbsp;
+<b class="nc"><i class="no-highlight">47</i>&nbsp;        return screen.toString();</b>
+<i class="no-highlight">48</i>&nbsp;    }
+<i class="no-highlight">49</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

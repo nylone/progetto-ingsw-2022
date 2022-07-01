@@ -1,0 +1,186 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Card12</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Model</a>
+</div>
+
+<h1>Coverage Summary for Class: Card12 (it.polimi.ingsw.Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Card12</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Model;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">6</i>&nbsp;
+<i class="no-highlight">7</i>&nbsp;import java.io.Serial;
+<i class="no-highlight">8</i>&nbsp;
+<i class="no-highlight">9</i>&nbsp;/**
+<i class="no-highlight">10</i>&nbsp; * EFFECT: Choose a type of Student: every player
+<i class="no-highlight">11</i>&nbsp; * (including yourself) must return 3 Students of that type
+<i class="no-highlight">12</i>&nbsp; * from their Dining Room to the bag. If any player has
+<i class="no-highlight">13</i>&nbsp; * fewer than 3 Students of that type, return as many
+<i class="no-highlight">14</i>&nbsp; * Students as they have.
+<i class="no-highlight">15</i>&nbsp; */
+<i class="no-highlight">16</i>&nbsp;public class Card12 extends StatelessEffect {
+<i class="no-highlight">17</i>&nbsp;    @Serial
+<i class="no-highlight">18</i>&nbsp;    private static final long serialVersionUID = 114L; // convention: 1 for model, (01 -&gt; 99) for objects
+<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">20</i>&nbsp;    public Card12(Model ctx) {
+<b class="fc"><i class="no-highlight">21</i>&nbsp;        super(12, 3, ctx);</b>
+<i class="no-highlight">22</i>&nbsp;    }
+<i class="no-highlight">23</i>&nbsp;
+<i class="no-highlight">24</i>&nbsp;    /**
+<i class="no-highlight">25</i>&nbsp;     * Refer to: {@link CharacterCard#overridableCheckInput(CharacterCardInput)} for further information
+<i class="no-highlight">26</i>&nbsp;     *
+<i class="no-highlight">27</i>&nbsp;     * @param input CharacterCardInput should contain:
+<i class="no-highlight">28</i>&nbsp;     *              &lt;ul&gt;
+<i class="no-highlight">29</i>&nbsp;     *               &lt;li&gt;A valid PawnColour&lt;/li&gt;
+<i class="no-highlight">30</i>&nbsp;     *              &lt;/ul&gt;
+<i class="no-highlight">31</i>&nbsp;     */
+<i class="no-highlight">32</i>&nbsp;    public OptionalValue&lt;InputValidationException&gt; overridableCheckInput(CharacterCardInput input) {
+<b class="fc"><i class="no-highlight">33</i>&nbsp;        if (input.getTargetPawn().isEmpty()) {</b>
+<b class="fc"><i class="no-highlight">34</i>&nbsp;            return OptionalValue.of(new InvalidElementException(&quot;Target Pawn Colour&quot;));</b>
+<i class="no-highlight">35</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">36</i>&nbsp;        return OptionalValue.empty();</b>
+<i class="no-highlight">37</i>&nbsp;    }
+<i class="no-highlight">38</i>&nbsp;
+<i class="no-highlight">39</i>&nbsp;    /**
+<i class="no-highlight">40</i>&nbsp;     * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
+<i class="no-highlight">41</i>&nbsp;     */
+<i class="no-highlight">42</i>&nbsp;    @Override
+<i class="no-highlight">43</i>&nbsp;    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
+<b class="fc"><i class="no-highlight">44</i>&nbsp;        for (PlayerBoard p : this.context.getMutablePlayerBoards()) {</b>
+<i class="no-highlight">45</i>&nbsp;            //If any player has fewer than 3 Students of that type, return as many Students as they have.
+<b class="fc"><i class="no-highlight">46</i>&nbsp;            int amountToRemove = Math.min(3, p.getDiningRoomCount(input.getTargetPawn().get()));</b>
+<i class="no-highlight">47</i>&nbsp;
+<b class="fc"><i class="no-highlight">48</i>&nbsp;            for (int i = 0; i &lt; amountToRemove; i++) {</b>
+<b class="fc"><i class="no-highlight">49</i>&nbsp;                this.context.removeStudentFromDiningRoom(input.getTargetPawn().get(), p);</b>
+<i class="no-highlight">50</i>&nbsp;            }
+<i class="no-highlight">51</i>&nbsp;
+<b class="fc"><i class="no-highlight">52</i>&nbsp;            for (int i = 0; i &lt; amountToRemove; i++) {</b>
+<b class="fc"><i class="no-highlight">53</i>&nbsp;                this.context.getMutableStudentBag().appendAndShuffle(input.getTargetPawn().get());</b>
+<i class="no-highlight">54</i>&nbsp;            }
+<b class="fc"><i class="no-highlight">55</i>&nbsp;        }</b>
+<i class="no-highlight">56</i>&nbsp;    }
+<i class="no-highlight">57</i>&nbsp;
+<i class="no-highlight">58</i>&nbsp;    //test purpose only
+<i class="no-highlight">59</i>&nbsp;   /* @Override
+<i class="no-highlight">60</i>&nbsp;    public String toString() {
+<i class="no-highlight">61</i>&nbsp;        return &quot;Card12{&quot; +
+<i class="no-highlight">62</i>&nbsp;                &quot;id=&quot; + id +
+<i class="no-highlight">63</i>&nbsp;                &quot;, cost=&quot; + cost +
+<i class="no-highlight">64</i>&nbsp;                &quot;, timeUsed=&quot; + timeUsed +
+<i class="no-highlight">65</i>&nbsp;                &quot;, context=&quot; + context +
+<i class="no-highlight">66</i>&nbsp;                &#39;}&#39;;
+<i class="no-highlight">67</i>&nbsp;    }
+<i class="no-highlight">68</i>&nbsp;    //*/
+<i class="no-highlight">69</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

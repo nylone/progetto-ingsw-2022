@@ -1,0 +1,178 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > IconLoader</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Client.GUI</a>
+</div>
+
+<h1>Coverage Summary for Class: IconLoader (it.polimi.ingsw.Client.GUI)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">IconLoader</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/56)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Client.GUI;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Logger;
+<i class="no-highlight">4</i>&nbsp;
+<i class="no-highlight">5</i>&nbsp;import javax.imageio.ImageIO;
+<i class="no-highlight">6</i>&nbsp;import javax.swing.*;
+<i class="no-highlight">7</i>&nbsp;import java.awt.*;
+<i class="no-highlight">8</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">9</i>&nbsp;import java.util.Objects;
+<i class="no-highlight">10</i>&nbsp;
+<b class="nc"><i class="no-highlight">11</i>&nbsp;public class IconLoader {</b>
+<b class="nc"><i class="no-highlight">12</i>&nbsp;    public static final ImageIcon logo = loadIcon(&quot;IconEriantys.png&quot;, 600, 600);</b>
+<b class="nc"><i class="no-highlight">13</i>&nbsp;    public static final ImageIcon userCredentialBackground = loadIcon(&quot;userCredentialBackground.jpg&quot;, 1080, 720);</b>
+<b class="nc"><i class="no-highlight">14</i>&nbsp;    public static final ImageIcon motherNature = loadIcon(&quot;motherNature.png&quot;, 50, 75);</b>
+<b class="nc"><i class="no-highlight">15</i>&nbsp;    public static final ImageIcon cloudIcon = loadIcon(&quot;cloud.png&quot;, 1300, 700);</b>
+<b class="nc"><i class="no-highlight">16</i>&nbsp;    public static final ImageIcon sky = loadIcon(&quot;sky.png&quot;, 1080, 720);</b>
+<b class="nc"><i class="no-highlight">17</i>&nbsp;    public static final ImageIcon coin = loadIcon(&quot;Coin.png&quot;, 150, 160);</b>
+<b class="nc"><i class="no-highlight">18</i>&nbsp;    public static final ImageIcon card01 = loadIcon(&quot;CharacterCards/Card01.png&quot;, 205, 340);</b>
+<b class="nc"><i class="no-highlight">19</i>&nbsp;    public static final ImageIcon card02 = loadIcon(&quot;CharacterCards/Card02.png&quot;, 205, 340);</b>
+<b class="nc"><i class="no-highlight">20</i>&nbsp;    public static final ImageIcon card03 = loadIcon(&quot;CharacterCards/Card03.png&quot;, 205, 340);</b>
+<b class="nc"><i class="no-highlight">21</i>&nbsp;    public static final ImageIcon card04 = loadIcon(&quot;CharacterCards/Card04.png&quot;, 205, 340);</b>
+<b class="nc"><i class="no-highlight">22</i>&nbsp;    public static final ImageIcon card05 = loadIcon(&quot;CharacterCards/Card05.png&quot;, 205, 340);</b>
+<b class="nc"><i class="no-highlight">23</i>&nbsp;    public static final ImageIcon card06 = loadIcon(&quot;CharacterCards/Card06.png&quot;, 205, 340);</b>
+<b class="nc"><i class="no-highlight">24</i>&nbsp;    public static final ImageIcon card07 = loadIcon(&quot;CharacterCards/Card07.png&quot;, 205, 340);</b>
+<b class="nc"><i class="no-highlight">25</i>&nbsp;    public static final ImageIcon card08 = loadIcon(&quot;CharacterCards/Card08.png&quot;, 205, 340);</b>
+<b class="nc"><i class="no-highlight">26</i>&nbsp;    public static final ImageIcon card09 = loadIcon(&quot;CharacterCards/Card09.png&quot;, 205, 340);</b>
+<b class="nc"><i class="no-highlight">27</i>&nbsp;    public static final ImageIcon card10 = loadIcon(&quot;CharacterCards/Card10.png&quot;, 205, 340);</b>
+<b class="nc"><i class="no-highlight">28</i>&nbsp;    public static final ImageIcon card11 = loadIcon(&quot;CharacterCards/Card11.png&quot;, 205, 340);</b>
+<b class="nc"><i class="no-highlight">29</i>&nbsp;    public static final ImageIcon card12 = loadIcon(&quot;CharacterCards/Card12.png&quot;, 205, 340);</b>
+<b class="nc"><i class="no-highlight">30</i>&nbsp;    public static final ImageIcon playerBoard = loadIcon(&quot;player-board.png&quot;, 1080, 420);</b>
+<b class="nc"><i class="no-highlight">31</i>&nbsp;    public static final ImageIcon playerBoardBackground = loadIcon(&quot;playerboardBG.png&quot;, 1080, 720);</b>
+<b class="nc"><i class="no-highlight">32</i>&nbsp;    public static final ImageIcon assistantCard1 = loadIcon(&quot;AssistantCards/Assistant1.png&quot;, 165, 255);</b>
+<b class="nc"><i class="no-highlight">33</i>&nbsp;    public static final ImageIcon assistantCard2 = loadIcon(&quot;AssistantCards/Assistant2.png&quot;, 165, 255);</b>
+<b class="nc"><i class="no-highlight">34</i>&nbsp;    public static final ImageIcon assistantCard3 = loadIcon(&quot;AssistantCards/Assistant3.png&quot;, 165, 255);</b>
+<b class="nc"><i class="no-highlight">35</i>&nbsp;    public static final ImageIcon assistantCard4 = loadIcon(&quot;AssistantCards/Assistant4.png&quot;, 165, 255);</b>
+<b class="nc"><i class="no-highlight">36</i>&nbsp;    public static final ImageIcon assistantCard5 = loadIcon(&quot;AssistantCards/Assistant5.png&quot;, 165, 255);</b>
+<b class="nc"><i class="no-highlight">37</i>&nbsp;    public static final ImageIcon assistantCard6 = loadIcon(&quot;AssistantCards/Assistant6.png&quot;, 165, 255);</b>
+<b class="nc"><i class="no-highlight">38</i>&nbsp;    public static final ImageIcon assistantCard7 = loadIcon(&quot;AssistantCards/Assistant7.png&quot;, 165, 255);</b>
+<b class="nc"><i class="no-highlight">39</i>&nbsp;    public static final ImageIcon assistantCard8 = loadIcon(&quot;AssistantCards/Assistant8.png&quot;, 165, 255);</b>
+<b class="nc"><i class="no-highlight">40</i>&nbsp;    public static final ImageIcon assistantCard9 = loadIcon(&quot;AssistantCards/Assistant9.png&quot;, 165, 255);</b>
+<b class="nc"><i class="no-highlight">41</i>&nbsp;    public static final ImageIcon assistantCard10 = loadIcon(&quot;AssistantCards/Assistant10.png&quot;, 165, 255);</b>
+<b class="nc"><i class="no-highlight">42</i>&nbsp;    public static final ImageIcon RedStudent = loadIcon(&quot;Students/RedStudent.png&quot;, 50, 45);</b>
+<b class="nc"><i class="no-highlight">43</i>&nbsp;    public static final ImageIcon BlueStudent = loadIcon(&quot;Students/BlueStudent.png&quot;, 50, 45);</b>
+<b class="nc"><i class="no-highlight">44</i>&nbsp;    public static final ImageIcon GreenStudent = loadIcon(&quot;Students/GreenStudent.png&quot;, 50, 45);</b>
+<b class="nc"><i class="no-highlight">45</i>&nbsp;    public static final ImageIcon YellowStudent = loadIcon(&quot;Students/YellowStudent.png&quot;, 50, 45);</b>
+<b class="nc"><i class="no-highlight">46</i>&nbsp;    public static final ImageIcon PinkStudent = loadIcon(&quot;Students/PinkStudent.png&quot;, 50, 45);</b>
+<b class="nc"><i class="no-highlight">47</i>&nbsp;    public static final ImageIcon RedTeacher = loadIcon(&quot;Teachers/RedTeacher.png&quot;, 50, 45);</b>
+<b class="nc"><i class="no-highlight">48</i>&nbsp;    public static final ImageIcon BlueTeacher = loadIcon(&quot;Teachers/BlueTeacher.png&quot;, 50, 45);</b>
+<b class="nc"><i class="no-highlight">49</i>&nbsp;    public static final ImageIcon YellowTeacher = loadIcon(&quot;Teachers/YellowTeacher.png&quot;, 50, 45);</b>
+<b class="nc"><i class="no-highlight">50</i>&nbsp;    public static final ImageIcon PinkTeacher = loadIcon(&quot;Teachers/PinkTeacher.png&quot;, 50, 45);</b>
+<b class="nc"><i class="no-highlight">51</i>&nbsp;    public static final ImageIcon GreenTeacher = loadIcon(&quot;Teachers/GreenTeacher.png&quot;, 50, 45);</b>
+<b class="nc"><i class="no-highlight">52</i>&nbsp;    public static final ImageIcon GrayTower = loadIcon(&quot;Towers/grayTower.png&quot;, 50, 75);</b>
+<b class="nc"><i class="no-highlight">53</i>&nbsp;    public static final ImageIcon BlackTower = loadIcon(&quot;Towers/blackTower.png&quot;, 50, 75);</b>
+<b class="nc"><i class="no-highlight">54</i>&nbsp;    public static final ImageIcon WhiteTower = loadIcon(&quot;Towers/whiteTower.png&quot;, 50, 75);</b>
+<b class="nc"><i class="no-highlight">55</i>&nbsp;    public static final ImageIcon Island1 = loadIcon(&quot;Islands/Island1.png&quot;, 300, 210);</b>
+<b class="nc"><i class="no-highlight">56</i>&nbsp;    public static final ImageIcon Island2 = loadIcon(&quot;Islands/Island2.png&quot;, 300, 210);</b>
+<b class="nc"><i class="no-highlight">57</i>&nbsp;    public static final ImageIcon Island3 = loadIcon(&quot;Islands/Island3.png&quot;, 300, 210);</b>
+<b class="nc"><i class="no-highlight">58</i>&nbsp;    public static final ImageIcon noEntryTileIcon = loadIcon(&quot;noEntryTile.png&quot;, 52, 60);</b>
+<i class="no-highlight">59</i>&nbsp;
+<b class="nc"><i class="no-highlight">60</i>&nbsp;    public static final ImageIcon winnerText = loadIcon(&quot;winner.png&quot;, 523, 120);</b>
+<i class="no-highlight">61</i>&nbsp;
+<i class="no-highlight">62</i>&nbsp;    private static ImageIcon loadIcon(String name, int width, int height) {
+<i class="no-highlight">63</i>&nbsp;        Image img;
+<i class="no-highlight">64</i>&nbsp;        try {
+<b class="nc"><i class="no-highlight">65</i>&nbsp;            img = ImageIO.read(Objects.requireNonNull(IconLoader.class.getResource(&quot;/icons/&quot; + name)));</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i class="no-highlight">67</i>&nbsp;            Logger.severe(&quot;Could not load image &quot; + name);</b>
+<b class="nc"><i class="no-highlight">68</i>&nbsp;            e.printStackTrace();</b>
+<b class="nc"><i class="no-highlight">69</i>&nbsp;            return null;</b>
+<b class="nc"><i class="no-highlight">70</i>&nbsp;        }</b>
+<b class="nc"><i class="no-highlight">71</i>&nbsp;        return new ImageIcon(img.getScaledInstance(width, height, Image.SCALE_SMOOTH));</b>
+<i class="no-highlight">72</i>&nbsp;    }
+<i class="no-highlight">73</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

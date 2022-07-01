@@ -1,0 +1,304 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PlayerBoardUI</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Client.CLI</a>
+</div>
+
+<h1>Coverage Summary for Class: PlayerBoardUI (it.polimi.ingsw.Client.CLI)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PlayerBoardUI</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/31)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/55)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PlayerBoardUI$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/31)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/56)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Client.CLI;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Misc.Symbols;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Model.Enums.GameMode;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Model.Enums.PawnColour;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Model.Model;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Model.PlayerBoard;
+<i class="no-highlight">9</i>&nbsp;
+<i class="no-highlight">10</i>&nbsp;/**
+<i class="no-highlight">11</i>&nbsp; * PlayerBoardUI allows to print all the information representing the {@link PlayerBoard}.
+<i class="no-highlight">12</i>&nbsp; * &lt;br&gt;
+<i class="no-highlight">13</i>&nbsp; * It exposes multiple methods to render the individual components independently and one method to combine them all
+<i class="no-highlight">14</i>&nbsp; * in a single component.
+<i class="no-highlight">15</i>&nbsp; */
+<b class="nc"><i class="no-highlight">16</i>&nbsp;public class PlayerBoardUI {</b>
+<i class="no-highlight">17</i>&nbsp;
+<i class="no-highlight">18</i>&nbsp;    /**
+<i class="no-highlight">19</i>&nbsp;     * It draws a representation of the {@link PlayerBoard} of the provided player.
+<i class="no-highlight">20</i>&nbsp;     *
+<i class="no-highlight">21</i>&nbsp;     * @param playerBoard the {@link PlayerBoard} which will be represented
+<i class="no-highlight">22</i>&nbsp;     * @param ctx         reference to the model used to check the available coins left in the game
+<i class="no-highlight">23</i>&nbsp;     * @return the complete player board UI component
+<i class="no-highlight">24</i>&nbsp;     */
+<i class="no-highlight">25</i>&nbsp;    public static String drawPlayerBoard(PlayerBoard playerBoard, Model ctx) {
+<b class="nc"><i class="no-highlight">26</i>&nbsp;        StringBuilder screen = new StringBuilder();</b>
+<i class="no-highlight">27</i>&nbsp;        // Playerboard sections&#39; titles. Change the argument of repeat() to further separate islands from playerboards
+<b class="nc"><i class="no-highlight">28</i>&nbsp;        screen.append(&quot;\n&quot;.repeat(1)).append(&quot;Entrance:\t&quot;).append(&quot;Dining Room:\t\t&quot;).append(&quot;Teachers:\t&quot;).append(&quot;Towers:\t\t&quot;);</b>
+<i class="no-highlight">29</i>&nbsp;        // Coins should be printed only if game mode is advanced
+<b class="nc"><i class="no-highlight">30</i>&nbsp;        if (ctx.getGameMode() == GameMode.ADVANCED) {</b>
+<b class="nc"><i class="no-highlight">31</i>&nbsp;            screen.append(&quot;Coins available:&quot;).append(playerBoard.getCoinBalance()).append(&quot;\n&quot;);</b>
+<i class="no-highlight">32</i>&nbsp;        } else {
+<b class="nc"><i class="no-highlight">33</i>&nbsp;            screen.append(&quot;\n&quot;);</b>
+<i class="no-highlight">34</i>&nbsp;        }
+<i class="no-highlight">35</i>&nbsp;
+<b class="nc"><i class="no-highlight">36</i>&nbsp;        String entrance = PlayerBoardUI.drawEntrance(playerBoard, ctx);</b>
+<b class="nc"><i class="no-highlight">37</i>&nbsp;        String towers = PlayerBoardUI.drawTowers(playerBoard, ctx);</b>
+<b class="nc"><i class="no-highlight">38</i>&nbsp;        for (PawnColour p : PawnColour.values()) {</b>
+<i class="no-highlight">39</i>&nbsp;            // This will print just one line of the entrance UI component
+<b class="nc"><i class="no-highlight">40</i>&nbsp;            screen.append(entrance, 0, entrance.indexOf(&#39;\n&#39;));</b>
+<b class="nc"><i class="no-highlight">41</i>&nbsp;            entrance = entrance.substring(entrance.indexOf(&#39;\n&#39;) + 1);</b>
+<i class="no-highlight">42</i>&nbsp;            // This will print one row of the dining room
+<b class="nc"><i class="no-highlight">43</i>&nbsp;            screen.append(&quot;\t\t&quot;).append(PlayerBoardUI.drawDiningRoomRow(p, playerBoard, ctx.getGameMode()));</b>
+<i class="no-highlight">44</i>&nbsp;            // This will print one teacher per row if present
+<b class="nc"><i class="no-highlight">45</i>&nbsp;            screen.append(&quot;\t   &quot;).append(PlayerBoardUI.drawTeacher(p, playerBoard, ctx));</b>
+<i class="no-highlight">46</i>&nbsp;
+<i class="no-highlight">47</i>&nbsp;            // This will print just one line of the towers UI component
+<b class="nc"><i class="no-highlight">48</i>&nbsp;            screen.append(&quot;\t\t  &quot;).append(towers, 0, towers.indexOf(&#39;\n&#39;) + 1);</b>
+<b class="nc"><i class="no-highlight">49</i>&nbsp;            towers = towers.substring(towers.indexOf(&quot;\n&quot;) + 1);</b>
+<i class="no-highlight">50</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">51</i>&nbsp;        return screen.toString();</b>
+<i class="no-highlight">52</i>&nbsp;    }
+<i class="no-highlight">53</i>&nbsp;
+<i class="no-highlight">54</i>&nbsp;    /**
+<i class="no-highlight">55</i>&nbsp;     * It draws a representation of the entrance of the provided player.
+<i class="no-highlight">56</i>&nbsp;     *
+<i class="no-highlight">57</i>&nbsp;     * @param pb the {@link PlayerBoard} to which the entrance should be associated with
+<i class="no-highlight">58</i>&nbsp;     * @param gb reference to the model used to add padding in the entrance when 2 or 4 players are in the game
+<i class="no-highlight">59</i>&nbsp;     *           because they have less students in the entrance than 3 players&#39; game
+<i class="no-highlight">60</i>&nbsp;     * @return the unused students in a multiline dual column layout String representation
+<i class="no-highlight">61</i>&nbsp;     */
+<i class="no-highlight">62</i>&nbsp;    public static String drawEntrance(PlayerBoard pb, Model gb) {
+<b class="nc"><i class="no-highlight">63</i>&nbsp;        String entrance = &quot;    &quot;; // the first place is empty because of odd number of students in an even grid</b>
+<b class="nc"><i class="no-highlight">64</i>&nbsp;        int currentEntranceIndex = 0;</b>
+<i class="no-highlight">65</i>&nbsp;        // Print the content of every place in the entrance
+<b class="nc"><i class="no-highlight">66</i>&nbsp;        for (OptionalValue&lt;PawnColour&gt; p : pb.getEntranceStudents()) {</b>
+<b class="nc"><i class="no-highlight">67</i>&nbsp;            if (p.isPresent())</b>
+<b class="nc"><i class="no-highlight">68</i>&nbsp;                entrance = entrance + Symbols.colorizeBackgroundStudent(p.get(), String.valueOf(currentEntranceIndex)) + &quot; &quot;;</b>
+<b class="nc"><i class="no-highlight">69</i>&nbsp;            else entrance = entrance + &quot;    &quot;;</b>
+<i class="no-highlight">70</i>&nbsp;
+<i class="no-highlight">71</i>&nbsp;            // Every two students there should be a new line instead of a white space to force the dual column layout
+<b class="nc"><i class="no-highlight">72</i>&nbsp;            if (Symbols.stripFromANSICodes(entrance).length() % 8 == 0) {</b>
+<b class="nc"><i class="no-highlight">73</i>&nbsp;                entrance = entrance.substring(0, entrance.length() - 1); // remove space after pawn in the II column</b>
+<b class="nc"><i class="no-highlight">74</i>&nbsp;                entrance = entrance + &quot;\n&quot;;</b>
+<i class="no-highlight">75</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">76</i>&nbsp;            currentEntranceIndex++;</b>
+<b class="nc"><i class="no-highlight">77</i>&nbsp;        }</b>
+<i class="no-highlight">78</i>&nbsp;        // Adds padding if not enough students are present to complete the five rows layout
+<b class="nc"><i class="no-highlight">79</i>&nbsp;        if (gb.getMutablePlayerBoards().size() != 3) {</b>
+<b class="nc"><i class="no-highlight">80</i>&nbsp;            entrance = entrance + &quot;     &quot; + &quot;\n&quot;;</b>
+<i class="no-highlight">81</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">82</i>&nbsp;        return entrance;</b>
+<i class="no-highlight">83</i>&nbsp;    }
+<i class="no-highlight">84</i>&nbsp;
+<i class="no-highlight">85</i>&nbsp;    /**
+<i class="no-highlight">86</i>&nbsp;     * It draws a representation of the tower storage of the provided player.
+<i class="no-highlight">87</i>&nbsp;     *
+<i class="no-highlight">88</i>&nbsp;     * @param p  the {@link PlayerBoard} to which the towers should be associated with
+<i class="no-highlight">89</i>&nbsp;     * @param gb reference to the model used to check the relationship between towers and player
+<i class="no-highlight">90</i>&nbsp;     * @return the unused towers in a multiline dual column layout String representation
+<i class="no-highlight">91</i>&nbsp;     */
+<i class="no-highlight">92</i>&nbsp;    public static String drawTowers(PlayerBoard p, Model gb) {
+<b class="nc"><i class="no-highlight">93</i>&nbsp;        String towers = &quot;&quot;;</b>
+<b class="nc"><i class="no-highlight">94</i>&nbsp;        String towerColour = &quot;&quot;;</b>
+<b class="nc"><i class="no-highlight">95</i>&nbsp;        switch (gb.getTeamMapper().getMutableTowerStorage(p).getColour()) {</b>
+<b class="nc"><i class="no-highlight">96</i>&nbsp;            case BLACK -&gt; towerColour = Symbols.BLACK;</b>
+<b class="nc"><i class="no-highlight">97</i>&nbsp;            case GRAY -&gt; towerColour = Symbols.GRAY;</b>
+<b class="nc"><i class="no-highlight">98</i>&nbsp;            case WHITE -&gt; towerColour = Symbols.WHITE;</b>
+<i class="no-highlight">99</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">100</i>&nbsp;        for (int i = 0; i &lt; 8; i++) {</b>
+<i class="no-highlight">101</i>&nbsp;            // prints a tower if there is still any to print
+<b class="nc"><i class="no-highlight">102</i>&nbsp;            if (i &lt; gb.getTeamMapper().getMutableTowerStorage(p).getTowerCount()) {</b>
+<b class="nc"><i class="no-highlight">103</i>&nbsp;                towers = towers + Symbols.colour(Symbols.TOWER, towerColour) + &quot; &quot;;</b>
+<b class="nc"><i class="no-highlight">104</i>&nbsp;            } else towers = towers + &quot;  &quot;; // adds whitespaces in the remaining empty spaces</b>
+<i class="no-highlight">105</i>&nbsp;
+<i class="no-highlight">106</i>&nbsp;            // Every two towers there should be a new line instead of a white space to force the dual column layout
+<b class="nc"><i class="no-highlight">107</i>&nbsp;            if (Symbols.stripFromANSICodes(towers).length() % 4 == 0) {</b>
+<b class="nc"><i class="no-highlight">108</i>&nbsp;                towers = towers.substring(0, towers.length() - 1); // remove space after tower in the II column</b>
+<b class="nc"><i class="no-highlight">109</i>&nbsp;                towers = towers + &quot;\n&quot;;</b>
+<i class="no-highlight">110</i>&nbsp;            }
+<i class="no-highlight">111</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">112</i>&nbsp;        return towers + &quot;\t\t\n&quot;;</b>
+<i class="no-highlight">113</i>&nbsp;    }
+<i class="no-highlight">114</i>&nbsp;
+<i class="no-highlight">115</i>&nbsp;    /**
+<i class="no-highlight">116</i>&nbsp;     * It draws a dining room&#39;s row with its related students and the not yet obtained coins
+<i class="no-highlight">117</i>&nbsp;     *
+<i class="no-highlight">118</i>&nbsp;     * @param rowColour the dining room&#39;s row which should be printed
+<i class="no-highlight">119</i>&nbsp;     * @param p         the {@link PlayerBoard} to which the dining room should be associated with
+<i class="no-highlight">120</i>&nbsp;     * @param gameMode  reference to the model used to add coin representation if in correct settings
+<i class="no-highlight">121</i>&nbsp;     * @return a fixed length line containing all the students on the specific dining room&#39;s row
+<i class="no-highlight">122</i>&nbsp;     */
+<i class="no-highlight">123</i>&nbsp;    public static String drawDiningRoomRow(PawnColour rowColour, PlayerBoard p, GameMode gameMode) {
+<b class="nc"><i class="no-highlight">124</i>&nbsp;        StringBuilder diningRoom = new StringBuilder();</b>
+<i class="no-highlight">125</i>&nbsp;        // Fills the row with the 10 elements which could be students or empty spaces
+<b class="nc"><i class="no-highlight">126</i>&nbsp;        for (int i = 0; i &lt; 10; i++) {</b>
+<b class="nc"><i class="no-highlight">127</i>&nbsp;            if (i &lt; p.getDiningRoomCount(rowColour)) { // prints a student if there is still any to print</b>
+<b class="nc"><i class="no-highlight">128</i>&nbsp;                diningRoom.append(Symbols.colorizeStudent(rowColour, Symbols.PAWN + &quot; &quot;));</b>
+<i class="no-highlight">129</i>&nbsp;            } else {
+<i class="no-highlight">130</i>&nbsp;                // It adds coins in the III, VI and IX positions if the game mode is advanced
+<b class="nc"><i class="no-highlight">131</i>&nbsp;                if (gameMode.equals(GameMode.ADVANCED) &amp;&amp; (i + 1) % 3 == 0) {</b>
+<b class="nc"><i class="no-highlight">132</i>&nbsp;                    diningRoom.append(Symbols.COIN).append(&quot; &quot;);</b>
+<b class="nc"><i class="no-highlight">133</i>&nbsp;                } else diningRoom.append(&quot;  &quot;); // adds whitespaces in the remaining empty places</b>
+<i class="no-highlight">134</i>&nbsp;            }
+<i class="no-highlight">135</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">136</i>&nbsp;        return diningRoom.toString();</b>
+<i class="no-highlight">137</i>&nbsp;    }
+<i class="no-highlight">138</i>&nbsp;
+<i class="no-highlight">139</i>&nbsp;    /**
+<i class="no-highlight">140</i>&nbsp;     * A single teacher will be represented with the standard UI representation of the pawn piece or
+<i class="no-highlight">141</i>&nbsp;     * an empty space if the player has not conquered that specific teacher yet.
+<i class="no-highlight">142</i>&nbsp;     *
+<i class="no-highlight">143</i>&nbsp;     * @param teacher the specific {@link PawnColour} of the teacher to be represented
+<i class="no-highlight">144</i>&nbsp;     * @param p       the {@link PlayerBoard} to which the teacher should be associated with
+<i class="no-highlight">145</i>&nbsp;     * @param gb      reference to the model used to check the relationship between teacher and player
+<i class="no-highlight">146</i>&nbsp;     * @return single line containing teacher
+<i class="no-highlight">147</i>&nbsp;     */
+<i class="no-highlight">148</i>&nbsp;    public static String drawTeacher(PawnColour teacher, PlayerBoard p, Model gb) {
+<b class="nc"><i class="no-highlight">149</i>&nbsp;        if (gb.getOwnTeachers(p).contains(teacher)) {</b>
+<b class="nc"><i class="no-highlight">150</i>&nbsp;            return Symbols.colorizeStudent(teacher, Symbols.PAWN + &quot; &quot;);</b>
+<b class="nc"><i class="no-highlight">151</i>&nbsp;        } else return &quot;  &quot;;</b>
+<i class="no-highlight">152</i>&nbsp;    }
+<i class="no-highlight">153</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

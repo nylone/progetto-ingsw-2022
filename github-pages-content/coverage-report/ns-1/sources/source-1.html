@@ -1,0 +1,194 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Main</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">&lt;empty package name&gt;</a>
+</div>
+
+<h1>Coverage Summary for Class: Main (&lt;empty package name&gt;)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Main</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/59)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/24)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;import it.polimi.ingsw.Client.CLI.CLI;
+<i class="no-highlight">2</i>&nbsp;import it.polimi.ingsw.Client.GUI.GUI;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Logger;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Server.WelcomeServer;
+<i class="no-highlight">5</i>&nbsp;
+<i class="no-highlight">6</i>&nbsp;import java.net.InetAddress;
+<i class="no-highlight">7</i>&nbsp;import java.net.UnknownHostException;
+<i class="no-highlight">8</i>&nbsp;import java.util.Arrays;
+<i class="no-highlight">9</i>&nbsp;
+<i class="no-highlight">10</i>&nbsp;/**
+<i class="no-highlight">11</i>&nbsp; * main class of the project, call the {@link #main} function to start the whole thing up
+<i class="no-highlight">12</i>&nbsp; */
+<b class="nc"><i class="no-highlight">13</i>&nbsp;public class Main {</b>
+<i class="no-highlight">14</i>&nbsp;    private static final String HELP_MESSAGE = &quot;&quot;&quot;
+<i class="no-highlight">15</i>&nbsp;            Welcome to the Eriantys startup tool!
+<i class="no-highlight">16</i>&nbsp;                                
+<i class="no-highlight">17</i>&nbsp;            This tool must be called with at least one of the following arguments:
+<i class="no-highlight">18</i>&nbsp;                &lt; s &gt; will start the Server (default bound to 0.0.0.0:8080) [ max instances: 1 ]
+<i class="no-highlight">19</i>&nbsp;                &lt; g &gt; will start a GUI [ max instances: unlimited ]
+<i class="no-highlight">20</i>&nbsp;                &lt; c &gt; will start the CLI [ max instances: 1 ]
+<i class="no-highlight">21</i>&nbsp;                &lt; h &gt; or &lt; -h &gt; will print this message [ max instances: 1 ]
+<i class="no-highlight">22</i>&nbsp;                                
+<i class="no-highlight">23</i>&nbsp;            Additionally, one or more of the following arguments may be used:
+<i class="no-highlight">24</i>&nbsp;                &lt; -d &gt; will enable the logger, useful for debugging [ max instances: 1 ]
+<i class="no-highlight">25</i>&nbsp;                &lt; -local &gt; will force the server to bind to the loopback address of the machine [ max instances: 1 ]
+<i class="no-highlight">26</i>&nbsp;                &lt; -port: &gt; followed (without using spaces) by the port the server will be listening to [ max instances: 1 ]
+<i class="no-highlight">27</i>&nbsp;                             
+<i class="no-highlight">28</i>&nbsp;            Here are some examples of argument combinations:
+<i class="no-highlight">29</i>&nbsp;                -d -local -port80 s         [starts the server binding it to 127.0.0.1:80 and enables the logger]
+<i class="no-highlight">30</i>&nbsp;                -port:420 s                 [starts the server binding it to 0.0.0.0:420]
+<i class="no-highlight">31</i>&nbsp;                -d g                        [starts the GUI enabling the logger]
+<i class="no-highlight">32</i>&nbsp;                c                           [starts the CLI]
+<i class="no-highlight">33</i>&nbsp;                -local s g g c              [starts a local server (127.0.0.1:8080) along side 2 GUIs and 1 CLI]
+<i class="no-highlight">34</i>&nbsp;            &quot;&quot;&quot;;
+<i class="no-highlight">35</i>&nbsp;
+<i class="no-highlight">36</i>&nbsp;    /**
+<i class="no-highlight">37</i>&nbsp;     * When fed the proper cli inputs, starts the appropriate elements of the project
+<i class="no-highlight">38</i>&nbsp;     *
+<i class="no-highlight">39</i>&nbsp;     * @param args the program&#39;s arguments
+<i class="no-highlight">40</i>&nbsp;     */
+<i class="no-highlight">41</i>&nbsp;    public static void main(String... args) throws UnknownHostException {
+<b class="nc"><i class="no-highlight">42</i>&nbsp;        InetAddress serverBinding = InetAddress.getByAddress(new byte[]{0, 0, 0, 0});</b>
+<b class="nc"><i class="no-highlight">43</i>&nbsp;        int serverPort = 8080;</b>
+<i class="no-highlight">44</i>&nbsp;        // if the args are coherent
+<b class="nc"><i class="no-highlight">45</i>&nbsp;        if (args.length &gt;= 1 &amp;&amp;</b>
+<b class="nc"><i class="no-highlight">46</i>&nbsp;                Arrays.stream(args).anyMatch(arg -&gt; arg.equals(&quot;s&quot;) || arg.equals(&quot;g&quot;) || arg.equals(&quot;c&quot;) || arg.equals(&quot;h&quot;) || arg.equals(&quot;-h&quot;)) &amp;&amp;</b>
+<b class="nc"><i class="no-highlight">47</i>&nbsp;                Arrays.stream(args).filter(arg -&gt; arg.equals(&quot;s&quot;)).count() &lt;= 1 &amp;&amp;</b>
+<b class="nc"><i class="no-highlight">48</i>&nbsp;                Arrays.stream(args).filter(arg -&gt; arg.equals(&quot;c&quot;)).count() &lt;= 1 &amp;&amp;</b>
+<b class="nc"><i class="no-highlight">49</i>&nbsp;                Arrays.stream(args).filter(arg -&gt; arg.equals(&quot;h&quot;) || arg.equals(&quot;-h&quot;)).count() &lt;= 1 &amp;&amp;</b>
+<b class="nc"><i class="no-highlight">50</i>&nbsp;                Arrays.stream(args).filter(arg -&gt; arg.equals(&quot;-d&quot;)).count() &lt;= 1 &amp;&amp;</b>
+<b class="nc"><i class="no-highlight">51</i>&nbsp;                Arrays.stream(args).filter(arg -&gt; arg.equals(&quot;-local&quot;)).count() &lt;= 1 &amp;&amp;</b>
+<b class="nc"><i class="no-highlight">52</i>&nbsp;                Arrays.stream(args).filter(arg -&gt; arg.startsWith(&quot;-port:&quot;)).count() &lt;= 1</b>
+<i class="no-highlight">53</i>&nbsp;        ) { // parse arguments
+<b class="nc"><i class="no-highlight">54</i>&nbsp;            for (String arg : args) {</b>
+<b class="nc"><i class="no-highlight">55</i>&nbsp;                switch (arg.trim().toLowerCase()) {</b>
+<b class="nc"><i class="no-highlight">56</i>&nbsp;                    case &quot;-d&quot; -&gt; Logger.enable(true);</b>
+<b class="nc"><i class="no-highlight">57</i>&nbsp;                    case &quot;-local&quot; -&gt; serverBinding = InetAddress.getLoopbackAddress();</b>
+<b class="nc"><i class="no-highlight">58</i>&nbsp;                    case String a &amp;&amp; a.startsWith(&quot;-port:&quot;) -&gt; serverPort = Integer.parseInt(a.substring(6));</b>
+<i class="no-highlight">59</i>&nbsp;                    case default -&gt; {
+<b class="nc"><i class="no-highlight">60</i>&nbsp;                    }</b>
+<i class="no-highlight">61</i>&nbsp;                }
+<i class="no-highlight">62</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">63</i>&nbsp;            for (String arg : args) {</b>
+<b class="nc"><i class="no-highlight">64</i>&nbsp;                switch (arg.trim().toLowerCase()) {</b>
+<b class="nc"><i class="no-highlight">65</i>&nbsp;                    case &quot;h&quot;, &quot;-h&quot; -&gt; System.out.println(HELP_MESSAGE);</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;                    case &quot;c&quot; -&gt; new Thread(new CLI()).start();</b>
+<b class="nc"><i class="no-highlight">67</i>&nbsp;                    case &quot;g&quot; -&gt; new Thread(new GUI()).start();</b>
+<b class="nc"><i class="no-highlight">68</i>&nbsp;                    case &quot;s&quot; -&gt; new Thread(new WelcomeServer(serverPort, serverBinding)).start();</b>
+<i class="no-highlight">69</i>&nbsp;                    case default -&gt; {
+<i class="no-highlight">70</i>&nbsp;                    }
+<i class="no-highlight">71</i>&nbsp;                }
+<i class="no-highlight">72</i>&nbsp;            }
+<i class="no-highlight">73</i>&nbsp;        } else {
+<b class="nc"><i class="no-highlight">74</i>&nbsp;            System.out.println(HELP_MESSAGE);</b>
+<i class="no-highlight">75</i>&nbsp;        }
+<i class="no-highlight">76</i>&nbsp;    }
+<i class="no-highlight">77</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,331 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TurnOrder</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Model</a>
+</div>
+
+<h1>Coverage Summary for Class: TurnOrder (it.polimi.ingsw.Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TurnOrder</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,8%
+  </span>
+  <span class="absValue">
+    (15/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    62,5%
+  </span>
+  <span class="absValue">
+    (20/32)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    84,9%
+  </span>
+  <span class="absValue">
+    (45/53)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Model;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Exceptions.Operation.ForbiddenOperationException;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Misc.Utils;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Model.Enums.GamePhase;
+<i class="no-highlight">7</i>&nbsp;
+<i class="no-highlight">8</i>&nbsp;import java.io.Serial;
+<i class="no-highlight">9</i>&nbsp;import java.io.Serializable;
+<i class="no-highlight">10</i>&nbsp;import java.util.*;
+<i class="no-highlight">11</i>&nbsp;import java.util.stream.Collectors;
+<i class="no-highlight">12</i>&nbsp;
+<i class="no-highlight">13</i>&nbsp;/**
+<i class="no-highlight">14</i>&nbsp; * Represents the order in which players will play a round, and organizes the next round based on played {@link AssistantCard}s
+<i class="no-highlight">15</i>&nbsp; */
+<i class="no-highlight">16</i>&nbsp;public class TurnOrder implements Serializable {
+<i class="no-highlight">17</i>&nbsp;    @Serial
+<i class="no-highlight">18</i>&nbsp;    private static final long serialVersionUID = 134L; // convention: 1 for model, (01 -&gt; 99) for objects
+<i class="no-highlight">19</i>&nbsp;    private final Map&lt;PlayerBoard, OptionalValue&lt;AssistantCard&gt;&gt; selectedCards; // used to generate the new turn order
+<i class="no-highlight">20</i>&nbsp;    // if a playerboard is associated with an empty optional then their card has not yet been chosen for the turn
+<i class="no-highlight">21</i>&nbsp;    // or said player is currently being skipped
+<i class="no-highlight">22</i>&nbsp;    private int currentTurnPosition; // selects the current player from currentTurnOrder
+<i class="no-highlight">23</i>&nbsp;    private List&lt;PlayerBoard&gt; currentTurnOrder; // represents the order for the turn in play
+<i class="no-highlight">24</i>&nbsp;    private GamePhase gamePhase;
+<i class="no-highlight">25</i>&nbsp;
+<i class="no-highlight">26</i>&nbsp;    /**
+<i class="no-highlight">27</i>&nbsp;     * Creates the turn order object and assigns a random starting turn formation for players.
+<i class="no-highlight">28</i>&nbsp;     *
+<i class="no-highlight">29</i>&nbsp;     * @param playerBoards the players in the game
+<i class="no-highlight">30</i>&nbsp;     */
+<b class="fc"><i class="no-highlight">31</i>&nbsp;    public TurnOrder(List&lt;PlayerBoard&gt; playerBoards) {</b>
+<b class="pc"><i class="no-highlight">32</i>&nbsp;        if (playerBoards != null &amp;&amp; playerBoards.size() &gt;= 2 &amp;&amp; playerBoards.size() &lt;= 4) {</b>
+<i class="no-highlight">33</i>&nbsp;            // add all players to their cards map and set them to not skipped
+<b class="fc"><i class="no-highlight">34</i>&nbsp;            this.selectedCards = new HashMap&lt;&gt;(playerBoards.size());</b>
+<i class="no-highlight">35</i>&nbsp;            for (PlayerBoard pb :
+<b class="fc"><i class="no-highlight">36</i>&nbsp;                    playerBoards) {</b>
+<b class="fc"><i class="no-highlight">37</i>&nbsp;                this.selectedCards.put(pb, OptionalValue.empty());</b>
+<b class="fc"><i class="no-highlight">38</i>&nbsp;            }</b>
+<i class="no-highlight">39</i>&nbsp;            // create turn order
+<b class="fc"><i class="no-highlight">40</i>&nbsp;            this.currentTurnOrder = new ArrayList&lt;&gt;(playerBoards);</b>
+<b class="fc"><i class="no-highlight">41</i>&nbsp;            Utils.shuffle(currentTurnOrder); // starting order for first turn is randomized</b>
+<i class="no-highlight">42</i>&nbsp;            // set current turn position
+<b class="fc"><i class="no-highlight">43</i>&nbsp;            this.currentTurnPosition = 0;</b>
+<i class="no-highlight">44</i>&nbsp;            // set game phase
+<b class="fc"><i class="no-highlight">45</i>&nbsp;            this.gamePhase = GamePhase.SETUP;</b>
+<i class="no-highlight">46</i>&nbsp;        } else {
+<b class="fc"><i class="no-highlight">47</i>&nbsp;            throw new RuntimeException(&quot;Inconsistent amount of Playerboards&quot;);</b>
+<i class="no-highlight">48</i>&nbsp;        }
+<i class="no-highlight">49</i>&nbsp;    }
+<i class="no-highlight">50</i>&nbsp;
+<i class="no-highlight">51</i>&nbsp;    /**
+<i class="no-highlight">52</i>&nbsp;     * Get the current pecking order for the turn
+<i class="no-highlight">53</i>&nbsp;     *
+<i class="no-highlight">54</i>&nbsp;     * @return an Unmodifiable {@link List} ordered from index 0 being the first player, onwards
+<i class="no-highlight">55</i>&nbsp;     */
+<i class="no-highlight">56</i>&nbsp;    public List&lt;PlayerBoard&gt; getCurrentTurnOrder() {
+<b class="fc"><i class="no-highlight">57</i>&nbsp;        return List.copyOf(currentTurnOrder);</b>
+<i class="no-highlight">58</i>&nbsp;    }
+<i class="no-highlight">59</i>&nbsp;
+<i class="no-highlight">60</i>&nbsp;    /**
+<i class="no-highlight">61</i>&nbsp;     * Get the card a user played to define the pecking order
+<i class="no-highlight">62</i>&nbsp;     *
+<i class="no-highlight">63</i>&nbsp;     * @param pb the player to filter the played {@link AssistantCard}s for
+<i class="no-highlight">64</i>&nbsp;     * @return a {@link OptionalValue} containing the selected {@link AssistantCard}, if one has been played by the user this round.
+<i class="no-highlight">65</i>&nbsp;     */
+<i class="no-highlight">66</i>&nbsp;    public OptionalValue&lt;AssistantCard&gt; getMutableSelectedCard(PlayerBoard pb) {
+<b class="fc"><i class="no-highlight">67</i>&nbsp;        return this.selectedCards.get(pb);</b>
+<i class="no-highlight">68</i>&nbsp;    }
+<i class="no-highlight">69</i>&nbsp;
+<i class="no-highlight">70</i>&nbsp;    /**
+<i class="no-highlight">71</i>&nbsp;     * Select the {@link AssistantCard} used by the player this round
+<i class="no-highlight">72</i>&nbsp;     *
+<i class="no-highlight">73</i>&nbsp;     * @param pb the player to set the card for
+<i class="no-highlight">74</i>&nbsp;     * @param ac the card selected by the player
+<i class="no-highlight">75</i>&nbsp;     * @throws ForbiddenOperationException if the card was already used, if the {@link GamePhase} is not in {@link GamePhase#SETUP}
+<i class="no-highlight">76</i>&nbsp;     *                                     or if it&#39;s not the player&#39;s turn yet, if the card or the player were null or if
+<i class="no-highlight">77</i>&nbsp;     *                                     the player could have played a different, not yet played by him or anyone else (during this turn) card.
+<i class="no-highlight">78</i>&nbsp;     */
+<i class="no-highlight">79</i>&nbsp;    public void setSelectedCard(PlayerBoard pb, AssistantCard ac) throws ForbiddenOperationException {
+<b class="pc"><i class="no-highlight">80</i>&nbsp;        if (pb == null) { // not null contract</b>
+<b class="nc"><i class="no-highlight">81</i>&nbsp;            throw new ForbiddenOperationException(&quot;PlayerBoard pb&quot;, &quot;can&#39;t be null&quot;);</b>
+<i class="no-highlight">82</i>&nbsp;        }
+<b class="pc"><i class="no-highlight">83</i>&nbsp;        if (getGamePhase() != GamePhase.SETUP || !isOwnTurn(pb)) { // correct phase and turn contract</b>
+<b class="nc"><i class="no-highlight">84</i>&nbsp;            throw new ForbiddenOperationException(&quot;Game phase or turn&quot;, &quot;wrong game phase or turn for player&quot;);</b>
+<i class="no-highlight">85</i>&nbsp;        }
+<b class="pc"><i class="no-highlight">86</i>&nbsp;        if (ac == null) { // not null contract</b>
+<b class="nc"><i class="no-highlight">87</i>&nbsp;            throw new ForbiddenOperationException(&quot;AssistantCard ac&quot;, &quot;can&#39;t be null&quot;);</b>
+<i class="no-highlight">88</i>&nbsp;        }
+<b class="pc"><i class="no-highlight">89</i>&nbsp;        if (ac.getUsed()) { // no reuse card contract</b>
+<b class="nc"><i class="no-highlight">90</i>&nbsp;            throw new ForbiddenOperationException(&quot;setSelectedCard&quot;, &quot;can&#39;t have been previously used&quot;);</b>
+<i class="no-highlight">91</i>&nbsp;        }
+<b class="pc"><i class="no-highlight">92</i>&nbsp;        if (isAlreadyInSelection(ac) &amp;&amp; canPlayUniqueCard(pb)) { // no duplicate cards contract</b>
+<b class="nc"><i class="no-highlight">93</i>&nbsp;            throw new ForbiddenOperationException(&quot;AssistantCard ac&quot;, &quot;should be a unique card whenever possible&quot;);</b>
+<i class="no-highlight">94</i>&nbsp;        }
+<i class="no-highlight">95</i>&nbsp;
+<i class="no-highlight">96</i>&nbsp;        // validation passed:
+<b class="fc"><i class="no-highlight">97</i>&nbsp;        ac.setUsed();</b>
+<b class="fc"><i class="no-highlight">98</i>&nbsp;        this.selectedCards.put(pb, OptionalValue.of(ac));</b>
+<i class="no-highlight">99</i>&nbsp;    }
+<i class="no-highlight">100</i>&nbsp;
+<i class="no-highlight">101</i>&nbsp;    /**
+<i class="no-highlight">102</i>&nbsp;     * Get the phase of the current round
+<i class="no-highlight">103</i>&nbsp;     *
+<i class="no-highlight">104</i>&nbsp;     * @return the {@link GamePhase} of the current round
+<i class="no-highlight">105</i>&nbsp;     */
+<i class="no-highlight">106</i>&nbsp;    public GamePhase getGamePhase() {
+<b class="fc"><i class="no-highlight">107</i>&nbsp;        return gamePhase;</b>
+<i class="no-highlight">108</i>&nbsp;    }
+<i class="no-highlight">109</i>&nbsp;
+<i class="no-highlight">110</i>&nbsp;    /**
+<i class="no-highlight">111</i>&nbsp;     * Finds if it is a player&#39;s own turn yet
+<i class="no-highlight">112</i>&nbsp;     *
+<i class="no-highlight">113</i>&nbsp;     * @param pb the player to filter for
+<i class="no-highlight">114</i>&nbsp;     * @return true if it is the player&#39;s turn, false otherwise
+<i class="no-highlight">115</i>&nbsp;     */
+<i class="no-highlight">116</i>&nbsp;    public boolean isOwnTurn(PlayerBoard pb) {
+<b class="pc"><i class="no-highlight">117</i>&nbsp;        return getMutableCurrentPlayer() == pb;</b>
+<i class="no-highlight">118</i>&nbsp;    }
+<i class="no-highlight">119</i>&nbsp;
+<i class="no-highlight">120</i>&nbsp;    /**
+<i class="no-highlight">121</i>&nbsp;     * Check if a card has already been played this round
+<i class="no-highlight">122</i>&nbsp;     *
+<i class="no-highlight">123</i>&nbsp;     * @param ac the card to filter for
+<i class="no-highlight">124</i>&nbsp;     * @return true if the selected card was already submitted as a selection in {@link #setSelectedCard(PlayerBoard, AssistantCard)}
+<i class="no-highlight">125</i>&nbsp;     * during this round
+<i class="no-highlight">126</i>&nbsp;     */
+<i class="no-highlight">127</i>&nbsp;    public boolean isAlreadyInSelection(AssistantCard ac) {
+<b class="fc"><i class="no-highlight">128</i>&nbsp;        return getSelectedCards().stream()</b>
+<b class="fc"><i class="no-highlight">129</i>&nbsp;                .anyMatch(selected -&gt; selected.getPriority() == ac.getPriority());</b>
+<i class="no-highlight">130</i>&nbsp;    }
+<i class="no-highlight">131</i>&nbsp;
+<i class="no-highlight">132</i>&nbsp;    /**
+<i class="no-highlight">133</i>&nbsp;     * Check to see if the player can still play a card that is unique this turn
+<i class="no-highlight">134</i>&nbsp;     *
+<i class="no-highlight">135</i>&nbsp;     * @param pb the player to filter cards for
+<i class="no-highlight">136</i>&nbsp;     * @return true if the player can play at least one not yet selected card this round, false otherwise
+<i class="no-highlight">137</i>&nbsp;     */
+<i class="no-highlight">138</i>&nbsp;    public boolean canPlayUniqueCard(PlayerBoard pb) {
+<b class="pc"><i class="no-highlight">139</i>&nbsp;        return !pb.getMutableAssistantCards().stream().allMatch(this::isAlreadyInSelection);</b>
+<i class="no-highlight">140</i>&nbsp;    }
+<i class="no-highlight">141</i>&nbsp;
+<i class="no-highlight">142</i>&nbsp;    /**
+<i class="no-highlight">143</i>&nbsp;     * Get a reference to the current player
+<i class="no-highlight">144</i>&nbsp;     *
+<i class="no-highlight">145</i>&nbsp;     * @return a reference to the {@link PlayerBoard} of the current player
+<i class="no-highlight">146</i>&nbsp;     */
+<i class="no-highlight">147</i>&nbsp;    public PlayerBoard getMutableCurrentPlayer() {
+<b class="fc"><i class="no-highlight">148</i>&nbsp;        return this.currentTurnOrder.get(this.currentTurnPosition);</b>
+<i class="no-highlight">149</i>&nbsp;    }
+<i class="no-highlight">150</i>&nbsp;
+<i class="no-highlight">151</i>&nbsp;    /**
+<i class="no-highlight">152</i>&nbsp;     * Get all of the assistant cards played this round
+<i class="no-highlight">153</i>&nbsp;     *
+<i class="no-highlight">154</i>&nbsp;     * @return an Unmodifiable {@link List} of the {@link AssistantCard}s played this round as of yet
+<i class="no-highlight">155</i>&nbsp;     */
+<i class="no-highlight">156</i>&nbsp;    public List&lt;AssistantCard&gt; getSelectedCards() {
+<b class="fc"><i class="no-highlight">157</i>&nbsp;        return selectedCards.values().stream()</b>
+<b class="fc"><i class="no-highlight">158</i>&nbsp;                .filter(OptionalValue::isPresent)</b>
+<b class="fc"><i class="no-highlight">159</i>&nbsp;                .map(OptionalValue::get)</b>
+<b class="fc"><i class="no-highlight">160</i>&nbsp;                .toList(); // immutable list</b>
+<i class="no-highlight">161</i>&nbsp;    }
+<i class="no-highlight">162</i>&nbsp;
+<i class="no-highlight">163</i>&nbsp;    /**
+<i class="no-highlight">164</i>&nbsp;     * Proceed to the next player in the turn order
+<i class="no-highlight">165</i>&nbsp;     */
+<i class="no-highlight">166</i>&nbsp;    public void stepToNextPlayer() {
+<i class="no-highlight">167</i>&nbsp;        // for all players except the last in turn
+<b class="fc"><i class="no-highlight">168</i>&nbsp;        if (currentTurnPosition &lt; currentTurnOrder.size() - 1) {</b>
+<b class="fc"><i class="no-highlight">169</i>&nbsp;            currentTurnPosition++;</b>
+<i class="no-highlight">170</i>&nbsp;        } else { // last player to call this resets the turn and steps to next phase
+<b class="fc"><i class="no-highlight">171</i>&nbsp;            currentTurnPosition = 0;</b>
+<b class="fc"><i class="no-highlight">172</i>&nbsp;            stepNextGamePhase();</b>
+<i class="no-highlight">173</i>&nbsp;        }
+<i class="no-highlight">174</i>&nbsp;    }
+<i class="no-highlight">175</i>&nbsp;
+<i class="no-highlight">176</i>&nbsp;    /**
+<i class="no-highlight">177</i>&nbsp;     * During the round, switches between {@link GamePhase}s
+<i class="no-highlight">178</i>&nbsp;     */
+<i class="no-highlight">179</i>&nbsp;    private void stepNextGamePhase() {
+<i class="no-highlight">180</i>&nbsp;        // if stepping from setup to action
+<i class="no-highlight">181</i>&nbsp;        // there is a need to commit the new turn order
+<b class="pc"><i class="no-highlight">182</i>&nbsp;        if (getGamePhase() == GamePhase.SETUP) {</b>
+<b class="fc"><i class="no-highlight">183</i>&nbsp;            commitTurnOrder();</b>
+<b class="fc"><i class="no-highlight">184</i>&nbsp;            gamePhase = GamePhase.ACTION;</b>
+<i class="no-highlight">185</i>&nbsp;        } else { // when coming back to the setup phase the selected cards map must be reset
+<b class="nc"><i class="no-highlight">186</i>&nbsp;            cleanSelectedCards();</b>
+<b class="nc"><i class="no-highlight">187</i>&nbsp;            gamePhase = GamePhase.SETUP;</b>
+<i class="no-highlight">188</i>&nbsp;        }
+<i class="no-highlight">189</i>&nbsp;    }
+<i class="no-highlight">190</i>&nbsp;
+<i class="no-highlight">191</i>&nbsp;    /**
+<i class="no-highlight">192</i>&nbsp;     * Based on the {@link #getSelectedCards()} set the new turn order for the next round. Players that have not selected a card
+<i class="no-highlight">193</i>&nbsp;     * will be put last in the order.
+<i class="no-highlight">194</i>&nbsp;     */
+<i class="no-highlight">195</i>&nbsp;    public void commitTurnOrder() {
+<i class="no-highlight">196</i>&nbsp;        // the starting elements of playersInOrder are players that have not been skipped
+<i class="no-highlight">197</i>&nbsp;        // the last elements of playersInOrder are all the players that have been skipped
+<b class="fc"><i class="no-highlight">198</i>&nbsp;        this.currentTurnOrder = selectedCards.entrySet().stream()</b>
+<b class="fc"><i class="no-highlight">199</i>&nbsp;                .sorted(Comparator.comparingInt(t -&gt; // sort based on priority</b>
+<b class="fc"><i class="no-highlight">200</i>&nbsp;                        t.getValue()</b>
+<b class="fc"><i class="no-highlight">201</i>&nbsp;                                .flatMap(ac -&gt; OptionalValue.of(</b>
+<b class="fc"><i class="no-highlight">202</i>&nbsp;                                        ac.getPriority())) // if a card was selected extract the priority</b>
+<b class="fc"><i class="no-highlight">203</i>&nbsp;                                .orElse(100))) // otherwise use a priority level that is higher than any other card</b>
+<b class="fc"><i class="no-highlight">204</i>&nbsp;                .map(Map.Entry::getKey)</b>
+<b class="fc"><i class="no-highlight">205</i>&nbsp;                .collect(Collectors.toList());</b>
+<i class="no-highlight">206</i>&nbsp;    }
+<i class="no-highlight">207</i>&nbsp;
+<i class="no-highlight">208</i>&nbsp;    /**
+<i class="no-highlight">209</i>&nbsp;     * Removes the selected cards from memory
+<i class="no-highlight">210</i>&nbsp;     */
+<i class="no-highlight">211</i>&nbsp;    private void cleanSelectedCards() {
+<b class="nc"><i class="no-highlight">212</i>&nbsp;        selectedCards.replaceAll((k, v) -&gt; OptionalValue.empty());</b>
+<i class="no-highlight">213</i>&nbsp;    }
+<i class="no-highlight">214</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

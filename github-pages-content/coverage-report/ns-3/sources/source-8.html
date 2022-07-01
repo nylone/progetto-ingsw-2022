@@ -1,0 +1,250 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > IslandUI</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Client.CLI</a>
+</div>
+
+<h1>Coverage Summary for Class: IslandUI (it.polimi.ingsw.Client.CLI)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">IslandUI</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/37)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">IslandUI$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/38)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Client.CLI;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Misc.Symbols;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Misc.Utils;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Model.Enums.PawnColour;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Model.IslandGroup;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Model.Model;
+<i class="no-highlight">8</i>&nbsp;
+<i class="no-highlight">9</i>&nbsp;import java.util.List;
+<i class="no-highlight">10</i>&nbsp;
+<i class="no-highlight">11</i>&nbsp;/**
+<i class="no-highlight">12</i>&nbsp; * IslandUI allows to print a placeholder containing an {@link IslandGroup} representation or an empty row
+<i class="no-highlight">13</i>&nbsp; * which could be needed if there was previously an IslandGroup on the console which does not exist anymore
+<i class="no-highlight">14</i>&nbsp; * in the model
+<i class="no-highlight">15</i>&nbsp; */
+<b class="nc"><i class="no-highlight">16</i>&nbsp;public class IslandUI {</b>
+<i class="no-highlight">17</i>&nbsp;
+<i class="no-highlight">18</i>&nbsp;    /**
+<i class="no-highlight">19</i>&nbsp;     * The {@link IslandGroup} will be represented with its ID value and the students and towers on it.
+<i class="no-highlight">20</i>&nbsp;     * &lt;br&gt;
+<i class="no-highlight">21</i>&nbsp;     * The students will be ordered by frequency on the island to better highlight the influence.
+<i class="no-highlight">22</i>&nbsp;     * &lt;br&gt;
+<i class="no-highlight">23</i>&nbsp;     * Mother Nature is represented by an asterisk
+<i class="no-highlight">24</i>&nbsp;     * &lt;br&gt;
+<i class="no-highlight">25</i>&nbsp;     * The number of tower is shown via a number
+<i class="no-highlight">26</i>&nbsp;     *
+<i class="no-highlight">27</i>&nbsp;     * @param i   the subject to be represented
+<i class="no-highlight">28</i>&nbsp;     * @param ctx reference to the model used to identify the presence of the mother nature piece on the island group
+<i class="no-highlight">29</i>&nbsp;     * @return the representation of an island group.
+<i class="no-highlight">30</i>&nbsp;     */
+<i class="no-highlight">31</i>&nbsp;    public static String draw(IslandGroup i, Model ctx) {
+<i class="no-highlight">32</i>&nbsp;        // Adds an identifier if the island contains MotherNature
+<b class="nc"><i class="no-highlight">33</i>&nbsp;        String mn = ctx.getMutableIslandField().getMutableMotherNaturePosition().equals(i) ? &quot;*&quot; : &quot;&quot;;</b>
+<i class="no-highlight">34</i>&nbsp;
+<b class="nc"><i class="no-highlight">35</i>&nbsp;        StringBuilder students = new StringBuilder();</b>
+<i class="no-highlight">36</i>&nbsp;        // Prints each student on the island
+<b class="nc"><i class="no-highlight">37</i>&nbsp;        List&lt;PawnColour&gt; sortedStudents = Utils.sortByFrequency(i.getStudents());</b>
+<b class="nc"><i class="no-highlight">38</i>&nbsp;        for (PawnColour p : sortedStudents) {</b>
+<b class="nc"><i class="no-highlight">39</i>&nbsp;            students.append(Symbols.colorizeStudent(p, Symbols.PAWN + &quot; &quot;));</b>
+<b class="nc"><i class="no-highlight">40</i>&nbsp;        }</b>
+<i class="no-highlight">41</i>&nbsp;
+<i class="no-highlight">42</i>&nbsp;        // Adds padding if the current island doesn&#39;t hold the most students
+<b class="nc"><i class="no-highlight">43</i>&nbsp;        int maxStudents = 0;</b>
+<b class="nc"><i class="no-highlight">44</i>&nbsp;        for (IslandGroup ig : ctx.getMutableIslandField().getMutableGroups()) {</b>
+<b class="nc"><i class="no-highlight">45</i>&nbsp;            maxStudents = Math.max(maxStudents, ig.getStudents().size());</b>
+<b class="nc"><i class="no-highlight">46</i>&nbsp;        }</b>
+<b class="nc"><i class="no-highlight">47</i>&nbsp;        if (i.getStudents().size() &lt; maxStudents) {</b>
+<b class="nc"><i class="no-highlight">48</i>&nbsp;            students.append(&quot;  &quot;.repeat(maxStudents - i.getStudents().size())); // padding</b>
+<i class="no-highlight">49</i>&nbsp;        }
+<i class="no-highlight">50</i>&nbsp;
+<i class="no-highlight">51</i>&nbsp;        // Prints the tower representation accounting for team and quantity
+<b class="nc"><i class="no-highlight">52</i>&nbsp;        String tower = &quot;&quot;;</b>
+<b class="nc"><i class="no-highlight">53</i>&nbsp;        if (i.getTowerColour().isPresent()) {</b>
+<b class="nc"><i class="no-highlight">54</i>&nbsp;            switch (i.getTowerColour().get()) {</b>
+<b class="nc"><i class="no-highlight">55</i>&nbsp;                case BLACK -&gt; tower = tower + &quot;\t&quot; + Symbols.colour(Symbols.TOWER + &quot; &quot;, Symbols.BLACK)</b>
+<b class="nc"><i class="no-highlight">56</i>&nbsp;                        + i.getTowerCount();</b>
+<b class="nc"><i class="no-highlight">57</i>&nbsp;                case GRAY -&gt; tower = tower + &quot;\t&quot; + Symbols.colour(Symbols.TOWER + &quot; &quot;, Symbols.GRAY)</b>
+<b class="nc"><i class="no-highlight">58</i>&nbsp;                        + i.getTowerCount();</b>
+<b class="nc"><i class="no-highlight">59</i>&nbsp;                case WHITE -&gt; tower = tower + &quot;\t&quot; + Symbols.colour(Symbols.TOWER + &quot; &quot;, Symbols.WHITE)</b>
+<b class="nc"><i class="no-highlight">60</i>&nbsp;                        + i.getTowerCount();</b>
+<i class="no-highlight">61</i>&nbsp;
+<i class="no-highlight">62</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">63</i>&nbsp;        } else tower = &quot;\t&quot; + &quot; &quot;.repeat(4);</b>
+<i class="no-highlight">64</i>&nbsp;
+<b class="nc"><i class="no-highlight">65</i>&nbsp;        String islandTitle = &quot;Island &quot; + i.getId(); // island&#39;s title and id</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;        if (i.getMutableNoEntryTiles().size() &gt; 0) {</b>
+<i class="no-highlight">67</i>&nbsp;            // The title will be crossed out if the island&#39;s influence cannot be changed
+<b class="nc"><i class="no-highlight">68</i>&nbsp;            islandTitle = Symbols.OVERLAY + islandTitle + Symbols.RESET + Symbols.BACKGROUND;</b>
+<i class="no-highlight">69</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">70</i>&nbsp;        return mn + islandTitle + &quot;:\t&quot; + students + tower;</b>
+<i class="no-highlight">71</i>&nbsp;    }
+<i class="no-highlight">72</i>&nbsp;
+<i class="no-highlight">73</i>&nbsp;    /**
+<i class="no-highlight">74</i>&nbsp;     * It basically provides the same result as {@link IslandUI#draw(IslandGroup, Model)} but it replaces
+<i class="no-highlight">75</i>&nbsp;     * all characters with whitespaces (except tabulations)
+<i class="no-highlight">76</i>&nbsp;     *
+<i class="no-highlight">77</i>&nbsp;     * @param ctx reference to the model used to identify the island group containing the most students
+<i class="no-highlight">78</i>&nbsp;     * @return an all whitespace&#39;s filled String, long enough to fill the IslandUIs&#39; composition
+<i class="no-highlight">79</i>&nbsp;     */
+<i class="no-highlight">80</i>&nbsp;    public static String drawEmptyRow(Model ctx) {
+<b class="nc"><i class="no-highlight">81</i>&nbsp;        String mn = &quot;&quot;;</b>
+<i class="no-highlight">82</i>&nbsp;
+<b class="nc"><i class="no-highlight">83</i>&nbsp;        String islandTitle = &quot; &quot;.repeat(10);</b>
+<i class="no-highlight">84</i>&nbsp;
+<b class="nc"><i class="no-highlight">85</i>&nbsp;        String students = &quot;&quot;;</b>
+<i class="no-highlight">86</i>&nbsp;
+<b class="nc"><i class="no-highlight">87</i>&nbsp;        int maxStudents = 0;</b>
+<b class="nc"><i class="no-highlight">88</i>&nbsp;        for (IslandGroup ig : ctx.getMutableIslandField().getMutableGroups()) {</b>
+<b class="nc"><i class="no-highlight">89</i>&nbsp;            maxStudents = Math.max(maxStudents, ig.getStudents().size());</b>
+<b class="nc"><i class="no-highlight">90</i>&nbsp;        }</b>
+<b class="nc"><i class="no-highlight">91</i>&nbsp;        students = students + &quot;  &quot;.repeat(maxStudents);</b>
+<i class="no-highlight">92</i>&nbsp;
+<b class="nc"><i class="no-highlight">93</i>&nbsp;        String tower = &quot;\t&quot; + &quot; &quot;.repeat(4);</b>
+<i class="no-highlight">94</i>&nbsp;
+<b class="nc"><i class="no-highlight">95</i>&nbsp;        return mn + islandTitle + &quot; \t&quot; + students + tower;</b>
+<i class="no-highlight">96</i>&nbsp;    }
+<i class="no-highlight">97</i>&nbsp;}
+<i class="no-highlight">98</i>&nbsp;
+<i class="no-highlight">99</i>&nbsp;
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

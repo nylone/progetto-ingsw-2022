@@ -1,0 +1,219 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > CloudUI</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Client.CLI</a>
+</div>
+
+<h1>Coverage Summary for Class: CloudUI (it.polimi.ingsw.Client.CLI)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CloudUI</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/31)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/56)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Client.CLI;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Misc.Symbols;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Model.Cloud;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Model.Enums.PawnColour;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Model.Model;
+<i class="no-highlight">7</i>&nbsp;
+<i class="no-highlight">8</i>&nbsp;/**
+<i class="no-highlight">9</i>&nbsp; * CloudUI is a graphical representation (as a String data structure) useful to print multiple cloud components
+<i class="no-highlight">10</i>&nbsp; * on the console.
+<i class="no-highlight">11</i>&nbsp; * &lt;br&gt;
+<i class="no-highlight">12</i>&nbsp; * The internal information of the model element is described in {@link it.polimi.ingsw.Model.Cloud}.
+<i class="no-highlight">13</i>&nbsp; */
+<b class="nc"><i class="no-highlight">14</i>&nbsp;public class CloudUI {</b>
+<i class="no-highlight">15</i>&nbsp;
+<i class="no-highlight">16</i>&nbsp;    /**
+<i class="no-highlight">17</i>&nbsp;     * The {@link it.polimi.ingsw.Model.Cloud} will be represented with a title and its related id,
+<i class="no-highlight">18</i>&nbsp;     * and the contained students if present.
+<i class="no-highlight">19</i>&nbsp;     * According to the number of players, it will create a different layout of the clouds on the console.
+<i class="no-highlight">20</i>&nbsp;     *
+<i class="no-highlight">21</i>&nbsp;     * @param ctx is a reference to the model used to access the clouds&#39; information.
+<i class="no-highlight">22</i>&nbsp;     * @return the representation of the clouds group.
+<i class="no-highlight">23</i>&nbsp;     */
+<i class="no-highlight">24</i>&nbsp;    public static String draw(Model ctx) {
+<b class="nc"><i class="no-highlight">25</i>&nbsp;        String clouds = &quot;&quot;;</b>
+<b class="nc"><i class="no-highlight">26</i>&nbsp;        switch (ctx.getClouds().size()) {</b>
+<i class="no-highlight">27</i>&nbsp;            case 2 -&gt; { // two clouds will be print on top of each other
+<b class="nc"><i class="no-highlight">28</i>&nbsp;                StringBuilder twoClouds = new StringBuilder();</b>
+<b class="nc"><i class="no-highlight">29</i>&nbsp;                for (Cloud c : ctx.getClouds()) {</b>
+<b class="nc"><i class="no-highlight">30</i>&nbsp;                    StringBuilder students = new StringBuilder();</b>
+<i class="no-highlight">31</i>&nbsp;
+<i class="no-highlight">32</i>&nbsp;                    // Prints one line for every student on the cloud, and aligns it centrally
+<b class="nc"><i class="no-highlight">33</i>&nbsp;                    for (PawnColour p : c.getContents()) {</b>
+<b class="nc"><i class="no-highlight">34</i>&nbsp;                        students.append(Symbols.colorizeStudent(p, &quot;\t&quot; + Symbols.PAWN));</b>
+<b class="nc"><i class="no-highlight">35</i>&nbsp;                        students.append(&quot;\t\n&quot;);</b>
+<b class="nc"><i class="no-highlight">36</i>&nbsp;                    }</b>
+<i class="no-highlight">37</i>&nbsp;                    // Handles the empty cloud case
+<b class="nc"><i class="no-highlight">38</i>&nbsp;                    if (students.toString().equals(&quot;&quot;)) {</b>
+<b class="nc"><i class="no-highlight">39</i>&nbsp;                        students.append(&quot;\t\t\n&quot;.repeat(3));</b>
+<i class="no-highlight">40</i>&nbsp;                    }
+<i class="no-highlight">41</i>&nbsp;                    // Appends the current cloud in the loop.
+<i class="no-highlight">42</i>&nbsp;                    // Adds the current cloud title on a line.
+<i class="no-highlight">43</i>&nbsp;                    // Adds the content on the cloud on separate lines.
+<b class="nc"><i class="no-highlight">44</i>&nbsp;                    twoClouds.append(&quot;\tCloud &quot;).append(c.getId()).append(&quot;\n&quot;).append(students);</b>
+<b class="nc"><i class="no-highlight">45</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">46</i>&nbsp;                clouds = twoClouds.toString();</b>
+<b class="nc"><i class="no-highlight">47</i>&nbsp;            }</b>
+<i class="no-highlight">48</i>&nbsp;
+<i class="no-highlight">49</i>&nbsp;            case 3 -&gt; { // three clouds will be print: the first pair next to each other, the third under the first
+<b class="nc"><i class="no-highlight">50</i>&nbsp;                StringBuilder threeClouds = new StringBuilder();</b>
+<b class="nc"><i class="no-highlight">51</i>&nbsp;                threeClouds.append(&quot;Cloud &quot;).append(ctx.getClouds().get(0).getId()).append(&quot;\t\t&quot; // divider between clouds</b>
+<b class="nc"><i class="no-highlight">52</i>&nbsp;                ).append(&quot;Cloud &quot;).append(ctx.getClouds().get(1).getId()).append(&quot;\n&quot;); // title of cloud 2</b>
+<b class="nc"><i class="no-highlight">53</i>&nbsp;                for (int i = 0; i &lt; 3; i++) { // prints the content of the I and II clouds next to each other if present</b>
+<b class="nc"><i class="no-highlight">54</i>&nbsp;                    threeClouds.append(ctx.getClouds().get(0).getContents().size() &gt; 0 ?</b>
+<b class="nc"><i class="no-highlight">55</i>&nbsp;                            Symbols.colorizeStudent(ctx.getClouds().get(0).getContents().get(i), &quot;\t&quot; +</b>
+<b class="nc"><i class="no-highlight">56</i>&nbsp;                                    Symbols.PAWN + &quot;\t\t&quot;) : &quot;\t\t\t&quot;);</b>
+<b class="nc"><i class="no-highlight">57</i>&nbsp;                    threeClouds.append(ctx.getClouds().get(1).getContents().size() &gt; 0 ?</b>
+<b class="nc"><i class="no-highlight">58</i>&nbsp;                            Symbols.colorizeStudent(ctx.getClouds().get(1).getContents().get(i), &quot;\t&quot; +</b>
+<b class="nc"><i class="no-highlight">59</i>&nbsp;                                    Symbols.PAWN) + &quot;\n&quot; : &quot;\t\t\n&quot;);</b>
+<i class="no-highlight">60</i>&nbsp;                }
+<b class="nc"><i class="no-highlight">61</i>&nbsp;                threeClouds.append(&quot;Cloud &quot;).append(ctx.getClouds().get(2).getId()).append(&quot;\n&quot;); // title of cloud 3</b>
+<b class="nc"><i class="no-highlight">62</i>&nbsp;                for (int i = 0; i &lt; 3; i++) { // prints the content of the III cloud if present</b>
+<b class="nc"><i class="no-highlight">63</i>&nbsp;                    threeClouds.append(ctx.getClouds().get(2).getContents().size() &gt; 0 ?</b>
+<b class="nc"><i class="no-highlight">64</i>&nbsp;                            Symbols.colorizeStudent(ctx.getClouds().get(2).getContents().get(i), &quot;\t&quot;</b>
+<b class="nc"><i class="no-highlight">65</i>&nbsp;                                    + Symbols.PAWN) + &quot;\n&quot; :</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;                            &quot;\t\t\n&quot;);</b>
+<i class="no-highlight">67</i>&nbsp;                }
+<b class="nc"><i class="no-highlight">68</i>&nbsp;                clouds = threeClouds.toString();</b>
+<b class="nc"><i class="no-highlight">69</i>&nbsp;            }</b>
+<i class="no-highlight">70</i>&nbsp;
+<i class="no-highlight">71</i>&nbsp;            case 4 -&gt; { // four clouds will be print as a grid
+<b class="nc"><i class="no-highlight">72</i>&nbsp;                StringBuilder fourClouds = new StringBuilder();</b>
+<b class="nc"><i class="no-highlight">73</i>&nbsp;                fourClouds.append(&quot;Cloud &quot;).append(ctx.getClouds().get(0).getId()).append(&quot;\t\t&quot; // separation between clouds</b>
+<b class="nc"><i class="no-highlight">74</i>&nbsp;                ).append(&quot;Cloud &quot;).append(ctx.getClouds().get(1).getId()).append(&quot;\n&quot;); // title of cloud 2</b>
+<b class="nc"><i class="no-highlight">75</i>&nbsp;                for (int i = 0; i &lt; 3; i++) { // prints the content of the I and II clouds next to each other if present</b>
+<b class="nc"><i class="no-highlight">76</i>&nbsp;                    fourClouds.append(ctx.getClouds().get(0).getContents().size() &gt; 0 ?</b>
+<b class="nc"><i class="no-highlight">77</i>&nbsp;                            Symbols.colorizeStudent(ctx.getClouds().get(0).getContents().get(i), &quot;\t&quot;</b>
+<b class="nc"><i class="no-highlight">78</i>&nbsp;                                    + Symbols.PAWN + &quot;\t\t&quot;) : &quot;\t\t\t&quot;);</b>
+<b class="nc"><i class="no-highlight">79</i>&nbsp;                    fourClouds.append(ctx.getClouds().get(1).getContents().size() &gt; 0 ?</b>
+<b class="nc"><i class="no-highlight">80</i>&nbsp;                            Symbols.colorizeStudent(ctx.getClouds().get(1).getContents().get(i), &quot;\t&quot;</b>
+<b class="nc"><i class="no-highlight">81</i>&nbsp;                                    + Symbols.PAWN) + &quot;\n&quot; : &quot;\t\t\n&quot;);</b>
+<i class="no-highlight">82</i>&nbsp;                }
+<b class="nc"><i class="no-highlight">83</i>&nbsp;                fourClouds.append(&quot;Cloud &quot;).append(ctx.getClouds().get(2).getId()).append(&quot;\t\t&quot; // separation between clouds</b>
+<b class="nc"><i class="no-highlight">84</i>&nbsp;                ).append(&quot;Cloud &quot;).append(ctx.getClouds().get(3).getId()).append(&quot;\n&quot;); // title of cloud 4</b>
+<b class="nc"><i class="no-highlight">85</i>&nbsp;                for (int i = 0; i &lt; 3; i++) { // prints the content of the III and IV clouds next to each other if present</b>
+<b class="nc"><i class="no-highlight">86</i>&nbsp;                    fourClouds.append(ctx.getClouds().get(2).getContents().size() &gt; 0 ?</b>
+<b class="nc"><i class="no-highlight">87</i>&nbsp;                            Symbols.colorizeStudent(ctx.getClouds().get(2).getContents().get(i), &quot;\t&quot;</b>
+<b class="nc"><i class="no-highlight">88</i>&nbsp;                                    + Symbols.PAWN + &quot;\t\t&quot;) : &quot;\t\t\t&quot;);</b>
+<b class="nc"><i class="no-highlight">89</i>&nbsp;                    fourClouds.append(ctx.getClouds().get(3).getContents().size() &gt; 0 ?</b>
+<b class="nc"><i class="no-highlight">90</i>&nbsp;                            Symbols.colorizeStudent(ctx.getClouds().get(3).getContents().get(i), &quot;\t&quot;</b>
+<b class="nc"><i class="no-highlight">91</i>&nbsp;                                    + Symbols.PAWN) + &quot;\n&quot; :</b>
+<b class="nc"><i class="no-highlight">92</i>&nbsp;                            &quot;\t\t\n&quot;);</b>
+<i class="no-highlight">93</i>&nbsp;                }
+<b class="nc"><i class="no-highlight">94</i>&nbsp;                clouds = fourClouds.toString();</b>
+<i class="no-highlight">95</i>&nbsp;            }
+<i class="no-highlight">96</i>&nbsp;        }
+<i class="no-highlight">97</i>&nbsp;        // Multiple newlines are used in conjunction with IslandUI component.
+<i class="no-highlight">98</i>&nbsp;        // If there are more islands than CloudUI component&#39;s lines we still want to print the islands stacked
+<i class="no-highlight">99</i>&nbsp;        // in GameUI.
+<b class="nc"><i class="no-highlight">100</i>&nbsp;        return clouds + &quot;\n\n\n&quot;;</b>
+<i class="no-highlight">101</i>&nbsp;    }
+<i class="no-highlight">102</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

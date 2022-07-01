@@ -299,7 +299,6 @@ public class CharacterCardsPanel extends JPanel {
             //draw Coin's image whether the card has been used at least once
             if (characterCards.get(i).getTimeUsed() > 0) coinLabels.get(i).setVisible(true);
         }
-        ;
         //--ABSOLUTE POSITIONING--
         coinLabels.get(0).setBounds(30, 195, 150, 160);
         coinLabels.get(1).setBounds(371, 195, 150, 160);

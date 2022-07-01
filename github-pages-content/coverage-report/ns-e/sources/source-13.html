@@ -1,0 +1,214 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Island</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Model</a>
+</div>
+
+<h1>Coverage Summary for Class: Island (it.polimi.ingsw.Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Island</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    68,8%
+  </span>
+  <span class="absValue">
+    (11/16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Model;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Logger;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Model.Enums.PawnColour;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Model.Enums.TowerColour;
+<i class="no-highlight">8</i>&nbsp;
+<i class="no-highlight">9</i>&nbsp;import java.io.Serial;
+<i class="no-highlight">10</i>&nbsp;import java.io.Serializable;
+<i class="no-highlight">11</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">12</i>&nbsp;import java.util.List;
+<i class="no-highlight">13</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;/**
+<i class="no-highlight">15</i>&nbsp; * Islands are containers of {@link PawnColour}s and {@link Tower}.The islands can be grouped through {@link IslandGroup}
+<i class="no-highlight">16</i>&nbsp; */
+<i class="no-highlight">17</i>&nbsp;public class Island implements Serializable {
+<i class="no-highlight">18</i>&nbsp;    @Serial
+<i class="no-highlight">19</i>&nbsp;    private static final long serialVersionUID = 121L; // convention: 1 for model, (01 -&gt; 99) for objects
+<i class="no-highlight">20</i>&nbsp;
+<i class="no-highlight">21</i>&nbsp;    private final int id;
+<i class="no-highlight">22</i>&nbsp;    private final ArrayList&lt;PawnColour&gt; students;
+<i class="no-highlight">23</i>&nbsp;    private Tower tower;
+<i class="no-highlight">24</i>&nbsp;
+<i class="no-highlight">25</i>&nbsp;    /**
+<i class="no-highlight">26</i>&nbsp;     * Construct an Island, assinging an ID to it.
+<i class="no-highlight">27</i>&nbsp;     *
+<i class="no-highlight">28</i>&nbsp;     * @param id the id of the constructed Island.
+<i class="no-highlight">29</i>&nbsp;     */
+<b class="fc"><i class="no-highlight">30</i>&nbsp;    public Island(int id) {</b>
+<b class="fc"><i class="no-highlight">31</i>&nbsp;        this.id = id;</b>
+<b class="fc"><i class="no-highlight">32</i>&nbsp;        this.students = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">33</i>&nbsp;        this.tower = null;</b>
+<i class="no-highlight">34</i>&nbsp;    }
+<i class="no-highlight">35</i>&nbsp;
+<i class="no-highlight">36</i>&nbsp;    /**
+<i class="no-highlight">37</i>&nbsp;     * @return the ID of the Island
+<i class="no-highlight">38</i>&nbsp;     */
+<i class="no-highlight">39</i>&nbsp;    public int getId() {
+<b class="fc"><i class="no-highlight">40</i>&nbsp;        return id;</b>
+<i class="no-highlight">41</i>&nbsp;    }
+<i class="no-highlight">42</i>&nbsp;
+<i class="no-highlight">43</i>&nbsp;    /**
+<i class="no-highlight">44</i>&nbsp;     * @return the {@link PawnColour}s contained in the Island
+<i class="no-highlight">45</i>&nbsp;     */
+<i class="no-highlight">46</i>&nbsp;    public List&lt;PawnColour&gt; getStudents() {
+<b class="fc"><i class="no-highlight">47</i>&nbsp;        return new ArrayList&lt;&gt;(students);</b>
+<i class="no-highlight">48</i>&nbsp;    }
+<i class="no-highlight">49</i>&nbsp;
+<i class="no-highlight">50</i>&nbsp;    /**
+<i class="no-highlight">51</i>&nbsp;     * If a tower is present, return a non-empty {@link OptionalValue}
+<i class="no-highlight">52</i>&nbsp;     *
+<i class="no-highlight">53</i>&nbsp;     * @return the colour of the contained tower wrapped in a {@link OptionalValue}
+<i class="no-highlight">54</i>&nbsp;     */
+<i class="no-highlight">55</i>&nbsp;    public OptionalValue&lt;TowerColour&gt; getTowerColour() {
+<b class="fc"><i class="no-highlight">56</i>&nbsp;        if (this.tower == null) return OptionalValue.empty();</b>
+<b class="fc"><i class="no-highlight">57</i>&nbsp;        else return OptionalValue.of(this.tower.getColour());</b>
+<i class="no-highlight">58</i>&nbsp;    }
+<i class="no-highlight">59</i>&nbsp;
+<i class="no-highlight">60</i>&nbsp;    /**
+<i class="no-highlight">61</i>&nbsp;     * a student can be added to the Island through this method
+<i class="no-highlight">62</i>&nbsp;     *
+<i class="no-highlight">63</i>&nbsp;     * @param p the {@link PawnColour} to add to the island
+<i class="no-highlight">64</i>&nbsp;     */
+<i class="no-highlight">65</i>&nbsp;    public void addStudent(PawnColour p) {
+<b class="fc"><i class="no-highlight">66</i>&nbsp;        students.add(p);</b>
+<i class="no-highlight">67</i>&nbsp;    }
+<i class="no-highlight">68</i>&nbsp;
+<i class="no-highlight">69</i>&nbsp;    /**
+<i class="no-highlight">70</i>&nbsp;     * a {@link Tower} may need to be swapped or added during the Island&#39;s lifespan, this method can be used for that
+<i class="no-highlight">71</i>&nbsp;     *
+<i class="no-highlight">72</i>&nbsp;     * @param t the new {@link Tower} to be put on the island. the old tower (if any was present) will be returned to its
+<i class="no-highlight">73</i>&nbsp;     *          rightful storage automatically. The input can be null, this removes the tower from the island
+<i class="no-highlight">74</i>&nbsp;     */
+<i class="no-highlight">75</i>&nbsp;    public void swapTower(Tower t) {
+<b class="pc"><i class="no-highlight">76</i>&nbsp;        if (this.tower != null) {</b>
+<i class="no-highlight">77</i>&nbsp;            try {
+<b class="nc"><i class="no-highlight">78</i>&nbsp;                this.tower.linkBackToStorage();</b>
+<b class="nc"><i class="no-highlight">79</i>&nbsp;            } catch (InvalidElementException e) {</b>
+<b class="nc"><i class="no-highlight">80</i>&nbsp;                Logger.severe(&quot;Tower could not be pushed back to its original Storage. Critical, unrecoverable error&quot;);</b>
+<b class="nc"><i class="no-highlight">81</i>&nbsp;                throw new RuntimeException(e);</b>
+<b class="nc"><i class="no-highlight">82</i>&nbsp;            }</b>
+<i class="no-highlight">83</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">84</i>&nbsp;        this.tower = t;</b>
+<i class="no-highlight">85</i>&nbsp;    }
+<i class="no-highlight">86</i>&nbsp;
+<i class="no-highlight">87</i>&nbsp;    /* //test-purpose only
+<i class="no-highlight">88</i>&nbsp;    @Override
+<i class="no-highlight">89</i>&nbsp;    public String toString() {
+<i class="no-highlight">90</i>&nbsp;        return &quot;Island{&quot; +
+<i class="no-highlight">91</i>&nbsp;                &quot;id=&quot; + id +
+<i class="no-highlight">92</i>&nbsp;                &quot;, students=&quot; + students +
+<i class="no-highlight">93</i>&nbsp;                &quot;, tower=&quot; + tower +
+<i class="no-highlight">94</i>&nbsp;                &#39;}&#39;;
+<i class="no-highlight">95</i>&nbsp;    }
+<i class="no-highlight">96</i>&nbsp;    //*/
+<i class="no-highlight">97</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

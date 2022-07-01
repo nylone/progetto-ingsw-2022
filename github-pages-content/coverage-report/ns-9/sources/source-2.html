@@ -1,0 +1,190 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > EndTurnOfActionPhase</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Controller.Actions</a>
+</div>
+
+<h1>Coverage Summary for Class: EndTurnOfActionPhase (it.polimi.ingsw.Controller.Actions)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EndTurnOfActionPhase</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    40%
+  </span>
+  <span class="absValue">
+    (4/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    72,7%
+  </span>
+  <span class="absValue">
+    (8/11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Controller.Actions;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Exceptions.Input.InputValidationException;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Misc.OptionalValue;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Model.Enums.GamePhase;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Model.Model;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Model.PlayerBoard;
+<i class="no-highlight">9</i>&nbsp;
+<i class="no-highlight">10</i>&nbsp;import java.io.Serial;
+<i class="no-highlight">11</i>&nbsp;import java.util.List;
+<i class="no-highlight">12</i>&nbsp;
+<i class="no-highlight">13</i>&nbsp;import static it.polimi.ingsw.Misc.Utils.countSimilarClassOccurrences;
+<i class="no-highlight">14</i>&nbsp;
+<i class="no-highlight">15</i>&nbsp;/**
+<i class="no-highlight">16</i>&nbsp; * The Action phase is a lengthy one and its length cannot be determined. This {@link PlayerAction} enables the caller to
+<i class="no-highlight">17</i>&nbsp; * end an Action phase on its own accord.
+<i class="no-highlight">18</i>&nbsp; */
+<i class="no-highlight">19</i>&nbsp;public class EndTurnOfActionPhase extends PlayerAction {
+<i class="no-highlight">20</i>&nbsp;    @Serial
+<i class="no-highlight">21</i>&nbsp;    private static final long serialVersionUID = 202L; // convention: 2 for controller, (01 -&gt; 99) for objects
+<i class="no-highlight">22</i>&nbsp;
+<i class="no-highlight">23</i>&nbsp;    /**
+<i class="no-highlight">24</i>&nbsp;     * Create a new instance of this class with the following inputs:
+<i class="no-highlight">25</i>&nbsp;     *
+<i class="no-highlight">26</i>&nbsp;     * @param playerBoardId the ID of the current {@link PlayerBoard}
+<i class="no-highlight">27</i>&nbsp;     */
+<i class="no-highlight">28</i>&nbsp;    public EndTurnOfActionPhase(int playerBoardId) {
+<b class="fc"><i class="no-highlight">29</i>&nbsp;        super(playerBoardId, true);</b>
+<i class="no-highlight">30</i>&nbsp;    }
+<i class="no-highlight">31</i>&nbsp;
+<i class="no-highlight">32</i>&nbsp;    /**
+<i class="no-highlight">33</i>&nbsp;     * {@inheritDoc}
+<i class="no-highlight">34</i>&nbsp;     * &lt;ul&gt;
+<i class="no-highlight">35</i>&nbsp;     *     &lt;li&gt;This action can be called only after having called one and only one {@link ChooseCloudTile} action&lt;/li&gt;
+<i class="no-highlight">36</i>&nbsp;     *     &lt;li&gt;The previous {@link PlayerAction}s must be either {@link ChooseCloudTile} or {@link PlayCharacterCard}&lt;/li&gt;
+<i class="no-highlight">37</i>&nbsp;     * &lt;/ul&gt;
+<i class="no-highlight">38</i>&nbsp;     *
+<i class="no-highlight">39</i>&nbsp;     * @param history the controller stores a {@link List} of previous {@link PlayerAction}s related to the player taking
+<i class="no-highlight">40</i>&nbsp;     *                the current turn (at every new turn, the history is cleared).
+<i class="no-highlight">41</i>&nbsp;     *                Some actions may use this {@link List} to check for duplicates.
+<i class="no-highlight">42</i>&nbsp;     * @param ctx     a reference to {@link Model}. Some actions may use this reference to check for consistency between what
+<i class="no-highlight">43</i>&nbsp;     *                the actions declares and what the Model offers.
+<i class="no-highlight">44</i>&nbsp;     * @return An empty {@link OptionalValue} in case of a successful validation. Otherwise the returned {@link OptionalValue}
+<i class="no-highlight">45</i>&nbsp;     * contains the related {@link InputValidationException}
+<i class="no-highlight">46</i>&nbsp;     */
+<i class="no-highlight">47</i>&nbsp;    @Override
+<i class="no-highlight">48</i>&nbsp;    protected OptionalValue&lt;InputValidationException&gt; customValidation(List&lt;PlayerAction&gt; history, Model ctx) {
+<i class="no-highlight">49</i>&nbsp;
+<b class="fc"><i class="no-highlight">50</i>&nbsp;        if (countSimilarClassOccurrences(ChooseCloudTile.class, history) != 1) {</b>
+<b class="fc"><i class="no-highlight">51</i>&nbsp;            return OptionalValue.of(new GenericInputValidationException(&quot;History&quot;, &quot;ChooseCloudTile action has not been executed&quot;));</b>
+<i class="no-highlight">52</i>&nbsp;        }
+<b class="pc"><i class="no-highlight">53</i>&nbsp;        if (!(history.get(history.size() - 1).getClass() == ChooseCloudTile.class || (history.get(history.size() - 1).getClass() == PlayCharacterCard.class))) {</b>
+<b class="nc"><i class="no-highlight">54</i>&nbsp;            return OptionalValue.of(new GenericInputValidationException(&quot;History&quot;, &quot;this action can only be executed after a ChooseCloudTile action or PlayCharacterCard action&quot;));</b>
+<i class="no-highlight">55</i>&nbsp;        }
+<i class="no-highlight">56</i>&nbsp;
+<b class="fc"><i class="no-highlight">57</i>&nbsp;        return OptionalValue.empty();</b>
+<i class="no-highlight">58</i>&nbsp;    }
+<i class="no-highlight">59</i>&nbsp;
+<i class="no-highlight">60</i>&nbsp;    @Override
+<i class="no-highlight">61</i>&nbsp;    public void unsafeExecute(Model ctx) throws Exception {
+<i class="no-highlight">62</i>&nbsp;        // reset effects through EffectTracker
+<b class="fc"><i class="no-highlight">63</i>&nbsp;        ctx.getMutableEffects().reset();</b>
+<b class="fc"><i class="no-highlight">64</i>&nbsp;        ctx.getMutableTurnOrder().stepToNextPlayer();</b>
+<b class="pc"><i class="no-highlight">65</i>&nbsp;        if (ctx.getMutableTurnOrder().getGamePhase() != GamePhase.ACTION) {</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;            if (ctx.getMutableStudentBag().getSize() &gt; 0) {</b>
+<b class="nc"><i class="no-highlight">67</i>&nbsp;                ctx.refillClouds();</b>
+<i class="no-highlight">68</i>&nbsp;            }
+<i class="no-highlight">69</i>&nbsp;        }
+<i class="no-highlight">70</i>&nbsp;    }
+<i class="no-highlight">71</i>&nbsp;
+<i class="no-highlight">72</i>&nbsp;
+<i class="no-highlight">73</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

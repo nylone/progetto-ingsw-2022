@@ -1,0 +1,223 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > StudentBag</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Model</a>
+</div>
+
+<h1>Coverage Summary for Class: StudentBag (it.polimi.ingsw.Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StudentBag</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,7%
+  </span>
+  <span class="absValue">
+    (12/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91,3%
+  </span>
+  <span class="absValue">
+    (21/23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Model;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Misc.Utils;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Model.Enums.PawnColour;
+<i class="no-highlight">6</i>&nbsp;
+<i class="no-highlight">7</i>&nbsp;import java.io.Serial;
+<i class="no-highlight">8</i>&nbsp;import java.io.Serializable;
+<i class="no-highlight">9</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">10</i>&nbsp;import java.util.List;
+<i class="no-highlight">11</i>&nbsp;
+<i class="no-highlight">12</i>&nbsp;/**
+<i class="no-highlight">13</i>&nbsp; * The StudentBag contains a limited number of {@link PawnColour} ordered randomly.
+<i class="no-highlight">14</i>&nbsp; */
+<i class="no-highlight">15</i>&nbsp;public class StudentBag implements Serializable {
+<i class="no-highlight">16</i>&nbsp;    @Serial
+<i class="no-highlight">17</i>&nbsp;    private static final long serialVersionUID = 130L; // convention: 1 for model, (01 -&gt; 99) for objects
+<i class="no-highlight">18</i>&nbsp;    private ArrayList&lt;PawnColour&gt; studentBag;
+<i class="no-highlight">19</i>&nbsp;    private boolean isEmpty;
+<i class="no-highlight">20</i>&nbsp;
+<i class="no-highlight">21</i>&nbsp;    /**
+<i class="no-highlight">22</i>&nbsp;     * Construct the bag
+<i class="no-highlight">23</i>&nbsp;     *
+<i class="no-highlight">24</i>&nbsp;     * @param numOfStudentsPerColour the number of each color of students to put in the bag
+<i class="no-highlight">25</i>&nbsp;     */
+<b class="fc"><i class="no-highlight">26</i>&nbsp;    public StudentBag(int numOfStudentsPerColour) {</b>
+<b class="fc"><i class="no-highlight">27</i>&nbsp;        this.studentBag = new ArrayList&lt;&gt;(numOfStudentsPerColour * PawnColour.values().length);</b>
+<i class="no-highlight">28</i>&nbsp;        for (PawnColour colour :
+<b class="fc"><i class="no-highlight">29</i>&nbsp;                PawnColour.values()) {</b>
+<b class="fc"><i class="no-highlight">30</i>&nbsp;            for (int i = 0; i &lt; numOfStudentsPerColour; i++) {</b>
+<b class="fc"><i class="no-highlight">31</i>&nbsp;                studentBag.add(colour);</b>
+<i class="no-highlight">32</i>&nbsp;            }
+<i class="no-highlight">33</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">34</i>&nbsp;        Utils.shuffle(this.studentBag);</b>
+<b class="fc"><i class="no-highlight">35</i>&nbsp;        this.isEmpty = false;</b>
+<i class="no-highlight">36</i>&nbsp;    }
+<i class="no-highlight">37</i>&nbsp;
+<i class="no-highlight">38</i>&nbsp;    /**
+<i class="no-highlight">39</i>&nbsp;     * Check to see if the bag is empty
+<i class="no-highlight">40</i>&nbsp;     *
+<i class="no-highlight">41</i>&nbsp;     * @return true if the bag is empty
+<i class="no-highlight">42</i>&nbsp;     */
+<i class="no-highlight">43</i>&nbsp;    public boolean isEmpty() {
+<b class="fc"><i class="no-highlight">44</i>&nbsp;        return this.isEmpty;</b>
+<i class="no-highlight">45</i>&nbsp;    }
+<i class="no-highlight">46</i>&nbsp;
+<i class="no-highlight">47</i>&nbsp;    /**
+<i class="no-highlight">48</i>&nbsp;     * Extract multiple {@link PawnColour}s at once
+<i class="no-highlight">49</i>&nbsp;     *
+<i class="no-highlight">50</i>&nbsp;     * @param extractions number of maximum extractions to carry out. The number of extracted students may be lower than the
+<i class="no-highlight">51</i>&nbsp;     *                    number specified as input, if the bag empties out during the extraction
+<i class="no-highlight">52</i>&nbsp;     * @return an Unmodifiable {@link List} containing the extracted {@link PawnColour}
+<i class="no-highlight">53</i>&nbsp;     */
+<i class="no-highlight">54</i>&nbsp;    public List&lt;PawnColour&gt; multipleExtraction(int extractions) {
+<b class="fc"><i class="no-highlight">55</i>&nbsp;        List&lt;PawnColour&gt; extracted = new ArrayList&lt;&gt;();</b>
+<b class="pc"><i class="no-highlight">56</i>&nbsp;        for (int i = 0; i &lt; extractions &amp;&amp; !this.isEmpty; i++) {</b>
+<i class="no-highlight">57</i>&nbsp;            try {
+<b class="fc"><i class="no-highlight">58</i>&nbsp;                extracted.add(this.extract());</b>
+<b class="nc"><i class="no-highlight">59</i>&nbsp;            } catch (EmptyContainerException e) {</b>
+<i class="no-highlight">60</i>&nbsp;                // this catch clause should never be executed
+<b class="nc"><i class="no-highlight">61</i>&nbsp;                throw new RuntimeException(e);</b>
+<b class="fc"><i class="no-highlight">62</i>&nbsp;            }</b>
+<i class="no-highlight">63</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">64</i>&nbsp;        return List.copyOf(extracted);</b>
+<i class="no-highlight">65</i>&nbsp;    }
+<i class="no-highlight">66</i>&nbsp;
+<i class="no-highlight">67</i>&nbsp;    /**
+<i class="no-highlight">68</i>&nbsp;     * Extract a single {@link PawnColour} from the bag
+<i class="no-highlight">69</i>&nbsp;     *
+<i class="no-highlight">70</i>&nbsp;     * @return the extracted student
+<i class="no-highlight">71</i>&nbsp;     * @throws EmptyContainerException if the bag is empty
+<i class="no-highlight">72</i>&nbsp;     */
+<i class="no-highlight">73</i>&nbsp;    public PawnColour extract() throws EmptyContainerException {
+<b class="fc"><i class="no-highlight">74</i>&nbsp;        if (this.isEmpty) throw new EmptyContainerException(&quot;StudentBag&quot;);</b>
+<b class="fc"><i class="no-highlight">75</i>&nbsp;        if (this.getSize() == 1) this.isEmpty = true;</b>
+<b class="fc"><i class="no-highlight">76</i>&nbsp;        return this.studentBag.remove(this.studentBag.size() - 1);</b>
+<i class="no-highlight">77</i>&nbsp;    }
+<i class="no-highlight">78</i>&nbsp;
+<i class="no-highlight">79</i>&nbsp;    /**
+<i class="no-highlight">80</i>&nbsp;     * Check the remaining students in the bag
+<i class="no-highlight">81</i>&nbsp;     *
+<i class="no-highlight">82</i>&nbsp;     * @return the size of the bag
+<i class="no-highlight">83</i>&nbsp;     */
+<i class="no-highlight">84</i>&nbsp;    public int getSize() {
+<b class="fc"><i class="no-highlight">85</i>&nbsp;        return studentBag.size();</b>
+<i class="no-highlight">86</i>&nbsp;    }
+<i class="no-highlight">87</i>&nbsp;
+<i class="no-highlight">88</i>&nbsp;    /**
+<i class="no-highlight">89</i>&nbsp;     * Put a student back in the bag and shuffle it in.
+<i class="no-highlight">90</i>&nbsp;     *
+<i class="no-highlight">91</i>&nbsp;     * @param colour the {@link PawnColour} to add back to the bag
+<i class="no-highlight">92</i>&nbsp;     */
+<i class="no-highlight">93</i>&nbsp;    public void appendAndShuffle(PawnColour colour) {
+<b class="pc"><i class="no-highlight">94</i>&nbsp;        if (this.getSize() == 0) this.isEmpty = false;</b>
+<b class="fc"><i class="no-highlight">95</i>&nbsp;        this.studentBag.add(colour);</b>
+<b class="fc"><i class="no-highlight">96</i>&nbsp;        Utils.shuffle(this.studentBag);</b>
+<i class="no-highlight">97</i>&nbsp;    }
+<i class="no-highlight">98</i>&nbsp;
+<i class="no-highlight">99</i>&nbsp;    /**
+<i class="no-highlight">100</i>&nbsp;     * Used to sanitize {@link Model}. Removes information about the internal contents of the bag, making the spoofing of
+<i class="no-highlight">101</i>&nbsp;     * technically hidden information impossible on the client side.
+<i class="no-highlight">102</i>&nbsp;     */
+<i class="no-highlight">103</i>&nbsp;    public void removeContentReference() {
+<b class="fc"><i class="no-highlight">104</i>&nbsp;        this.studentBag = null;</b>
+<i class="no-highlight">105</i>&nbsp;    }
+<i class="no-highlight">106</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

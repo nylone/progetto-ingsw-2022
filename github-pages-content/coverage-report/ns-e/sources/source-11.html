@@ -1,0 +1,198 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Cloud</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Model</a>
+</div>
+
+<h1>Coverage Summary for Class: Cloud (it.polimi.ingsw.Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Cloud</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Model;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Exceptions.Container.EmptyContainerException;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Exceptions.Container.FullContainerException;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Model.Enums.PawnColour;
+<i class="no-highlight">6</i>&nbsp;
+<i class="no-highlight">7</i>&nbsp;import java.io.Serial;
+<i class="no-highlight">8</i>&nbsp;import java.io.Serializable;
+<i class="no-highlight">9</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">10</i>&nbsp;import java.util.Collection;
+<i class="no-highlight">11</i>&nbsp;import java.util.List;
+<i class="no-highlight">12</i>&nbsp;
+<i class="no-highlight">13</i>&nbsp;/**
+<i class="no-highlight">14</i>&nbsp; * The Cloud class is used to replenish pawns in the entrance fields of the {@link PlayerBoard#getEntranceStudents()}
+<i class="no-highlight">15</i>&nbsp; */
+<i class="no-highlight">16</i>&nbsp;public class Cloud implements Serializable {
+<i class="no-highlight">17</i>&nbsp;    @Serial
+<i class="no-highlight">18</i>&nbsp;    private static final long serialVersionUID = 118L; // convention: 1 for model, (01 -&gt; 99) for objects
+<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">20</i>&nbsp;    private final int id;
+<i class="no-highlight">21</i>&nbsp;    private ArrayList&lt;PawnColour&gt; contents;
+<i class="no-highlight">22</i>&nbsp;
+<i class="no-highlight">23</i>&nbsp;    /**
+<i class="no-highlight">24</i>&nbsp;     * Construct a Cloud, assigning an ID to it.
+<i class="no-highlight">25</i>&nbsp;     *
+<i class="no-highlight">26</i>&nbsp;     * @param id if the cloud is in an array, the id will be the index of the array at which the cloud is located
+<i class="no-highlight">27</i>&nbsp;     */
+<b class="fc"><i class="no-highlight">28</i>&nbsp;    public Cloud(int id) {</b>
+<b class="fc"><i class="no-highlight">29</i>&nbsp;        this.id = id;</b>
+<b class="fc"><i class="no-highlight">30</i>&nbsp;        contents = new ArrayList&lt;&gt;(3);</b>
+<i class="no-highlight">31</i>&nbsp;    }
+<i class="no-highlight">32</i>&nbsp;
+<i class="no-highlight">33</i>&nbsp;    /**
+<i class="no-highlight">34</i>&nbsp;     * The ID of the cloud is the index of the array in which the Cloud is stored
+<i class="no-highlight">35</i>&nbsp;     *
+<i class="no-highlight">36</i>&nbsp;     * @return the ID of the cloud
+<i class="no-highlight">37</i>&nbsp;     */
+<i class="no-highlight">38</i>&nbsp;    public int getId() {
+<b class="fc"><i class="no-highlight">39</i>&nbsp;        return id;</b>
+<i class="no-highlight">40</i>&nbsp;    }
+<i class="no-highlight">41</i>&nbsp;
+<i class="no-highlight">42</i>&nbsp;    /**
+<i class="no-highlight">43</i>&nbsp;     * A Cloud will need to be emptied out, eventually. This method returns a {@link List} of {@link PawnColour} and empties the Cloud.
+<i class="no-highlight">44</i>&nbsp;     *
+<i class="no-highlight">45</i>&nbsp;     * @return a {@link List} of {@link PawnColour}s that were contained in the Cloud
+<i class="no-highlight">46</i>&nbsp;     * @throws EmptyContainerException if the Cloud being emptied was already empty, this exception is thrown.
+<i class="no-highlight">47</i>&nbsp;     */
+<i class="no-highlight">48</i>&nbsp;    public List&lt;PawnColour&gt; extractContents() throws EmptyContainerException {
+<b class="fc"><i class="no-highlight">49</i>&nbsp;        if (contents.size() &gt; 0) {</b>
+<b class="fc"><i class="no-highlight">50</i>&nbsp;            ArrayList&lt;PawnColour&gt; toReturn = new ArrayList&lt;&gt;(this.contents);</b>
+<b class="fc"><i class="no-highlight">51</i>&nbsp;            this.contents = new ArrayList&lt;&gt;(3);</b>
+<b class="fc"><i class="no-highlight">52</i>&nbsp;            return toReturn;</b>
+<i class="no-highlight">53</i>&nbsp;        } else {
+<b class="fc"><i class="no-highlight">54</i>&nbsp;            throw new EmptyContainerException(&quot;Cloud&quot;);</b>
+<i class="no-highlight">55</i>&nbsp;        }
+<i class="no-highlight">56</i>&nbsp;    }
+<i class="no-highlight">57</i>&nbsp;
+<i class="no-highlight">58</i>&nbsp;    /**
+<i class="no-highlight">59</i>&nbsp;     * Cloud contents may be inspected without emptying the tile.
+<i class="no-highlight">60</i>&nbsp;     *
+<i class="no-highlight">61</i>&nbsp;     * @return an {@link java.util.List#copyOf(Collection)} of the contents of the Cloud
+<i class="no-highlight">62</i>&nbsp;     */
+<i class="no-highlight">63</i>&nbsp;    public List&lt;PawnColour&gt; getContents() {
+<b class="fc"><i class="no-highlight">64</i>&nbsp;        return List.copyOf(contents);</b>
+<i class="no-highlight">65</i>&nbsp;    }
+<i class="no-highlight">66</i>&nbsp;
+<i class="no-highlight">67</i>&nbsp;    /**
+<i class="no-highlight">68</i>&nbsp;     * A cloud may need to be filled from time to time. this method is used for that
+<i class="no-highlight">69</i>&nbsp;     *
+<i class="no-highlight">70</i>&nbsp;     * @param colours a {@link List} of {@link PawnColour}s to put in the Cloud tile
+<i class="no-highlight">71</i>&nbsp;     * @throws FullContainerException if the Cloud being filled already had some contents, this exception will be thrown
+<i class="no-highlight">72</i>&nbsp;     */
+<i class="no-highlight">73</i>&nbsp;    public void fill(List&lt;PawnColour&gt; colours) throws FullContainerException {
+<b class="fc"><i class="no-highlight">74</i>&nbsp;        if (contents.isEmpty()) {</b>
+<b class="fc"><i class="no-highlight">75</i>&nbsp;            contents.addAll(colours);</b>
+<i class="no-highlight">76</i>&nbsp;        } else {
+<b class="fc"><i class="no-highlight">77</i>&nbsp;            throw new FullContainerException(&quot;Cloud&quot;);</b>
+<i class="no-highlight">78</i>&nbsp;        }
+<i class="no-highlight">79</i>&nbsp;    }
+<i class="no-highlight">80</i>&nbsp;}
+<i class="no-highlight">81</i>&nbsp;
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>

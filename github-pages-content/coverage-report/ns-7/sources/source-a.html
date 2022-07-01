@@ -1,0 +1,238 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > UserCredentialsPanel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.Client.GUI.Panels</a>
+</div>
+
+<h1>Coverage Summary for Class: UserCredentialsPanel (it.polimi.ingsw.Client.GUI.Panels)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserCredentialsPanel</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/58)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.Client.GUI.Panels;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.Client.GUI.Context;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.Client.GUI.IconLoader;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.Network.SocketWrapper;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Requests.DeclarePlayerRequest;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Server.Messages.Message;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyAccept;
+<i class="no-highlight">9</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
+<i class="no-highlight">10</i>&nbsp;
+<i class="no-highlight">11</i>&nbsp;import javax.swing.*;
+<i class="no-highlight">12</i>&nbsp;import java.awt.*;
+<i class="no-highlight">13</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">14</i>&nbsp;
+<i class="no-highlight">15</i>&nbsp;/**
+<i class="no-highlight">16</i>&nbsp; * Panel that allows user to choose his username
+<i class="no-highlight">17</i>&nbsp; */
+<i class="no-highlight">18</i>&nbsp;public class UserCredentialsPanel extends JPanel {
+<i class="no-highlight">19</i>&nbsp;    /**
+<i class="no-highlight">20</i>&nbsp;     * Create a new UserCredentialsPanel
+<i class="no-highlight">21</i>&nbsp;     *
+<i class="no-highlight">22</i>&nbsp;     * @param ctx context received form StartPanel
+<i class="no-highlight">23</i>&nbsp;     */
+<b class="nc"><i class="no-highlight">24</i>&nbsp;    public UserCredentialsPanel(Context ctx) {</b>
+<i class="no-highlight">25</i>&nbsp;        // unwrapping context into useful variables
+<b class="nc"><i class="no-highlight">26</i>&nbsp;        SocketWrapper sw = ctx.getSocketWrapper();</b>
+<i class="no-highlight">27</i>&nbsp;
+<i class="no-highlight">28</i>&nbsp;        // labels
+<b class="nc"><i class="no-highlight">29</i>&nbsp;        JLabel title = new JLabel(&quot;Login&quot;);</b>
+<b class="nc"><i class="no-highlight">30</i>&nbsp;        title.setFont(new Font(&quot;SansSerif&quot;, Font.BOLD, 50));</b>
+<b class="nc"><i class="no-highlight">31</i>&nbsp;        title.setForeground(Color.WHITE);</b>
+<b class="nc"><i class="no-highlight">32</i>&nbsp;        JLabel usernameLabel = new JLabel(&quot;Username:&quot;, SwingConstants.RIGHT);</b>
+<b class="nc"><i class="no-highlight">33</i>&nbsp;        usernameLabel.setFont(new Font(&quot;SansSerif&quot;, Font.PLAIN, 20));</b>
+<b class="nc"><i class="no-highlight">34</i>&nbsp;        usernameLabel.setForeground(Color.WHITE);</b>
+<i class="no-highlight">35</i>&nbsp;
+<i class="no-highlight">36</i>&nbsp;        // text fields
+<b class="nc"><i class="no-highlight">37</i>&nbsp;        JTextField username = new JTextField(&quot;guest&quot; + (int) (Math.random() * 1000), 10);</b>
+<i class="no-highlight">38</i>&nbsp;
+<i class="no-highlight">39</i>&nbsp;        // buttons
+<b class="nc"><i class="no-highlight">40</i>&nbsp;        JButton login = new JButton(&quot;Login&quot;);</b>
+<i class="no-highlight">41</i>&nbsp;
+<i class="no-highlight">42</i>&nbsp;        // adding all elements to the view
+<b class="nc"><i class="no-highlight">43</i>&nbsp;        this.add(title);</b>
+<b class="nc"><i class="no-highlight">44</i>&nbsp;        this.add(usernameLabel);</b>
+<b class="nc"><i class="no-highlight">45</i>&nbsp;        this.add(username);</b>
+<b class="nc"><i class="no-highlight">46</i>&nbsp;        this.add(login);</b>
+<i class="no-highlight">47</i>&nbsp;
+<i class="no-highlight">48</i>&nbsp;        // setting correct focus
+<b class="nc"><i class="no-highlight">49</i>&nbsp;        username.requestFocusInWindow();</b>
+<i class="no-highlight">50</i>&nbsp;
+<i class="no-highlight">51</i>&nbsp;        // actionListeners
+<b class="nc"><i class="no-highlight">52</i>&nbsp;        username.addActionListener((actionEvent -&gt; {</b>
+<b class="nc"><i class="no-highlight">53</i>&nbsp;            username.setText(username.getText().trim());</b>
+<b class="nc"><i class="no-highlight">54</i>&nbsp;            login.requestFocusInWindow();</b>
+<i class="no-highlight">55</i>&nbsp;        }));
+<b class="nc"><i class="no-highlight">56</i>&nbsp;        login.addActionListener(actionEvent -&gt; {</b>
+<b class="nc"><i class="no-highlight">57</i>&nbsp;            login.setEnabled(false);</b>
+<i class="no-highlight">58</i>&nbsp;            // normalize username
+<b class="nc"><i class="no-highlight">59</i>&nbsp;            ctx.setNickname(username.getText().trim());</b>
+<b class="nc"><i class="no-highlight">60</i>&nbsp;            username.setText(ctx.getNickname());</b>
+<i class="no-highlight">61</i>&nbsp;            try {
+<b class="nc"><i class="no-highlight">62</i>&nbsp;                sw.sendMessage(new DeclarePlayerRequest(ctx.getNickname()));</b>
+<b class="nc"><i class="no-highlight">63</i>&nbsp;            } catch (Exception e) {</b>
+<b class="nc"><i class="no-highlight">64</i>&nbsp;                e.printStackTrace();</b>
+<b class="nc"><i class="no-highlight">65</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;            new Thread(() -&gt; {</b>
+<i class="no-highlight">67</i>&nbsp;                try {
+<b class="nc"><i class="no-highlight">68</i>&nbsp;                    boolean again = true;</b>
+<i class="no-highlight">69</i>&nbsp;                    do {
+<b class="nc"><i class="no-highlight">70</i>&nbsp;                        Message response = sw.awaitMessage();</b>
+<b class="nc"><i class="no-highlight">71</i>&nbsp;                        if (response instanceof LobbyAccept lobbyAccept) {</b>
+<b class="nc"><i class="no-highlight">72</i>&nbsp;                            if (lobbyAccept.getStatusCode() == StatusCode.Success) {</b>
+<i class="no-highlight">73</i>&nbsp;                                //Switch to a new LobbySelectionPanel if user has been accepted by Server
+<b class="nc"><i class="no-highlight">74</i>&nbsp;                                ctx.getWindow().changeView(new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies()));</b>
+<b class="nc"><i class="no-highlight">75</i>&nbsp;                                again = false;</b>
+<i class="no-highlight">76</i>&nbsp;                            } else {
+<b class="nc"><i class="no-highlight">77</i>&nbsp;                                JOptionPane.showMessageDialog(null, &quot;Server denied your login&quot;,</b>
+<i class="no-highlight">78</i>&nbsp;                                        &quot;Warning&quot;, JOptionPane.INFORMATION_MESSAGE);
+<b class="nc"><i class="no-highlight">79</i>&nbsp;                                login.setEnabled(true);</b>
+<i class="no-highlight">80</i>&nbsp;                            }
+<i class="no-highlight">81</i>&nbsp;                        } else {
+<b class="nc"><i class="no-highlight">82</i>&nbsp;                            throw new IllegalStateException(&quot;Unexpected value: &quot; + response);</b>
+<i class="no-highlight">83</i>&nbsp;                        }
+<b class="nc"><i class="no-highlight">84</i>&nbsp;                    } while (again);</b>
+<b class="nc"><i class="no-highlight">85</i>&nbsp;                } catch (Exception e) {</b>
+<b class="nc"><i class="no-highlight">86</i>&nbsp;                    JOptionPane.showMessageDialog(null, &quot;Error in the connection with the server&quot;,</b>
+<i class="no-highlight">87</i>&nbsp;                            &quot;Warning&quot;, JOptionPane.INFORMATION_MESSAGE);
+<i class="no-highlight">88</i>&nbsp;                    try {
+<b class="nc"><i class="no-highlight">89</i>&nbsp;                        sw.close();</b>
+<b class="nc"><i class="no-highlight">90</i>&nbsp;                    } catch (IOException ex) {</b>
+<b class="nc"><i class="no-highlight">91</i>&nbsp;                        throw new RuntimeException(ex);</b>
+<b class="nc"><i class="no-highlight">92</i>&nbsp;                    }</b>
+<b class="nc"><i class="no-highlight">93</i>&nbsp;                    ctx.getWindow().changeView(new StartPanel(ctx));</b>
+<b class="nc"><i class="no-highlight">94</i>&nbsp;                }</b>
+<b class="nc"><i class="no-highlight">95</i>&nbsp;            }).start();</b>
+<i class="no-highlight">96</i>&nbsp;        });
+<i class="no-highlight">97</i>&nbsp;
+<i class="no-highlight">98</i>&nbsp;        // layout object declaration and setup
+<b class="nc"><i class="no-highlight">99</i>&nbsp;        SpringLayout layout = new SpringLayout();</b>
+<i class="no-highlight">100</i>&nbsp;
+<b class="nc"><i class="no-highlight">101</i>&nbsp;        layout.putConstraint(SpringLayout.VERTICAL_CENTER, title, 340, SpringLayout.NORTH, this);</b>
+<b class="nc"><i class="no-highlight">102</i>&nbsp;        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, title, 0, SpringLayout.HORIZONTAL_CENTER, this);</b>
+<i class="no-highlight">103</i>&nbsp;
+<b class="nc"><i class="no-highlight">104</i>&nbsp;        layout.putConstraint(SpringLayout.VERTICAL_CENTER, usernameLabel, 65, SpringLayout.VERTICAL_CENTER, title);</b>
+<b class="nc"><i class="no-highlight">105</i>&nbsp;        layout.putConstraint(SpringLayout.EAST, usernameLabel, -10, SpringLayout.HORIZONTAL_CENTER, title);</b>
+<b class="nc"><i class="no-highlight">106</i>&nbsp;        layout.putConstraint(SpringLayout.VERTICAL_CENTER, username, 0, SpringLayout.VERTICAL_CENTER, usernameLabel);</b>
+<b class="nc"><i class="no-highlight">107</i>&nbsp;        layout.putConstraint(SpringLayout.WEST, username, 10, SpringLayout.HORIZONTAL_CENTER, title);</b>
+<i class="no-highlight">108</i>&nbsp;
+<b class="nc"><i class="no-highlight">109</i>&nbsp;        layout.putConstraint(SpringLayout.VERTICAL_CENTER, login, 40, SpringLayout.VERTICAL_CENTER, username);</b>
+<b class="nc"><i class="no-highlight">110</i>&nbsp;        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, login, 0, SpringLayout.HORIZONTAL_CENTER, this);</b>
+<i class="no-highlight">111</i>&nbsp;
+<i class="no-highlight">112</i>&nbsp;        // apply layout
+<b class="nc"><i class="no-highlight">113</i>&nbsp;        this.setLayout(layout);</b>
+<i class="no-highlight">114</i>&nbsp;    }
+<i class="no-highlight">115</i>&nbsp;
+<i class="no-highlight">116</i>&nbsp;    @Override
+<i class="no-highlight">117</i>&nbsp;    protected void paintComponent(Graphics g) {
+<b class="nc"><i class="no-highlight">118</i>&nbsp;        super.paintComponent(g);</b>
+<b class="nc"><i class="no-highlight">119</i>&nbsp;        g.drawImage(IconLoader.userCredentialBackground.getImage(), 0, 0, null);</b>
+<i class="no-highlight">120</i>&nbsp;    }
+<i class="no-highlight">121</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 18:11</div>
+</div>
+</body>
+</html>
