@@ -173,7 +173,7 @@ public class ClientView {
      * Support method responsible for printing all players' PlayerBoards
      */
     private void printGameBoards() {
-        System.out.println("PLAYERBOARDS");
+        System.out.println(Symbols.BACKGROUND + "PLAYERBOARDS");
         //simple loop to print playerBoard and its Owner's nickname
         for (PlayerBoard pb : this.model.getMutablePlayerBoards()) {
             if (this.getNickname().equals(pb.getNickname())) {
