@@ -50,7 +50,7 @@ public class GameInProgressPanel extends JTabbedPane {
         this.window = ctx.getWindow();
         this.sw = ctx.getSocketWrapper();
         this.window.changeView(this);
-        this.guiSocketListener = new GUISocketListener(ctx);
+        this.guiSocketListener = new GUISocketListener(this, ctx);
         //run GuiReader thread
         Thread readerThread = new Thread(guiSocketListener);
         readerThread.start();
@@ -120,33 +120,32 @@ public class GameInProgressPanel extends JTabbedPane {
             this.add("Clouds", new CloudPanel(model.getClouds(), model.getMutableTurnOrder().getMutableCurrentPlayer(), guiSocketListener, sw));
 
             if (ownNickname.equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {
-                this.add(getNextAction(model), null);
-                this.setEnabledAt(this.getTabCount() - 1, false);
+                this.add("NEXT ACTION: " + getNextAction(model), null);
+            } else {
+                this.add("WAIT YOUR TURN", null);
             }
+            this.setEnabledAt(this.getTabCount() - 1, false);
+
             //set JTabbedPane to last tab whether the user has moved MotherNature (las tab is always the CloudPanel)
             if (guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
                 this.setSelectedIndex(this.getTabCount() - 2);
-                this.getSelectedComponent();
             }
-            if (model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname().equals(ownNickname)) {
-                if (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0
-                        || (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) == 0)
-                ) {
-                    StringBuilder text;
-                    if (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1) {
-                        text = new StringBuilder("It's your turn!!");
-                    } else {
-                        text = new StringBuilder("<html>It's your turn!!<br>");
-                        for (PlayerBoard playerBoard : model.getMutableTurnOrder().getCurrentTurnOrder()) {
-                            if (playerBoard.getNickname().equals(ownNickname)) break;
-                            text.append(playerBoard.getNickname()).append(" has played assistantCard: #").append(model.getMutableTurnOrder().getMutableSelectedCard(playerBoard).get().getPriority()).append("<br>");
-                        }
-                        text.append("</html>");
+            if (model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname().equals(ownNickname) &&
+                    (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0 ||
+                            (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1 &&
+                            guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) == 0))) {
+                // when selecting an assistant card, remember the user what other players have chosen
+                StringBuilder text = new StringBuilder("<html>It's your turn!!");
+                if (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0) {
+                    for (PlayerBoard playerBoard : model.getMutableTurnOrder().getCurrentTurnOrder()) {
+                        if (playerBoard.getNickname().equals(ownNickname)) break;
+                        text.append(playerBoard.getNickname()).append("<br> has played assistantCard: #").append(model.getMutableTurnOrder().getMutableSelectedCard(playerBoard).get().getPriority());
                     }
-                    JLabel resLabel = new JLabel(text.toString());
-                    resLabel.setFont(new Font("Monospaced", Font.BOLD, 17));
-                    JOptionPane.showMessageDialog(null, resLabel, "Turn change", JOptionPane.INFORMATION_MESSAGE);
                 }
+                text.append("</html>");
+                JLabel resLabel = new JLabel(text.toString());
+                resLabel.setFont(new Font("Monospaced", Font.BOLD, 17));
+                JOptionPane.showMessageDialog(null, resLabel, "Turn change", JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
             this.add("WINNERS", new EndGamePanel(model.getWinners().get(), ctx));
@@ -169,28 +168,31 @@ public class GameInProgressPanel extends JTabbedPane {
     }
 
     private String getNextAction(Model model) {
-        String nextAction = "NEXT ACTION: ";
+        String nextAction = "";
+        if (guiSocketListener.getSuccessfulRequestsByType(PlayCharacterCard.class) == 0 && model.getGameMode() == GameMode.ADVANCED) {
+            nextAction = "play character card or ";
+        }
         if (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0) {
-            nextAction = nextAction + "Play assistant card";
+            nextAction = nextAction + "play assistant card";
             return nextAction;
         }
         if ((model.getMutablePlayerBoards().size() != 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) < 3) ||
                 (model.getMutablePlayerBoards().size() == 3 && guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) < 4)) {
-            nextAction = nextAction + "Move Student";
+            nextAction = nextAction + "move Student";
             return nextAction;
         }
         if (guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 0) {
-            nextAction = nextAction + "Move MotherNature";
+            nextAction = nextAction + "move MotherNature";
             return nextAction;
         }
         if (guiSocketListener.getSuccessfulRequestsByType(ChooseCloudTile.class) == 0) {
-            nextAction = nextAction + "Choose cloud";
+            nextAction = nextAction + "choose cloud";
             return nextAction;
         }
         if (guiSocketListener.getSuccessfulRequestsByType(EndTurnOfActionPhase.class) == 0) {
-            nextAction = nextAction + "End your turn";
+            nextAction = nextAction + "end the turn";
             return nextAction;
         }
-        return "No action is currently available";
+        return "no action can be executed";
     }
 }

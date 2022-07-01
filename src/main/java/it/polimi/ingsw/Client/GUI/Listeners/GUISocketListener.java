@@ -20,7 +20,10 @@ import java.util.List;
  * Handles messages received from server and keep a record of current player's actions executed during its turn
  */
 public class GUISocketListener implements Runnable {
-
+    /**
+     * JTabbedPane containing all others JPanels
+     */
+    private final GameInProgressPanel gameInProgressPanel;
     /**
      * List of actions executed by current player and their feedbacks
      */
@@ -44,7 +47,9 @@ public class GUISocketListener implements Runnable {
      *
      * @param ctx Context containing socket and GUI's window
      */
-    public GUISocketListener(Context ctx) {
+    public GUISocketListener(GameInProgressPanel gameInProgressPanel, Context ctx) {
+        this.gameInProgressPanel = gameInProgressPanel;
+        this.playerActionRequest = null;
         this.sw = ctx.getSocketWrapper();
         this.ctx = ctx;
     }
@@ -85,8 +90,9 @@ public class GUISocketListener implements Runnable {
                         if (playerActionRequest.getClass().equals(EndTurnOfActionPhase.class) && playerActionFeedback.getStatusCode() == StatusCode.Success) {
                             requestAndFeedback.clear();
                         }
+                        playerActionRequest = null;
                     }
-                    case GameOver gameOver -> {
+                    case GameOver ignored -> {
                         return;
                     }
                     case InvalidRequest ignored ->
@@ -113,7 +119,18 @@ public class GUISocketListener implements Runnable {
      * @param playerActionRequest playerActionRequest to save
      */
     public void savePlayerActionRequest(PlayerAction playerActionRequest) {
-        this.playerActionRequest = playerActionRequest;
+        if (this.playerActionRequest == null) {
+            this.playerActionRequest = playerActionRequest;
+        }
+    }
+
+    /**
+     * Check to see if a new {@link it.polimi.ingsw.Server.Messages.Events.Requests.PlayerActionRequest} can be sent to the server
+     * or if the gui should wait before allowing any more actions to be sent
+     * @return true if the listener is polling for a feedback to a previous player's action, false otherwise
+     */
+    public boolean awaitingPlayerActionFeedback() {
+        return playerActionRequest != null;
     }
 
     /**

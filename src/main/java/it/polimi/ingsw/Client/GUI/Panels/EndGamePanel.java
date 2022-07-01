@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.PlayerBoard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.List;
 
 import static it.polimi.ingsw.Client.GUI.IconLoader.sky;
@@ -36,7 +37,14 @@ public class EndGamePanel extends JPanel {
         JButton closeButton = new JButton("Close game");
         closeButton.addActionListener(e -> System.exit(0));
         JButton startButton = new JButton("Play again");
-        startButton.addActionListener(e -> ctx.getWindow().changeView(new UserCredentialsPanel(ctx)));
+        startButton.addActionListener(e -> {
+            try {
+                ctx.getSocketWrapper().close();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            ctx.getWindow().changeView(new StartPanel(ctx));
+        });
         //---ABSOLUTE POSITIONING---
         WinTitle.setBounds(250, 10, 523, 120);
         winnersNames.setBounds(0, 200, 1080, 150);

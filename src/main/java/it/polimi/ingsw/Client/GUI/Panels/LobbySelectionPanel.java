@@ -120,7 +120,7 @@ public class LobbySelectionPanel extends JTabbedPane {
                                 window.changeView(new GameStartingPanel(ctx, false, lobbyRedirect.getLobbyID()));
                                 again = false;
                             } else {
-                                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE));
+                                JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE);
                                 connect.setEnabled(true);
                             }
                         } else {
@@ -128,7 +128,8 @@ public class LobbySelectionPanel extends JTabbedPane {
                         }
                     } while (again);
                 } catch (Exception e) {
-                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Error", JOptionPane.INFORMATION_MESSAGE));
+                    JOptionPane.showMessageDialog(null, "Error in the connection with the server",
+                            "Error", JOptionPane.INFORMATION_MESSAGE);
                     try {
                         sw.close();
                     } catch (IOException ex) {
@@ -212,7 +213,7 @@ public class LobbySelectionPanel extends JTabbedPane {
                                 window.changeView(new GameStartingPanel(ctx, true, lobbyRedirect.getLobbyID()));
                                 again = false;
                             } else {
-                                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE));
+                                JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE);
                                 create.setEnabled(true);
                             }
                         } else {
@@ -220,7 +221,8 @@ public class LobbySelectionPanel extends JTabbedPane {
                         }
                     } while (again);
                 } catch (Exception e) {
-                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Error", JOptionPane.INFORMATION_MESSAGE));
+                    JOptionPane.showMessageDialog(null, "Error in the connection with the server",
+                            "Error", JOptionPane.INFORMATION_MESSAGE);
                     try {
                         sw.close();
                     } catch (IOException ex) {

@@ -68,11 +68,11 @@ public class StartPanel extends JPanel {
                         ctx.setSocketWrapper(sw);
                         ctx.getWindow().changeView(new UserCredentialsPanel(ctx));
                     } else {
-                        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Server did not welcome us", "Warning", JOptionPane.INFORMATION_MESSAGE));
+                        JOptionPane.showMessageDialog(null, "Server did not welcome us", "Warning", JOptionPane.INFORMATION_MESSAGE);
                         connect.setEnabled(true);
                     }
                 } catch (Exception e) {
-                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "No valid server was found", "Warning", JOptionPane.INFORMATION_MESSAGE));
+                    JOptionPane.showMessageDialog(null, "No valid server was found", "Warning", JOptionPane.INFORMATION_MESSAGE);
                     connect.setEnabled(true);
                 }
             }).start();

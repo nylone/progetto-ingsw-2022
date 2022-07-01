@@ -55,7 +55,14 @@ public class CloudPanel extends JPanel {
         endTurnButton.setVisible(guiSocketListener.getSuccessfulRequestsByType(ChooseCloudTile.class) == 1);
         //add on-click action listener to endTurnButton
         endTurnButton.addActionListener(e -> {
+            // skip execution of the action if a previous action still hasn't been processed by the server
+            if (guiSocketListener.awaitingPlayerActionFeedback()) {
+                JOptionPane.showMessageDialog(null, "Please wait for the server to process your previous" +
+                        "request before making a new one");
+                return;
+            }
             if (guiSocketListener.getSuccessfulRequestsByType(ChooseCloudTile.class) == 1) {
+
                 //create endTurn action and its playerActionRequest
                 EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(currentPlayer.getId());
                 PlayerActionRequest playerActionRequest = new PlayerActionRequest(endTurnOfActionPhase);
@@ -75,6 +82,12 @@ public class CloudPanel extends JPanel {
             int finalI = i;
             //add on-click action listener to cloudComponent
             cloudButtons.get(cloudButtons.size() - 1).addActionListener(e -> {
+                // skip execution of the action if a previous action still hasn't been processed by the server
+                if (guiSocketListener.awaitingPlayerActionFeedback()) {
+                    JOptionPane.showMessageDialog(null, "Please wait for the server to process your previous" +
+                            "request before making a new one");
+                    return;
+                }
                 if (guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
                     //create chooseCloudTile action and its playerActionRequest
                     ChooseCloudTile chooseCloudTile = new ChooseCloudTile(currentPlayer.getId(), finalI);

@@ -209,7 +209,6 @@ public class LobbyServer implements Runnable{
                                 case GameOverEvent gameOverEvent -> {
                                     sw.sendMessage(new GameOver(gameOverEvent.winners()));
                                     currentLobby.close();
-                                    state = State.REDIRECT_PHASE;
                                 }
                                 case PlayerActionRequest playerActionRequest -> {
                                     try {

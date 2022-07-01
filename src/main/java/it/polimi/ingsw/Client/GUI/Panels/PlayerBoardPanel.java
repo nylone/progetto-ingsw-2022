@@ -136,6 +136,12 @@ public class PlayerBoardPanel extends JPanel {
             int finalI = i;
             //add on-click action listener to Entrance's students' buttons
             entranceStudentsButton.get(i).addActionListener(e -> {
+                // skip execution of the action if a previous action still hasn't been processed by the server
+                if (guiSocketListener.awaitingPlayerActionFeedback()) {
+                    JOptionPane.showMessageDialog(null, "Please wait for the server to process your previous" +
+                            "request before making a new one");
+                    return;
+                }
                 //create options that will be displayed on JOptionPane
                 String[] buttons = {"DiningRoom", "Island"};
                 //create and show JoptionPane
@@ -182,6 +188,12 @@ public class PlayerBoardPanel extends JPanel {
             int finalI = i + 1;
             //add on-click actionListener to assistantCard's button
             assistantCardButton.addActionListener(e -> {
+                // skip execution of the action if a previous action still hasn't been processed by the server
+                if (guiSocketListener.awaitingPlayerActionFeedback()) {
+                    JOptionPane.showMessageDialog(null, "Please wait for the server to process your previous" +
+                            "request before making a new one");
+                    return;
+                }
                 //enable button only if a playAssistantCard action has not been played
                 if (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0) {
                     int dialogButton = JOptionPane.YES_NO_OPTION;

@@ -28,7 +28,6 @@ import static it.polimi.ingsw.Client.GUI.IconLoader.*;
  * This class will be initialized only in advanced Game
  */
 public class CharacterCardsPanel extends JPanel {
-
     public CharacterCardsPanel(Model model, SocketWrapper socketWrapper, GUISocketListener guiSocketListener) {
         UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 14));
         //List containing game's characterCards
@@ -109,12 +108,18 @@ public class CharacterCardsPanel extends JPanel {
             ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
             int finalI = i;
             //add on-click actionListener to characterCard's button
-            button.addActionListener(e -> SwingUtilities.invokeLater(() -> {
+            button.addActionListener(e -> {
+                // skip execution of the action if a previous action still hasn't been processed by the server
+                if (guiSocketListener.awaitingPlayerActionFeedback()) {
+                    JOptionPane.showMessageDialog(null, "Please wait for the server to process your previous" +
+                            "request before making a new one");
+                    return;
+                }
                 PlayCharacterCard playCharacterCard = null;
                 PlayerActionRequest playerActionRequest = null;
                 //get JTabbedPane (necessary to switch to another JPanel)
                 Container parent = this.getParent();
-                while (!(parent instanceof JTabbedPane jTabbedPane)) {
+                while (!(parent instanceof GameInProgressPanel gameInProgressPanel)) {
                     parent = parent.getParent();
                 }
                 switch (characterCards.get(finalI)) {
@@ -129,8 +134,8 @@ public class CharacterCardsPanel extends JPanel {
                         //get pawn to move
                         toMove = PawnColour.getPawnColourFromText(options[option].toString());
                         //switch to first JTabbedPane's tab
-                        jTabbedPane.setSelectedIndex(0);
-                        IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
+                        gameInProgressPanel.setSelectedIndex(0);
+                        IslandFieldPanel islandFieldPanel = (IslandFieldPanel) gameInProgressPanel.getSelectedComponent();
                         JOptionPane.showMessageDialog(null, "click on the island on which you want to move the pawn");
                         //set IslandFieldPanel to play this characterCard
                         islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, OptionalValue.of(finalI), OptionalValue.of(toMove));
@@ -144,8 +149,8 @@ public class CharacterCardsPanel extends JPanel {
                     }
                     case Card03 ignored3 -> {
                         //switch to first JTabbedPane's pane
-                        jTabbedPane.setSelectedIndex(0);
-                        IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
+                        gameInProgressPanel.setSelectedIndex(0);
+                        IslandFieldPanel islandFieldPanel = (IslandFieldPanel) gameInProgressPanel.getSelectedComponent();
                         JOptionPane.showMessageDialog(null, "click on the island on which you want to calculate the influence");
                         //set IslandFieldPanel to play this characterCard
                         islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, OptionalValue.of(finalI), OptionalValue.empty());
@@ -159,8 +164,8 @@ public class CharacterCardsPanel extends JPanel {
                     }
                     case Card05 ignored5 -> {
                         //switch to first JTabbedPane's pane
-                        jTabbedPane.setSelectedIndex(0);
-                        IslandFieldPanel islandFieldPanel = (IslandFieldPanel) jTabbedPane.getSelectedComponent();
+                        gameInProgressPanel.setSelectedIndex(0);
+                        IslandFieldPanel islandFieldPanel = (IslandFieldPanel) gameInProgressPanel.getSelectedComponent();
                         JOptionPane.showMessageDialog(null, "click on the island on which you want to move NoEntry tile");
                         //set IslandFieldPanel to play this characterCard
                         islandFieldPanel.setCharacterCardAction(ActionType.CHARACTERCARD, OptionalValue.of(finalI), OptionalValue.empty());
@@ -202,12 +207,12 @@ public class CharacterCardsPanel extends JPanel {
                                 pawnsFromCard.add(PawnColour.getPawnColourFromText(checkBox.getText()));
                             }
                         }
-                        for (int h = 0; h < jTabbedPane.getTabCount(); h++) {
-                            Component component = jTabbedPane.getComponentAt(h);
+                        for (int h = 0; h < gameInProgressPanel.getTabCount(); h++) {
+                            Component component = gameInProgressPanel.getComponentAt(h);
                             //search for CurrentPlayer's PlayerBoardPanel
                             if ((component instanceof PlayerBoardPanel playerBoardPanel) && playerBoardPanel.getPlayerBoardNickname().equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {
                                 //switch to that Panel
-                                jTabbedPane.setSelectedIndex(h);
+                                gameInProgressPanel.setSelectedIndex(h);
                                 //delegate the remaining part of execution to PlayerBoardPanel
                                 playerBoardPanel.PlayCharacterCardEffect(7, finalI, OptionalValue.of(pawnsFromCard));
                             }
@@ -236,12 +241,12 @@ public class CharacterCardsPanel extends JPanel {
                         playerActionRequest = new PlayerActionRequest(playCharacterCard);
                     }
                     case Card10 ignored10 -> {
-                        for (int h = 0; h < jTabbedPane.getTabCount(); h++) {
-                            Component component = jTabbedPane.getComponentAt(h);
+                        for (int h = 0; h < gameInProgressPanel.getTabCount(); h++) {
+                            Component component = gameInProgressPanel.getComponentAt(h);
                             //search for CurrentPlayer's PlayerBoardPanel
                             if ((component instanceof PlayerBoardPanel playerBoardPanel) && playerBoardPanel.getPlayerBoardNickname().equals(model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname())) {
                                 //switch to that Panel
-                                jTabbedPane.setSelectedIndex(h);
+                                gameInProgressPanel.setSelectedIndex(h);
                                 //delegate the remaining part of execution to PlayerBoardPanel
                                 playerBoardPanel.PlayCharacterCardEffect(10, finalI, OptionalValue.empty());
                             }
@@ -288,7 +293,7 @@ public class CharacterCardsPanel extends JPanel {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
-            }));
+            });
             //print eventual characterCard's state
             checkStatefulCard(characterCards.get(i), characterCardsStatelabes.get(i));
             //draw Coin's image whether the card has been used at least once

@@ -135,8 +135,8 @@ public class GameStartingPanel extends JPanel {
                     Message input = sw.awaitMessage();
                     switch (input) {
                         case LobbyClosed ignored -> {
-                            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Lobby was closed by the server.\n" +
-                                    "Client is disconnecting from the server.", "Lobby closed", JOptionPane.INFORMATION_MESSAGE));
+                            JOptionPane.showMessageDialog(null, "Lobby was closed by the server.\n" +
+                                    "Client is disconnecting from the server.", "Lobby closed", JOptionPane.INFORMATION_MESSAGE);
                             sw.close();
                             window.changeView(new StartPanel(ctx));
                         }
@@ -152,7 +152,7 @@ public class GameStartingPanel extends JPanel {
                         }
                         case GameInit gameInit -> {
                             if (gameInit.getStatusCode() == StatusCode.Fail) {
-                                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, gameInit.getErrorMessage(), "Error", JOptionPane.INFORMATION_MESSAGE));
+                                JOptionPane.showMessageDialog(null, gameInit.getErrorMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                             }
                         }
                         case GameStarted ignored -> {
@@ -162,7 +162,7 @@ public class GameStartingPanel extends JPanel {
                         default -> throw new IllegalStateException("Unexpected value: " + input.getClass());
                     }
                 } catch (Exception e) {
-                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Disconnected from server", "Error", JOptionPane.INFORMATION_MESSAGE));
+                    JOptionPane.showMessageDialog(null, "Disconnected from server", "Error", JOptionPane.INFORMATION_MESSAGE);
                     try {
                         sw.close();
                     } catch (IOException ex) {

@@ -74,7 +74,8 @@ public class UserCredentialsPanel extends JPanel {
                                 ctx.getWindow().changeView(new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies()));
                                 again = false;
                             } else {
-                                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Server denied your login", "Warning", JOptionPane.INFORMATION_MESSAGE));
+                                JOptionPane.showMessageDialog(null, "Server denied your login",
+                                        "Warning", JOptionPane.INFORMATION_MESSAGE);
                                 login.setEnabled(true);
                             }
                         } else {
@@ -82,7 +83,8 @@ public class UserCredentialsPanel extends JPanel {
                         }
                     } while (again);
                 } catch (Exception e) {
-                    SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, "Error in the connection with the server", "Warning", JOptionPane.INFORMATION_MESSAGE));
+                    JOptionPane.showMessageDialog(null, "Error in the connection with the server",
+                            "Warning", JOptionPane.INFORMATION_MESSAGE);
                     try {
                         sw.close();
                     } catch (IOException ex) {

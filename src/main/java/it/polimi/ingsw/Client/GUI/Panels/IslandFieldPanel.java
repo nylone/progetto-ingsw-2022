@@ -92,6 +92,12 @@ public class IslandFieldPanel extends JPanel {
             int finalI = i;
             //add on-click action listener to islandGroup
             islandButton.addActionListener(e -> {
+                // skip execution of the action if a previous action still hasn't been processed by the server
+                if (guiSocketListener.awaitingPlayerActionFeedback()) {
+                    JOptionPane.showMessageDialog(null, "Please wait for the server to process your previous" +
+                            "request before making a new one");
+                    return;
+                }
                 switch (this.actionType) {
                     case CHARACTERCARD -> {
                         PlayCharacterCard playCharacterCard;
