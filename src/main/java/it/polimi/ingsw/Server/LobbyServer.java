@@ -89,7 +89,7 @@ public class LobbyServer implements Runnable {
                                 nickname = castedEvent.getNickname();
                                 synchronized (connectedNicknames) {
                                     if (connectedNicknames.contains(nickname)) {
-                                        sw.sendMessage(LobbyAccept.fail());
+                                        sw.sendMessage(LobbyServerAccept.fail());
                                     } else {
                                         connectedNicknames.add(nickname);
                                         List<LobbyInfo> publicLobbies = lobbyMap.values().stream()
@@ -97,7 +97,7 @@ public class LobbyServer implements Runnable {
                                                 .filter(Predicate.not(Lobby::isGameInProgress))
                                                 .map(LobbyInfo::new)
                                                 .toList();
-                                        sw.sendMessage(LobbyAccept.success(publicLobbies));
+                                        sw.sendMessage(LobbyServerAccept.success(publicLobbies));
                                         state = State.REDIRECT_PHASE;
                                     }
                                 }
@@ -113,7 +113,7 @@ public class LobbyServer implements Runnable {
                             switch (event) {
                                 case CreateLobbyRequest castedEvent -> {
                                     if (castedEvent.getMaxPlayers() < 1 || castedEvent.getMaxPlayers() > 4) {
-                                        sw.sendMessage(LobbyRedirect.fail());
+                                        sw.sendMessage(LobbyConnected.fail());
                                         break;
                                     }
                                     UUID lobbyID = generateUUID();
@@ -126,16 +126,16 @@ public class LobbyServer implements Runnable {
                                     currentLobby.addPlayer(nickname, this.getEventQueue());
                                     lobbyMap.put(lobbyID, currentLobby);
                                     state = State.GAME_START_PHASE;
-                                    sw.sendMessage(LobbyRedirect.success(lobbyID, currentLobby.getAdmin()));
+                                    sw.sendMessage(LobbyConnected.success(lobbyID, currentLobby.getAdmin()));
                                 }
                                 case ConnectLobbyRequest castedEvent -> {
                                     UUID lobbyID = castedEvent.getCode();
                                     if (!lobbyMap.containsKey(lobbyID) || !lobbyMap.get(lobbyID).addPlayer(nickname, this.getEventQueue())) {
-                                        sw.sendMessage(LobbyRedirect.fail());
+                                        sw.sendMessage(LobbyConnected.fail());
                                         break;
                                     }
                                     currentLobby = lobbyMap.get(lobbyID);
-                                    sw.sendMessage(LobbyRedirect.success(lobbyID, currentLobby.getAdmin()));
+                                    sw.sendMessage(LobbyConnected.success(lobbyID, currentLobby.getAdmin()));
                                     state = State.GAME_START_PHASE;
                                 }
                                 case default -> sw.sendMessage(new InvalidRequest());
@@ -163,10 +163,6 @@ public class LobbyServer implements Runnable {
                                     }
                                     if (!currentLobby.isLobbyFull()) {
                                         sw.sendMessage(GameInit.fail("The lobby has not been filled"));
-                                        return;
-                                    }
-                                    if (currentLobby.isGameInProgress()) {
-                                        sw.sendMessage(GameInit.fail("The game has already started"));
                                         return;
                                     }
                                     try {
@@ -216,7 +212,7 @@ public class LobbyServer implements Runnable {
                                             }
                                             sw.sendMessage(feedback);
                                         } else {
-                                            sw.sendMessage(PlayerActionFeedback.fail("The action that was sent is malformed."));
+                                            sw.sendMessage(PlayerActionFeedback.fail("You shall not impersonate others."));
                                         }
                                     } catch (OperationException e) {
                                         Logger.severe("Supposedly unreachable statement was reached:\n" + e.getMessage());

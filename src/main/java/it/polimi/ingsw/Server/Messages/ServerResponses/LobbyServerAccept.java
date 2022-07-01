@@ -10,7 +10,7 @@ import java.util.List;
  * A {@link Response} to represent the output the controller gave on a previous
  * {@link it.polimi.ingsw.Server.Messages.Events.Requests.DeclarePlayerRequest}
  */
-public class LobbyAccept extends Response {
+public class LobbyServerAccept extends Response {
     @Serial
     private static final long serialVersionUID = 308L;
 
@@ -22,7 +22,7 @@ public class LobbyAccept extends Response {
      * @param statusCode  the status code of the response
      * @param openLobbies a {@link List} of open lobbies the client may join or null if the response is negative
      */
-    private LobbyAccept(StatusCode statusCode, List<LobbyInfo> openLobbies) {
+    private LobbyServerAccept(StatusCode statusCode, List<LobbyInfo> openLobbies) {
         super(statusCode);
         this.publicLobbies = openLobbies;
     }
@@ -32,8 +32,8 @@ public class LobbyAccept extends Response {
      *
      * @return a failed status code response
      */
-    public static LobbyAccept fail() {
-        return new LobbyAccept(StatusCode.Fail, null);
+    public static LobbyServerAccept fail() {
+        return new LobbyServerAccept(StatusCode.Fail, null);
     }
 
     /**
@@ -42,8 +42,8 @@ public class LobbyAccept extends Response {
      * @param openLobbies a {@link List} of open lobbies the client may join
      * @return a successful status code response
      */
-    public static LobbyAccept success(List<LobbyInfo> openLobbies) {
-        return new LobbyAccept(StatusCode.Success, openLobbies);
+    public static LobbyServerAccept success(List<LobbyInfo> openLobbies) {
+        return new LobbyServerAccept(StatusCode.Success, openLobbies);
     }
 
     /**

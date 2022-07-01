@@ -6,7 +6,7 @@ import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.Events.Requests.ConnectLobbyRequest;
 import it.polimi.ingsw.Server.Messages.Events.Requests.CreateLobbyRequest;
 import it.polimi.ingsw.Server.Messages.Message;
-import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyRedirect;
+import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyConnected;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.LobbyInfo;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 
@@ -114,10 +114,10 @@ public class LobbySelectionPanel extends JTabbedPane {
                     boolean again = true;
                     do {
                         Message response = sw.awaitMessage();
-                        if (response instanceof LobbyRedirect lobbyRedirect) {
-                            if (lobbyRedirect.getStatusCode() == StatusCode.Success) {
+                        if (response instanceof LobbyConnected lobbyConnected) {
+                            if (lobbyConnected.getStatusCode() == StatusCode.Success) {
                                 //Switch to a new LobbySelectionPanel if user has been accepted by Server
-                                window.changeView(new GameStartingPanel(ctx, false, lobbyRedirect.getLobbyID()));
+                                window.changeView(new GameStartingPanel(ctx, false, lobbyConnected.getLobbyID()));
                                 again = false;
                             } else {
                                 JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE);
@@ -207,10 +207,10 @@ public class LobbySelectionPanel extends JTabbedPane {
                     boolean again = true;
                     do {
                         Message response = sw.awaitMessage();
-                        if (response instanceof LobbyRedirect lobbyRedirect) {
-                            if (lobbyRedirect.getStatusCode() == StatusCode.Success) {
+                        if (response instanceof LobbyConnected lobbyConnected) {
+                            if (lobbyConnected.getStatusCode() == StatusCode.Success) {
                                 //Switch to a new LobbySelectionPanel if user has been accepted by Server
-                                window.changeView(new GameStartingPanel(ctx, true, lobbyRedirect.getLobbyID()));
+                                window.changeView(new GameStartingPanel(ctx, true, lobbyConnected.getLobbyID()));
                                 again = false;
                             } else {
                                 JOptionPane.showMessageDialog(null, "Try again.", "Error", JOptionPane.INFORMATION_MESSAGE);

@@ -93,7 +93,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Requests.ConnectLobbyRequest;
 <i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.Server.Messages.Events.Requests.CreateLobbyRequest;
 <i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.Server.Messages.Message;
-<i class="no-highlight">9</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyRedirect;
+<i class="no-highlight">9</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyConnected;
 <i class="no-highlight">10</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.LobbyInfo;
 <i class="no-highlight">11</i>&nbsp;import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 <i class="no-highlight">12</i>&nbsp;
@@ -201,10 +201,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc"><i class="no-highlight">114</i>&nbsp;                    boolean again = true;</b>
 <i class="no-highlight">115</i>&nbsp;                    do {
 <b class="nc"><i class="no-highlight">116</i>&nbsp;                        Message response = sw.awaitMessage();</b>
-<b class="nc"><i class="no-highlight">117</i>&nbsp;                        if (response instanceof LobbyRedirect lobbyRedirect) {</b>
-<b class="nc"><i class="no-highlight">118</i>&nbsp;                            if (lobbyRedirect.getStatusCode() == StatusCode.Success) {</b>
+<b class="nc"><i class="no-highlight">117</i>&nbsp;                        if (response instanceof LobbyRedirect lobbyConnected) {</b>
+<b class="nc"><i class="no-highlight">118</i>&nbsp;                            if (lobbyConnected.getStatusCode() == StatusCode.Success) {</b>
 <i class="no-highlight">119</i>&nbsp;                                //Switch to a new LobbySelectionPanel if user has been accepted by Server
-<b class="nc"><i class="no-highlight">120</i>&nbsp;                                window.changeView(new GameStartingPanel(ctx, false, lobbyRedirect.getLobbyID()));</b>
+<b class="nc"><i class="no-highlight">120</i>&nbsp;                                window.changeView(new GameStartingPanel(ctx, false, lobbyConnected.getLobbyID()));</b>
 <b class="nc"><i class="no-highlight">121</i>&nbsp;                                again = false;</b>
 <i class="no-highlight">122</i>&nbsp;                            } else {
 <b class="nc"><i class="no-highlight">123</i>&nbsp;                                JOptionPane.showMessageDialog(null, &quot;Try again.&quot;, &quot;Error&quot;, JOptionPane.INFORMATION_MESSAGE);</b>
@@ -294,10 +294,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc"><i class="no-highlight">207</i>&nbsp;                    boolean again = true;</b>
 <i class="no-highlight">208</i>&nbsp;                    do {
 <b class="nc"><i class="no-highlight">209</i>&nbsp;                        Message response = sw.awaitMessage();</b>
-<b class="nc"><i class="no-highlight">210</i>&nbsp;                        if (response instanceof LobbyRedirect lobbyRedirect) {</b>
-<b class="nc"><i class="no-highlight">211</i>&nbsp;                            if (lobbyRedirect.getStatusCode() == StatusCode.Success) {</b>
+<b class="nc"><i class="no-highlight">210</i>&nbsp;                        if (response instanceof LobbyRedirect lobbyConnected) {</b>
+<b class="nc"><i class="no-highlight">211</i>&nbsp;                            if (lobbyConnected.getStatusCode() == StatusCode.Success) {</b>
 <i class="no-highlight">212</i>&nbsp;                                //Switch to a new LobbySelectionPanel if user has been accepted by Server
-<b class="nc"><i class="no-highlight">213</i>&nbsp;                                window.changeView(new GameStartingPanel(ctx, true, lobbyRedirect.getLobbyID()));</b>
+<b class="nc"><i class="no-highlight">213</i>&nbsp;                                window.changeView(new GameStartingPanel(ctx, true, lobbyConnected.getLobbyID()));</b>
 <b class="nc"><i class="no-highlight">214</i>&nbsp;                                again = false;</b>
 <i class="no-highlight">215</i>&nbsp;                            } else {
 <b class="nc"><i class="no-highlight">216</i>&nbsp;                                JOptionPane.showMessageDialog(null, &quot;Try again.&quot;, &quot;Error&quot;, JOptionPane.INFORMATION_MESSAGE);</b>

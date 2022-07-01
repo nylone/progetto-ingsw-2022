@@ -9,7 +9,7 @@ import java.util.UUID;
  * A {@link Response} to represent the output the controller gave on a previous {@link it.polimi.ingsw.Server.Messages.Events.Requests.ConnectLobbyRequest} or
  * {@link it.polimi.ingsw.Server.Messages.Events.Requests.CreateLobbyRequest}
  */
-public class LobbyRedirect extends Response {
+public class LobbyConnected extends Response {
     @Serial
     private static final long serialVersionUID = 310L;
     private final UUID lobbyID;
@@ -23,7 +23,7 @@ public class LobbyRedirect extends Response {
      * @param lobbyID    the UUID of the lobby
      * @param admin      the admin of the lobby
      */
-    private LobbyRedirect(StatusCode statusCode, UUID lobbyID, String admin) {
+    private LobbyConnected(StatusCode statusCode, UUID lobbyID, String admin) {
         super(statusCode);
         this.lobbyID = lobbyID;
         this.admin = admin;
@@ -34,8 +34,8 @@ public class LobbyRedirect extends Response {
      *
      * @return a failed status code response
      */
-    public static LobbyRedirect fail() {
-        return new LobbyRedirect(StatusCode.Fail, null, null);
+    public static LobbyConnected fail() {
+        return new LobbyConnected(StatusCode.Fail, null, null);
     }
 
     /**
@@ -45,8 +45,8 @@ public class LobbyRedirect extends Response {
      * @param admin   the admin of the lobby
      * @return a successful status code response
      */
-    public static LobbyRedirect success(UUID lobbyID, String admin) {
-        return new LobbyRedirect(StatusCode.Success, lobbyID, admin);
+    public static LobbyConnected success(UUID lobbyID, String admin) {
+        return new LobbyConnected(StatusCode.Success, lobbyID, admin);
     }
 
     /**

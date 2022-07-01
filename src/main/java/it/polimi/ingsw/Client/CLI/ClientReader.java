@@ -95,7 +95,7 @@ public class ClientReader implements Runnable {
                 this.cyclicBarrier.await();
             }
             //Server's responde received after sending a DeclarePlayerRequest
-            case LobbyAccept response -> {
+            case LobbyServerAccept response -> {
                 //check if client was able to log the Server
                 if (response.getStatusCode() == StatusCode.Success) {
                     //notify view that Client has logged
@@ -117,7 +117,7 @@ public class ClientReader implements Runnable {
                 this.cyclicBarrier.await();
             }
             //Server's response received after sending a joinLobbyRequest or CreateLobbyRequest
-            case LobbyRedirect response -> {
+            case LobbyConnected response -> {
                 //check if client was able to join the selected lobby
                 if (response.getStatusCode() == StatusCode.Success) {
                     //get Lobby's UUID
@@ -193,13 +193,9 @@ public class ClientReader implements Runnable {
             }
             //Server's response received when the game ended after a victory
             case GameOver gameOver -> {
-                if (gameOver.getStatusCode() == StatusCode.Success) {
-                    //notify Client's view that the game has ended
-                    this.clientView.setGameEnded(true);
-                    UpdateViewWin(gameOver.getWinners());
-                } else {
-                    System.out.println("Something gone wrong, GameOver response not accepted");
-                }
+                //notify Client's view that the game has ended
+                this.clientView.setGameEnded(true);
+                UpdateViewWin(gameOver.getWinners());
             }
             case InvalidRequest ignored ->
                     System.out.println("Something gone wrong, your request has not been executed");

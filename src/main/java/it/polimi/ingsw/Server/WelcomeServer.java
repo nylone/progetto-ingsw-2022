@@ -46,7 +46,7 @@ public class WelcomeServer implements Runnable {
                 Socket socket = serverSocket.accept();
                 SocketWrapper sw = new KeepAliveSocketWrapper(socket, 5000, false);
                 Logger.info("New connection from: " + sw.getInetAddress());
-                sw.sendMessage(new Welcome(StatusCode.Success));
+                sw.sendMessage(new Welcome());
                 LobbyServer.spawn(sw);
             } catch (IOException e) {
                 e.printStackTrace();

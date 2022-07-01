@@ -5,7 +5,7 @@ import it.polimi.ingsw.Client.GUI.IconLoader;
 import it.polimi.ingsw.Network.SocketWrapper;
 import it.polimi.ingsw.Server.Messages.Events.Requests.DeclarePlayerRequest;
 import it.polimi.ingsw.Server.Messages.Message;
-import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyAccept;
+import it.polimi.ingsw.Server.Messages.ServerResponses.LobbyServerAccept;
 import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 
 import javax.swing.*;
@@ -68,7 +68,7 @@ public class UserCredentialsPanel extends JPanel {
                     boolean again = true;
                     do {
                         Message response = sw.awaitMessage();
-                        if (response instanceof LobbyAccept lobbyAccept) {
+                        if (response instanceof LobbyServerAccept lobbyAccept) {
                             if (lobbyAccept.getStatusCode() == StatusCode.Success) {
                                 //Switch to a new LobbySelectionPanel if user has been accepted by Server
                                 ctx.getWindow().changeView(new LobbySelectionPanel(ctx, lobbyAccept.getPublicLobbies()));
