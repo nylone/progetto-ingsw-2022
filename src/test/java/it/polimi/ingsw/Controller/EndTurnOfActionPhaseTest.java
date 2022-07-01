@@ -19,15 +19,18 @@ import static org.junit.Assert.assertEquals;
 
 public class EndTurnOfActionPhaseTest {
 
+    //create a shared model that will be used by all tests
     Model model = new Model(GameMode.ADVANCED, "ale", "teo");
-    Controller gh = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
+    //create a shared controller that will be used by all tests
+    Controller controller = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
 
     @Test
     public void testExecute() throws Exception {
+        //----- PLAY ASSISTANT CARD (REFER TO PLAYASSISTANTCARD TEST CLASS FOR FURTHER INFORMATION) ----
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
-        gh.executeAction(playAssistantCard);
+        controller.executeAction(playAssistantCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -35,43 +38,40 @@ public class EndTurnOfActionPhaseTest {
             AssistantCard finalCard = card;
             if (model.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
-                gh.executeAction(playAssistantCard1);
+                controller.executeAction(playAssistantCard1);
                 break;
             }
         }
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        // move 3 pawns
+        //move 3 student (refer to MoveStudentTest for further information)
         for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
-            gh.executeAction(moveStudent);
-            player = model.getMutableTurnOrder().getMutableCurrentPlayer();
+            controller.executeAction(moveStudent);
         }
-        // move Mother Nature
+        //move Mother Nature (refer to MoveMotherNatureTest for further information)
         int randomMovement = new Random().nextInt(model.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement());
         randomMovement = randomMovement == 0 ? 1 : randomMovement;
         PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
-        // act
-        gh.executeAction(action);
-        // assert
+        controller.executeAction(action);
+        //choose cloud (refer to ChooseCloudTest for further information)
         int selectedCloud = Utils.random(model.getClouds()).getId();
         ChooseCloudTile chooseCloudTile = new ChooseCloudTile(player.getId(), selectedCloud);
-        // act
-        gh.executeAction(chooseCloudTile);
-        player = model.getMutableTurnOrder().getMutableCurrentPlayer();
-
+        controller.executeAction(chooseCloudTile);
+        //create and execute EndTurnOfActionPhase test
         EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(player.getId());
-        gh.executeAction(endTurnOfActionPhase);
-        // assert
-        assertEquals(model.getClouds().stream().filter(cloud -> cloud.getContents().size() == 3).count(), model.getClouds().size() - 1);
+        controller.executeAction(endTurnOfActionPhase);
+        //verify that current player has been switched to second player in turn
+        assertEquals(model.getMutableTurnOrder().getMutableCurrentPlayer(), model.getMutableTurnOrder().getCurrentTurnOrder().get(1));
     }
 
     @Test
     public void NoChooseCloudTileTest() throws Exception {
+        //----- PLAY ASSISTANT CARD (REFER TO PLAYASSISTANTCARD TEST CLASS FOR FURTHER INFORMATION) ----
         PlayerBoard player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard card = Utils.random(player.getMutableAssistantCards());
         PlayAssistantCard playAssistantCard = new PlayAssistantCard(player.getId(), card.getPriority());
-        gh.executeAction(playAssistantCard);
+        controller.executeAction(playAssistantCard);
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
         while (true) {
             card = Utils.random(player.getMutableAssistantCards());
@@ -79,28 +79,26 @@ public class EndTurnOfActionPhaseTest {
             AssistantCard finalCard = card;
             if (model.getMutableTurnOrder().getSelectedCards().stream()
                     .noneMatch(selected -> selected.getPriority() == finalCard.getPriority())) {
-                gh.executeAction(playAssistantCard1);
+                controller.executeAction(playAssistantCard1);
                 break;
             }
         }
         player = model.getMutableTurnOrder().getMutableCurrentPlayer();
-        // move 3 pawns
+        //move 3 student (refer to MoveStudentTest for further information)
         for (int i = 0; i < 3; i++) {
             MoveDestination moveDestination = MoveDestination.toIsland(0);
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
-            gh.executeAction(moveStudent);
-            player = model.getMutableTurnOrder().getMutableCurrentPlayer();
+            controller.executeAction(moveStudent);
         }
-        // move Mother Nature
+        //move Mother Nature (refer to MoveMotherNatureTest for further information)
         int randomMovement = new Random().nextInt(model.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement());
         randomMovement = randomMovement == 0 ? 1 : randomMovement;
         PlayerAction action = new MoveMotherNature(player.getId(), randomMovement);
-        // act
-        gh.executeAction(action);
-
+        controller.executeAction(action);
+        //try to end turn without performing chooseCloudTile action
         EndTurnOfActionPhase endTurnOfActionPhase = new EndTurnOfActionPhase(player.getId());
         try {
-            gh.executeAction(endTurnOfActionPhase);
+            controller.executeAction(endTurnOfActionPhase);
         } catch (GenericInputValidationException exception) {
             assertEquals("An error occurred while validating: History\n" +
                     "The error was: ChooseCloudTile action has not been executed", exception.getMessage());
