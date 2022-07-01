@@ -8,7 +8,6 @@ import it.polimi.ingsw.Model.Enums.PawnColour;
 /**
  * This class contains the status of Client inside the Server and is responsible for printing UI elements in to the CLI
  */
-@SuppressWarnings("ALL")
 public class ClientView {
 
     /**
