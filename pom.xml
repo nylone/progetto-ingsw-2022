@@ -6,7 +6,7 @@
 
     <groupId>it.polimi.ingsw</groupId>
     <artifactId>ing-sw-2022-rampone-rossi-salerno</artifactId>
-    <version>0.0.1-devel</version>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
 
     <name>softeng-GC21</name>
@@ -140,6 +140,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <archive>
+                        <compress>true</compress>
                         <manifest>
                             <mainClass>${mainClass}</mainClass>
                         </manifest>
