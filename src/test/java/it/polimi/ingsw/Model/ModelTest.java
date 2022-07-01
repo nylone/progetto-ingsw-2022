@@ -16,9 +16,9 @@ import java.util.NoSuchElementException;
 import static org.junit.Assert.*;
 
 public class ModelTest {
-    Model gb_sim_2 = new Model(GameMode.SIMPLE, "ari", "ale");
-    Model gb_adv_3 = new Model(GameMode.ADVANCED, "ari", "ale", "teo");
-    Model gb_adv_4 = new Model(GameMode.ADVANCED, "ari", "ale", "teo", "eriantys");
+    final Model gb_sim_2 = new Model(GameMode.SIMPLE, "ari", "ale");
+    final Model gb_adv_3 = new Model(GameMode.ADVANCED, "ari", "ale", "teo");
+    final Model gb_adv_4 = new Model(GameMode.ADVANCED, "ari", "ale", "teo", "eriantys");
 
 
     @Test

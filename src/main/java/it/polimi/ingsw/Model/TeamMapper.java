@@ -15,8 +15,8 @@ import java.util.Map;
 public class TeamMapper implements Serializable {
     @Serial
     private static final long serialVersionUID = 136L; // convention: 1 for model, (01 -> 99) for objects
-    Map<PlayerBoard, TeamID> playerTeamMap;
-    Map<TeamID, TowerStorage> towerStorageMap;
+    final Map<PlayerBoard, TeamID> playerTeamMap;
+    final Map<TeamID, TowerStorage> towerStorageMap;
 
     /**
      * Creates a new mapper. If the players are not 4, every player gets put into its own special team. If 4 players

@@ -23,7 +23,7 @@ public class ClientReader implements Runnable {
      * The reference to the CLIWriter class (used only in CLI mode)
      */
 
-    CyclicBarrier cyclicBarrier;
+    final CyclicBarrier cyclicBarrier;
 
 
     //CLI-only constructor

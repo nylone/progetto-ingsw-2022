@@ -57,15 +57,6 @@ public class AssistantCard implements Serializable {
         this.used = true;
     }
 
-    /*//test-purpose only
-    @Override
-    public String toString() {
-        return "AssistantCard{" +
-                "cardNumber=" + priority +
-                ", used=" + used +
-                '}';
-    }
-    // */
 }
 
 

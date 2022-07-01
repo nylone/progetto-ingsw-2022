@@ -34,7 +34,7 @@ public class Card02 extends StatelessEffect {
      * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
      */
     @Override
-    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
+    protected void unsafeApplyEffect(CharacterCardInput input) {
         Map<PawnColour, PlayerBoard> teachers = this.context.getTeachers();
         PlayerBoard me = input.getCaller();
 
@@ -45,15 +45,4 @@ public class Card02 extends StatelessEffect {
         });
     }
 
-    /*//test purpose only
-    @Override
-    public String toString() {
-        return "Card02{" +
-                "id=" + id +
-                ", cost=" + cost +
-                ", timeUsed=" + timeUsed +
-                ", context=" + context +
-                '}';
-    }
-    //*/
 }

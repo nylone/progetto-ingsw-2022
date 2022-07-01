@@ -18,12 +18,12 @@ Eriantys is the game chosen as the (2021/2022) project of the Software Engineeri
 | 2, 3 and 4 players game                  |   ✅    |
 | Multiple games runnin on the same server |   ✅    |
 | Public and private lobbies on server     |   ✅    |
-| Persistence                              |   ⛔    |
-| Disconnection resilience                 |   ⛔    |
+| Persistence                              |   ❌    |
+| Disconnection resilience                 |   ❌    |
 
 #### Legend
 
-`⛔ Not Implemented` &nbsp; `✅ Implemented`
+`❌ Not Implemented` &nbsp; `✅ Implemented`
 
 ## Test coverage
 

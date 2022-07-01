@@ -19,10 +19,10 @@ import static org.junit.Assert.*;
 
 public class PlayAssistantCardTest {
     //create a shared model that will be used by all tests
-    Model model = new Model(GameMode.ADVANCED, "ale", "teo");
+    final Model model = new Model(GameMode.ADVANCED, "ale", "teo");
 
     //create a shared controller that will be used by all tests
-    Controller controller = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
+    final Controller controller = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
 
     @Test
     public void cardShouldBeAssociatedToPlayer() throws Exception {

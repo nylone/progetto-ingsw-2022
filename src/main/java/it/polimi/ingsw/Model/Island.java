@@ -84,14 +84,4 @@ public class Island implements Serializable {
         this.tower = t;
     }
 
-    /* //test-purpose only
-    @Override
-    public String toString() {
-        return "Island{" +
-                "id=" + id +
-                ", students=" + students +
-                ", tower=" + tower +
-                '}';
-    }
-    //*/
 }

@@ -184,14 +184,4 @@ public class IslandGroup implements Serializable {
             i.swapTower(ts.extractTower());
         }
     }
-    /*
-    @Override
-    public String toString() {
-        return "IslandGroup{" +
-                "id=" + id +
-                ", islands=" + islands +
-                "noEntryTiles" + noEntryTiles +
-                '}';
-    }
-    //*/
 }

@@ -10,9 +10,9 @@ import static org.junit.Assert.assertTrue;
 
 public class SymbolsTest {
     // creates a list with all the ANSI colour codes
-    List<String> colourCodes = List.of(Symbols.GREEN, Symbols.RED, Symbols.YELLOW, Symbols.PINK, Symbols.BLUE);
+    final List<String> colourCodes = List.of(Symbols.GREEN, Symbols.RED, Symbols.YELLOW, Symbols.PINK, Symbols.BLUE);
     // creates a list with all the ANSI colour codes for the background
-    List<String> backgroundColourCodes = List.of(Symbols.BACKGROUND_GREEN, Symbols.BACKGROUND_RED,
+    final List<String> backgroundColourCodes = List.of(Symbols.BACKGROUND_GREEN, Symbols.BACKGROUND_RED,
             Symbols.BACKGROUND_YELLOW, Symbols.BACKGROUND_PINK, Symbols.BACKGROUND_BLUE);
 
     @Test

@@ -12,13 +12,4 @@ import java.io.Serializable;
  */
 public record Pair<T, U>(T first, U second) implements Serializable {
 
-    /*//test-purpose only
-    @Override
-    public String toString() {
-        return "Pair{" +
-                "first=" + first +
-                ", second=" + second +
-                '}';
-    }
-    //*/
 }

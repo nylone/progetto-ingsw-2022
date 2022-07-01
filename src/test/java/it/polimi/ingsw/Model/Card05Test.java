@@ -14,8 +14,8 @@ import static org.junit.Assert.assertSame;
  * It should also be able to understand to which destination the tile is destined or error out
  */
 public class Card05Test {
-    Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
-    Card05 card05 = new Card05(gb);
+    final Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
+    final Card05 card05 = new Card05(gb);
 
     /**
      * Card 05 should ba able to hold 4 entry tile and when activated to put one tile on the chosen island.
@@ -102,7 +102,6 @@ public class Card05Test {
     /**
      * If the card has already given out all of its tiles, it should error out when prompted for handling out more
      *
-     * @throws Exception
      */
     @Test(expected = InputValidationException.class)
     public void checkEmptyCard() throws Exception {

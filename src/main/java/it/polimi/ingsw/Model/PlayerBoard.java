@@ -297,18 +297,5 @@ public class PlayerBoard implements Serializable {
         }
     }
 
-    /*//
-    @Override
-    public String toString() {
-        return "PlayerBoard{" +
-                "nickname='" + nickname + '\'' +
-                ", assistantCards=" + Arrays.toString(assistantCards) +
-                ", diningRoom=" + diningRoom +
-                ", entrance=" + entrance +
-                ", id=" + id +
-                ", coinBalance=" + coinBalance +
-                '}';
-    }
-    //*/
 }
 

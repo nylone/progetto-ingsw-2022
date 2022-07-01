@@ -11,10 +11,10 @@ public abstract class CharacterCard implements Serializable {
     @Serial
     private static final long serialVersionUID = 115L; // convention: 1 for model, (01 -> 99) for objects
 
-    protected int id;
-    protected int cost;
+    protected final int id;
+    protected final int cost;
     protected int timeUsed;
-    protected Model context;
+    protected final Model context;
 
     public CharacterCard(int id, int cost, Model context) {
         this.id = id;

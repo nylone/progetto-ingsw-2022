@@ -29,19 +29,8 @@ public class Card06 extends StatelessEffect {
      * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
      */
     @Override
-    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
+    protected void unsafeApplyEffect(CharacterCardInput input) {
         context.getMutableEffects().enableDenyTowerInfluence();
     }
 
-    /*//test purpose only
-    @Override
-    public String toString() {
-        return "Card06{" +
-                "id=" + id +
-                ", cost=" + cost +
-                ", timeUsed=" + timeUsed +
-                ", context=" + context +
-                '}';
-    }
-    //*/
 }

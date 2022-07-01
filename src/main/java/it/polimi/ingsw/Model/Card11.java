@@ -98,14 +98,4 @@ public class Card11 extends StatefulEffect {
     }
 
     //test-purpose only
-   /* @Override
-    public String toString() {
-        return "Card11{" +
-                "id=" + id +
-                ", cost=" + cost +
-                ", timeUsed=" + timeUsed +
-                ", context=" + context +
-                '}';
-    }
-    //*/
 }

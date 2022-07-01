@@ -24,6 +24,6 @@ public class ControllerTest {
     @Test(expected = GenericInputValidationException.class)
     public void creteGameWithPlayersAmountNotValid() throws InputValidationException {
         Lobby lobby = new Lobby(UUID.randomUUID(), true, 2, "ale");
-        Controller controller = Controller.createGame(GameMode.ADVANCED, OptionalValue.of(lobby), "ale");
+        Controller.createGame(GameMode.ADVANCED, OptionalValue.of(lobby), "ale");
     }
 }

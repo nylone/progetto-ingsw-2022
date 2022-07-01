@@ -17,6 +17,7 @@ public class Window {
     public Window() {
         //create frame and set its properties
         this.frame = new JFrame("Eriantys");
+        assert logo != null;
         frame.setIconImage(logo.getImage());
         frame.setMinimumSize(new Dimension(1080, 720));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

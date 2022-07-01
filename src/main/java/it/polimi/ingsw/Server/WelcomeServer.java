@@ -3,7 +3,6 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Logger;
 import it.polimi.ingsw.Network.KeepAliveSocketWrapper;
 import it.polimi.ingsw.Network.SocketWrapper;
-import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
 import it.polimi.ingsw.Server.Messages.ServerResponses.Welcome;
 
 import java.io.IOException;
@@ -49,7 +48,8 @@ public class WelcomeServer implements Runnable {
                 sw.sendMessage(new Welcome());
                 LobbyServer.spawn(sw);
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.severe("Caught an exception while awaiting new connections:\n" + e.getMessage());
+                return;
             }
         }
     }

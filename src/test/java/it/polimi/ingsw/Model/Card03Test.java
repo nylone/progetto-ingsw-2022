@@ -11,8 +11,8 @@ import static org.junit.Assert.assertEquals;
  * This test set verifies that the card 03 is able to change the control of an island leaving mother nature still
  */
 public class Card03Test {
-    Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
-    Card03 card = new Card03(gb);
+    final Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
+    final Card03 card = new Card03(gb);
 
     /**
      * Card 03 should be able to change influence on an island according to rules without moving mother nature on it

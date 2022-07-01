@@ -13,6 +13,7 @@ import it.polimi.ingsw.Model.Enums.StateType;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -43,9 +44,9 @@ public class Card01 extends StatefulEffect {
     /**
      * Get card's content
      *
-     * @return ArrayList of Objects with pawns (Can be cast to {@link PawnColour})
+     * @return List of Objects with pawns (Can be cast to {@link PawnColour})
      */
-    public ArrayList<Object> getState() {
+    public List<Object> getState() {
         return new ArrayList<>(Arrays.asList(students));
     }
 
@@ -113,15 +114,4 @@ public class Card01 extends StatefulEffect {
         throw new FailedOperationException("Card01.unsafeApplyEffect", "Target pawn was not contained in card's state");
     }
 
-   /*//test-purpose only
-    @Override
-    public String toString() {
-        return "Card01{" +
-                "id=" + id +
-                ", cost=" + cost +
-                ", timeUsed=" + timeUsed +
-                ", context=" + context +
-                '}';
-    }
-    //*/
 }

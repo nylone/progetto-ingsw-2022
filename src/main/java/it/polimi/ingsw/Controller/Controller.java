@@ -63,6 +63,7 @@ public class Controller {
      *                 receive {@link ModelUpdateEvent} and {@link GameOverEvent}
      * @param players  a list of minimum 2 and maximum 4 strings containing the nicknames of the players.
      *                 In the case of 4 players: players at index 0 and 2 go together against players at index 1 and 3
+     * @return the generated controller
      * @throws InputValidationException if the supplied players are less than 2 or more than 4
      */
     public static Controller createGame(GameMode gameMode, OptionalValue<Lobby> lobby, String... players) throws InputValidationException {

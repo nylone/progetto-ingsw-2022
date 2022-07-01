@@ -2,7 +2,6 @@ package it.polimi.ingsw.Client.CLI;
 
 import it.polimi.ingsw.Controller.Actions.*;
 import it.polimi.ingsw.Controller.MoveDestination;
-import it.polimi.ingsw.Exceptions.Container.InvalidContainerIndexException;
 import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.*;
@@ -42,7 +41,7 @@ public class CliWriter implements Runnable {
     /**
      * used to synchronize CliWriter and CliReader, useful when the first one needs to wait the second one
      */
-    CyclicBarrier cyclicBarrier;
+    final CyclicBarrier cyclicBarrier;
 
 
     public CliWriter(SocketWrapper socketWrapper, ClientView clientView, BufferedReader bufferedReader, CyclicBarrier cyclicBarrier) {
@@ -106,7 +105,7 @@ public class CliWriter implements Runnable {
                 //execute command
                 elaborateInput(input);
             }
-        } catch (IOException | InvalidContainerIndexException | BrokenBarrierException e) {
+        } catch (IOException | BrokenBarrierException e) {
             System.out.println("IO exception when reading from stdIn.");
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -120,7 +119,7 @@ public class CliWriter implements Runnable {
      * @param userInput: text containing the command
      * @throws IOException the integer read from command line
      */
-    private void elaborateInput(String userInput) throws IOException, InvalidContainerIndexException {
+    private void elaborateInput(String userInput) throws IOException {
         switch (userInput.toLowerCase()) {
             case "showactions" -> printActions();
             case "createlobby" -> createLobby();
@@ -560,7 +559,7 @@ public class CliWriter implements Runnable {
             ConnectLobbyRequest connectLobbyRequest;
             System.out.println("Insert lobby's UUID");
             UUID id = null;
-            boolean repeat = false;
+            boolean repeat;
             do {
                 try {
                     //get UUID from stdIn

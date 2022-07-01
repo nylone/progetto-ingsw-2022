@@ -10,7 +10,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class Card11Test {
-    Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
+    final Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
 
     @Test
     public void checkUse() throws Exception {
@@ -85,7 +85,7 @@ public class Card11Test {
     }
 
     @Test
-    public void PawnNotPresentInCard() throws Exception {
+    public void PawnNotPresentInCard() {
         Model g = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
         // creates a wrong input which will not be filled with information
         CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());

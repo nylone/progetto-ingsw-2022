@@ -173,6 +173,7 @@ public class IslandFieldPanel extends JPanel {
             if (islandGroups.get(i).getMutableIslands().stream().anyMatch(island -> island.getId() == motherNaturePosition.getId())) {
                 //load and scale MotherNature's image
                 img = motherNature != null ? motherNature.getImage() : null;
+                assert img != null;
                 newImg = img.getScaledInstance(widthMotherNature, heightMotherNature, java.awt.Image.SCALE_SMOOTH);
                 icon = new ImageIcon(newImg);
                 //create motherNature's label
@@ -253,8 +254,7 @@ public class IslandFieldPanel extends JPanel {
             case 8 -> 40;
             case 7 -> 50;
             case 6 -> 60;
-            case 5 -> 70;
-            case default -> 70;
+            case 5, default -> 70;
         };
     }
 

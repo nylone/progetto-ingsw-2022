@@ -116,6 +116,7 @@ public class UserCredentialsPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        assert IconLoader.userCredentialBackground != null;
         g.drawImage(IconLoader.userCredentialBackground.getImage(), 0, 0, null);
     }
 }

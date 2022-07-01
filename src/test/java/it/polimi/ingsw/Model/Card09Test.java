@@ -13,17 +13,15 @@ import static org.junit.Assert.assertTrue;
  * selecting a colour that will not be counted for the influence calculation
  */
 public class Card09Test {
-    Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
-    Card09 card09 = new Card09(gb);
+    final Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
+    final Card09 card09 = new Card09(gb);
 
     /**
      * Card 09 should be able to set a flag to deny a specific colour from influence calculation
      *
-     * @throws Exception is thrown when an invalid card activation happens, but this test should not error out
-     *                   (by definition)
      */
     @Test
-    public void checkUse() throws Exception {
+    public void checkUse() {
         // arrange
         // creates input to let the current player interact with card
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());

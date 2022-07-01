@@ -8,6 +8,7 @@ import java.util.*;
  * This class contains various static functions useful for more than one purpose inside the code.
  * Check the docs of each function for more info.
  */
+@SuppressWarnings("ALL")
 public class Utils {
     /**
      * Given a {@link List}, shuffles it in place with a random seed

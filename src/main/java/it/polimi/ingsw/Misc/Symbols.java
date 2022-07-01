@@ -109,7 +109,7 @@ public class Symbols {
      */
     public static String stripFromANSICodes(String s) {
         return s
-                .replaceAll("(\\x9B|\\x1B\\[)[0-?]*[ -\\/]*[@-~]", "") // removes all ANSI control codes
+                .replaceAll("(\\x9B|\\x1B\\[)[0-?]*[ -/]*[@-~]", "") // removes all ANSI control codes
                 .replaceAll("(\t)+", "    "); // converts tabs to four spaces
     }
 }

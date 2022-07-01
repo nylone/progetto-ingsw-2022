@@ -8,18 +8,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class Card06And08Test {
-    Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
-    Card06 card06 = new Card06(gb);
-    Card08 card08 = new Card08(gb);
+    final Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
+    final Card06 card06 = new Card06(gb);
+    final Card08 card08 = new Card08(gb);
 
     /**
      * Card 06 should be able to set a flag in the model context
-     *
-     * @throws Exception @throws Exception is thrown when an invalid card activation happens, but this test should not error out
-     *                   (by definition)
      */
     @Test
-    public void checkUse06() throws Exception {
+    public void checkUse06() {
         // arrange
         // creates input to let the current player interact with card
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());

@@ -31,19 +31,9 @@ public class Card04 extends StatelessEffect {
      * Refer to: {@link CharacterCard#unsafeApplyEffect(CharacterCardInput)} for further information
      */
     @Override
-    protected void unsafeApplyEffect(CharacterCardInput input) throws Exception {
+    protected void unsafeApplyEffect(CharacterCardInput input) {
         this.context.getMutableEffects().enableIncreasedMotherNatureMovement();
     }
 
     //test purpose only
-    /*@Override
-    public String toString() {
-        return "Card04{" +
-                "id=" + id +
-                ", cost=" + cost +
-                ", timeUsed=" + timeUsed +
-                ", context=" + context +
-                '}';
-    }
-    //*/
 }

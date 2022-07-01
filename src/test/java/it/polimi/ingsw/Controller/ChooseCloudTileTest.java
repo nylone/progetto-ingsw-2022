@@ -17,10 +17,10 @@ import static org.junit.Assert.assertEquals;
 public class ChooseCloudTileTest {
 
     //create a shared model that will be used by all tests
-    Model model = new Model(GameMode.SIMPLE, "ale", "teo");
+    final Model model = new Model(GameMode.SIMPLE, "ale", "teo");
 
     //create a shared controller that will be used by all tests
-    Controller controller = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
+    final Controller controller = new Controller(new ModelWrapper(model, OptionalValue.empty()), new ArrayList<>());
 
     /**
      * 2 ChooseCloudAction actions in a row throw an exception because before a ChooseCloudAction should only be present
@@ -28,7 +28,6 @@ public class ChooseCloudTileTest {
      * the controller does not recognize immediately that this action has already been executed, anyway the result
      * is the same that is to say, the validation fails)
      *
-     * @throws Exception
      */
     @Test
     public void PreviousActionNotValid() throws Exception {
@@ -183,7 +182,7 @@ public class ChooseCloudTileTest {
         List<Cloud> clouds = new ArrayList<>(2);
         clouds.add(new Cloud(1));
         clouds.add(new Cloud(2));
-        clouds.get(1).fill(Arrays.asList(PawnColour.BLUE));
+        clouds.get(1).fill(List.of(PawnColour.BLUE));
         List<CharacterCard> characterCards = new ArrayList<>();
         Model model = new Model(new IslandField(), GameMode.SIMPLE, studentBag, players, new EnumMap<>(PawnColour.class),
                 new TeamMapper(players), new TurnOrder(players), new EffectTracker(), clouds,
@@ -252,7 +251,7 @@ public class ChooseCloudTileTest {
             MoveStudent moveStudent = new MoveStudent(player.getId(), i, moveDestination);
             controller.executeAction(moveStudent);
             //add a new student to entrance (entrance will be kept full)
-            player.addStudentsToEntrance(Arrays.asList(PawnColour.RED));
+            player.addStudentsToEntrance(List.of(PawnColour.RED));
         }
         //move Mother Nature (refer to MoveMotherNatureTest for further information)
         int randomMovement = new Random().nextInt(model.getMutableTurnOrder().getMutableSelectedCard(player).get().getMaxMovement());

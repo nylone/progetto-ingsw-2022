@@ -177,14 +177,4 @@ public class IslandField implements Serializable {
         }
     }
 
-    /*//test-purpose only
-    @Override
-    public String toString() {
-        return "IslandField{" +
-                ", groups=" + groups +
-                ", islands=" + islands +
-                ", motherNaturePosition=" + motherNaturePosition +
-                '}';
-    }
-    //*/
 }

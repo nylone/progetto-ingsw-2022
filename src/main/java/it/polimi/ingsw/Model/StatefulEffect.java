@@ -12,7 +12,7 @@ import java.util.List;
 public abstract class StatefulEffect extends CharacterCard implements Serializable {
     @Serial
     private static final long serialVersionUID = 127L; // convention: 1 for model, (01 -> 99) for objects
-    protected StateType stateType;
+    protected final StateType stateType;
 
     /**
      * Construct a stateful card object

@@ -21,14 +21,12 @@ import static org.junit.Assert.*;
  * It should also be able to swap a chosen number of students with ones on the player's entrance.
  */
 public class Card07Test {
-    Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
+    final Model gb = new Model(GameMode.ADVANCED, "ari", "teo"); // advanced mode needed for character cards
 
     /**
      * Card 07 should be able to hold 6 students and when activated to put one tile on the chosen island.
      * If the island doesn't need it anymore the card should be able to receive the tile used
      *
-     * @throws Exception is thrown when an invalid card activation happens, but this test should not error out
-     *                   (by definition)
      */
     @Test
     public void checkUse() {

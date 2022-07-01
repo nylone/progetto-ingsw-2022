@@ -10,8 +10,8 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class Card12Test {
-    Model gb = new Model(GameMode.ADVANCED, "rouge", "marianna"); // advanced mode needed for character cards
-    Card12 card = new Card12(gb);
+    final Model gb = new Model(GameMode.ADVANCED, "rouge", "marianna"); // advanced mode needed for character cards
+    final Card12 card = new Card12(gb);
 
     @Test
     public void checkUse() throws Exception {

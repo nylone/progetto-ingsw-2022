@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 
 public class TowerStorageTest {
-    TowerStorage ts = new TowerStorage(TowerColour.BLACK, 6);
+    final TowerStorage ts = new TowerStorage(TowerColour.BLACK, 6);
 
     @Test
     public void checkThatTowerHasBeenAdded() throws InvalidElementException, DuplicateElementException {

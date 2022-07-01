@@ -74,7 +74,7 @@ public class PlayAssistantCard extends PlayerAction {
         return OptionalValue.empty();
     }
 
-    public void unsafeExecute(Model ctx) throws InputValidationException, OperationException {
+    public void unsafeExecute(Model ctx) throws OperationException {
         PlayerBoard pb = ctx.getMutableTurnOrder().getMutableCurrentPlayer();
         AssistantCard sa = pb.getMutableAssistantCards().get(selectedAssistant);
         ctx.getMutableTurnOrder().setSelectedCard(pb, sa);

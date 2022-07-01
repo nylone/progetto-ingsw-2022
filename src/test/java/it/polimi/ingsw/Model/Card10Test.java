@@ -19,19 +19,17 @@ import static org.junit.Assert.assertTrue;
  * vice-versa; the set also covers the edge cases related to invalid actions from the players.
  */
 public class Card10Test {
-    Model gb = new Model(GameMode.ADVANCED, "Rouge", "Rampeo"); // advanced mode needed for character cards
-    Card10 card10 = new Card10(gb);
+    final Model gb = new Model(GameMode.ADVANCED, "Rouge", "Rampeo"); // advanced mode needed for character cards
+    final Card10 card10 = new Card10(gb);
 
     /**
      * Card 10 should be able to move students from entrance to dining room and vice-versa
      *
      * @throws ContainerException       is thrown when you try to add a student to a full dining room,
      *                                  but this test should not error out (by definition)
-     * @throws InputValidationException is thrown when an invalid card activation happens, but this test
-     *                                  should not error out (by definition)
      */
     @Test
-    public void checkUse() throws ContainerException, InputValidationException {
+    public void checkUse() throws ContainerException {
         // arrange
         // creates input to let the current player interact with card
         CharacterCardInput input = new CharacterCardInput(gb.getMutableTurnOrder().getMutableCurrentPlayer());
