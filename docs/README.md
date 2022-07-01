@@ -37,15 +37,15 @@ Follow [this link](https://nylone.github.io/ing-sw-2022-rampone-rossi-salerno/ja
 
 ## Building and Running
 
-Make sure you have the latest **Java 18** jdk (for building and running) or jre (for running) installed
+Make sure you have the latest [**Java 18**](https://jdk.java.net/18/) jdk installed
 before you attempt to build or run this project.
 
 If you wish to build the package from source (on most Linux based distros):
 
 ```
-git clone https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno.git #clone the repo
-cd ing-sw-2022-rampone-rossi-salerno #cd into the root of the repo
-mvn clean install #tell maven to generate the package from source
+git clone https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno.git # clone the repo
+cd ing-sw-2022-rampone-rossi-salerno # cd into the root of the repo
+mvn clean install # tell maven to generate the package from source
 ```
 
 Otherwise: you can download the latest release from the
@@ -84,7 +84,7 @@ game experience.
 
 | Name                                                                   |        Purpose        |
 |:-----------------------------------------------------------------------|:---------------------:|
-| [IntelliJ IDEA](https://www.jetbrains.com/idea/)                       |          IDE          |
+| [IntelliJ IDEA](https://www.jetbrains.com/idea/)                       | IDE and UML diagrams  |
 | [Astah UML](https://astah.net/products/astah-uml/)                     |     UML diagrams      |
 | [Java 18](https://jdk.java.net/18/)                                    |     Java release      |
 | [Java Swing Library](https://docs.oracle.com/javase/tutorial/uiswing/) |          GUI          |
