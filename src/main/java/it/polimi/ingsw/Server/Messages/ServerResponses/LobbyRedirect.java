@@ -18,6 +18,7 @@ public class LobbyRedirect extends Response {
 
     /**
      * Construct the response
+     *
      * @param statusCode the status code of the response
      * @param lobbyID    the UUID of the lobby
      * @param admin      the admin of the lobby
@@ -30,6 +31,7 @@ public class LobbyRedirect extends Response {
 
     /**
      * Returns a failed status code response
+     *
      * @return a failed status code response
      */
     public static LobbyRedirect fail() {
@@ -38,8 +40,9 @@ public class LobbyRedirect extends Response {
 
     /**
      * Returns a successful status code response
+     *
      * @param lobbyID the UUID of the successfully connected to lobby
-     * @param admin the admin of the lobby
+     * @param admin   the admin of the lobby
      * @return a successful status code response
      */
     public static LobbyRedirect success(UUID lobbyID, String admin) {
@@ -48,6 +51,7 @@ public class LobbyRedirect extends Response {
 
     /**
      * Get the id of the lobby
+     *
      * @return the UUID of the lobby or null if no lobby was linked to the response
      */
     public UUID getLobbyID() {
@@ -56,6 +60,7 @@ public class LobbyRedirect extends Response {
 
     /**
      * Get the admin of the lobby
+     *
      * @return the nickname of the admin of the lobby or null if no lobby was linked to the response
      */
     public String getAdmin() {

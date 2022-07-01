@@ -21,6 +21,7 @@ public class SocketWrapper {
 
     /**
      * Create the SocketWrapper around a standard socket
+     *
      * @param socket the socket to wrap around
      * @throws IOException if the socket/wrapper has issues opening its streams
      */
@@ -34,9 +35,10 @@ public class SocketWrapper {
 
     /**
      * Blocks until a message is read
+     *
      * @return the read {@link Message}
      * @throws SocketException if there's an error while reading from the object stream, the socket will close and this exception
-     * is thrown
+     *                         is thrown
      */
     public Message awaitMessage() throws IOException {
         try {
@@ -52,6 +54,7 @@ public class SocketWrapper {
 
     /**
      * Attempts to close the socket, if the socket is already closed then it does nothing
+     *
      * @throws IOException if any exception happens during closing of the socket
      */
     public void close() throws IOException {
@@ -65,6 +68,7 @@ public class SocketWrapper {
 
     /**
      * Check to see if the socket is closed
+     *
      * @return true if the socket is closed
      */
     public boolean isClosed() {
@@ -73,6 +77,7 @@ public class SocketWrapper {
 
     /**
      * Sends a message to the socket endpoint
+     *
      * @param message the message to send, required not null
      * @throws IOException if any error happens during the sending of the message
      */
@@ -84,6 +89,7 @@ public class SocketWrapper {
 
     /**
      * Get the address this socket is bound to
+     *
      * @return the address this socket is connected to.
      */
     public InetAddress getInetAddress() {

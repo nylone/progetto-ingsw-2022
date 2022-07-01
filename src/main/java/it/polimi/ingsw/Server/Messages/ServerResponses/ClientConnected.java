@@ -16,8 +16,9 @@ public class ClientConnected extends FixedStatusResponse {
 
     /**
      * Create the response
+     *
      * @param lastConnectedNickname the nickname of the player that just connected
-     * @param players the list of all connected players
+     * @param players               the list of all connected players
      */
     public ClientConnected(String lastConnectedNickname, List<String> players) {
         this.lastConnectedNickname = lastConnectedNickname;
@@ -26,6 +27,7 @@ public class ClientConnected extends FixedStatusResponse {
 
     /**
      * Get the user that generated this response by connecting
+     *
      * @return the nickname of the user that just connected to the lobby
      */
     public String getLastConnectedNickname() {
@@ -34,6 +36,7 @@ public class ClientConnected extends FixedStatusResponse {
 
     /**
      * Get the players connected to the lobby
+     *
      * @return an Unmodifiable {@link List} containing all players in the lobby
      */
     public List<String> getPlayers() {

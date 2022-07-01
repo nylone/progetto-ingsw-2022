@@ -127,6 +127,7 @@ public class GUISocketListener implements Runnable {
     /**
      * Check to see if a new {@link it.polimi.ingsw.Server.Messages.Events.Requests.PlayerActionRequest} can be sent to the server
      * or if the gui should wait before allowing any more actions to be sent
+     *
      * @return true if the listener is polling for a feedback to a previous player's action, false otherwise
      */
     public boolean awaitingPlayerActionFeedback() {

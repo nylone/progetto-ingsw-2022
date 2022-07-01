@@ -20,8 +20,9 @@ public class SocketListener implements Runnable {
 
     /**
      * Construct the listener
+     *
      * @param socket the {@link SocketWrapper} to poll messages from
-     * @param queue the {@link BlockingQueue<ClientEvent>} to push events to
+     * @param queue  the {@link BlockingQueue<ClientEvent>} to push events to
      */
     private SocketListener(SocketWrapper socket, BlockingQueue<ClientEvent> queue) {
         this.socket = socket;
@@ -30,8 +31,9 @@ public class SocketListener implements Runnable {
 
     /**
      * Given a socket and a queue, generate a listener and put it to work
+     *
      * @param socket the {@link SocketWrapper} to poll messages from
-     * @param queue the {@link BlockingQueue<ClientEvent>} to push events to
+     * @param queue  the {@link BlockingQueue<ClientEvent>} to push events to
      */
     public static void subscribe(SocketWrapper socket, BlockingQueue<ClientEvent> queue) {
         SocketListener sl = new SocketListener(socket, queue);

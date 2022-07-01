@@ -12,6 +12,7 @@ public class DeclarePlayerRequest extends ClientRequest {
 
     /**
      * Construct the request
+     *
      * @param nickname the nickname the user wishes to set
      */
     public DeclarePlayerRequest(String nickname) {
@@ -20,6 +21,7 @@ public class DeclarePlayerRequest extends ClientRequest {
 
     /**
      * Get the nickname the user selected
+     *
      * @return the nickname of the user
      */
     public String getNickname() {

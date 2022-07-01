@@ -34,7 +34,8 @@ public class KeepAliveSocketWrapper extends SocketWrapper {
      * server will keep the connection alive until an error occurs without the need to manually send the
      * heartbeat. The same can be said if both ends of the connection are
      * active wrappers. The same cannot be said if both ends are passive.
-     * @param socket the socket to wrap around
+     *
+     * @param socket          the socket to wrap around
      * @param keepAlivePeriod the time (in milliseconds) it takes for an active wrapper to send a heartbeat and a third of the
      *                        timeout required to close the connection and deem the endpoint unreachable
      * @param activeHeartBeat if set to true, makes the wrapper send a {@link HeartBeatMessage} every period, if set to false makes
@@ -56,7 +57,7 @@ public class KeepAliveSocketWrapper extends SocketWrapper {
                         if (!activeHeartBeat) {
                             this.sendMessage(new HeartBeatMessage());
                         }
-                        this.heartBeatTimer = HeartBeatTimeoutTask.startAndGetTimer(this, keepAlivePeriod*3);
+                        this.heartBeatTimer = HeartBeatTimeoutTask.startAndGetTimer(this, keepAlivePeriod * 3);
                     } else {
                         inputQueue.put(input);
                     }
@@ -79,6 +80,7 @@ public class KeepAliveSocketWrapper extends SocketWrapper {
 
     /**
      * Blocks until a message is read or the heartbeat timeout expires
+     *
      * @return the read message
      * @throws IOException if the timeout runs out or if an error is encountered while fetching a message
      */

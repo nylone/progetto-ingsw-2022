@@ -14,7 +14,8 @@ public class GameInit extends Response {
 
     /**
      * Construct the response
-     * @param statusCode the status code of the response
+     *
+     * @param statusCode   the status code of the response
      * @param errorMessage additional feedback about the response
      */
     private GameInit(StatusCode statusCode, String errorMessage) {
@@ -24,6 +25,7 @@ public class GameInit extends Response {
 
     /**
      * Returns a failed status code response
+     *
      * @param errorMessage additional feedback about failure
      * @return a failed status code response
      */
@@ -33,6 +35,7 @@ public class GameInit extends Response {
 
     /**
      * Returns a successful status code response
+     *
      * @return a successful status code response
      */
     public static GameInit success() {
@@ -41,6 +44,7 @@ public class GameInit extends Response {
 
     /**
      * Get information about the response
+     *
      * @return additional feedback about the response
      */
     public String getErrorMessage() {

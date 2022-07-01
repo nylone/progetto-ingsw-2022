@@ -14,6 +14,7 @@ public class ModelUpdateEvent implements ClientEvent {
 
     /**
      * Ship an updated model as an event
+     *
      * @param update reference to the updated model
      */
     public ModelUpdateEvent(Model update) {
@@ -22,6 +23,7 @@ public class ModelUpdateEvent implements ClientEvent {
 
     /**
      * Get the {@link Model} object
+     *
      * @return a reference to the stored {@link Model}
      */
     public Model getModel() {

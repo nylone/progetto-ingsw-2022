@@ -21,6 +21,7 @@ public class LobbyInfo implements Serializable {
 
     /**
      * Generate the lobby info
+     *
      * @param lobby the lobby to get the info of
      */
     public LobbyInfo(Lobby lobby) {
@@ -33,6 +34,7 @@ public class LobbyInfo implements Serializable {
 
     /**
      * Get the admin nickname
+     *
      * @return the admin nickname
      */
     public String getAdmin() {
@@ -41,6 +43,7 @@ public class LobbyInfo implements Serializable {
 
     /**
      * Get the UUID of the Lobby
+     *
      * @return the UUID of the Lobby
      */
     public UUID getID() {
@@ -49,6 +52,7 @@ public class LobbyInfo implements Serializable {
 
     /**
      * Check if the Lobby is public
+     *
      * @return true if the lobby is public
      */
     public boolean isPublic() {
@@ -57,6 +61,7 @@ public class LobbyInfo implements Serializable {
 
     /**
      * Get the maximum amount of players allowed in the lobby
+     *
      * @return the max size of the lobby
      */
     public int getMaxPlayers() {
@@ -65,6 +70,7 @@ public class LobbyInfo implements Serializable {
 
     /**
      * Get connected player nicknames
+     *
      * @return an Unmodifiable {@link List} containing the connected players
      */
     public List<String> getPlayers() {

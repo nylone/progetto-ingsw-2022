@@ -14,6 +14,7 @@ public class GameOver extends FixedStatusResponse {
 
     /**
      * Create the response
+     *
      * @param winners the winners of the game
      */
     public GameOver(List<String> winners) {
@@ -22,6 +23,7 @@ public class GameOver extends FixedStatusResponse {
 
     /**
      * Get the winners of the game
+     *
      * @return an Unmodifiable {@link List} containing the list of winners for the game
      */
     public List<String> getWinners() {

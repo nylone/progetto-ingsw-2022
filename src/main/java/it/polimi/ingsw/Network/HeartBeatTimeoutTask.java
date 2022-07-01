@@ -12,6 +12,7 @@ public class HeartBeatTimeoutTask extends TimerTask {
 
     /**
      * Private constructor setting up the attributes for the timeout task
+     *
      * @param sock the socket to close in case of timeout
      */
     private HeartBeatTimeoutTask(SocketWrapper sock) {
@@ -20,7 +21,8 @@ public class HeartBeatTimeoutTask extends TimerTask {
 
     /**
      * Sets up a single, non repeating timer counting down to the timeout.
-     * @param socketWrapper the socket to close if the timer runs out
+     *
+     * @param socketWrapper   the socket to close if the timer runs out
      * @param timeoutDuration the timeout duration in milliseconds
      * @return the timer that is counting down the timeout, calling {@link Timer#cancel()} on it will prevent the
      * timeout task from running, effectively resetting the timeout.

@@ -16,6 +16,7 @@ public abstract class Response extends Message {
 
     /**
      * Construct the response
+     *
      * @param statusCode the status code of the response
      */
     public Response(StatusCode statusCode) {
@@ -24,6 +25,7 @@ public abstract class Response extends Message {
 
     /**
      * Get the status code of the response
+     *
      * @return true if the response is positive, false otherwise
      */
     public StatusCode getStatusCode() {

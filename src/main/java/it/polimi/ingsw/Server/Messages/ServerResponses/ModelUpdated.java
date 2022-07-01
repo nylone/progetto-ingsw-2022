@@ -15,6 +15,7 @@ public class ModelUpdated extends FixedStatusResponse {
 
     /**
      * Prepare a response with the updated model
+     *
      * @param model reference to the updated model
      */
     public ModelUpdated(Model model) {
@@ -23,6 +24,7 @@ public class ModelUpdated extends FixedStatusResponse {
 
     /**
      * Get the model
+     *
      * @return the copy of the {@link Model} that was updated
      */
     public Model getModel() {

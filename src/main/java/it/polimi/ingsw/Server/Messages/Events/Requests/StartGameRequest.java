@@ -14,6 +14,7 @@ public class StartGameRequest extends ClientRequest {
 
     /**
      * Construct the request
+     *
      * @param gameMode a variant of {@link GameMode} to select the rules of the game to apply (simplified or advanced)
      */
     public StartGameRequest(GameMode gameMode) {
@@ -22,6 +23,7 @@ public class StartGameRequest extends ClientRequest {
 
     /**
      * Get the selected game mode
+     *
      * @return a variant of {@link GameMode} to select the rules of the game to apply (simplified or advanced)
      */
     public GameMode getGameMode() {

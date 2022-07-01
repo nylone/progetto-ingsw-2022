@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Server.Messages.ServerResponses;
 
-import it.polimi.ingsw.Server.Messages.ServerResponses.SupportStructures.StatusCode;
-
 import java.io.Serial;
 
 /**

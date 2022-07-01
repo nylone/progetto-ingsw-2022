@@ -15,6 +15,7 @@ public class HeartBeatSender extends TimerTask {
 
     /**
      * Creates the sender but does not activate it
+     *
      * @param sw the socket to send heartbeats on
      */
     public HeartBeatSender(SocketWrapper sw) {
@@ -25,6 +26,7 @@ public class HeartBeatSender extends TimerTask {
     /**
      * Activates the sender. The sender will stop running only if externally stopped or if the socketwrapper handling it
      * has issues during delivery of a heartbeat.
+     *
      * @param keepAlivePeriod the time, in milliseconds, between each {@link HeartBeatMessage} sent
      */
     public void start(long keepAlivePeriod) {

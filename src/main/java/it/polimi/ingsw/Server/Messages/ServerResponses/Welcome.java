@@ -13,6 +13,7 @@ public class Welcome extends Response {
 
     /**
      * Construct the response
+     *
      * @param statusCode the status code of the response
      */
     public Welcome(StatusCode statusCode) {

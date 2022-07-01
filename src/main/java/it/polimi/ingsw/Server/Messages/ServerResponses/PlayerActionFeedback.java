@@ -15,6 +15,7 @@ public class PlayerActionFeedback extends Response {
 
     /**
      * Construct the response
+     *
      * @param statusCode the status code of the response
      * @param report     additional feedback about the response
      */
@@ -25,6 +26,7 @@ public class PlayerActionFeedback extends Response {
 
     /**
      * Returns a failed status code response
+     *
      * @param report additional feedback about failure
      * @return a failed status code response
      */
@@ -34,6 +36,7 @@ public class PlayerActionFeedback extends Response {
 
     /**
      * Returns a successful status code response
+     *
      * @return a successful status code response
      */
     public static PlayerActionFeedback success() {
@@ -42,6 +45,7 @@ public class PlayerActionFeedback extends Response {
 
     /**
      * Get information about the response
+     *
      * @return additional feedback about the response
      */
     public String getReport() {

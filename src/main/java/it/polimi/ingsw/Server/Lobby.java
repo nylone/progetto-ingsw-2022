@@ -35,11 +35,12 @@ public class Lobby {
 
     /**
      * Create a new lobby
-     * @param id a unique ID used to refer to the lobby
-     * @param isPublic if the lobby is supposed to be publicly available to new clients
+     *
+     * @param id         a unique ID used to refer to the lobby
+     * @param isPublic   if the lobby is supposed to be publicly available to new clients
      * @param maxPlayers the amount of clients the game connected to the lobby will host
-     * @param admin the name of the admin client. The admin owns the game and even though everyone can start a session, if
-     *              the admin disconnects while in the waiting lobby, the lobby is closed.
+     * @param admin      the name of the admin client. The admin owns the game and even though everyone can start a session, if
+     *                   the admin disconnects while in the waiting lobby, the lobby is closed.
      */
     public Lobby(UUID id, boolean isPublic, int maxPlayers, String admin) {
         this.id = id;
@@ -53,9 +54,10 @@ public class Lobby {
 
     /**
      * Attempts to forward an action to the game's controller
+     *
      * @param pa the action to forward
      * @throws InputValidationException if the controller does not validate the action positively
-     * @throws OperationException if no controller is online or if a validated action failed to run properly
+     * @throws OperationException       if no controller is online or if a validated action failed to run properly
      */
     public synchronized void executeAction(PlayerAction pa) throws InputValidationException, OperationException {
         if (controller == null) {
@@ -66,6 +68,7 @@ public class Lobby {
 
     /**
      * Get the id of the lobby
+     *
      * @return the {@link UUID} of the lobby
      */
     public UUID getId() {
@@ -74,6 +77,7 @@ public class Lobby {
 
     /**
      * Get the name of the admin
+     *
      * @return the nickname of the admin client
      */
     public String getAdmin() {
@@ -82,6 +86,7 @@ public class Lobby {
 
     /**
      * Check if the lobby is public or not
+     *
      * @return true if the lobby is public, false otherwise
      */
     public boolean isPublic() {
@@ -90,6 +95,7 @@ public class Lobby {
 
     /**
      * Check to see if the lobby is full
+     *
      * @return true if the lobby is full, false otherwise
      */
     public boolean isLobbyFull() {
@@ -98,6 +104,7 @@ public class Lobby {
 
     /**
      * Get the maximum amount of players for the lobby
+     *
      * @return the max amount of clients that can connect to the lobby
      */
     public int getMaxPlayers() {
@@ -106,6 +113,7 @@ public class Lobby {
 
     /**
      * Get a list of connected players
+     *
      * @return a {@link List} of the nicknames of the connected players
      */
     public List<String> getPlayers() {
@@ -116,7 +124,8 @@ public class Lobby {
 
     /**
      * Connect a player to the lobby
-     * @param nick the nickname of the player to connect
+     *
+     * @param nick          the nickname of the player to connect
      * @param playerChannel the queue to forward new {@link ClientEvent}s to
      * @return true if the player was successfully connected, false otherwise
      */
@@ -139,6 +148,7 @@ public class Lobby {
 
     /**
      * Propagates a {@link ClientEvent} to all players
+     *
      * @param event the event to propagate to all players
      */
     public void notifyPlayers(ClientEvent event) {
@@ -156,6 +166,7 @@ public class Lobby {
     /**
      * Removes a player from the lobby. If the game has started for the lobby or the admin decided to leave, the lobby is closed
      * and players are notified through {@link LobbyClosedEvent}
+     *
      * @param nick the nickname of the player to remove from the lobby
      */
     protected void disconnectPlayer(String nick) {
@@ -172,6 +183,7 @@ public class Lobby {
 
     /**
      * Check to see if the game has started or if clients are still waiting for the game to start
+     *
      * @return true if the game is on, otherwise false
      */
     public boolean isGameInProgress() {
@@ -190,6 +202,7 @@ public class Lobby {
 
     /**
      * Starts the game. {@link LobbyServer}s will receive a {@link GameStartEvent}
+     *
      * @param gameMode the {@link GameMode} to start the game in
      * @throws InputValidationException if the players in lobby are more than 4 or less than 2
      */

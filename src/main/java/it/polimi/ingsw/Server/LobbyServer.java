@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 /**
  * Handler of game events, responsible for communication of game related information with a single client.
  */
-public class LobbyServer implements Runnable{
+public class LobbyServer implements Runnable {
     protected static final Map<UUID, Lobby> lobbyMap = new ConcurrentHashMap<>();
     private static final Set<String> connectedNicknames = new HashSet<>();
     private final SocketWrapper sw;
@@ -28,6 +28,7 @@ public class LobbyServer implements Runnable{
 
     /**
      * Creates the server around a {@link SocketWrapper}
+     *
      * @param sw the socket to use to communicate with the client
      */
     private LobbyServer(SocketWrapper sw) {
@@ -36,33 +37,23 @@ public class LobbyServer implements Runnable{
     }
 
     /**
-     * generates a unique UUID for a lobby
-     * @return a not yet in use UUID for the lobby
-     */
-    private static UUID generateUUID() {
-        UUID id = UUID.randomUUID();
-        while (lobbyMap.containsKey(id)) {
-            id = UUID.randomUUID();
-        }
-        return id;
-    }
-
-    /**
-     * Get the event queue this server listens on
-     * @return the {@link BlockingQueue<ClientEvent>} linked to this server
-     */
-    private BlockingQueue<ClientEvent> getEventQueue() {
-        return this.eventQueue;
-    }
-
-    /**
      * Start a server on the provided socket wrapper
+     *
      * @param socketWrapper the wrapped connection to the client of the server
      */
     public static void spawn(SocketWrapper socketWrapper) {
         LobbyServer lobbyServer = new LobbyServer(socketWrapper);
         new Thread(lobbyServer).start();
         SocketListener.subscribe(socketWrapper, lobbyServer.getEventQueue());
+    }
+
+    /**
+     * Get the event queue this server listens on
+     *
+     * @return the {@link BlockingQueue<ClientEvent>} linked to this server
+     */
+    private BlockingQueue<ClientEvent> getEventQueue() {
+        return this.eventQueue;
     }
 
     /**
@@ -205,7 +196,8 @@ public class LobbyServer implements Runnable{
                                     state = State.REDIRECT_PHASE;
                                     sw.sendMessage(new LobbyClosed());
                                 }
-                                case ModelUpdateEvent modelUpdateEvent -> sw.sendMessage(new ModelUpdated(modelUpdateEvent.getModel()));
+                                case ModelUpdateEvent modelUpdateEvent ->
+                                        sw.sendMessage(new ModelUpdated(modelUpdateEvent.getModel()));
                                 case GameOverEvent gameOverEvent -> {
                                     sw.sendMessage(new GameOver(gameOverEvent.winners()));
                                     currentLobby.close();
@@ -243,6 +235,19 @@ public class LobbyServer implements Runnable{
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * generates a unique UUID for a lobby
+     *
+     * @return a not yet in use UUID for the lobby
+     */
+    private static UUID generateUUID() {
+        UUID id = UUID.randomUUID();
+        while (lobbyMap.containsKey(id)) {
+            id = UUID.randomUUID();
+        }
+        return id;
     }
 
     /**

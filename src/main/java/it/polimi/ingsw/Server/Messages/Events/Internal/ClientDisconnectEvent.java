@@ -11,8 +11,9 @@ public class ClientDisconnectEvent extends ConnectEvent {
 
     /**
      * Create the event
+     *
      * @param lastDisconnectedNickname the nickname of the player that just disconnected
-     * @param players the list of all connected players
+     * @param players                  the list of all connected players
      */
     public ClientDisconnectEvent(String lastDisconnectedNickname, List<String> players) {
         super(lastDisconnectedNickname, players);

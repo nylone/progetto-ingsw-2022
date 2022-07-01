@@ -18,7 +18,8 @@ public class LobbyAccept extends Response {
 
     /**
      * Construct the response
-     * @param statusCode the status code of the response
+     *
+     * @param statusCode  the status code of the response
      * @param openLobbies a {@link List} of open lobbies the client may join or null if the response is negative
      */
     private LobbyAccept(StatusCode statusCode, List<LobbyInfo> openLobbies) {
@@ -28,6 +29,7 @@ public class LobbyAccept extends Response {
 
     /**
      * Returns a failed status code response
+     *
      * @return a failed status code response
      */
     public static LobbyAccept fail() {
@@ -36,6 +38,7 @@ public class LobbyAccept extends Response {
 
     /**
      * Returns a successful status code response
+     *
      * @param openLobbies a {@link List} of open lobbies the client may join
      * @return a successful status code response
      */
@@ -45,6 +48,7 @@ public class LobbyAccept extends Response {
 
     /**
      * Get a list of the open lobbies the client may join
+     *
      * @return a {@link List} of open lobbies the client may join or null if {@link #getStatusCode()} is {@link StatusCode#Fail}
      */
     public List<LobbyInfo> getPublicLobbies() {

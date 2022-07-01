@@ -12,6 +12,7 @@ import java.util.Map;
 public record GameStartEvent(Map<String, Integer> nickToID) implements ClientEvent {
     /**
      * Creates the event
+     *
      * @param nickToID a mapping from the nickname of a player to its {@link it.polimi.ingsw.Model.PlayerBoard}'s ID in the
      *                 {@link it.polimi.ingsw.Model.Model}
      */

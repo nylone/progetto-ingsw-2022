@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
-import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Misc.OptionalValue;
 import it.polimi.ingsw.Misc.Pair;
 import it.polimi.ingsw.Model.Enums.GameMode;
@@ -150,9 +148,9 @@ public class Card07Test {
         }
         Pair<PawnColour, PawnColour> pair = new Pair<>(PawnColour.RED, (PawnColour) card.getState().get(0));
         input.setTargetPawnPairs(new ArrayList<>(List.of(pair)));
-            InputValidationException e = card.checkInput(input).get();
-            Assert.assertEquals("An error occurred while validating: Target Pawn Pairs\n" +
-                    "The error was: element Target Pawn Pairs was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
+        InputValidationException e = card.checkInput(input).get();
+        Assert.assertEquals("An error occurred while validating: Target Pawn Pairs\n" +
+                "The error was: element Target Pawn Pairs was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
 
     }
 
@@ -188,10 +186,10 @@ public class Card07Test {
             g.getMutableStudentBag().extract();
         }
 
-            InputValidationException e = card.checkInput(input).get();
+        InputValidationException e = card.checkInput(input).get();
 
-            Assert.assertEquals("An error occurred while validating: Student Bag\n" +
-                    "The error was: is empty", e.getMessage());
+        Assert.assertEquals("An error occurred while validating: Student Bag\n" +
+                "The error was: is empty", e.getMessage());
 
     }
 }

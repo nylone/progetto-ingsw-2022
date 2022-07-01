@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
-import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
 import it.polimi.ingsw.Model.Enums.StateType;
@@ -81,9 +79,9 @@ public class Card11Test {
             g.getMutableStudentBag().extract();
         }
         // it should not be possible to activate card if student bag is empty
-            InputValidationException e = card.checkInput(input).get();
-            Assert.assertEquals("An error occurred while validating: Student Bag\n" +
-                    "The error was: is empty", e.getMessage());
+        InputValidationException e = card.checkInput(input).get();
+        Assert.assertEquals("An error occurred while validating: Student Bag\n" +
+                "The error was: is empty", e.getMessage());
     }
 
     @Test
@@ -102,10 +100,10 @@ public class Card11Test {
         }
         // it should not be possible to activate card if student is not on the card
 
-            InputValidationException e = card.checkInput(input).get();
+        InputValidationException e = card.checkInput(input).get();
 
-            Assert.assertEquals("An error occurred while validating: Target Pawn Colour\n" +
-                    "The error was: element Target Pawn Colour was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
+        Assert.assertEquals("An error occurred while validating: Target Pawn Colour\n" +
+                "The error was: element Target Pawn Colour was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
 
     }
 

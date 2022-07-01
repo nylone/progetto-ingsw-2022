@@ -133,7 +133,7 @@ public class GameInProgressPanel extends JTabbedPane {
             if (model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname().equals(ownNickname) &&
                     (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0 ||
                             (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1 &&
-                            guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) == 0))) {
+                                    guiSocketListener.getSuccessfulRequestsByType(MoveStudent.class) == 0))) {
                 // when selecting an assistant card, remember the user what other players have chosen
                 StringBuilder text = new StringBuilder("<html>It's your turn!!");
                 if (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0) {

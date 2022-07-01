@@ -10,8 +10,9 @@ public class ClientConnectEvent extends ConnectEvent {
 
     /**
      * Create the event
+     *
      * @param lastConnectedNickname the nickname of the player that just connected
-     * @param players the list of all connected players
+     * @param players               the list of all connected players
      */
     public ClientConnectEvent(String lastConnectedNickname, List<String> players) {
         super(lastConnectedNickname, players);

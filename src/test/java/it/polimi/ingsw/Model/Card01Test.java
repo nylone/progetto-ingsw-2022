@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Exceptions.Input.GenericInputValidationException;
 import it.polimi.ingsw.Exceptions.Input.InputValidationException;
-import it.polimi.ingsw.Exceptions.Input.InvalidElementException;
 import it.polimi.ingsw.Misc.Utils;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Enums.PawnColour;
@@ -98,10 +96,10 @@ public class Card01Test {
         Card01 card = new Card01(g);
 
         // act
-            InputValidationException e = card.checkInput(input).get();
+        InputValidationException e = card.checkInput(input).get();
 
-            Assert.assertEquals("An error occurred while validating: Target Island\n" +
-                    "The error was: element Target Island was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
+        Assert.assertEquals("An error occurred while validating: Target Island\n" +
+                "The error was: element Target Island was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
     }
 
     @Test
@@ -111,9 +109,9 @@ public class Card01Test {
         CharacterCardInput input = new CharacterCardInput(g.getMutableTurnOrder().getMutableCurrentPlayer());
         Card01 card = new Card01(g);
         input.setTargetIsland(g.getMutableIslandField().getMutableIslandById(0));
-            InputValidationException e = card.checkInput(input).get();
-            Assert.assertEquals("An error occurred while validating: Target Pawn Colour\n" +
-                    "The error was: element Target Pawn Colour was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
+        InputValidationException e = card.checkInput(input).get();
+        Assert.assertEquals("An error occurred while validating: Target Pawn Colour\n" +
+                "The error was: element Target Pawn Colour was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
     }
 
     @Test
@@ -133,9 +131,9 @@ public class Card01Test {
                 break;
             }
         }
-            InputValidationException e = card.checkInput(input).get();
-            Assert.assertEquals("An error occurred while validating: Target Pawn Colour\n" +
-                    "The error was: element Target Pawn Colour was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
+        InputValidationException e = card.checkInput(input).get();
+        Assert.assertEquals("An error occurred while validating: Target Pawn Colour\n" +
+                "The error was: element Target Pawn Colour was found to be invalid (eg: null, out of bounds or otherwise incorrect).", e.getMessage());
     }
 
     @Test(expected = InputValidationException.class)
@@ -173,9 +171,9 @@ public class Card01Test {
         while (!g.getMutableStudentBag().isEmpty()) {
             g.getMutableStudentBag().extract();
         }
-            InputValidationException e = card.checkInput(input).get();
-            Assert.assertEquals("An error occurred while validating: Student Bag\n" +
-                    "The error was: is empty", e.getMessage());
+        InputValidationException e = card.checkInput(input).get();
+        Assert.assertEquals("An error occurred while validating: Student Bag\n" +
+                "The error was: is empty", e.getMessage());
     }
 
     @Test

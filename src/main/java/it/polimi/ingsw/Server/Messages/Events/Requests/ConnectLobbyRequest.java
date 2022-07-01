@@ -14,6 +14,7 @@ public class ConnectLobbyRequest extends ClientRequest {
 
     /**
      * Create the request to connect to a lobby.
+     *
      * @param code the {@link UUID} of the lobby the client wishes to connect to.
      */
     public ConnectLobbyRequest(UUID code) {
@@ -22,6 +23,7 @@ public class ConnectLobbyRequest extends ClientRequest {
 
     /**
      * Get the code of the lobby
+     *
      * @return the {@link it.polimi.ingsw.Server.Lobby}'s {@link UUID} the client wishes to connect to
      */
     public UUID getCode() {

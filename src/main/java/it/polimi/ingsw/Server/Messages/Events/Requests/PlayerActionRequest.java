@@ -14,6 +14,7 @@ public class PlayerActionRequest extends ClientRequest {
 
     /**
      * Construct the request
+     *
      * @param action the action the user wishes to run
      */
     public PlayerActionRequest(PlayerAction action) {
@@ -22,6 +23,7 @@ public class PlayerActionRequest extends ClientRequest {
 
     /**
      * Get the user defined action
+     *
      * @return a {@link PlayerAction} to run on a {@link it.polimi.ingsw.Controller.Controller}
      */
     public PlayerAction getAction() {

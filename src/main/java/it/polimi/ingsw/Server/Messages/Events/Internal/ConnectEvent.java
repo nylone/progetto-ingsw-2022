@@ -13,8 +13,9 @@ public class ConnectEvent implements ClientEvent {
 
     /**
      * Create the event
+     *
      * @param affectedNickname the nickname of the player that just caused this event
-     * @param players the list of all connected players
+     * @param players          the list of all connected players
      */
     public ConnectEvent(String affectedNickname, List<String> players) {
         this.nickname = affectedNickname;
@@ -23,6 +24,7 @@ public class ConnectEvent implements ClientEvent {
 
     /**
      * Get the user that generated this event
+     *
      * @return the nickname of the user that just caused this event
      */
     public String getNickname() {
@@ -31,6 +33,7 @@ public class ConnectEvent implements ClientEvent {
 
     /**
      * Get the players connected to the lobby
+     *
      * @return an Unmodifiable {@link List} containing players in the lobby
      */
     public List<String> getPlayers() {
