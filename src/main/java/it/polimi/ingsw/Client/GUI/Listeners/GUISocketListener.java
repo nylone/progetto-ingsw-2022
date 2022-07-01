@@ -23,7 +23,7 @@ public class GUISocketListener implements Runnable {
     /**
      * JTabbedPane containing all others JPanels
      */
-    private final GameInProgressPanel gameInProgressPanel;
+    private GameInProgressPanel gameInProgressPanel;
     /**
      * List of actions executed by current player and their feedbacks
      */
@@ -47,8 +47,8 @@ public class GUISocketListener implements Runnable {
      *
      * @param ctx Context containing socket and GUI's window
      */
-    public GUISocketListener(GameInProgressPanel gameInProgressPanel, Context ctx) {
-        this.gameInProgressPanel = gameInProgressPanel;
+    public GUISocketListener(Context ctx) {
+        this.gameInProgressPanel = null;
         this.playerActionRequest = null;
         this.sw = ctx.getSocketWrapper();
         this.ctx = ctx;
@@ -77,7 +77,8 @@ public class GUISocketListener implements Runnable {
                                     " just disconnected.", "Client disconnected", JOptionPane.INFORMATION_MESSAGE);
                     case ModelUpdated modelUpdated -> {
                         //create a new GameInProgressPanel with updated model
-                        ctx.getWindow().changeView(new GameInProgressPanel(ctx, modelUpdated.getModel(), this));
+                        this.gameInProgressPanel = new GameInProgressPanel(ctx, modelUpdated.getModel(), this, gameInProgressPanel);
+                        ctx.getWindow().changeView(this.gameInProgressPanel);
                         return;
                     }
                     case PlayerActionFeedback playerActionFeedback -> {

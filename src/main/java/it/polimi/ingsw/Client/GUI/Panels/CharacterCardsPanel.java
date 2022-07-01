@@ -311,10 +311,7 @@ public class CharacterCardsPanel extends JPanel {
         characterCardsStatelabes.get(1).setBounds(441, 485, 205, 200);
         characterCardsStatelabes.get(2).setBounds(782, 485, 205, 200);
         //add all labels to container
-        //coinLabels.forEach(pageBackground::add);
-        for(int i=0; i<2; i++){
-            characterCardsButton.get(i).add(coinLabels.get(i));
-        }
+        coinLabels.forEach(pageBackground::add);
         characterCardsButton.forEach(pageBackground::add);
         characterCardsButton.forEach(button -> button.setLayout(null));
         characterCardsStatelabes.forEach(pageBackground::add);

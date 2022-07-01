@@ -46,19 +46,19 @@ public class Card10 extends StatelessEffect {
     @Override
     public OptionalValue<InputValidationException> overridableCheckInput(CharacterCardInput input) {
         //convention of input.targetPawnPairs ---> array of pairs, first element is from entrance, second is from diningRoom
-        OptionalValue<List<Pair<PawnColour, PawnColour>>> optionalPawnPair = input.getTargetPawnPairs();
+        OptionalValue<List<Pair<PawnColour, PawnColour>>> optionalPawnPairs = input.getTargetPawnPairs();
         // make sure that:
         if (
-                optionalPawnPair.isEmpty() || // target pawn pairs was set as parameter
+                optionalPawnPairs.isEmpty() || // target pawn pairs was set as parameter
                         //optionalPawnPair.get().size() == 0 || // target pawn pairs is not empty (technically allowed)
-                        optionalPawnPair.get().size() > 2 || // target pawn pairs are not over the pair limit of 2 swaps
-                        optionalPawnPair.get().stream().anyMatch(p -> p.first() == null || p.second() == null) // no null values in pair
+                        optionalPawnPairs.get().size() > 2 || // target pawn pairs are not over the pair limit of 2 swaps
+                        optionalPawnPairs.get().stream().anyMatch(p -> p.first() == null || p.second() == null) // no null values in pair
         ) {
             // in case throw exception for invalid element in input
             return OptionalValue.of(new InvalidElementException("Target Pawn Pairs"));
         }
         // explode pawnpairs into respective arrays of elements
-        List<Pair<PawnColour, PawnColour>> pawnPairs = optionalPawnPair.get();
+        List<Pair<PawnColour, PawnColour>> pawnPairs = optionalPawnPairs.get();
         // first count how many students of each colour the user picked
         Map<PawnColour, Integer> comingFromEntrance = new EnumMap<>(PawnColour.class); // counts user entrance selected colours
         Map<PawnColour, Integer> comingFromDiningRoom = new EnumMap<>(PawnColour.class); // counts diningroom selected colours

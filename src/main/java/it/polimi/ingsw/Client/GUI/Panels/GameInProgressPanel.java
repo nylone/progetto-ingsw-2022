@@ -50,7 +50,7 @@ public class GameInProgressPanel extends JTabbedPane {
         this.window = ctx.getWindow();
         this.sw = ctx.getSocketWrapper();
         this.window.changeView(this);
-        this.guiSocketListener = new GUISocketListener(this, ctx);
+        this.guiSocketListener = new GUISocketListener(ctx);
         //run GuiReader thread
         Thread readerThread = new Thread(guiSocketListener);
         readerThread.start();
@@ -62,8 +62,10 @@ public class GameInProgressPanel extends JTabbedPane {
      * @param ctx               Context to use during the game
      * @param model             Model containing all game's information
      * @param guiSocketListener created upon first gameInProgressPanel creation
+     * @param previousPanel     if not null, signifies an old panel was previously drawn and will keep the displayed
+     *                          tab the same in the new panel
      */
-    public GameInProgressPanel(Context ctx, Model model, GUISocketListener guiSocketListener) {
+    public GameInProgressPanel(Context ctx, Model model, GUISocketListener guiSocketListener, GameInProgressPanel previousPanel) {
         this(ctx, guiSocketListener);
         if (!model.isGameOver()) {
             //add IslandFieldPanel to JTabbedPane
@@ -126,10 +128,12 @@ public class GameInProgressPanel extends JTabbedPane {
             }
             this.setEnabledAt(this.getTabCount() - 1, false);
 
-            //set JTabbedPane to last tab whether the user has moved MotherNature (las tab is always the CloudPanel)
-            if (guiSocketListener.getSuccessfulRequestsByType(MoveMotherNature.class) == 1) {
-                this.setSelectedIndex(this.getTabCount() - 2);
+            //set JTabbedPane to the the last tab the user had opened
+            if (previousPanel != null) {
+                this.setSelectedIndex(previousPanel.getSelectedIndex());
             }
+
+            // show an "it's your turn" dialog if appropriate
             if (model.getMutableTurnOrder().getMutableCurrentPlayer().getNickname().equals(ownNickname) &&
                     (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 0 ||
                             (guiSocketListener.getSuccessfulRequestsByType(PlayAssistantCard.class) == 1 &&
@@ -145,7 +149,8 @@ public class GameInProgressPanel extends JTabbedPane {
                 text.append("</html>");
                 JLabel resLabel = new JLabel(text.toString());
                 resLabel.setFont(new Font("Monospaced", Font.BOLD, 17));
-                JOptionPane.showMessageDialog(null, resLabel, "Turn change", JOptionPane.INFORMATION_MESSAGE);
+                SwingUtilities.invokeLater(() ->
+                JOptionPane.showMessageDialog(null, resLabel, "Turn change", JOptionPane.INFORMATION_MESSAGE));
             }
         } else {
             this.add("WINNERS", new EndGamePanel(model.getWinners().get(), ctx));
