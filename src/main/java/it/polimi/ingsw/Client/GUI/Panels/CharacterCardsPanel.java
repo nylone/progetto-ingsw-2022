@@ -302,8 +302,8 @@ public class CharacterCardsPanel extends JPanel {
         ;
         //--ABSOLUTE POSITIONING--
         coinLabels.get(0).setBounds(30, 195, 150, 160);
-        coinLabels.get(1).setBounds(30, 195, 150, 160);
-        coinLabels.get(2).setBounds(30, 195, 150, 160);
+        coinLabels.get(1).setBounds(371, 195, 150, 160);
+        coinLabels.get(2).setBounds(712, 195, 150, 160);
         characterCardsButton.get(0).setBounds(100, 133, 205, 340);
         characterCardsButton.get(1).setBounds(441, 133, 205, 340);
         characterCardsButton.get(2).setBounds(782, 133, 205, 340);
