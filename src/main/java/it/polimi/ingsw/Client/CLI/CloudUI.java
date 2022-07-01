@@ -41,15 +41,15 @@ public class CloudUI {
                     // Appends the current cloud in the loop.
                     // Adds the current cloud title on a line.
                     // Adds the content on the cloud on separate lines.
-                    twoClouds.append("\tCloud ").append(c.getId() + 1).append("\n").append(students);
+                    twoClouds.append("\tCloud ").append(c.getId()).append("\n").append(students);
                 }
                 clouds = twoClouds.toString();
             }
 
             case 3 -> { // three clouds will be print: the first pair next to each other, the third under the first
                 StringBuilder threeClouds = new StringBuilder();
-                threeClouds.append("Cloud ").append(ctx.getClouds().get(0).getId() + 1).append("\t\t" // divider between clouds
-                ).append("Cloud ").append(ctx.getClouds().get(1).getId() + 1).append("\n"); // title of cloud 2
+                threeClouds.append("Cloud ").append(ctx.getClouds().get(0).getId()).append("\t\t" // divider between clouds
+                ).append("Cloud ").append(ctx.getClouds().get(1).getId()).append("\n"); // title of cloud 2
                 for (int i = 0; i < 3; i++) { // prints the content of the I and II clouds next to each other if present
                     threeClouds.append(ctx.getClouds().get(0).getContents().size() > 0 ?
                             Symbols.colorizeStudent(ctx.getClouds().get(0).getContents().get(i), "\t" +
@@ -58,7 +58,7 @@ public class CloudUI {
                             Symbols.colorizeStudent(ctx.getClouds().get(1).getContents().get(i), "\t" +
                                     Symbols.PAWN) + "\n" : "\t\t\n");
                 }
-                threeClouds.append("Cloud ").append(ctx.getClouds().get(2).getId() + 1).append("\n"); // title of cloud 3
+                threeClouds.append("Cloud ").append(ctx.getClouds().get(2).getId()).append("\n"); // title of cloud 3
                 for (int i = 0; i < 3; i++) { // prints the content of the III cloud if present
                     threeClouds.append(ctx.getClouds().get(2).getContents().size() > 0 ?
                             Symbols.colorizeStudent(ctx.getClouds().get(2).getContents().get(i), "\t"
@@ -70,8 +70,8 @@ public class CloudUI {
 
             case 4 -> { // four clouds will be print as a grid
                 StringBuilder fourClouds = new StringBuilder();
-                fourClouds.append("Cloud ").append(ctx.getClouds().get(0).getId() + 1).append("\t\t" // separation between clouds
-                ).append("Cloud ").append(ctx.getClouds().get(1).getId() + 1).append("\n"); // title of cloud 2
+                fourClouds.append("Cloud ").append(ctx.getClouds().get(0).getId()).append("\t\t" // separation between clouds
+                ).append("Cloud ").append(ctx.getClouds().get(1).getId()).append("\n"); // title of cloud 2
                 for (int i = 0; i < 3; i++) { // prints the content of the I and II clouds next to each other if present
                     fourClouds.append(ctx.getClouds().get(0).getContents().size() > 0 ?
                             Symbols.colorizeStudent(ctx.getClouds().get(0).getContents().get(i), "\t"
@@ -80,8 +80,8 @@ public class CloudUI {
                             Symbols.colorizeStudent(ctx.getClouds().get(1).getContents().get(i), "\t"
                                     + Symbols.PAWN) + "\n" : "\t\t\n");
                 }
-                fourClouds.append("Cloud ").append(ctx.getClouds().get(2).getId() + 1).append("\t\t" // separation between clouds
-                ).append("Cloud ").append(ctx.getClouds().get(3).getId() + 1).append("\n"); // title of cloud 4
+                fourClouds.append("Cloud ").append(ctx.getClouds().get(2).getId()).append("\t\t" // separation between clouds
+                ).append("Cloud ").append(ctx.getClouds().get(3).getId()).append("\n"); // title of cloud 4
                 for (int i = 0; i < 3; i++) { // prints the content of the III and IV clouds next to each other if present
                     fourClouds.append(ctx.getClouds().get(2).getContents().size() > 0 ?
                             Symbols.colorizeStudent(ctx.getClouds().get(2).getContents().get(i), "\t"
