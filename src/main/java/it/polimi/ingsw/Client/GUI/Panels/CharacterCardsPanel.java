@@ -301,9 +301,9 @@ public class CharacterCardsPanel extends JPanel {
         }
         ;
         //--ABSOLUTE POSITIONING--
-        coinLabels.get(0).setBounds(125, 320, 150, 160);
-        coinLabels.get(1).setBounds(465, 320, 150, 160);
-        coinLabels.get(2).setBounds(810, 320, 150, 160);
+        coinLabels.get(0).setBounds(30, 195, 150, 160);
+        coinLabels.get(1).setBounds(30, 195, 150, 160);
+        coinLabels.get(2).setBounds(30, 195, 150, 160);
         characterCardsButton.get(0).setBounds(100, 133, 205, 340);
         characterCardsButton.get(1).setBounds(441, 133, 205, 340);
         characterCardsButton.get(2).setBounds(782, 133, 205, 340);
@@ -311,8 +311,12 @@ public class CharacterCardsPanel extends JPanel {
         characterCardsStatelabes.get(1).setBounds(441, 485, 205, 200);
         characterCardsStatelabes.get(2).setBounds(782, 485, 205, 200);
         //add all labels to container
-        coinLabels.forEach(pageBackground::add);
+        //coinLabels.forEach(pageBackground::add);
+        for(int i=0; i<2; i++){
+            characterCardsButton.get(i).add(coinLabels.get(i));
+        }
         characterCardsButton.forEach(pageBackground::add);
+        characterCardsButton.forEach(button -> button.setLayout(null));
         characterCardsStatelabes.forEach(pageBackground::add);
     }
 
