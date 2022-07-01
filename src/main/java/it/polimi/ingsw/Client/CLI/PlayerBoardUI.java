@@ -24,13 +24,18 @@ public class PlayerBoardUI {
      */
     public static String drawPlayerBoard(PlayerBoard playerBoard, Model ctx) {
         StringBuilder screen = new StringBuilder();
+        boolean isCurrentPlayer = ctx.getMutableTurnOrder().getMutableCurrentPlayer().equals(playerBoard);
         // Playerboard sections' titles. Change the argument of repeat() to further separate islands from playerboards
         screen.append("\n".repeat(1)).append("Entrance:\t").append("Dining Room:\t\t").append("Teachers:\t").append("Towers:\t\t");
         // Coins should be printed only if game mode is advanced
         if (ctx.getGameMode() == GameMode.ADVANCED) {
-            screen.append("Coins available:").append(playerBoard.getCoinBalance()).append("\n");
+            screen
+                    .append("Coins available:").append(playerBoard.getCoinBalance())
+                    // add tip to remind usage of showActions command
+                    .append(isCurrentPlayer? InfoUI.showActions() : "").append("\n");
         } else {
-            screen.append("\n");
+            // add tip to remind usage of showActions command
+            screen.append(isCurrentPlayer? InfoUI.showActions() : "").append("\n");
         }
 
         String entrance = PlayerBoardUI.drawEntrance(playerBoard, ctx);

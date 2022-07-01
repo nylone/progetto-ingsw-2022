@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.CLI;
 
+import it.polimi.ingsw.Misc.Symbols;
 import it.polimi.ingsw.Model.Enums.GameMode;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PlayerBoard;
@@ -62,5 +63,9 @@ public class InfoUI {
             }
         }
         return info;
+    }
+
+    public static String showActions() {
+        return "\tIf you are stuck, enter " + Symbols.BOLD + "`showActions` " + Symbols.RESET + Symbols.BACKGROUND;
     }
 }
