@@ -23,9 +23,13 @@ Eriantys is the game chosen as the (2021/2022) project of the Software Engineeri
 
 #### Legend
 
-⛔ Not Implemented
+`⛔ Not Implemented` &nbsp; `✅ Implemented`
 
-✅ Implemented
+## Test coverage
+
+* Follow [this link](deliverables/filtered-coverage-report/index.html) for a slimmed down version (i.e. only of Model + Controller)
+of the coverage report.
+* Follow [this link](deliverables/unfiltered-coverage-report/index.html) for an unfiltered version of the coverage report.
 
 ## Building and Running
 
