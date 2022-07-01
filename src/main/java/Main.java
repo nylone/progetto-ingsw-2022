@@ -22,11 +22,11 @@ public class Main {
             Additionally, one or more of the following arguments may be used (but not repeated):
             - < -d > will enable the logger, useful for debugging
             - < -local > will force the server to bind to the loopback address of the machine
-            - < -port > followed (without using spaces) by the port the server will be listening to
+            - < -port: > followed (without using spaces) by the port the server will be listening to
                              
             Here are some examples of argument combinations:
                 -d -local -port80 s         [starts the server binding it to 127.0.0.1:80]
-                -port420 s                  [starts the server binding it to 0.0.0.0:420]
+                -port:420 s                 [starts the server binding it to 0.0.0.0:420]
                 -d g                        [starts the GUI enabling the logger]
                 c                           [starts the CLI]
             """;
@@ -44,7 +44,7 @@ public class Main {
                 switch (arg.trim().toLowerCase()) {
                     case "-d" -> Logger.enable(true);
                     case "-local" -> serverBinding = InetAddress.getLoopbackAddress();
-                    case String a && a.startsWith("-port") -> serverPort = Integer.parseInt(a.substring(5));
+                    case String a && a.startsWith("-port:") -> serverPort = Integer.parseInt(a.substring(6));
                     case default -> {
                     }
                 }
