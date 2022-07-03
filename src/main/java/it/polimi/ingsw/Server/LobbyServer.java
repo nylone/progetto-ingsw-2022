@@ -200,24 +200,20 @@ public class LobbyServer implements Runnable {
                                     currentLobby.close();
                                 }
                                 case PlayerActionRequest playerActionRequest -> {
-                                    try {
-                                        PlayerAction pa = playerActionRequest.getAction();
-                                        if (pa.getPlayerBoardID() == playerID) {
-                                            PlayerActionFeedback feedback;
-                                            try {
-                                                currentLobby.executeAction(pa);
-                                                feedback = PlayerActionFeedback.success();
-                                            } catch (InputValidationException e) {
-                                                feedback = PlayerActionFeedback.fail(e.getMessage());
-                                            }
-                                            sw.sendMessage(feedback);
-                                        } else {
-                                            sw.sendMessage(PlayerActionFeedback.fail("You shall not impersonate others."));
+                                    PlayerAction pa = playerActionRequest.getAction();
+                                    if (pa.getPlayerBoardID() == playerID) {
+                                        try {
+                                            currentLobby.executeAction(pa);
+                                            sw.sendMessage(PlayerActionFeedback.success());
+                                        } catch (InputValidationException e) {
+                                            sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
+                                        } catch (OperationException e) {
+                                            Logger.severe("Supposedly unreachable statement was reached:\n" + e.getMessage());
+                                            sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
+                                            throw new RuntimeException(e);
                                         }
-                                    } catch (OperationException e) {
-                                        Logger.severe("Supposedly unreachable statement was reached:\n" + e.getMessage());
-                                        sw.sendMessage(PlayerActionFeedback.fail(e.getMessage()));
-                                        throw new RuntimeException(e);
+                                    } else {
+                                        sw.sendMessage(PlayerActionFeedback.fail("You shall not impersonate others."));
                                     }
                                 }
                                 case ClientDisconnectEvent clientDisconnectedEvent ->

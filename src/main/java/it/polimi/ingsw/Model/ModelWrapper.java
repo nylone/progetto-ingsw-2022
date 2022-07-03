@@ -71,14 +71,10 @@ public class ModelWrapper {
      * @throws Exception the modelModifier can optionally throw Exceptions, which will be escalated to the caller.
      */
     public void editModel(ModelModifier modelModifier, boolean keepUnsafeReference) throws Exception {
-        Model toModify;
-        if (keepUnsafeReference) {
-            toModify = this.model;
-        } else {
-            toModify = modelCopy(false);
+        modelModifier.modifyModel(this.model);
+        if (!keepUnsafeReference) {
+            this.model = modelCopy(false);
         }
-        modelModifier.modifyModel(toModify);
-        this.model = toModify;
         notifyLobby();
     }
 

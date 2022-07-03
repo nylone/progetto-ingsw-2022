@@ -59,11 +59,13 @@ public class Lobby {
      * @throws InputValidationException if the controller does not validate the action positively
      * @throws OperationException       if no controller is online or if a validated action failed to run properly
      */
-    public synchronized void executeAction(PlayerAction pa) throws InputValidationException, OperationException {
-        if (controller == null) {
-            throw new ForbiddenOperationException("Game lobby", "Lobby is in waiting state, no game is running");
+    public void executeAction(PlayerAction pa) throws InputValidationException, OperationException {
+        synchronized (this.players) {
+            if (controller == null) {
+                throw new ForbiddenOperationException("Game lobby", "Lobby is in waiting state, no game is running");
+            }
+            controller.executeAction(pa);
         }
-        controller.executeAction(pa);
     }
 
     /**
@@ -99,7 +101,9 @@ public class Lobby {
      * @return true if the lobby is full, false otherwise
      */
     public boolean isLobbyFull() {
-        return this.players.size() == maxPlayers;
+        synchronized (this.players) {
+            return this.players.size() == maxPlayers;
+        }
     }
 
     /**
