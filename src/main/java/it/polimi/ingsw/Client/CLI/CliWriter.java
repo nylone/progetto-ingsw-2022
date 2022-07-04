@@ -74,7 +74,7 @@ public class CliWriter implements Runnable {
             while (true) {
                 System.out.println("Insert Username:");
                 //acquire Username from stdIn
-                nickname = stdIn.readLine();
+                nickname = stdIn.readLine().trim();
                 if (!this.clientView.isConnected()) return;
                 //whether at least one between nickname and password is empty then repeat the login process
                 if (nickname.equals("")) {
@@ -100,7 +100,7 @@ public class CliWriter implements Runnable {
             if (!this.clientView.isConnected()) Thread.currentThread().interrupt();
             while (true) {
                 //acquire command from stdIn
-                input = stdIn.readLine();
+                input = stdIn.readLine().trim();
                 if (!this.clientView.isConnected()) return;
                 //execute command
                 elaborateInput(input);
@@ -318,7 +318,7 @@ public class CliWriter implements Runnable {
                     boolean repeat = true;
                     //get the selected PawnColour from stdIn and add the pair to the list
                     do {
-                        switch (stdIn.readLine().toLowerCase()) {
+                        switch (stdIn.readLine().trim().toLowerCase()) {
                             case "red" -> {
                                 pairs.add(new Pair<>(currentPlayer.getEntranceStudents().get(PawnPosition.get()).get(), PawnColour.RED));
                                 repeat = false;
@@ -510,7 +510,7 @@ public class CliWriter implements Runnable {
             loop:
             while (true) {
                 //get visibility choice
-                input = stdIn.readLine().toUpperCase();
+                input = stdIn.readLine().trim().toUpperCase();
                 //assign user's choice to boolean variable 'isPublic'
                 switch (input) {
                     case "O" -> {
@@ -563,7 +563,7 @@ public class CliWriter implements Runnable {
             do {
                 try {
                     //get UUID from stdIn
-                    id = UUID.fromString(stdIn.readLine());
+                    id = UUID.fromString(stdIn.readLine().trim());
                     repeat = false;
                 } catch (IllegalArgumentException e) {
                     System.out.println("UUID not valid, try again");
@@ -604,7 +604,7 @@ public class CliWriter implements Runnable {
             //repeat until the user types a valid gamemode
             while (true) {
                 ////get gameMode  from stdIn
-                input = stdIn.readLine().toUpperCase();
+                input = stdIn.readLine().trim().toUpperCase();
                 switch (input) {
                     case "S" -> {
                         gameMode = GameMode.SIMPLE;
@@ -830,7 +830,7 @@ public class CliWriter implements Runnable {
         while (true) {
             try {
                 //get text from stdIn
-                String text = stdIn.readLine();
+                String text = stdIn.readLine().trim();
                 if (text == null)
                     throw new IOException();
                 //try to parse String from stdIn to Integer
@@ -855,7 +855,7 @@ public class CliWriter implements Runnable {
         while (true) {
             try {
                 //get text from stdIn
-                String text = stdIn.readLine();
+                String text = stdIn.readLine().trim();
                 if (text == null)
                     throw new IOException();
                 //if user has typed 'enter' then return Optional.empty
@@ -888,7 +888,7 @@ public class CliWriter implements Runnable {
         boolean repeat = true;
         do {
             //get the input from stdIn, every switch's case create a playCharacterCard with selected pawnColour
-            switch (stdIn.readLine().toLowerCase()) {
+            switch (stdIn.readLine().toLowerCase().trim()) {
                 case "red" -> {
                     playCharacterCard = new PlayCharacterCard(currentPlayer.getId(), selected, OptionalValue.empty(), OptionalValue.of(PawnColour.RED), OptionalValue.empty());
                     repeat = false;

@@ -30,7 +30,7 @@ public class CLI implements Runnable {
             String ipAddress;
             boolean validate;
             do {
-                ipAddress = stdIn.readLine(); //get input from stdIn
+                ipAddress = stdIn.readLine().trim(); //get input from stdIn
                 validate = isIp(ipAddress); //check if is a valid ip address
                 if (!validate) System.out.println("Ip address not valid");
                 else break;
@@ -42,7 +42,7 @@ public class CLI implements Runnable {
                 while (true) {
                     try {
                         //get input from stdIN
-                        String portString = stdIn.readLine();
+                        String portString = stdIn.readLine().trim();
                         if (portString == null)
                             throw new IOException();
                         //get int value from int
