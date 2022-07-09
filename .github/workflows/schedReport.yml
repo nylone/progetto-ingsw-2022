@@ -2,9 +2,9 @@ name: sonarqube auto report
 on:
   workflow_dispatch:
     branches: [ main ]
-  schedule:
-    - cron: '00 02,18 * * *'
-    - cron: '00 10 * * 2'
+  #schedule:
+    #- cron: '00 02,18 * * *'
+    #- cron: '00 10 * * 2'
 
 jobs:
   build:
@@ -36,3 +36,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ secrets.REPOSITORY_OWNER }}_${{ secrets.REPOSITORY_NAME }}
+s
