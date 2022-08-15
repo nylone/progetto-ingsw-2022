@@ -27,18 +27,18 @@ Eriantys is the game chosen as the (2021/2022) project of the Software Engineeri
 
 ## Test coverage
 
-Follow [this link](https://nylone.github.io/ing-sw-2022-rampone-rossi-salerno/coverage-report) for an unfiltered version
-of the coverage report or follow [this link](https://nylone.github.io/ing-sw-2022-rampone-rossi-salerno/filtered-coverage-report)
+Follow [this link](https://nylone.github.io/progetto-ingsw-2022/coverage-report) for an unfiltered version
+of the coverage report or follow [this link](https://nylone.github.io/progetto-ingsw-2022/filtered-coverage-report)
 for one of only Model and Controller.
 
 ## Javadocs
 
-Follow [this link](https://nylone.github.io/ing-sw-2022-rampone-rossi-salerno/javadocs) to access the javadocs page for this project.
+Follow [this link](https://nylone.github.io/progetto-ingsw-2022/javadocs) to access the javadocs page for this project.
 
 ## Other Deliverables for the project review
 
 All requested deliverables for use in the project review and assessment can be found 
-[here](https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno/tree/main/deliverables).
+[here](https://github.com/nylone/progetto-ingsw-2022/tree/main/deliverables).
 
 ## Building and Running
 
@@ -54,8 +54,8 @@ mvn clean install                                                           # te
 ```
 
 Otherwise: you can download the latest release from the
-[Packages](https://github.com/nylone?tab=packages&repo_name=ing-sw-2022-rampone-rossi-salerno) section
-on the [Github](https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno) page.
+[Packages](https://github.com/nylone?tab=packages&repo_name=progetto-ingsw-2022) section
+on the [Github](https://github.com/nylone/progetto-ingsw-2022) page.
 
 Assuming the release package is named `project.jar`, run the following command in the root directory of the
 project to start the application:

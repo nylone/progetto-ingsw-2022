@@ -5,18 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>it.polimi.ingsw</groupId>
-    <artifactId>ing-sw-2022-rampone-rossi-salerno</artifactId>
+    <artifactId>progetto-ingsw-2022</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
 
     <name>softeng-GC21</name>
-    <url>https://github.com/nylone/ing-sw-2022-rampone-rossi-salerno</url>
+    <url>https://github.com/nylone/progetto-ingsw-2022</url>
 
     <distributionManagement>
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/nylone/ing-sw-2022-rampone-rossi-salerno</url>
+            <url>https://maven.pkg.github.com/nylone/progetto-ingsw-2022</url>
         </repository>
     </distributionManagement>
 
