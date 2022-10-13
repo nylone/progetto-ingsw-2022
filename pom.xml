@@ -6,7 +6,7 @@
 
     <groupId>it.polimi.ingsw</groupId>
     <artifactId>progetto-ingsw-2022</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <packaging>jar</packaging>
 
     <name>softeng-GC21</name>
